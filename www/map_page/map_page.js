@@ -21,6 +21,7 @@ RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = {
     // Application Constructor
+    mapFrame: document.getElementById('map_frame'),
     initialize: function() {
         // console.log('initialize called!');
         // console.log(JSON.stringify(this));
@@ -33,8 +34,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         console.log('onDeviceReady called!');
+        this.refreshScreenSise();
         // console.log(JSON.stringify(this));
         // this.receivedEvent('deviceready');
+    },
+
+    refreshScreenSise: function() {
+        console.log('window.innerHeight: ' + window.innerHeight);
+        this.mapFrame.style.height = (window.innerHeight - 40) + 'px';
+        
     },
 
     // Update DOM on a Received Event
