@@ -22,8 +22,8 @@ RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = {
     // Application Constructor
     initialize: function() {
-        console.log('initialize called!');
-        console.log(JSON.stringify(this));
+        // console.log('initialize called!');
+        // console.log(JSON.stringify(this));
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
 
@@ -33,21 +33,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = {
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
         console.log('onDeviceReady called!');
-        console.log(JSON.stringify(this));
+        // console.log(JSON.stringify(this));
         // this.receivedEvent('deviceready');
     },
 
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+    // receivedEvent: function(id) {
+    //     var parentElement = document.getElementById(id);
+    //     var listeningElement = parentElement.querySelector('.listening');
+    //     var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+    //     listeningElement.setAttribute('style', 'display:none;');
+    //     receivedElement.setAttribute('style', 'display:block;');
 
-        console.log('Received Event: ' + id);
-    }
+    //     console.log('Received Event: ' + id);
+    // }
 };
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage.initialize();
