@@ -16,9 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var app = {
+
+RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = {
     // Application Constructor
     initialize: function() {
+        console.log('initialize called!');
+        console.log(JSON.stringify(this));
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     },
 
@@ -27,7 +32,9 @@ var app = {
     // Bind any cordova events here. Common events are:
     // 'pause', 'resume', etc.
     onDeviceReady: function() {
-        this.receivedEvent('deviceready');
+        console.log('onDeviceReady called!');
+        console.log(JSON.stringify(this));
+        // this.receivedEvent('deviceready');
     },
 
     // Update DOM on a Received Event
@@ -43,4 +50,4 @@ var app = {
     }
 };
 
-app.initialize();
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage.initialize();

@@ -11,3 +11,9 @@ body {
     padding:0px;
     width:100%;
 }
+
+#ad_frame {
+    background-color: #333;
+    height: 40px;
+    width: 100%;
+}
