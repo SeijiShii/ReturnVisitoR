@@ -17,45 +17,40 @@
  * under the License.
  */
 
-RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
+var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = {
-    // Application Constructor
-    mapFrame: document.getElementById('map_frame'),
-    initialize: function() {
-        // console.log('initialize called!');
-        // console.log(JSON.stringify(this));
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    },
+mapPage.initialize = function() {
 
-    // deviceready Event Handler
-    //
-    // Bind any cordova events here. Common events are:
-    // 'pause', 'resume', etc.
-    onDeviceReady: function() {
-        console.log('onDeviceReady called!');
-        this.refreshScreenSise();
-        // console.log(JSON.stringify(this));
-        // this.receivedEvent('deviceready');
-    },
+    console.log('mapPage.initialize called!');
 
-    refreshScreenSise: function() {
-        console.log('window.innerHeight: ' + window.innerHeight);
-        this.mapFrame.style.height = (window.innerHeight - 40) + 'px';
-        
-    },
+    mapPage.mapFrame = document.getElementById('map_frame');
 
-    // Update DOM on a Received Event
-    // receivedEvent: function(id) {
-    //     var parentElement = document.getElementById(id);
-    //     var listeningElement = parentElement.querySelector('.listening');
-    //     var receivedElement = parentElement.querySelector('.received');
+    document.addEventListener('deviceready', mapPage.onDeviceReady, false);
 
-    //     listeningElement.setAttribute('style', 'display:none;');
-    //     receivedElement.setAttribute('style', 'display:block;');
+    window.addEventListener('resize', mapPage.onResizeScreen);
+}
 
-    //     console.log('Received Event: ' + id);
-    // }
-};
+mapPage.onDeviceReady = function() {
+    console.log('onDeviceReady called!');
+    mapPage.refreshMapFrame();
+}
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage.initialize();
+mapPage.onResizeScreen = function() {
+    console.log('onResiseScreen called!');
+    if (resizeTimer !== false) {
+        clearTimeout(resizeTimer);
+    }
+    var resizeTimer = setTimeout(function () {
+        console.log('Window resized!');
+        // this.refreshContentHeight();
+        mapPage.refreshMapFrame();
+    }, 200);
+}
+
+mapPage.refreshMapFrame = function() {
+    console.log('window.innerHeight: ' + window.innerHeight);
+    mapPage.mapFrame.style.height = (window.innerHeight - 40) + 'px';
+    
+}
+
+mapPage.initialize();

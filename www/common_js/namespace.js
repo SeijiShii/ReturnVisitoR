@@ -17,4 +17,6 @@ RETURNVISITOR_APP.namespace = function(ns_string){
     }
     parent = parent[parts[i]];
   }
+
+  return parent;
 };
