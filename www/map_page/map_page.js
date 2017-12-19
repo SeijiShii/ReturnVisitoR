@@ -33,6 +33,7 @@ mapPage.initialize = function() {
 mapPage.onDeviceReady = function() {
     console.log('onDeviceReady called!');
     mapPage.refreshMapFrame();
+    mapPage.initGoogleMap();
 }
 
 mapPage.onResizeScreen = function() {
@@ -51,6 +52,11 @@ mapPage.refreshMapFrame = function() {
     console.log('window.innerHeight: ' + window.innerHeight);
     mapPage.mapFrame.style.height = (window.innerHeight - 40) + 'px';
     
+}
+
+mapPage.initGoogleMap = function() {
+    mapPage.mapCanvas = document.getElementById('map_canvas');
+    mapPage.map = plugin.google.maps.Map.getMap(mapPage.mapCanvas);
 }
 
 mapPage.initialize();
