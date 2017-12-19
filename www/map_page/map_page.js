@@ -17,46 +17,54 @@
  * under the License.
  */
 
-var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
+var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
+// var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
+returnvisitor.mapPage = function() {
 
-mapPage.initialize = function() {
+}
+
+returnvisitor.mapPage.prototype.initialize = function() {
 
     console.log('mapPage.initialize called!');
 
-    mapPage.mapFrame = document.getElementById('map_frame');
+    this.mapFrame = document.getElementById('map_frame');
 
-    document.addEventListener('deviceready', mapPage.onDeviceReady, false);
+    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
 
-    window.addEventListener('resize', mapPage.onResizeScreen);
+    window.addEventListener('resize', this.onResizeScreen.bind(this));
 }
 
-mapPage.onDeviceReady = function() {
+returnvisitor.mapPage.prototype.onDeviceReady = function() {
     console.log('onDeviceReady called!');
-    mapPage.refreshMapFrame();
-    mapPage.initGoogleMap();
+
+    // thisが変化してしまうのでcallで関数をよびだす。
+    this.refreshMapFrame.call(this);
+    this.initGoogleMap();
 }
 
-mapPage.onResizeScreen = function() {
+returnvisitor.mapPage.prototype.onResizeScreen = function() {
     console.log('onResiseScreen called!');
+    var self = this;
+
     if (resizeTimer !== false) {
         clearTimeout(resizeTimer);
     }
     var resizeTimer = setTimeout(function () {
         console.log('Window resized!');
         // this.refreshContentHeight();
-        mapPage.refreshMapFrame();
+        self.refreshMapFrame();
     }, 200);
 }
 
-mapPage.refreshMapFrame = function() {
+returnvisitor.mapPage.prototype.refreshMapFrame = function() {
     console.log('window.innerHeight: ' + window.innerHeight);
-    mapPage.mapFrame.style.height = (window.innerHeight - 40) + 'px';
+    this.mapFrame.style.height = (window.innerHeight - 40) + 'px';
     
 }
 
-mapPage.initGoogleMap = function() {
-    mapPage.mapCanvas = document.getElementById('map_canvas');
-    mapPage.map = plugin.google.maps.Map.getMap(mapPage.mapCanvas);
+returnvisitor.mapPage.prototype.initGoogleMap = function() {
+    this.mapCanvas = document.getElementById('map_canvas');
+    this.map = plugin.google.maps.Map.getMap(this.mapCanvas);
 }
 
-mapPage.initialize();
+new returnvisitor.mapPage().initialize();
