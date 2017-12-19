@@ -44,6 +44,8 @@ returnvisitor.mapPage.prototype.onDeviceReady = function() {
 
 returnvisitor.mapPage.prototype.onResizeScreen = function() {
     console.log('onResiseScreen called!');
+
+    // ホントにもうthisがコロコロ変わるの何とかならんかね！
     var self = this;
 
     if (resizeTimer !== false) {
@@ -64,7 +66,33 @@ returnvisitor.mapPage.prototype.refreshMapFrame = function() {
 
 returnvisitor.mapPage.prototype.initGoogleMap = function() {
     this.mapCanvas = document.getElementById('map_canvas');
-    this.map = plugin.google.maps.Map.getMap(this.mapCanvas);
+
+    var options = {
+        'mapType': plugin.google.maps.MapTypeId.HYBRID,
+        'controls': {
+            'compass': true,
+            'zoom': true,
+            'myLocationButton': true
+        },
+        'preferences': {
+            'padding': {
+                top: 50
+            }
+        }, 
+        'camera': {
+            'target': {
+                lat: 0,
+                lng: 0
+            },
+            'zoom': 4
+        }
+    };
+
+    this.map = plugin.google.maps.Map.getMap(this.mapCanvas, options);
+}
+
+returnvisitor.mapPage.prototype.refreshMapCanvas = function() {
+
 }
 
 new returnvisitor.mapPage().initialize();
