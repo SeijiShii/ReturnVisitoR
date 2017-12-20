@@ -24,7 +24,8 @@ returnvisitor.mapPage = function() {
     var _this = this,
         mapFrame,
         mapDiv,
-        map;
+        map,
+        WIDTH_BREAK_POINT = 500;
 
     this.initialize = function() {
 
@@ -42,7 +43,7 @@ returnvisitor.mapPage = function() {
     
         _this.refreshMapFrame();
         _this.initGoogleMap();
-        _this.refreshMapDiv();
+        // _this.refreshMapDiv();
     }
     
     this.onResizeScreen = function() {
@@ -55,7 +56,7 @@ returnvisitor.mapPage = function() {
         var resizeTimer = setTimeout(function () {
             console.log('Window resized!');
             _this.refreshMapFrame();
-            _this.refreshMapDiv();
+            // _this.refreshMapDiv();
         }, 200);
     }
     
@@ -97,19 +98,19 @@ returnvisitor.mapPage = function() {
         map = plugin.google.maps.Map.getMap(mapDiv, options);
     }
     
-    this.refreshMapDiv = function() {
+    // this.refreshMapDiv = function() {
     
-        console.log('refreshMapDiv called!');
+    //     console.log('refreshMapDiv called!');
     
-        mapDiv.style.height = (window.innerHeight - 40) + 'px';
-        // mapDiv.style.width = window.innerWidth + 'px';
-        // plugin.google.maps.Map.getMap(mapDiv);
+    //     mapDiv.style.height = (window.innerHeight - 40) + 'px';
+    //     // mapDiv.style.width = window.innerWidth + 'px';
+    //     // plugin.google.maps.Map.getMap(mapDiv);
     
-        console.log('mapDiv.style.height: ' + mapDiv.style.height);
-        // console.log('mapDiv.style.width: ' + mapDiv.style.width);
+    //     console.log('mapDiv.style.height: ' + mapDiv.style.height);
+    //     // console.log('mapDiv.style.width: ' + mapDiv.style.width);
 
         
-    }
+    // }
 }
 
 new returnvisitor.mapPage().initialize();
