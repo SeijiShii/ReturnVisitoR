@@ -21,78 +21,95 @@ var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor');
 // var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
 returnvisitor.mapPage = function() {
 
-}
+    var _this = this,
+        mapFrame,
+        mapDiv,
+        map;
 
-returnvisitor.mapPage.prototype.initialize = function() {
+    this.initialize = function() {
 
-    console.log('mapPage.initialize called!');
-
-    this.mapFrame = document.getElementById('map_frame');
-
-    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-
-    window.addEventListener('resize', this.onResizeScreen.bind(this));
-}
-
-returnvisitor.mapPage.prototype.onDeviceReady = function() {
-    console.log('onDeviceReady called!');
-
-    // thisが変化してしまうのでcallで関数をよびだす。
-    this.refreshMapFrame.call(this);
-    this.initGoogleMap();
-}
-
-returnvisitor.mapPage.prototype.onResizeScreen = function() {
-    console.log('onResiseScreen called!');
-
-    // ホントにもうthisがコロコロ変わるの何とかならんかね！
-    var self = this;
-
-    if (resizeTimer !== false) {
-        clearTimeout(resizeTimer);
-    }
-    var resizeTimer = setTimeout(function () {
-        console.log('Window resized!');
-        // this.refreshContentHeight();
-        self.refreshMapFrame();
-    }, 200);
-}
-
-returnvisitor.mapPage.prototype.refreshMapFrame = function() {
-    console.log('window.innerHeight: ' + window.innerHeight);
-    this.mapFrame.style.height = (window.innerHeight - 40) + 'px';
+        console.log('mapPage.initialize called!');
     
-}
-
-returnvisitor.mapPage.prototype.initGoogleMap = function() {
-    this.mapCanvas = document.getElementById('map_canvas');
-
-    var options = {
-        'mapType': plugin.google.maps.MapTypeId.HYBRID,
-        'controls': {
-            'compass': true,
-            'zoom': true,
-            'myLocationButton': true
-        },
-        'preferences': {
-            'padding': {
-                top: 50
-            }
-        }, 
-        'camera': {
-            'target': {
-                lat: 0,
-                lng: 0
-            },
-            'zoom': 4
+        mapFrame = document.getElementById('map_frame');
+    
+        document.addEventListener('deviceready', _this.onDeviceReady, false);
+    
+        window.addEventListener('resize', _this.onResizeScreen);
+    }
+    
+    this.onDeviceReady = function() {
+        console.log('onDeviceReady called!');
+    
+        _this.refreshMapFrame();
+        _this.initGoogleMap();
+        _this.refreshMapDiv();
+    }
+    
+    this.onResizeScreen = function() {
+        console.log('onResiseScreen called!');
+        cordova.fireDocumentEvent('plugin_touch', {});
+    
+        if (resizeTimer !== false) {
+            clearTimeout(resizeTimer);
         }
-    };
+        var resizeTimer = setTimeout(function () {
+            console.log('Window resized!');
+            _this.refreshMapFrame();
+            _this.refreshMapDiv();
+        }, 200);
+    }
+    
+    this.refreshMapFrame = function() {
+        // console.log('window.innerHeight: ' + window.innerHeight);
+        mapFrame.style.height = (window.innerHeight - 40) + 'px';
+        // mapFrame.style.width = window.innerWidth + 'px';
 
-    this.map = plugin.google.maps.Map.getMap(this.mapCanvas, options);
-}
+        console.log('mapFrame.style.height: ' + mapFrame.style.height);
+        // console.log('mapFrame.style.width: ' + mapFrame.style.width);
+        
+    }
+    
+    this.initGoogleMap = function() {
+    
+        mapDiv = document.getElementById('map_div');
 
-returnvisitor.mapPage.prototype.refreshMapCanvas = function() {
+        var options = {
+            'mapType': plugin.google.maps.MapTypeId.HYBRID,
+            'controls': {
+                'compass': true,
+                'zoom': true,
+                'myLocationButton': true
+            },
+            'preferences': {
+                'padding': {
+                    top: 50
+                }
+            }, 
+            'camera': {
+                'target': {
+                    lat: 0,
+                    lng: 0
+                },
+                'zoom': 4
+            }
+        };
+    
+        map = plugin.google.maps.Map.getMap(mapDiv, options);
+    }
+    
+    this.refreshMapDiv = function() {
+    
+        console.log('refreshMapDiv called!');
+    
+        mapDiv.style.height = (window.innerHeight - 40) + 'px';
+        // mapDiv.style.width = window.innerWidth + 'px';
+        // plugin.google.maps.Map.getMap(mapDiv);
+    
+        console.log('mapDiv.style.height: ' + mapDiv.style.height);
+        // console.log('mapDiv.style.width: ' + mapDiv.style.width);
 
+        
+    }
 }
 
 new returnvisitor.mapPage().initialize();
