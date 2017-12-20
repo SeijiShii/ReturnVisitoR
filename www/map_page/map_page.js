@@ -17,7 +17,7 @@
  * under the License.
  */
 
-// 171220 TODO 現在位置の保存と読み出し機能を追加する。
+// 171220 DONE 現在位置の保存と読み出し機能を追加する。
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
