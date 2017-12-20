@@ -17,6 +17,8 @@
  * under the License.
  */
 
+// 171220 TODO 現在位置の保存と読み出し機能を追加する。
+
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
 returnvisitor.mapPage = function() {
@@ -25,7 +27,10 @@ returnvisitor.mapPage = function() {
         mapFrame,
         mapDiv,
         map,
-        WIDTH_BREAK_POINT = 500;
+        WIDTH_BREAK_POINT = 500,
+        LATITUDE = 'latitude',
+        LONGTUDE = 'longitude',
+        CAMERA_ZOOM = 'camera_zoom';
 
     this.initialize = function() {
 
@@ -74,6 +79,8 @@ returnvisitor.mapPage = function() {
     
         mapDiv = document.getElementById('map_div');
 
+        var position = this.loadCameraPosition();
+
         var options = {
             'mapType': plugin.google.maps.MapTypeId.HYBRID,
             'controls': {
@@ -94,8 +101,24 @@ returnvisitor.mapPage = function() {
                 'zoom': 4
             }
         };
+
+        if (position) {
+            options['camera'] = {
+                'target' : {
+                    lat: position.target.lat,
+                    lng: position.target.lng
+                },
+                'zoom' : position.zoom
+            }
+        }
     
         map = plugin.google.maps.Map.getMap(mapDiv, options);
+        map.on(plugin.google.maps.event.CAMERA_MOVE_END, function() {
+            // console.log('Camera move ended.')
+            var cameraPosition = map.getCameraPosition();
+            // console.log(JSON.stringify(cameraPosition.target));
+            _this.saveCameraPosition(cameraPosition);
+        });
     }
     
     // this.refreshMapDiv = function() {
@@ -111,6 +134,37 @@ returnvisitor.mapPage = function() {
 
         
     // }
+
+    this.saveCameraPosition = function (position) {
+        var storage = window.localStorage;
+        storage.setItem(LATITUDE, position.target.lat);
+        storage.setItem(LONGTUDE, position.target.lng);
+        storage.setItem(CAMERA_ZOOM, position.zoom);
+    };
+
+    this.loadCameraPosition = function () {
+        var storage = window.localStorage;
+        var lat = storage.getItem(LATITUDE);
+        if (!lat) {
+            return null;
+        }
+        var lng = storage.getItem(LONGTUDE);
+        if (!lng) {
+            return null;
+        }
+        var zoom = storage.getItem(CAMERA_ZOOM);
+        if (!zoom) {
+            return null;
+        }
+        return {
+            target: {
+                lat: lat,
+                lng: lng
+            },
+            zoom: zoom
+        };
+    };
+
 }
 
 new returnvisitor.mapPage().initialize();
