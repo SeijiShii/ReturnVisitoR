@@ -27,6 +27,7 @@ returnvisitor.mapPage = function() {
         mapFrame,
         mapDiv,
         map,
+        logoButton,
         WIDTH_BREAK_POINT = 500,
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
@@ -48,6 +49,7 @@ returnvisitor.mapPage = function() {
     
         _this.refreshMapFrame();
         _this.initGoogleMap();
+        _this.initLogoButton();
         // _this.refreshMapDiv();
     }
     
@@ -163,6 +165,14 @@ returnvisitor.mapPage = function() {
             },
             zoom: zoom
         };
+    };
+
+    this.initLogoButton = function () {
+        console.log('initLogoButton called!')
+        logoButton = document.getElementById('logo-button');
+        logoButton.addEventListener('click', function(){
+            console.log('Logo button clicked!');
+        });
     };
 
 }
