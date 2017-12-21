@@ -20,6 +20,8 @@
 // 171220 DONE 現在位置の保存と読み出し機能を追加する。
 // 171221 DONE refreshAdFrame() adFrameの位置更新メソッドを追加
 // 171221 TODO オーバレイとドロワーを追加する。
+//          DONE オーバレイをまず実装する。
+//          TODO 次いでドロワーを実装する。
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
@@ -32,9 +34,12 @@ returnvisitor.mapPage = function() {
         map,
         logoButton,
         drawerOverlay,
+        isDrawerOverlayShowing = false,
         drawer,
+        isDrawerOpen = false,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
+        DRAWER_WIDTH = 240,
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom';
@@ -59,7 +64,9 @@ returnvisitor.mapPage = function() {
         _this.refreshAppFrame();
         _this.initGoogleMap();
         _this.initLogoButton();
-        // _this.refreshMapDiv();
+
+        _this.initDrawerOverlay();
+        _this.initDrawer();
     }
     
     this.onResizeScreen = function() {
@@ -73,7 +80,6 @@ returnvisitor.mapPage = function() {
             console.log('Window resized!');
             _this.refreshAppFrame();
             _this.refreshAdFrame();
-            // _this.refreshMapDiv();
         }, 200);
     }
     
@@ -165,7 +171,9 @@ returnvisitor.mapPage = function() {
         console.log('initLogoButton called!')
         logoButton = document.getElementById('logo-button');
         logoButton.addEventListener('click', function(){
-            console.log('Logo button clicked!');
+            // console.log('Logo button clicked!');
+            _this.switchDrawerOverlay(true);
+            _this.switchDrawer(true);
         });
     };
 
@@ -178,7 +186,75 @@ returnvisitor.mapPage = function() {
     }
 
     this.initDrawerOverlay = function() {
-        
+        drawerOverlay = document.getElementById('drawer_overlay');
+        drawerOverlay.addEventListener('click', function(){
+            _this.refreshDrawerOverlay(false, true);
+            _this.openCloseDrawer(false, true);
+        });
+        _this.refreshDrawerOverlay(false, false);
+    }
+
+    this.refreshDrawerOverlay = function(fadeIn, animated) {
+
+        console.log('refreshDrawerOverlay called! fadeIn: ' + fadeIn + ', animated: ' + animated);
+
+        if (animated) {
+            if (fadeIn) {
+                drawerOverlay.style.width = '100%';
+                $(drawerOverlay).fadeTo('slow', 1);
+                isDrawerOverlayShowing = true;
+            } else {
+                $(drawerOverlay).fadeTo('slow', 0, function(){
+                    drawerOverlay.style.width = 0;
+                    isDrawerOverlayShowing = false;    
+                });
+            }
+        } else {
+            if (fadeIn) {
+                drawerOverlay.style.width = '100%';
+                drawerOverlay.style.opacity = 1;
+                isDrawerOverlayShowing = true;
+            } else {
+                drawerOverlay.style.opacity = 0;
+                drawerOverlay.style.width = 0;
+                isDrawerOverlayShowing = false;
+            }
+        }
+    } 
+
+    this.switchDrawerOverlay = function(animated) {
+
+        // console.log('switchDrawerOverlay called!')
+
+        _this.refreshDrawerOverlay(!isDrawerOverlayShowing, animated);
+    }
+
+    this.initDrawer = function() {
+        drawer = document.getElementById('drawer');
+        _this.openCloseDrawer(false, false);
+    }
+
+    this.openCloseDrawer = function(open, animated) {
+        if (animated) {
+            if (open) {
+                $(drawer).animate({'left' : '0px'}, 'slow');
+            } else {
+                $(drawer).animate({'left' : '-' + DRAWER_WIDTH + 'px'}, 'slow');
+            }
+
+        } else {
+            if (open) {
+                drawer.style.left = 0;
+            } else {
+                drawer.style.left = '-' + DRAWER_WIDTH + 'px';
+            }
+        }
+
+        isDrawerOpen = open;
+    }
+
+    this.switchDrawer = function(animated) {
+        _this.openCloseDrawer(!isDrawerOpen, animated);
     }
 
 }
