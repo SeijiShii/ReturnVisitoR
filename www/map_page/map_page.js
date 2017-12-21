@@ -22,6 +22,7 @@
 // 171221 TODO オーバレイとドロワーを追加する。
 //          DONE オーバレイをまず実装する。
 //          TODO 次いでドロワーを実装する。
+//              TODO ドロワーに左スワイプ閉じを実装
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
@@ -37,9 +38,12 @@ returnvisitor.mapPage = function() {
         isDrawerOverlayShowing = false,
         drawer,
         isDrawerOpen = false,
+        drawerSwipeStartX,
+        drawerSwipeMoveX,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         DRAWER_WIDTH = 240,
+        DRAWER_DURATION = 300,
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom';
@@ -185,6 +189,7 @@ returnvisitor.mapPage = function() {
         adFrame.style.top = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
     }
 
+    // ドロワーオーバレイ関連
     this.initDrawerOverlay = function() {
         drawerOverlay = document.getElementById('drawer_overlay');
         drawerOverlay.addEventListener('click', function(){
@@ -201,10 +206,10 @@ returnvisitor.mapPage = function() {
         if (animated) {
             if (fadeIn) {
                 drawerOverlay.style.width = '100%';
-                $(drawerOverlay).fadeTo('slow', 1);
+                $(drawerOverlay).fadeTo(DRAWER_DURATION, 1);
                 isDrawerOverlayShowing = true;
             } else {
-                $(drawerOverlay).fadeTo('slow', 0, function(){
+                $(drawerOverlay).fadeTo(DRAWER_DURATION, 0, function(){
                     drawerOverlay.style.width = 0;
                     isDrawerOverlayShowing = false;    
                 });
@@ -229,17 +234,39 @@ returnvisitor.mapPage = function() {
         _this.refreshDrawerOverlay(!isDrawerOverlayShowing, animated);
     }
 
+    // ドロワー関連
     this.initDrawer = function() {
         drawer = document.getElementById('drawer');
         _this.openCloseDrawer(false, false);
+
+        drawer.addEventListener('touchstart',function(event){
+            event.preventDefault();
+            drawerSwipeStartX = event.touches[0].pageX;
+            console.log('Drawer touch start! x: ' + drawerSwipeStartX);
+        }, false);
+
+        drawer.addEventListener('touchmove', function() {
+            event.preventDefault();
+            drawerSwipeMoveX = event.touches[0].pageX;
+            console.log('Drawer touch move! x: ' + drawerSwipeMoveX);
+        }, false);
+
+        drawer.addEventListener('touchend', function(event){
+
+            console.log('Drawer swipe end! x: ' + drawerSwipeMoveX);
+            if ((drawerSwipeMoveX + 50) < drawerSwipeStartX) {
+                _this.openCloseDrawer(false, true);
+                _this.refreshDrawerOverlay(false,true);
+            }
+        }, false);
     }
 
     this.openCloseDrawer = function(open, animated) {
         if (animated) {
             if (open) {
-                $(drawer).animate({'left' : '0px'}, 'slow');
+                $(drawer).animate({'left' : '0px'}, DRAWER_DURATION);
             } else {
-                $(drawer).animate({'left' : '-' + DRAWER_WIDTH + 'px'}, 'slow');
+                $(drawer).animate({'left' : '-' + DRAWER_WIDTH + 'px'}, DRAWER_DURATION);
             }
 
         } else {
