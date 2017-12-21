@@ -177,6 +177,10 @@ returnvisitor.mapPage = function() {
         adFrame.style.top = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
     }
 
+    this.initDrawerOverlay = function() {
+        
+    }
+
 }
 
 new returnvisitor.mapPage().initialize();
