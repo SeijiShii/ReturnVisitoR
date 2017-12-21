@@ -24,7 +24,7 @@ var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor');
 returnvisitor.mapPage = function() {
 
     var _this = this,
-        mapFrame,
+        appFrame,
         mapDiv,
         map,
         logoButton,
@@ -37,7 +37,7 @@ returnvisitor.mapPage = function() {
 
         console.log('mapPage.initialize called!');
     
-        mapFrame = document.getElementById('map_frame');
+        appFrame = document.getElementById('app_frame');
     
         document.addEventListener('deviceready', _this.onDeviceReady, false);
     
@@ -47,7 +47,7 @@ returnvisitor.mapPage = function() {
     this.onDeviceReady = function() {
         console.log('onDeviceReady called!');
     
-        _this.refreshMapFrame();
+        _this.refreshAppFrame();
         _this.initGoogleMap();
         _this.initLogoButton();
         // _this.refreshMapDiv();
@@ -62,18 +62,16 @@ returnvisitor.mapPage = function() {
         }
         var resizeTimer = setTimeout(function () {
             console.log('Window resized!');
-            _this.refreshMapFrame();
+            _this.refreshAppFrame();
             // _this.refreshMapDiv();
         }, 200);
     }
     
-    this.refreshMapFrame = function() {
+    this.refreshAppFrame = function() {
         // console.log('window.innerHeight: ' + window.innerHeight);
-        mapFrame.style.height = (window.innerHeight - 40) + 'px';
-        // mapFrame.style.width = window.innerWidth + 'px';
-
-        console.log('mapFrame.style.height: ' + mapFrame.style.height);
-        // console.log('mapFrame.style.width: ' + mapFrame.style.width);
+        appFrame.style.height = (window.innerHeight - 40) + 'px';
+      
+        console.log('appFrame.style.height: ' + appFrame.style.height);
         
     }
     
