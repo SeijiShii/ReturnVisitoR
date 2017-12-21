@@ -18,16 +18,22 @@
  */
 
 // 171220 DONE 現在位置の保存と読み出し機能を追加する。
+// 171221 DONE refreshAdFrame() adFrameの位置更新メソッドを追加
+// 171221 TODO オーバレイとドロワーを追加する。
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
 returnvisitor.mapPage = function() {
 
     var _this = this,
+        adFrame,
         appFrame,
         mapDiv,
         map,
         logoButton,
+        drawerOverlay,
+        drawer,
+        AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
@@ -47,6 +53,9 @@ returnvisitor.mapPage = function() {
     this.onDeviceReady = function() {
         console.log('onDeviceReady called!');
     
+        _this.initAdFrame();
+        _this.refreshAdFrame();
+
         _this.refreshAppFrame();
         _this.initGoogleMap();
         _this.initLogoButton();
@@ -63,13 +72,14 @@ returnvisitor.mapPage = function() {
         var resizeTimer = setTimeout(function () {
             console.log('Window resized!');
             _this.refreshAppFrame();
+            _this.refreshAdFrame();
             // _this.refreshMapDiv();
         }, 200);
     }
     
     this.refreshAppFrame = function() {
         // console.log('window.innerHeight: ' + window.innerHeight);
-        appFrame.style.height = (window.innerHeight - 40) + 'px';
+        appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
       
         console.log('appFrame.style.height: ' + appFrame.style.height);
         
@@ -121,20 +131,6 @@ returnvisitor.mapPage = function() {
         });
     }
     
-    // this.refreshMapDiv = function() {
-    
-    //     console.log('refreshMapDiv called!');
-    
-    //     mapDiv.style.height = (window.innerHeight - 40) + 'px';
-    //     // mapDiv.style.width = window.innerWidth + 'px';
-    //     // plugin.google.maps.Map.getMap(mapDiv);
-    
-    //     console.log('mapDiv.style.height: ' + mapDiv.style.height);
-    //     // console.log('mapDiv.style.width: ' + mapDiv.style.width);
-
-        
-    // }
-
     this.saveCameraPosition = function (position) {
         var storage = window.localStorage;
         storage.setItem(LATITUDE, position.target.lat);
@@ -172,6 +168,14 @@ returnvisitor.mapPage = function() {
             console.log('Logo button clicked!');
         });
     };
+
+    this.initAdFrame = function() {
+        adFrame = document.getElementById('ad_frame');
+    }
+
+    this.refreshAdFrame = function() {
+        adFrame.style.top = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
+    }
 
 }
 

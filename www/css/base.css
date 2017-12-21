@@ -13,7 +13,10 @@ body {
 }
 
 #ad_frame {
+    position: absolute;
+    top: 100%;
+    left: 0;
     background-color: #333;
-    height: 40px;
+    height: 50px;
     width: 100%;
 }
