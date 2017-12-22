@@ -25,8 +25,8 @@
 //              TODO ドロワーに左スワイプ閉じを実装
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
-// var mapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.mapPage');
-returnvisitor.mapPage = function() {
+// var MapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.MapPage');
+returnvisitor.MapPage = function() {
 
     var _this = this,
         adFrame,
@@ -40,6 +40,7 @@ returnvisitor.mapPage = function() {
         isDrawerOpen = false,
         drawerSwipeStartX,
         drawerSwipeMoveX,
+        drawerLogoButton,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         DRAWER_WIDTH = 240,
@@ -50,7 +51,7 @@ returnvisitor.mapPage = function() {
 
     this.initialize = function() {
 
-        console.log('mapPage.initialize called!');
+        console.log('MapPage.initialize called!');
     
         appFrame = document.getElementById('app_frame');
     
@@ -60,7 +61,7 @@ returnvisitor.mapPage = function() {
     }
     
     this.onDeviceReady = function() {
-        console.log('onDeviceReady called!');
+        // console.log('onDeviceReady called!');
     
         _this.initAdFrame();
         _this.refreshAdFrame();
@@ -71,17 +72,20 @@ returnvisitor.mapPage = function() {
 
         _this.initDrawerOverlay();
         _this.initDrawer();
+
+        _this.initDrawerLogoButton();
+
     }
     
     this.onResizeScreen = function() {
-        console.log('onResiseScreen called!');
+        // console.log('onResiseScreen called!');
         cordova.fireDocumentEvent('plugin_touch', {});
     
         if (resizeTimer !== false) {
             clearTimeout(resizeTimer);
         }
         var resizeTimer = setTimeout(function () {
-            console.log('Window resized!');
+            // console.log('Window resized!');
             _this.refreshAppFrame();
             _this.refreshAdFrame();
         }, 200);
@@ -91,7 +95,7 @@ returnvisitor.mapPage = function() {
         // console.log('window.innerHeight: ' + window.innerHeight);
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
       
-        console.log('appFrame.style.height: ' + appFrame.style.height);
+        // console.log('appFrame.style.height: ' + appFrame.style.height);
         
     }
     
@@ -172,8 +176,8 @@ returnvisitor.mapPage = function() {
     };
 
     this.initLogoButton = function () {
-        console.log('initLogoButton called!')
-        logoButton = document.getElementById('logo-button');
+        // console.log('initLogoButton called!')
+        logoButton = document.getElementById('logo_button');
         logoButton.addEventListener('click', function(){
             // console.log('Logo button clicked!');
             _this.switchDrawerOverlay(true);
@@ -201,7 +205,7 @@ returnvisitor.mapPage = function() {
 
     this.refreshDrawerOverlay = function(fadeIn, animated) {
 
-        console.log('refreshDrawerOverlay called! fadeIn: ' + fadeIn + ', animated: ' + animated);
+        // console.log('refreshDrawerOverlay called! fadeIn: ' + fadeIn + ', animated: ' + animated);
 
         if (animated) {
             if (fadeIn) {
@@ -240,20 +244,23 @@ returnvisitor.mapPage = function() {
         _this.openCloseDrawer(false, false);
 
         drawer.addEventListener('touchstart',function(event){
-            event.preventDefault();
+            // これをすると子要素のクリックイベントが発火しなくなる。
+            // event.preventDefault();
             drawerSwipeStartX = event.touches[0].pageX;
-            console.log('Drawer touch start! x: ' + drawerSwipeStartX);
+            drawerSwipeMoveX = event.touches[0].pageX;
+            // console.log('Drawer touch start! x: ' + drawerSwipeStartX);
         }, false);
 
         drawer.addEventListener('touchmove', function() {
+            // これがないとtouchendイベントが発火しない。
             event.preventDefault();
             drawerSwipeMoveX = event.touches[0].pageX;
-            console.log('Drawer touch move! x: ' + drawerSwipeMoveX);
+            // console.log('Drawer touch move! x: ' + drawerSwipeMoveX);
         }, false);
 
         drawer.addEventListener('touchend', function(event){
 
-            console.log('Drawer swipe end! x: ' + drawerSwipeMoveX);
+            // console.log('Drawer swipe end! x: ' + drawerSwipeMoveX);
             if ((drawerSwipeMoveX + 50) < drawerSwipeStartX) {
                 _this.openCloseDrawer(false, true);
                 _this.refreshDrawerOverlay(false,true);
@@ -284,6 +291,20 @@ returnvisitor.mapPage = function() {
         _this.openCloseDrawer(!isDrawerOpen, animated);
     }
 
+    // ドロワー上のロゴボタン
+    this.initDrawerLogoButton = function() {
+
+        // console.log('initDrawerLogoButton called!')
+
+        drawerLogoButton = document.getElementById('drawer_logo_button');
+        drawerLogoButton.addEventListener('click', function() {
+            // console.log('Drawer logo button clicked!');
+            _this.openCloseDrawer(false, true);
+            _this.refreshDrawerOverlay(false, true);
+        });
+    }
+
+
 }
 
-new returnvisitor.mapPage().initialize();
+new returnvisitor.MapPage().initialize();
