@@ -23,7 +23,7 @@
 //          DONE オーバレイをまず実装する。
 //          DONE 次いでドロワーを実装する。
 //              DONE ドロワーに左スワイプ閉じを実装
-// 171222 TODO 幅広画面の時、ドロワーのメニューが常時表示されるようにする。
+// 171222 DONE 幅広画面の時、ドロワーのメニューが常時表示されるようにする。
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var MapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.MapPage');
@@ -158,12 +158,18 @@ returnvisitor.MapPage = function() {
         }
     
         map = plugin.google.maps.Map.getMap(mapDiv, options);
+        
         map.on(plugin.google.maps.event.CAMERA_MOVE_END, function() {
             // console.log('Camera move ended.')
             var cameraPosition = map.getCameraPosition();
             // console.log(JSON.stringify(cameraPosition.target));
             _this.saveCameraPosition(cameraPosition);
         });
+
+        map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
+            console.log('Map long clicked: ' + latLng.toUrlValue());
+        });
+
     }
 
     this.refreshMapDiv = function() {
