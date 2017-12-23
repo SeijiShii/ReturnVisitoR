@@ -21,8 +21,9 @@
 // 171221 DONE refreshAdFrame() adFrameの位置更新メソッドを追加
 // 171221 TODO オーバレイとドロワーを追加する。
 //          DONE オーバレイをまず実装する。
-//          TODO 次いでドロワーを実装する。
-//              TODO ドロワーに左スワイプ閉じを実装
+//          DONE 次いでドロワーを実装する。
+//              DONE ドロワーに左スワイプ閉じを実装
+// 171222 TODO 幅広画面の時、ドロワーのメニューが常時表示されるようにする。
 
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
 // var MapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.MapPage');
@@ -37,7 +38,6 @@ returnvisitor.MapPage = function() {
         drawerOverlay,
         isDrawerOverlayShowing = false,
         drawer,
-        isDrawerOpen = false,
         drawerSwipeStartX,
         drawerSwipeMoveX,
         drawerLogoButton,
@@ -45,13 +45,14 @@ returnvisitor.MapPage = function() {
         WIDTH_BREAK_POINT = 500,
         DRAWER_WIDTH = 240,
         DRAWER_DURATION = 300,
+        LOGO_BUTTON_SIZE = '40px',
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom';
 
     this.initialize = function() {
 
-        console.log('MapPage.initialize called!');
+        // console.log('MapPage.initialize called!');
     
         appFrame = document.getElementById('app_frame');
     
@@ -68,10 +69,15 @@ returnvisitor.MapPage = function() {
 
         _this.refreshAppFrame();
         _this.initGoogleMap();
+        _this.refreshMapDiv();
+
         _this.initLogoButton();
+        _this.refreshLogoButton(false);
 
         _this.initDrawerOverlay();
+        _this.refreshDrawerOverlay();
         _this.initDrawer();
+        _this.refreshDrawer();
 
         _this.initDrawerLogoButton();
 
@@ -81,16 +87,31 @@ returnvisitor.MapPage = function() {
         // console.log('onResiseScreen called!');
         cordova.fireDocumentEvent('plugin_touch', {});
     
-        if (resizeTimer !== false) {
-            clearTimeout(resizeTimer);
+        if (cordova.platform === 'browser') {
+            // ブラウザでは連続的に呼ばれるので
+            if (resizeTimer !== false) {
+                clearTimeout(resizeTimer);
+            }
+
+            var resizeTimer = setTimeout(function () {
+                _this.refreshScreenElements();
+            }, 200);
+
+        } else {
+            _this.refreshScreenElements();
         }
-        var resizeTimer = setTimeout(function () {
-            // console.log('Window resized!');
-            _this.refreshAppFrame();
-            _this.refreshAdFrame();
-        }, 200);
     }
     
+    this.refreshScreenElements = function() {
+        _this.refreshAppFrame();
+        _this.refreshAdFrame();
+        _this.refreshMapDiv();
+        _this.refreshDrawer();
+        _this.refreshDrawerOverlay();
+        _this.refreshLogoButton(true);
+        _this.refreshDrawerLogoButton();
+    }
+
     this.refreshAppFrame = function() {
         // console.log('window.innerHeight: ' + window.innerHeight);
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
@@ -144,6 +165,23 @@ returnvisitor.MapPage = function() {
             _this.saveCameraPosition(cameraPosition);
         });
     }
+
+    this.refreshMapDiv = function() {
+
+        // console.log('refreshMapDiv called!');
+        // console.log('isWideScreen: ' + this.isWideScreen());
+
+        if (_this.isWideScreen()) {
+            mapDiv.style.left = DRAWER_WIDTH + 'px';
+            mapDiv.style.width = (window.innerWidth - DRAWER_WIDTH) + 'px';
+
+            console.log('mapDiv.style.left: ' + mapDiv.style.left);
+
+        } else {
+            mapDiv.style.left = 0;
+            mapDiv.style.width = window.innerWidth + 'px';
+        }
+    }
     
     this.saveCameraPosition = function (position) {
         var storage = window.localStorage;
@@ -180,10 +218,30 @@ returnvisitor.MapPage = function() {
         logoButton = document.getElementById('logo_button');
         logoButton.addEventListener('click', function(){
             // console.log('Logo button clicked!');
-            _this.switchDrawerOverlay(true);
-            _this.switchDrawer(true);
+            _this.fadeDrawerOverlay(true, true);
+            _this.openCloseDrawer(true, true);
         });
     };
+
+    this.refreshLogoButton = function(animated) {
+        if (this.isWideScreen()) {
+            if (animated) {
+                $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
+                    logoButton.style.width = 0;
+                });   
+            } else {
+                logoButton.style.opacity = 0;
+                logoButton.style.width = 0;
+            }
+        } else {
+            logoButton.style.width = LOGO_BUTTON_SIZE;
+            if (animated) {
+                $(logoButton).fadeTo(DRAWER_DURATION, 1);
+            } else {
+                logoButton.style.opacity = 1;
+            }
+        }
+    }
 
     this.initAdFrame = function() {
         adFrame = document.getElementById('ad_frame');
@@ -195,17 +253,30 @@ returnvisitor.MapPage = function() {
 
     // ドロワーオーバレイ関連
     this.initDrawerOverlay = function() {
-        drawerOverlay = document.getElementById('drawer_overlay');
-        drawerOverlay.addEventListener('click', function(){
-            _this.refreshDrawerOverlay(false, true);
-            _this.openCloseDrawer(false, true);
-        });
-        _this.refreshDrawerOverlay(false, false);
+        drawerOverlay = document.getElementById('drawer_overlay');   
+        this.fadeDrawerOverlay(false, false);
     }
 
-    this.refreshDrawerOverlay = function(fadeIn, animated) {
+    this.refreshDrawerOverlay = function() {
+        if (this.isWideScreen()) {
+            drawerOverlay.removeEventListener('click', this.onClickDrawerOverlay);
+        } else {
+            drawerOverlay.addEventListener('click', this.onClickDrawerOverlay);  
+        }
 
-        // console.log('refreshDrawerOverlay called! fadeIn: ' + fadeIn + ', animated: ' + animated);
+        if (isDrawerOverlayShowing) {
+            this.fadeDrawerOverlay(false, true);
+        } 
+    }
+
+    this.onClickDrawerOverlay = function() {
+        _this.fadeDrawerOverlay(false, true);
+        _this.openCloseDrawer(false, true);
+    }
+
+    this.fadeDrawerOverlay = function(fadeIn, animated) {
+
+        // console.log('fadeDrawerOverlay called! fadeIn: ' + fadeIn + ', animated: ' + animated);
 
         if (animated) {
             if (fadeIn) {
@@ -230,13 +301,6 @@ returnvisitor.MapPage = function() {
             }
         }
     } 
-
-    this.switchDrawerOverlay = function(animated) {
-
-        // console.log('switchDrawerOverlay called!')
-
-        _this.refreshDrawerOverlay(!isDrawerOverlayShowing, animated);
-    }
 
     // ドロワー関連
     this.initDrawer = function() {
@@ -263,12 +327,17 @@ returnvisitor.MapPage = function() {
             // console.log('Drawer swipe end! x: ' + drawerSwipeMoveX);
             if ((drawerSwipeMoveX + 50) < drawerSwipeStartX) {
                 _this.openCloseDrawer(false, true);
-                _this.refreshDrawerOverlay(false,true);
+                _this.fadeDrawerOverlay(false,true);
             }
         }, false);
     }
 
     this.openCloseDrawer = function(open, animated) {
+
+        if (this.isWideScreen()) {
+            return;
+        }
+
         if (animated) {
             if (open) {
                 $(drawer).animate({'left' : '0px'}, DRAWER_DURATION);
@@ -284,11 +353,15 @@ returnvisitor.MapPage = function() {
             }
         }
 
-        isDrawerOpen = open;
     }
 
-    this.switchDrawer = function(animated) {
-        _this.openCloseDrawer(!isDrawerOpen, animated);
+    this.refreshDrawer = function() {
+        
+        if (this.isWideScreen()) {
+            drawer.style.left = 0;
+        } else {
+            drawer.style.left = '-' + DRAWER_WIDTH + 'px';
+        }
     }
 
     // ドロワー上のロゴボタン
@@ -297,11 +370,26 @@ returnvisitor.MapPage = function() {
         // console.log('initDrawerLogoButton called!')
 
         drawerLogoButton = document.getElementById('drawer_logo_button');
-        drawerLogoButton.addEventListener('click', function() {
-            // console.log('Drawer logo button clicked!');
-            _this.openCloseDrawer(false, true);
-            _this.refreshDrawerOverlay(false, true);
-        });
+        this.refreshDrawerLogoButton();
+        
+    }
+
+    this.onDrawerLogoClick = function() {
+         // console.log('Drawer logo button clicked!');
+         _this.openCloseDrawer(false, true);
+         _this.fadeDrawerOverlay(false, true);
+    }
+
+    this.refreshDrawerLogoButton = function() {
+        if (this.isWideScreen()) {
+            drawerLogoButton.removeEventListener('click', this.onDrawerLogoClick);
+        } else {
+            drawerLogoButton.addEventListener('click', this.onDrawerLogoClick);
+        }
+    }
+
+    this.isWideScreen = function() {
+        return window.innerWidth > WIDTH_BREAK_POINT;
     }
 
 
