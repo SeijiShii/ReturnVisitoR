@@ -1,3 +1,4 @@
+"use strict"
 var RETURNVISITOR_APP = RETURNVISITOR_APP || {};
 
 RETURNVISITOR_APP.namespace = function(ns_string){

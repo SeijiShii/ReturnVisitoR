@@ -25,8 +25,8 @@
 //              DONE ドロワーに左スワイプ閉じを実装
 // 171222 DONE 幅広画面の時、ドロワーのメニューが常時表示されるようにする。
 
+"use strict"
 var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
-// var MapPage = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor.MapPage');
 returnvisitor.MapPage = function() {
 
     var _this = this,
@@ -168,6 +168,10 @@ returnvisitor.MapPage = function() {
 
         map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
             console.log('Map long clicked: ' + latLng.toUrlValue());
+
+            // console.dir(JSON.stringify(RETURNVISITOR_APP.work.c_kogyo.returnvisitor));
+            var dialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase(appFrame);
+            dialog.fade(true);
         });
 
     }
