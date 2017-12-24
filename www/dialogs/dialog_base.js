@@ -13,17 +13,17 @@ returnvisitor.DialogBase = function(parent) {
 
     this.initDialogOverlay = function() {
         dialogOverlay = document.createElement('div');
-        dialogOverlay.style.position = 'absolute';
-        dialogOverlay.style.left = 0;
-        dialogOverlay.style.top = 0;
-        
-        dialogOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-        dialogOverlay.style.width = 0;
-        dialogOverlay.style.height = 0;
-        dialogOverlay.style.opacity = 0;
+        dialogOverlay.id = 'dialog_overlay'
 
         this._parent.appendChild(dialogOverlay);
         
+    }
+
+    this.initDialogFrame = function() {
+        dialogFrame = document.createElement('div');
+        dialogFrame.id = 'dialog_frame';
+
+        dialogOverlay.appendChild(dialogFrame);
     }
 
     this.fade = function(fadeIn) {
@@ -40,5 +40,6 @@ returnvisitor.DialogBase = function(parent) {
     }
 
     this.initDialogOverlay();
+    this.initDialogFrame();
 }
 
