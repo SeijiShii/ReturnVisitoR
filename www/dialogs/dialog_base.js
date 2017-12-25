@@ -23,7 +23,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
 
         dialogBaseFrame.appendChild(dialogOverlay);
 
-        dialogOverlay.addEventListener('click', fadeOut);
+        dialogOverlay.addEventListener('click', fadeOut.bind(this));
     }
 
     function fadeOut() {
@@ -51,7 +51,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
     }
 
     initDialogBaseFrame();
-    initDialogOverlay();
+    initDialogOverlay.call(this);
     initDialogFrame();
 }
 
