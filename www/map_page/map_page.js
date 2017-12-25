@@ -29,8 +29,7 @@
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
 
-    var _this = this,
-        adFrame,
+    var adFrame,
         appFrame,
         mapDiv,
         map,
@@ -56,30 +55,30 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     
         appFrame = document.getElementById('app_frame');
     
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
     
-        window.addEventListener('resize', this.onResizeScreen);
+        window.addEventListener('resize', this.onResizeScreen.bind(this));
     }
     
     this.onDeviceReady = function() {
         // console.log('onDeviceReady called!');
     
-        _this.initAdFrame();
-        _this.refreshAdFrame();
+        this.initAdFrame();
+        this.refreshAdFrame();
 
-        _this.refreshAppFrame();
-        _this.initGoogleMap();
-        _this.refreshMapDiv();
+        this.refreshAppFrame();
+        this.initGoogleMap();
+        this.refreshMapDiv();
 
-        _this.initLogoButton();
-        _this.refreshLogoButton(false);
+        this.initLogoButton();
+        this.refreshLogoButton(false);
 
-        _this.initDrawerOverlay();
-        _this.refreshDrawerOverlay();
-        _this.initDrawer();
-        _this.refreshDrawer();
+        this.initDrawerOverlay();
+        this.refreshDrawerOverlay();
+        this.initDrawer();
+        this.refreshDrawer();
 
-        _this.initDrawerLogoButton();
+        this.initDrawerLogoButton();
 
     }
     
@@ -93,23 +92,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
                 clearTimeout(resizeTimer);
             }
 
-            var resizeTimer = setTimeout(function () {
-                _this.refreshScreenElements();
-            }, 200);
+            var resizeTimer = setTimeout(this.refreshScreenElements.bind(this), 200);
 
         } else {
-            _this.refreshScreenElements();
+            this.refreshScreenElements();
         }
     }
     
     this.refreshScreenElements = function() {
-        _this.refreshAppFrame();
-        _this.refreshAdFrame();
-        _this.refreshMapDiv();
-        _this.refreshDrawer();
-        _this.refreshDrawerOverlay();
-        _this.refreshLogoButton(true);
-        _this.refreshDrawerLogoButton();
+        this.refreshAppFrame();
+        this.refreshAdFrame();
+        this.refreshMapDiv();
+        this.refreshDrawer();
+        this.refreshDrawerOverlay();
+        this.refreshLogoButton(true);
+        this.refreshDrawerLogoButton();
     }
 
     this.refreshAppFrame = function() {
@@ -159,12 +156,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     
         map = plugin.google.maps.Map.getMap(mapDiv, options);
         
-        map.on(plugin.google.maps.event.CAMERA_MOVE_END, function() {
-            // console.log('Camera move ended.')
-            var cameraPosition = map.getCameraPosition();
-            // console.log(JSON.stringify(cameraPosition.target));
-            _this.saveCameraPosition(cameraPosition);
-        });
+        map.on(plugin.google.maps.event.CAMERA_MOVE_END, this.saveCameraPosition);
 
         map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
             console.log('Map long clicked: ' + latLng.toUrlValue());
@@ -181,7 +173,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         // console.log('refreshMapDiv called!');
         // console.log('isWideScreen: ' + this.isWideScreen());
 
-        if (_this.isWideScreen()) {
+        if (this.isWideScreen()) {
             mapDiv.style.left = DRAWER_WIDTH + 'px';
             mapDiv.style.width = (window.innerWidth - DRAWER_WIDTH) + 'px';
 
@@ -193,7 +185,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         }
     }
     
-    this.saveCameraPosition = function (position) {
+    this.saveCameraPosition = function () {
+        var position = map.getCameraPosition();
         var storage = window.localStorage;
         storage.setItem(LATITUDE, position.target.lat);
         storage.setItem(LONGTUDE, position.target.lng);
@@ -226,12 +219,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     this.initLogoButton = function () {
         // console.log('initLogoButton called!')
         logoButton = document.getElementById('logo_button');
-        logoButton.addEventListener('click', function(){
-            // console.log('Logo button clicked!');
-            _this.fadeDrawerOverlay(true, true);
-            _this.openCloseDrawer(true, true);
-        });
+        logoButton.addEventListener('click', this.onClickLogoButton.bind(this));
     };
+
+    this.onClickLogoButton = function() {
+        // console.log('Logo button clicked!');
+        this.fadeDrawerOverlay(true, true);
+        this.openCloseDrawer(true, true);
+    }
 
     this.refreshLogoButton = function(animated) {
         if (this.isWideScreen()) {
@@ -271,7 +266,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         if (this.isWideScreen()) {
             drawerOverlay.removeEventListener('click', this.onClickDrawerOverlay);
         } else {
-            drawerOverlay.addEventListener('click', this.onClickDrawerOverlay);  
+            drawerOverlay.addEventListener('click', this.onClickDrawerOverlay.bind(this));  
         }
 
         if (isDrawerOverlayShowing) {
@@ -280,8 +275,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     }
 
     this.onClickDrawerOverlay = function() {
-        _this.fadeDrawerOverlay(false, true);
-        _this.openCloseDrawer(false, true);
+        this.fadeDrawerOverlay(false, true);
+        this.openCloseDrawer(false, true);
     }
 
     this.fadeDrawerOverlay = function(fadeIn, animated) {
@@ -315,7 +310,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     // ドロワー関連
     this.initDrawer = function() {
         drawer = document.getElementById('drawer');
-        _this.openCloseDrawer(false, false);
+        this.openCloseDrawer(false, false);
 
         drawer.addEventListener('touchstart',function(event){
             // これをすると子要素のクリックイベントが発火しなくなる。
@@ -332,14 +327,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
             // console.log('Drawer touch move! x: ' + drawerSwipeMoveX);
         }, false);
 
-        drawer.addEventListener('touchend', function(event){
+        drawer.addEventListener('touchend', (function(event){
 
             // console.log('Drawer swipe end! x: ' + drawerSwipeMoveX);
             if ((drawerSwipeMoveX + 50) < drawerSwipeStartX) {
-                _this.openCloseDrawer(false, true);
-                _this.fadeDrawerOverlay(false,true);
+                this.openCloseDrawer(false, true);
+                this.fadeDrawerOverlay(false,true);
             }
-        }, false);
+        }).bind(this), false);
     }
 
     this.openCloseDrawer = function(open, animated) {
@@ -386,15 +381,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
 
     this.onDrawerLogoClick = function() {
             // console.log('Drawer logo button clicked!');
-            _this.openCloseDrawer(false, true);
-            _this.fadeDrawerOverlay(false, true);
+            this.openCloseDrawer(false, true);
+            this.fadeDrawerOverlay(false, true);
     }
 
     this.refreshDrawerLogoButton = function() {
         if (this.isWideScreen()) {
             drawerLogoButton.removeEventListener('click', this.onDrawerLogoClick);
         } else {
-            drawerLogoButton.addEventListener('click', this.onDrawerLogoClick);
+            drawerLogoButton.addEventListener('click', this.onDrawerLogoClick.bind(this));
         }
     }
 
