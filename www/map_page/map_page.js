@@ -27,7 +27,7 @@
 
 "use strict"
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     var adFrame,
         appFrame,
@@ -48,41 +48,30 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom';
-
-    this.initialize = function() {
-
-        // console.log('MapPage.initialize called!');
     
-        appFrame = document.getElementById('app_frame');
-    
-        document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
-    
-        window.addEventListener('resize', this.onResizeScreen.bind(this));
-    }
-    
-    this.onDeviceReady = function() {
+    var onDeviceReady = function() {
         // console.log('onDeviceReady called!');
     
-        this.initAdFrame();
-        this.refreshAdFrame();
+        initAdFrame();
+        refreshAdFrame();
 
-        this.refreshAppFrame();
-        this.initGoogleMap();
-        this.refreshMapDiv();
+        refreshAppFrame();
+        initGoogleMap();
+        refreshMapDiv();
 
-        this.initLogoButton();
-        this.refreshLogoButton(false);
+        initLogoButton();
+        refreshLogoButton(false);
 
-        this.initDrawerOverlay();
-        this.refreshDrawerOverlay();
-        this.initDrawer();
-        this.refreshDrawer();
+        initDrawerOverlay();
+        refreshDrawerOverlay();
+        initDrawer();
+        refreshDrawer();
 
-        this.initDrawerLogoButton();
+        initDrawerLogoButton();
 
     }
     
-    this.onResizeScreen = function() {
+    var onResizeScreen = function() {
         // console.log('onResiseScreen called!');
         cordova.fireDocumentEvent('plugin_touch', {});
     
@@ -92,24 +81,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
                 clearTimeout(resizeTimer);
             }
 
-            var resizeTimer = setTimeout(this.refreshScreenElements.bind(this), 200);
+            var resizeTimer = setTimeout(refreshScreenElements, 200);
 
         } else {
-            this.refreshScreenElements();
+            refreshScreenElements();
         }
     }
     
-    this.refreshScreenElements = function() {
-        this.refreshAppFrame();
-        this.refreshAdFrame();
-        this.refreshMapDiv();
-        this.refreshDrawer();
-        this.refreshDrawerOverlay();
-        this.refreshLogoButton(true);
-        this.refreshDrawerLogoButton();
+    var refreshScreenElements = function() {
+        refreshAppFrame();
+        refreshAdFrame();
+        refreshMapDiv();
+        refreshDrawer();
+        refreshDrawerOverlay();
+        refreshLogoButton(true);
+        refreshDrawerLogoButton();
     }
 
-    this.refreshAppFrame = function() {
+    var refreshAppFrame = function() {
         // console.log('window.innerHeight: ' + window.innerHeight);
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
         
@@ -117,11 +106,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         
     }
     
-    this.initGoogleMap = function() {
+    var initGoogleMap = function() {
     
         mapDiv = document.getElementById('map_div');
 
-        var position = this.loadCameraPosition();
+        var position = loadCameraPosition();
 
         var options = {
             'mapType': plugin.google.maps.MapTypeId.HYBRID,
@@ -156,7 +145,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     
         map = plugin.google.maps.Map.getMap(mapDiv, options);
         
-        map.on(plugin.google.maps.event.CAMERA_MOVE_END, this.saveCameraPosition);
+        map.on(plugin.google.maps.event.CAMERA_MOVE_END, saveCameraPosition);
 
         map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
             console.log('Map long clicked: ' + latLng.toUrlValue());
@@ -168,12 +157,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
 
     }
 
-    this.refreshMapDiv = function() {
+    var refreshMapDiv = function() {
 
         // console.log('refreshMapDiv called!');
-        // console.log('isWideScreen: ' + this.isWideScreen());
+        // console.log('isWideScreen: ' + isWideScreen());
 
-        if (this.isWideScreen()) {
+        if (isWideScreen()) {
             mapDiv.style.left = DRAWER_WIDTH + 'px';
             mapDiv.style.width = (window.innerWidth - DRAWER_WIDTH) + 'px';
 
@@ -185,7 +174,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         }
     }
     
-    this.saveCameraPosition = function () {
+    var saveCameraPosition = function () {
         var position = map.getCameraPosition();
         var storage = window.localStorage;
         storage.setItem(LATITUDE, position.target.lat);
@@ -193,7 +182,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         storage.setItem(CAMERA_ZOOM, position.zoom);
     };
 
-    this.loadCameraPosition = function () {
+    var loadCameraPosition = function () {
         var storage = window.localStorage;
         var lat = storage.getItem(LATITUDE);
         if (!lat) {
@@ -216,20 +205,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         };
     };
 
-    this.initLogoButton = function () {
+    var initLogoButton = function () {
         // console.log('initLogoButton called!')
         logoButton = document.getElementById('logo_button');
-        logoButton.addEventListener('click', this.onClickLogoButton.bind(this));
+        logoButton.addEventListener('click', onClickLogoButton);
     };
 
-    this.onClickLogoButton = function() {
+    var onClickLogoButton = function() {
         // console.log('Logo button clicked!');
-        this.fadeDrawerOverlay(true, true);
-        this.openCloseDrawer(true, true);
+        fadeDrawerOverlay(true, true);
+        openCloseDrawer(true, true);
     }
 
-    this.refreshLogoButton = function(animated) {
-        if (this.isWideScreen()) {
+    var refreshLogoButton = function(animated) {
+        if (isWideScreen()) {
             if (animated) {
                 $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
                     logoButton.style.width = 0;
@@ -248,38 +237,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
         }
     }
 
-    this.initAdFrame = function() {
+    var initAdFrame = function() {
         adFrame = document.getElementById('ad_frame');
     }
 
-    this.refreshAdFrame = function() {
+    var refreshAdFrame = function() {
         adFrame.style.top = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
     }
 
     // ドロワーオーバレイ関連
-    this.initDrawerOverlay = function() {
+    var initDrawerOverlay = function() {
         drawerOverlay = document.getElementById('drawer_overlay');   
-        this.fadeDrawerOverlay(false, false);
+        fadeDrawerOverlay(false, false);
     }
 
-    this.refreshDrawerOverlay = function() {
-        if (this.isWideScreen()) {
-            drawerOverlay.removeEventListener('click', this.onClickDrawerOverlay);
+    var refreshDrawerOverlay = function() {
+        if (isWideScreen()) {
+            drawerOverlay.removeEventListener('click', onClickDrawerOverlay);
         } else {
-            drawerOverlay.addEventListener('click', this.onClickDrawerOverlay.bind(this));  
+            drawerOverlay.addEventListener('click', onClickDrawerOverlay);  
         }
 
         if (isDrawerOverlayShowing) {
-            this.fadeDrawerOverlay(false, true);
+            fadeDrawerOverlay(false, true);
         } 
     }
 
-    this.onClickDrawerOverlay = function() {
-        this.fadeDrawerOverlay(false, true);
-        this.openCloseDrawer(false, true);
+    var onClickDrawerOverlay = function() {
+        fadeDrawerOverlay(false, true);
+        openCloseDrawer(false, true);
     }
 
-    this.fadeDrawerOverlay = function(fadeIn, animated) {
+    var fadeDrawerOverlay = function(fadeIn, animated) {
 
         // console.log('fadeDrawerOverlay called! fadeIn: ' + fadeIn + ', animated: ' + animated);
 
@@ -308,9 +297,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     } 
 
     // ドロワー関連
-    this.initDrawer = function() {
+    var initDrawer = function() {
         drawer = document.getElementById('drawer');
-        this.openCloseDrawer(false, false);
+        openCloseDrawer(false, false);
 
         drawer.addEventListener('touchstart',function(event){
             // これをすると子要素のクリックイベントが発火しなくなる。
@@ -331,15 +320,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
 
             // console.log('Drawer swipe end! x: ' + drawerSwipeMoveX);
             if ((drawerSwipeMoveX + 50) < drawerSwipeStartX) {
-                this.openCloseDrawer(false, true);
-                this.fadeDrawerOverlay(false,true);
+                openCloseDrawer(false, true);
+                fadeDrawerOverlay(false,true);
             }
         }).bind(this), false);
     }
 
-    this.openCloseDrawer = function(open, animated) {
+    var openCloseDrawer = function(open, animated) {
 
-        if (this.isWideScreen()) {
+        if (isWideScreen()) {
             return;
         }
 
@@ -360,9 +349,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
 
     }
 
-    this.refreshDrawer = function() {
+    var refreshDrawer = function() {
         
-        if (this.isWideScreen()) {
+        if (isWideScreen()) {
             drawer.style.left = 0;
         } else {
             drawer.style.left = '-' + DRAWER_WIDTH + 'px';
@@ -370,34 +359,44 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
     }
 
     // ドロワー上のロゴボタン
-    this.initDrawerLogoButton = function() {
+    var initDrawerLogoButton = function() {
 
         // console.log('initDrawerLogoButton called!')
 
         drawerLogoButton = document.getElementById('drawer_logo_button');
-        this.refreshDrawerLogoButton();
+        refreshDrawerLogoButton();
         
     }
 
-    this.onDrawerLogoClick = function() {
+    var onDrawerLogoClick = function() {
             // console.log('Drawer logo button clicked!');
-            this.openCloseDrawer(false, true);
-            this.fadeDrawerOverlay(false, true);
+            openCloseDrawer(false, true);
+            fadeDrawerOverlay(false, true);
     }
 
-    this.refreshDrawerLogoButton = function() {
-        if (this.isWideScreen()) {
-            drawerLogoButton.removeEventListener('click', this.onDrawerLogoClick);
+    var refreshDrawerLogoButton = function() {
+        if (isWideScreen()) {
+            drawerLogoButton.removeEventListener('click', onDrawerLogoClick);
         } else {
-            drawerLogoButton.addEventListener('click', this.onDrawerLogoClick.bind(this));
+            drawerLogoButton.addEventListener('click', onDrawerLogoClick);
         }
     }
 
-    this.isWideScreen = function() {
+    var isWideScreen = function() {
         return window.innerWidth > WIDTH_BREAK_POINT;
     }
 
+    return {
+        initialize: function() {
 
-}
+            // console.log('MapPage.initialize called!');
+        
+            appFrame = document.getElementById('app_frame');
+            document.addEventListener('deviceready', onDeviceReady, false);
+            window.addEventListener('resize', onResizeScreen);
+        }
+    }
 
-new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage().initialize();
+})();
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage.initialize();
