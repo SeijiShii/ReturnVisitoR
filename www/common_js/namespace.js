@@ -21,3 +21,5 @@ RETURNVISITOR_APP.namespace = function(ns_string){
 
   return parent;
 };
+
+RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 

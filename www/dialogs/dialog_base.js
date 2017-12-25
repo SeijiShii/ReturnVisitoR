@@ -1,7 +1,6 @@
 "use strict"
 
-var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
-returnvisitor.DialogBase = function(parent) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
 
     // console.log('DialogBase called!');
 

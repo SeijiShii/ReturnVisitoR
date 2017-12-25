@@ -26,8 +26,8 @@
 // 171222 DONE 幅広画面の時、ドロワーのメニューが常時表示されるようにする。
 
 "use strict"
-var returnvisitor = RETURNVISITOR_APP.namespace('work.c_kogyo.returnvisitor'); 
-returnvisitor.MapPage = function() {
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage = function() {
 
     var _this = this,
         adFrame,
@@ -56,9 +56,9 @@ returnvisitor.MapPage = function() {
     
         appFrame = document.getElementById('app_frame');
     
-        document.addEventListener('deviceready', _this.onDeviceReady, false);
+        document.addEventListener('deviceready', this.onDeviceReady, false);
     
-        window.addEventListener('resize', _this.onResizeScreen);
+        window.addEventListener('resize', this.onResizeScreen);
     }
     
     this.onDeviceReady = function() {
@@ -115,7 +115,7 @@ returnvisitor.MapPage = function() {
     this.refreshAppFrame = function() {
         // console.log('window.innerHeight: ' + window.innerHeight);
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
-      
+        
         // console.log('appFrame.style.height: ' + appFrame.style.height);
         
     }
@@ -170,7 +170,7 @@ returnvisitor.MapPage = function() {
             console.log('Map long clicked: ' + latLng.toUrlValue());
 
             // console.dir(JSON.stringify(RETURNVISITOR_APP.work.c_kogyo.returnvisitor));
-            var dialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase(appFrame);
+            var dialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(appFrame);
             dialog.fade(true);
         });
 
@@ -385,9 +385,9 @@ returnvisitor.MapPage = function() {
     }
 
     this.onDrawerLogoClick = function() {
-         // console.log('Drawer logo button clicked!');
-         _this.openCloseDrawer(false, true);
-         _this.fadeDrawerOverlay(false, true);
+            // console.log('Drawer logo button clicked!');
+            _this.openCloseDrawer(false, true);
+            _this.fadeDrawerOverlay(false, true);
     }
 
     this.refreshDrawerLogoButton = function() {
@@ -405,4 +405,4 @@ returnvisitor.MapPage = function() {
 
 }
 
-new returnvisitor.MapPage().initialize();
+new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapPage().initialize();
