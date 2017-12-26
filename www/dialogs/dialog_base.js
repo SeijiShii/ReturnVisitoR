@@ -1,6 +1,6 @@
 "use strict"
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, givenSize) {
 
     // console.log('DialogBase called!');
 
@@ -8,7 +8,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
-        FADE_DURATION = 300;
+        FADE_DURATION = 300,
+        DEFAULT_WIDTH = 200,
+        DEFAULT_HEIGHT = 300,
+        givenWidth,
+        givenHeight;
+    
+    if (givenSize) {
+        if (givenSize.width) {
+            givenWidth = givenSize.width;
+        } else {
+            givenWidth = DEFAULT_WIDTH;
+        }
+
+        if (givenSize.height) {
+            givenHeight = givenSize.height;
+        } else {
+            givenHeight = DEFAULT_HEIGHT;
+        }
+    } else {
+        givenWidth = DEFAULT_WIDTH;
+        givenHeight = DEFAULT_HEIGHT;
+    }
     
     function initDialogBaseFrame () {
         dialogBaseFrame = document.createElement('div');
@@ -34,6 +55,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
         dialogFrame = document.createElement('div');
         dialogFrame.id = 'dialog_frame';
 
+        dialogFrame.style.width = givenWidth + 'px';
+        dialogFrame.style.height = givenHeight + 'px';
+
         dialogBaseFrame.appendChild(dialogFrame);
     }
 
@@ -47,6 +71,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent) {
                 dialogBaseFrame.style.width = 0;
                 dialogBaseFrame.style.height =0;
             });
+        }
+    }
+
+    this.refreshDialogSize = function() {
+        
+        console.log('window.innerHeight: ' + window.innerHeight);
+        console.log('_parent.clientHeight: ' + _parent.clientHeight);
+
+        if (givenWidth > _parent.clientWidth * 0.9 ) {
+            dialogFrame.style.width = (_parent.clientWidth * 0.9) + 'px';
+        } else {
+            dialogFrame.style.width = givenWidth
+        }
+
+        if (givenHeight > _parent.clientHeight * 0.9 ) {
+            dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
+        } else {
+            dialogFrame.style.height = givenHeight;
         }
     }
 

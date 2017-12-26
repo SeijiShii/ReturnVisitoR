@@ -47,7 +47,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         LOGO_BUTTON_SIZE = '40px',
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
-        CAMERA_ZOOM = 'camera_zoom';
+        CAMERA_ZOOM = 'camera_zoom',
+        mapLongClickDialog;
     
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -102,6 +103,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         refreshDrawerOverlay();
         refreshLogoButton(true);
         refreshDrawerLogoButton();
+
+        if (mapLongClickDialog) {
+            mapLongClickDialog.refreshDialogSize();
+        }
     }
 
     function refreshAppFrame() {
@@ -157,8 +162,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             console.log('Map long clicked: ' + latLng.toUrlValue());
 
             // console.dir(JSON.stringify(RETURNVISITOR_APP.work.c_kogyo.returnvisitor));
-            var dialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(appFrame);
-            dialog.fade(true);
+            mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv);
+            mapLongClickDialog.fade(true);
         });
 
     }
