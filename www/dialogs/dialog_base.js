@@ -12,7 +12,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, given
         DEFAULT_WIDTH = 200,
         DEFAULT_HEIGHT = 300,
         givenWidth,
-        givenHeight;
+        givenHeight,
+        fadeOutCallback;
     
     if (givenSize) {
         if (givenSize.width) {
@@ -44,11 +45,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, given
 
         dialogBaseFrame.appendChild(dialogOverlay);
 
-        dialogOverlay.addEventListener('click', fadeOut.bind(this));
-    }
-
-    function fadeOut() {
-        this.fade(false);
+        dialogOverlay.addEventListener('click', this.fadeOut.bind(this));
     }
 
     function initDialogFrame() {
@@ -61,17 +58,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, given
         dialogBaseFrame.appendChild(dialogFrame);
     }
 
-    this.fade = function(fadeIn, callback) {
-        if (fadeIn) {
-            dialogBaseFrame.style.width = '100%';
-            dialogBaseFrame.style.height = '100%';
-            $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
-        } else {
-            $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
-                _parent.removeChild(dialogBaseFrame)
-            });
-        }
-        callback;
+    this.fadeIn = function() {
+        dialogBaseFrame.style.width = '100%';
+        dialogBaseFrame.style.height = '100%';
+        $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
+    }
+
+    this.setFadeOutCallback = function(callback) {
+        fadeOutCallback = callback;
+    }
+
+    this.fadeOut = function() {
+        $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
+            _parent.removeChild(dialogBaseFrame)
+            if (fadeOutCallback) {
+                fadeOutCallback.call();
+            }
+        });
     }
 
     this.refreshDialogSize = function() {

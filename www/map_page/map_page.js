@@ -33,6 +33,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         appFrame,
         mapDiv,
         map,
+        tmpMarker,
         logoButton,
         drawerOverlay,
         isDrawerOverlayShowing = false,
@@ -168,10 +169,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
                 },
                 duration: 500
             });
+
+            map.addMarker({
+                position: {
+                    lat: latLng.lat,
+                    lng: latLng.lng
+                },
+                icon: {
+                    url: "../img/pin_marker/m/pin_marker_gray.png",
+                    size: {
+                        width: 25,
+                        height: 35
+                    }
+                }
+
+            }, function(marker){
+                tmpMarker = marker;
+            });
             mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv);
-            mapLongClickDialog.fade(true, function(){
+            mapLongClickDialog.setFadeOutCallback(function(){
+                tmpMarker.remove();
                 mapLongClickDialog = null;
             });
+            mapLongClickDialog.fadeIn();
         });
 
     }
