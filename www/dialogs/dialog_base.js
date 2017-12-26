@@ -61,17 +61,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, given
         dialogBaseFrame.appendChild(dialogFrame);
     }
 
-    this.fade = function(fadeIn) {
+    this.fade = function(fadeIn, callback) {
         if (fadeIn) {
             dialogBaseFrame.style.width = '100%';
             dialogBaseFrame.style.height = '100%';
             $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
         } else {
             $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
-                dialogBaseFrame.style.width = 0;
-                dialogBaseFrame.style.height =0;
+                _parent.removeChild(dialogBaseFrame)
             });
         }
+        callback;
     }
 
     this.refreshDialogSize = function() {

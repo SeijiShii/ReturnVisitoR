@@ -163,7 +163,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
             // console.dir(JSON.stringify(RETURNVISITOR_APP.work.c_kogyo.returnvisitor));
             mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv);
-            mapLongClickDialog.fade(true);
+            mapLongClickDialog.fade(true, function(){
+                mapLongClickDialog = null;
+            });
         });
 
     }
