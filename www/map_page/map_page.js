@@ -159,9 +159,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         map.on(plugin.google.maps.event.CAMERA_MOVE_END, saveCameraPosition);
 
         map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
-            console.log('Map long clicked: ' + latLng.toUrlValue());
 
-            // console.dir(JSON.stringify(RETURNVISITOR_APP.work.c_kogyo.returnvisitor));
+            // console.log('Map long clicked: ' + latLng.toUrlValue());
+            map.animateCamera({
+                target: {
+                    lat: latLng.lat,
+                    lng: latLng.lng
+                },
+                duration: 500
+            });
             mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv);
             mapLongClickDialog.fade(true, function(){
                 mapLongClickDialog = null;
