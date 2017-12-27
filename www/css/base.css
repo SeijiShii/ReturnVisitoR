@@ -21,3 +21,24 @@ body {
     width: 100%;
 }
 
+.button {
+    width: 180px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 15px;
+    color: #34873b;
+    text-align: center;
+    vertical-align: middle;
+    left: 0;
+    margin: 5px auto;
+
+}
+
+.button:active {
+    opacity: 0.3;
+}
+
+.cancel_button {
+    color: darkorange;
+}
+
