@@ -18,7 +18,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         DEFAULT_HEIGHT = 300,
         givenWidth,
         givenHeight,
-        fadeOutCallback;
+        fadeOutCallback,
+        loadHtmlCallback;
     
     if (givenSize) {
         if (givenSize.width) {
@@ -64,7 +65,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
 
         for (var i = 0 ; i < loadFiles.length ; i++ ) {
             if (loadFiles[i].match(/\.html$/)) {
-                $(dialogFrame).load(loadFiles[i]);
+                $(dialogFrame).load(loadFiles[i], function(){
+                    
+                    if (typeof loadHtmlCallback === 'function') {
+                        loadHtmlCallback();
+                    }
+                });
             }
         }
     }
@@ -104,6 +110,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         } else {
             dialogFrame.style.height = givenHeight;
         }
+    }
+
+    this.setLoadHtmlCallback = function(callback) {
+        loadHtmlCallback = callback;
     }
 
     initDialogBaseFrame();
