@@ -1,7 +1,7 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent, pathToJSFileFolder) {
 
-    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this, parent);
+    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this, parent, ['../dialogs/map_long_click_dialog/map_long_click_dialog.html']);
 
 }
 

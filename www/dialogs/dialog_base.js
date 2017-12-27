@@ -1,7 +1,12 @@
 "use strict"
-
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, givenSize) {
-
+/**
+ * ダイアログのベースとなるクラスオブジェクト。プロトタイプ継承してからダイアログとして用いる。そのまま用いることはない。
+ * @param {HtmlElement} parent ダイアログをapendChildする親エレメント。
+ * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
+ * @param {Object} givenSize 省略可能。
+ */
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadFiles, givenSize) {
+    
     // console.log('DialogBase called!');
 
     var _parent = parent,
@@ -56,6 +61,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, given
         dialogFrame.style.height = givenHeight + 'px';
 
         dialogBaseFrame.appendChild(dialogFrame);
+
+        for (var i = 0 ; i < loadFiles.length ; i++ ) {
+            if (loadFiles[i].match(/\.html$/)) {
+                $(dialogFrame).load(loadFiles[i]);
+            }
+        }
     }
 
     this.fadeIn = function() {
