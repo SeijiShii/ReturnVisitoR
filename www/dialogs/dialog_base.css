@@ -27,5 +27,10 @@
     border-width: 1px;
     background-color: rgba(245, 245, 245, 0.7);
     margin: auto;
+    overflow: auto;
+}
+
+#dialog_frame::-webkit-scrollbar{
+    display: none;
 }
 
