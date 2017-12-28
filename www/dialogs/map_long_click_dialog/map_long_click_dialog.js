@@ -10,8 +10,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
         ['../dialogs/map_long_click_dialog/map_long_click_dialog.html'], 
         {
             width: 200, 
-            height: 225
+            height: 270
         });
+
+    function initNewPlaceButton() {
+
+    }
 
     function initCancelButton() {
         cancelButton = document.getElementById('cancel_button');
@@ -31,6 +35,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
     }
 
     this.setLoadHtmlCallback(function() {
+        initNewPlaceButton();
         initCancelButton();
     });
 }

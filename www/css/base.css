@@ -26,12 +26,21 @@ body {
     height: 50px;
     line-height: 50px;
     font-size: 15px;
-    color: #34873b;
+    color: #1b441e;
     text-align: center;
     vertical-align: middle;
     left: 0;
     margin: 5px auto;
 
+}
+
+h2.dialog_title {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: #222;
+    margin: 5px auto;
 }
 
 .button:active {
