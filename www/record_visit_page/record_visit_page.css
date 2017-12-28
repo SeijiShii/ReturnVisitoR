@@ -4,3 +4,10 @@
     left: 5px;
 }
 
+.primary_pane {
+    background-color: red;
+}
+
+.secondary_pane {
+    background-color: blue;
+}
