@@ -25,7 +25,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
         var lng = _latLng.lng;
         var path = "../record_visit_page/record_visit_page.html?lat=" + lat + "&lng=" + lng;
         console.log('path: ', path); 
-        // window.location.href = path;
+        window.location.href = path;
     }
 
     function initCancelButton() {
