@@ -106,7 +106,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         refreshDrawerLogoButton();
 
         if (mapLongClickDialog) {
-            mapLongClickDialog.refreshDialogSize();
+            mapLongClickDialog.refreshDialogHeight();
         }
     }
 

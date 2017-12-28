@@ -10,10 +10,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this, 
         parent, 
         ['../dialogs/map_long_click_dialog/map_long_click_dialog.html'], 
-        {
-            width: 200, 
-            height: 270
-        });
+        270);
 
     function initNewPlaceButton() {
         newPlaceButton = document.getElementById('new_place_button');

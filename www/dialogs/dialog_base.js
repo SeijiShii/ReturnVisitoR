@@ -5,7 +5,7 @@
  * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
  * @param {Object} givenSize 省略可能。
  */
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadFiles, givenSize) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadFiles, givenHeight) {
     
     // console.log('DialogBase called!');
 
@@ -14,28 +14,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         dialogOverlay,
         dialogFrame,
         FADE_DURATION = 300,
-        DEFAULT_WIDTH = 200,
         DEFAULT_HEIGHT = 300,
-        givenWidth,
-        givenHeight,
+        _givenHeight,
         fadeOutCallback,
         loadHtmlCallback;
     
-    if (givenSize) {
-        if (givenSize.width) {
-            givenWidth = givenSize.width;
-        } else {
-            givenWidth = DEFAULT_WIDTH;
-        }
-
-        if (givenSize.height) {
-            givenHeight = givenSize.height;
-        } else {
-            givenHeight = DEFAULT_HEIGHT;
-        }
+    if (givenHeight) {
+        _givenHeight = givenHeight;
     } else {
-        givenWidth = DEFAULT_WIDTH;
-        givenHeight = DEFAULT_HEIGHT;
+        _givenHeight = DEFAULT_HEIGHT;
     }
     
     function initDialogBaseFrame () {
@@ -58,7 +45,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         dialogFrame = document.createElement('div');
         dialogFrame.id = 'dialog_frame';
 
-        dialogFrame.style.width = givenWidth + 'px';
         dialogFrame.style.height = givenHeight + 'px';
 
         dialogBaseFrame.appendChild(dialogFrame);
@@ -94,16 +80,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         });
     }
 
-    this.refreshDialogSize = function() {
+    this.refreshDialogHeight = function() {
         
-        // console.log('givenHeight:', givenHeight)
-
-        if (givenWidth > _parent.clientWidth * 0.9 ) {
-            dialogFrame.style.width = (_parent.clientWidth * 0.9) + 'px';
-        } else {
-            dialogFrame.style.width = givenWidth + 'px';
-        }
-
         // console.log('givenHeight > _parent.clientHeight * 0.9: ', givenHeight > _parent.clientHeight * 0.9)
         if (givenHeight > _parent.clientHeight * 0.9 ) {
             dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
