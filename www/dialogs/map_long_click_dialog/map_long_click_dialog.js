@@ -1,7 +1,8 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent, latLng) {
 
     var _this = this, // コールバックがからまって訳わからなくなったのでthisをキャッシュすることにした。
+        _latLng = latLng,
         newPlaceButton,
         cancelButton,
         cancelButtonCallback;
@@ -20,7 +21,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
     }
 
     function onClickNewPlace() {
-        window.location.href = '../record_visit_page/record_visit_page.html';
+        var lat = _latLng.lat;
+        var lng = _latLng.lng;
+        var path = "../record_visit_page/record_visit_page.html?lat=" + lat + "&lng=" + lng;
+        console.log('path: ', path); 
+        // window.location.href = path;
     }
 
     function initCancelButton() {

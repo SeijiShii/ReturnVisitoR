@@ -186,7 +186,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             }, function(marker){
                 tmpMarker = marker;
             });
-            mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv)
+            mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv, latLng);
             mapLongClickDialog.setFadeOutCallback(function(){
                 tmpMarker.remove();
                 mapLongClickDialog = null;
