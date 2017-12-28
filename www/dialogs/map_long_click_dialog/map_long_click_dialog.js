@@ -2,6 +2,7 @@
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent) {
 
     var _this = this, // コールバックがからまって訳わからなくなったのでthisをキャッシュすることにした。
+        newPlaceButton,
         cancelButton,
         cancelButtonCallback;
 
@@ -14,7 +15,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
         });
 
     function initNewPlaceButton() {
+        newPlaceButton = document.getElementById('new_place_button');
+        newPlaceButton.addEventListener('click', onClickNewPlace);
+    }
 
+    function onClickNewPlace() {
+        window.location.href = '../record_visit_page/record_visit_page.html';
     }
 
     function initCancelButton() {
