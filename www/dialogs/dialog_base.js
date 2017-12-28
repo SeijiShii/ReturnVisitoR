@@ -96,9 +96,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
 
     this.refreshDialogSize = function() {
         
-        // console.log('window.innerHeight: ' + window.innerHeight);
-        // console.log('_parent.clientHeight: ' + _parent.clientHeight);
-        console.log('givenHeight:', givenHeight)
+        // console.log('givenHeight:', givenHeight)
 
         if (givenWidth > _parent.clientWidth * 0.9 ) {
             dialogFrame.style.width = (_parent.clientWidth * 0.9) + 'px';
@@ -106,13 +104,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
             dialogFrame.style.width = givenWidth + 'px';
         }
 
-        console.log('givenHeight > _parent.clientHeight * 0.9: ', givenHeight > _parent.clientHeight * 0.9)
+        // console.log('givenHeight > _parent.clientHeight * 0.9: ', givenHeight > _parent.clientHeight * 0.9)
         if (givenHeight > _parent.clientHeight * 0.9 ) {
             dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
-            console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
+            // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         } else {
             dialogFrame.style.height = givenHeight + 'px';
-            console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
+            // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         }
     }
 
