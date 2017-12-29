@@ -1,16 +1,17 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(){
-    this.latLng;
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng){
+    
+    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this, 'place');
 
-    new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject();
+    this.latLng = latLng;
 }
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype,{
-    constructor: {
-        configurable: true,
-        enumerable: true,
-        value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
-        writable: true
-    }
-})
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype,{
+//     constructor: {
+//         configurable: true,
+//         enumerable: true,
+//         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
+//         writable: true
+//     }
+// })
