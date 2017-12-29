@@ -145,6 +145,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         latLng.lat = pairs[0].split('=')[1];
         latLng.lng = pairs[1].split('=')[1];
 
+        var place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place()
+        console.log(place.id);
+
         // console.log('lat: ' + latLng.lat + ', lng: ' + latLng.lng);
 
     }
