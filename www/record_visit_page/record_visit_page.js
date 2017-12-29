@@ -31,13 +31,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     var adFrame,
         appFrame,
-        latLngText,
         logoButton,
+        addressText,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
-        DRAWER_WIDTH = 240,
-        DRAWER_DURATION = 300,
-        LOGO_BUTTON_SIZE = '40px';
+        LOGO_BUTTON_SIZE = '40px',
+        latLng;
     
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -53,6 +52,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         initAppFrame();
         refreshAppFrame();
+
+        initAddressText();
+        requestReverseGeocoding();
 
         // initLogoButton();
         // refreshLogoButton(false);
@@ -135,9 +137,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function initLatLngData() {
-        latLngText = document.getElementById('lat_lng_text');
 
-        var latLng = {};
+        latLng = {};
         var pairs = location.search.substring(1).split('&');
 
         latLng.lat = pairs[0].split('=')[1];
@@ -145,6 +146,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         console.log('lat: ' + latLng.lat + ', lng: ' + latLng.lng);
 
+    }
+
+    function initAddressText() {
+        addressText = document.getElementById('address_text');
+    }
+
+    function requestReverseGeocoding() {
+        // Latitude, longitude -> address
+        plugin.google.maps.Geocoder.geocode({
+            "position": latLng
+          }, function(results) {
+  
+            if (results.length === 0) {
+              // Not found
+              return;
+            }
+  
+            console.dir(results);
+
+            var address = results[0].extra.lines[0];
+            if (!address) {
+                [
+                results[0].subThoroughfare || "",
+                results[0].thoroughfare || "",
+                results[0].locality || "",
+                results[0].adminArea || "",
+                results[0].postalCode || "",
+                results[0].country || ""].join(", ");
+            }
+
+            addressText.value = address;
+          });
     }
 
     document.addEventListener('deviceready', onDeviceReady, false);
