@@ -37,7 +37,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
         latLng;
-    
+
+        
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
     }
@@ -144,7 +145,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         latLng.lat = pairs[0].split('=')[1];
         latLng.lng = pairs[1].split('=')[1];
 
-        console.log('lat: ' + latLng.lat + ', lng: ' + latLng.lng);
+        // console.log('lat: ' + latLng.lat + ', lng: ' + latLng.lng);
 
     }
 
@@ -163,7 +164,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
               return;
             }
   
-            console.dir(results);
+            // console.dir(results);
 
             var address = results[0].extra.lines[0];
             if (!address) {
@@ -179,6 +180,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             addressText.value = address;
           });
     }
+
+    var dataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/data_object.js');
+    document.getElementsByTagName('head')[0].appendChild(dataObject);
+
+    var placeOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/place.js');
+    document.getElementsByTagName('head')[0].appendChild(placeOject);
 
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);
