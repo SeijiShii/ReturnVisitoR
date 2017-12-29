@@ -7,11 +7,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng){
     this.latLng = latLng;
 }
 
-// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype,{
-//     constructor: {
-//         configurable: true,
-//         enumerable: true,
-//         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
-//         writable: true
-//     }
-// })
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject('place')
+
+// プロトタイプにいろいろプロパティを付け加えたいときはこの文法でまとめてできるらしいけどコンストラクタだけならいらないかな
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
+    constructor: {
+        configurable: true,
+        enumerable: true,
+        value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
+        writable: true
+    }
+})
