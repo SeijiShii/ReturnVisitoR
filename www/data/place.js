@@ -1,9 +1,9 @@
+RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 
-
-RETURNVISITOR_APP.work.c_kogyo.returnvitior.data.Place = function(){
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(){
     this.latLng;
 
-    new RETURNVISITOR_APP.work.c_kogyo.returnvitior.data.DataObject();
+    new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject();
 }
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype,{
