@@ -34,3 +34,11 @@ h1.page_title {
     right: 0;
     margin: 5px auto;
 }
+
+.text_area {
+    display: block;
+    width: 90%;
+    left: 0;
+    right: 0;
+    margin: 5px auto;
+}
