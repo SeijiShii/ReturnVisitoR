@@ -215,6 +215,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickAddPersonButton() {
 
+        var personDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog(appFrame);
+        personDialog.fadeIn();
+
     }
 
     var dataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/data_object.js');
