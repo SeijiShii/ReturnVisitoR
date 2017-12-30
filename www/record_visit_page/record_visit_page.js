@@ -104,7 +104,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         refreshAppFrame();
         refreshAdFrame();
-        refreshLogoButton(true);
+        // refreshLogoButton(true);
 
     }
 
@@ -126,25 +126,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
 
-    function refreshLogoButton(animated) {
-        if (isWideScreen()) {
-            if (animated) {
-                $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
-                    logoButton.style.width = 0;
-                });   
-            } else {
-                logoButton.style.opacity = 0;
-                logoButton.style.width = 0;
-            }
-        } else {
-            logoButton.style.width = LOGO_BUTTON_SIZE;
-            if (animated) {
-                $(logoButton).fadeTo(DRAWER_DURATION, 1);
-            } else {
-                logoButton.style.opacity = 1;
-            }
-        }
-    }
+    // function refreshLogoButton(animated) {
+    //     if (isWideScreen()) {
+    //         if (animated) {
+    //             $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
+    //                 logoButton.style.width = 0;
+    //             });   
+    //         } else {
+    //             logoButton.style.opacity = 0;
+    //             logoButton.style.width = 0;
+    //         }
+    //     } else {
+    //         logoButton.style.width = LOGO_BUTTON_SIZE;
+    //         if (animated) {
+    //             $(logoButton).fadeTo(DRAWER_DURATION, 1);
+    //         } else {
+    //             logoButton.style.opacity = 1;
+    //         }
+    //     }
+    // }
 
     function initAdFrame() {
         adFrame = document.getElementById('ad_frame');
@@ -197,7 +197,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             addressText.value = address;
             place.address = address;
 
-            console.log('place.id:', place.id )
+            // console.log('place.id:', place.id)
+            // console.log('address:', place.address);
           });
     }
 
