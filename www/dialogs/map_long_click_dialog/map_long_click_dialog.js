@@ -20,9 +20,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
     function onClickNewPlace() {
         var lat = _latLng.lat;
         var lng = _latLng.lng;
-        var path = "../record_visit_page/record_visit_page.html?lat=" + lat + "&lng=" + lng;
+        var path = "../record_visit_page/record_visit_page.html?method=RECORD_NEW_PLACE&" + getLatLngQueryString();
         console.log('path: ', path); 
         window.location.href = path;
+    }
+
+    function getLatLngQueryString() {
+        var lat = _latLng.lat;
+        var lng = _latLng.lng;
+        return  "lat=" + lat + "&lng=" + lng;
     }
 
     function initCancelButton() {
