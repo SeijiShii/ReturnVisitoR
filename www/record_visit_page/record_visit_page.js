@@ -33,6 +33,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         appFrame,
         logoButton,
         addressText,
+        nameText,
+        roomText,
+        personContainer,
+        addPersonButton,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
@@ -78,6 +82,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         initAddressText();
         requestReverseGeocoding();
+
+        initAddPersonButton();
 
         // initLogoButton();
         // refreshLogoButton(false);
@@ -200,6 +206,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             // console.log('place.id:', place.id)
             // console.log('address:', place.address);
           });
+    }
+
+    function initAddPersonButton() {
+        addPersonButton = document.getElementById('add_person_button');
+        addPersonButton.addEventListener('click', onClickAddPersonButton);
+    }
+
+    function onClickAddPersonButton() {
+
     }
 
     var dataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/data_object.js');
