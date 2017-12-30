@@ -36,8 +36,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
-        latLng;
+        args,
+        place;
 
+        function setArgs() {
+        
+            args = {};
+            var pairs = location.search.substring(1).split('&');
+    
+            for (var i = 0 ; i < pairs.length ; i++) {
+                var kv = pairs[i].split('=');
+                args[kv[0]] = kv[1]
+            }
+        }
+    
+        function initPlaceData() {
+            if (args.method === 'RECORD_NEW_PLACE') {
+                var latLng = {
+                    lat : args.lat,
+                    lng : args.lng
+                }
+                place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place(latLng)
+            }
+        }
         
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -46,7 +67,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
     
-        initLatLngData();
+        setArgs();
+        initPlaceData();
 
         initAdFrame();
         refreshAdFrame();
@@ -60,7 +82,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         // initLogoButton();
         // refreshLogoButton(false);
     }
-    
+
     function onResizeScreen() {
         // console.log('onResiseScreen called!');
         cordova.fireDocumentEvent('plugin_touch', {});
@@ -137,26 +159,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         return window.innerWidth > WIDTH_BREAK_POINT;
     }
 
-    function initLatLngData() {
 
-        latLng = {};
-        var pairs = location.search.substring(1).split('&');
-
-        latLng.lat = pairs[0].split('=')[1];
-        latLng.lng = pairs[1].split('=')[1];
-
-        // console.log('lat: ' + latLng.lat + ', lng: ' + latLng.lng);
-
-    }
 
     function initAddressText() {
         addressText = document.getElementById('address_text');
     }
 
     function requestReverseGeocoding() {
+
+        if (place.address) {
+            return;
+        }
+
         // Latitude, longitude -> address
         plugin.google.maps.Geocoder.geocode({
-            "position": latLng
+            "position": place.latLng
           }, function(results) {
   
             if (results.length === 0) {
@@ -178,6 +195,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             }
 
             addressText.value = address;
+            place.address = address;
+
+            console.log('place.id:', place.id )
           });
     }
 

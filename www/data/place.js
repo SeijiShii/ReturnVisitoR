@@ -1,12 +1,17 @@
+// category: PLACE, HOUSE, ROOM, HOUSING_COMPLEX
+
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(){
-    this.latLng;
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, category){
 
-    new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject();
+    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this);
+
+    this.latLng = latLng;
+    this.address;
+    this.category;
 }
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype,{
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {
         configurable: true,
         enumerable: true,
