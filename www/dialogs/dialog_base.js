@@ -19,7 +19,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         fadeOutCallback,
         loadHtmlCallback;
     
-    console.log('givenHeight:', givenHeight);
+    // console.log('givenHeight:', givenHeight);
 
     if (givenHeight) {
         _givenHeight = givenHeight;
@@ -27,7 +27,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         _givenHeight = DEFAULT_HEIGHT;
     }
 
-    console.log('_givenHeight:', _givenHeight);
+    // console.log('_givenHeight:', _givenHeight);
     
     function initDialogBaseFrame () {
         dialogBaseFrame = document.createElement('div');
