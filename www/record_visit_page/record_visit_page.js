@@ -226,6 +226,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     var placeOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/place.js');
     document.getElementsByTagName('head')[0].appendChild(placeOject);
 
+    var personOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/person.js');
+    document.getElementsByTagName('head')[0].appendChild(personOject);
+
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);
 
