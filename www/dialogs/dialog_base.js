@@ -19,11 +19,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         fadeOutCallback,
         loadHtmlCallback;
     
+    console.log('givenHeight:', givenHeight);
+
     if (givenHeight) {
         _givenHeight = givenHeight;
     } else {
         _givenHeight = DEFAULT_HEIGHT;
     }
+
+    console.log('_givenHeight:', _givenHeight);
     
     function initDialogBaseFrame () {
         dialogBaseFrame = document.createElement('div');
@@ -45,7 +49,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         dialogFrame = document.createElement('div');
         dialogFrame.id = 'dialog_frame';
 
-        dialogFrame.style.height = givenHeight + 'px';
+        dialogFrame.style.height = _givenHeight + 'px';
 
         dialogBaseFrame.appendChild(dialogFrame);
 
@@ -83,11 +87,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
     this.refreshDialogHeight = function() {
         
         // console.log('givenHeight > _parent.clientHeight * 0.9: ', givenHeight > _parent.clientHeight * 0.9)
-        if (givenHeight > _parent.clientHeight * 0.9 ) {
+        if (_givenHeight > _parent.clientHeight * 0.9 ) {
             dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
             // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         } else {
-            dialogFrame.style.height = givenHeight + 'px';
+            dialogFrame.style.height = _givenHeight + 'px';
             // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         }
     }
