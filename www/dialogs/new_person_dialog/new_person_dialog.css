@@ -1,0 +1,45 @@
+#sex_select_group {
+    left :0;
+    right: 0;
+    margin: 5px auto;
+    vertical-align: middle;
+}
+
+.sex_text {
+    float: left;
+    height: 45px;
+    line-height: 45px;
+    font-size: 15px;
+    color: #252525;
+    vertical-align: middle;
+}
+
+.sex_title {
+    width: 25%;
+    text-align: center;
+}
+
+.sex_option {
+    position: relative;
+    width: 30%;
+    margin-left: 5px;
+}
+
+.sex_option img {
+    width: 20px;
+    height: 20px;
+    /* margin-right: 5px; */
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    margin: auto 5px;
+}
+
+.sex_option span {
+    position: absolute;
+    left: 30px;
+}
+
+.sex_option:active {
+    opacity: 0.3;
+}
