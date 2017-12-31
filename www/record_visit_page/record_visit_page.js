@@ -33,6 +33,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         appFrame,
         logoButton,
         addressText,
+        nameText,
+        roomText,
+        personContainer,
+        addPersonButton,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
@@ -79,6 +83,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         initAddressText();
         requestReverseGeocoding();
 
+        initAddPersonButton();
+
         // initLogoButton();
         // refreshLogoButton(false);
     }
@@ -104,7 +110,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         refreshAppFrame();
         refreshAdFrame();
-        refreshLogoButton(true);
+        // refreshLogoButton(true);
 
     }
 
@@ -126,25 +132,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
 
-    function refreshLogoButton(animated) {
-        if (isWideScreen()) {
-            if (animated) {
-                $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
-                    logoButton.style.width = 0;
-                });   
-            } else {
-                logoButton.style.opacity = 0;
-                logoButton.style.width = 0;
-            }
-        } else {
-            logoButton.style.width = LOGO_BUTTON_SIZE;
-            if (animated) {
-                $(logoButton).fadeTo(DRAWER_DURATION, 1);
-            } else {
-                logoButton.style.opacity = 1;
-            }
-        }
-    }
+    // function refreshLogoButton(animated) {
+    //     if (isWideScreen()) {
+    //         if (animated) {
+    //             $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
+    //                 logoButton.style.width = 0;
+    //             });   
+    //         } else {
+    //             logoButton.style.opacity = 0;
+    //             logoButton.style.width = 0;
+    //         }
+    //     } else {
+    //         logoButton.style.width = LOGO_BUTTON_SIZE;
+    //         if (animated) {
+    //             $(logoButton).fadeTo(DRAWER_DURATION, 1);
+    //         } else {
+    //             logoButton.style.opacity = 1;
+    //         }
+    //     }
+    // }
 
     function initAdFrame() {
         adFrame = document.getElementById('ad_frame');
@@ -197,8 +203,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             addressText.value = address;
             place.address = address;
 
-            console.log('place.id:', place.id )
+            // console.log('place.id:', place.id)
+            // console.log('address:', place.address);
           });
+    }
+
+    function initAddPersonButton() {
+        addPersonButton = document.getElementById('add_person_button');
+        addPersonButton.addEventListener('click', onClickAddPersonButton);
+    }
+
+    function onClickAddPersonButton() {
+
+        var personDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog(appFrame);
+        personDialog.fadeIn();
+
     }
 
     var dataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/data_object.js');
@@ -206,6 +225,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     var placeOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/place.js');
     document.getElementsByTagName('head')[0].appendChild(placeOject);
+
+    var personOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/person.js');
+    document.getElementsByTagName('head')[0].appendChild(personOject);
 
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);

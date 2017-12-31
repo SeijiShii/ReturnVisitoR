@@ -42,3 +42,15 @@ h1.page_title {
     right: 0;
     margin: 5px auto;
 }
+
+#ok_button {
+    float: right;
+}
+
+#cancel_button {
+    float: right;
+}
+
+#add_person_button {
+    width: 90%;
+}

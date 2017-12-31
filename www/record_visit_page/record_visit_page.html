@@ -36,6 +36,8 @@
         <link rel="stylesheet" type="text/css" href="../css/responsive_panes.css">
         <link rel="stylesheet" type="text/css" href="./record_visit_page.css">
         <link rel="stylesheet" type="text/css" href="../dialogs/dialog_base.css">
+        <link rel="stylesheet" type="text/css" href="../dialogs/add_person_dialog/add_person_dialog.css">
+        <link rel="stylesheet" type="text/css" href="../dialogs/new_person_dialog/new_person_dialog.css">
         <link rel="stylesheet" type="text/css" href="../jquery-ui-1.12.1\jquery-ui.min.css">
         <title>Record Visit</title>
     </head>
@@ -50,11 +52,15 @@
                     <textarea cols="30" rows="3" id="address_text" placeholder="Address" class="text_area"></textarea>
                     <input class="text_input" type="text" placeholder="Place Name" maxlength="100" id="palce_name_text">
                     <input class="text_input" type="text" placeholder="Room Number" maxlength="100" id="room_number_text">
+                    <div id="person_container"></div>
+                    <div id="add_person_button" class="button green_button"><span class="circle_plus">+</span>Persons Seen</div>
 
                 </div>
             </div>
             <div class="secondary_pane">
-
+                <p id="ok_button" class="button">OK</p>
+                <p id="cancel_button" class="button cancel_button">Cancel</p>
+               
             </div>
         </div>
         <div id="ad_frame">
@@ -68,6 +74,8 @@
         <script type="text/javascript" src="../common_js/namespace.js"></script>
         <script type="text/javascript" src="../common_js/load_file.js"></script>
         <script type="text/javascript" src="../dialogs/dialog_base.js"></script>
+        <script type="text/javascript" src="../dialogs/add_person_dialog/add_person_dialog.js"></script>
+        <script type="text/javascript" src="../dialogs/new_person_dialog/new_person_dialog.js"></script>
         <script type="text/javascript" src="./record_visit_page.js"></script>
     </body>
 </html>
