@@ -360,9 +360,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             refreshLogoButton(animated);
             refreshDrawerLogoButton();
     
-            // if (mapLongClickDialog) {
-            //     mapLongClickDialog.refreshDialogHeight();
-            // }
+            if (mapLongClickDialog !== undefined) {
+                mapLongClickDialog.refreshDialogHeight();
+            }
         }
     }
 

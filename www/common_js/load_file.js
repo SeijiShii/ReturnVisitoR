@@ -1,5 +1,4 @@
 /**
- * @returns file element
  */
 
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
@@ -9,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
         appendHtmlToAppFrame: function(filePath, callback) {
 
             $.get(filePath, function(data){
-                console.log(data);
+                // console.log(data);
 
                 var node = document.createElement('div');
                 node.innerHTML = data;
@@ -24,12 +23,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
             });
 
-            // $('#app_frame').load(filePath, function(){
-                    
-            //     if (typeof success === 'function') {
-            //         success();
-            //     }
-            // });
         },
 
         loadCss: function(filePath) {

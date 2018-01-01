@@ -8,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(loadFiles, gi
     
     // console.log('DialogBase called!');
 
-    var appFrame = document.getElementById('app_frame');
+    var appFrame = document.getElementById('app_frame'),
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
