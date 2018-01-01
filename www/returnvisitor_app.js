@@ -97,9 +97,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             loadFile.loadScript('./map_page/map_page.js', function() {
                 mapPage = returnvisitor.mapPage;
                 mapPage.refreshElements(isWideScreen(), false);
+                mapPage.setStartRecordVisitCallback(onStartRecordVisit);
+
             });
         });
 
+    }
+
+    function onStartRecordVisit(latLng) {
+
+        $('#map_page_frame').fadeOut('slow', function(){
+
+        });
     }
 
     document.addEventListener('deviceready', onDeviceReady, false);

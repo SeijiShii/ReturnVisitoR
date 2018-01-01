@@ -4,18 +4,16 @@
  * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
  * @param {Object} givenSize 省略可能。
  */
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(loadFiles, givenHeight) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPath, givenHeight) {
     
     // console.log('DialogBase called!');
 
-    var appFrame = document.getElementById('app_frame'),
-        dialogBaseFrame,
+    var dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
         FADE_DURATION = 300,
         DEFAULT_HEIGHT = 300,
         _givenHeight,
-        fadeOutCallback,
         loadHtmlCallback;
     
     // console.log('givenHeight:', givenHeight);
@@ -29,38 +27,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(loadFiles, gi
     // console.log('_givenHeight:', _givenHeight);
     
     function initDialogBaseFrame () {
-        dialogBaseFrame = document.createElement('div');
-        dialogBaseFrame.id = 'dialog_base_frame';
-
-        appFrame.appendChild(dialogBaseFrame);
+        dialogBaseFrame = document.getElementById('dialog_base_frame');
     }
 
     function initDialogOverlay() {
-        dialogOverlay = document.createElement('div');
-        dialogOverlay.id = 'dialog_overlay'
-
-        dialogBaseFrame.appendChild(dialogOverlay);
-
+        dialogOverlay = document.getElementById('dialog_overlay');
         dialogOverlay.addEventListener('click', this.fadeOut.bind(this));
     }
 
     function initDialogFrame() {
-        dialogFrame = document.createElement('div');
-        dialogFrame.id = 'dialog_frame';
+        dialogFrame = document.getElementById('dialog_frame');
 
         dialogFrame.style.height = _givenHeight + 'px';
 
-        dialogBaseFrame.appendChild(dialogFrame);
-
-        for (var i = 0 ; i < loadFiles.length ; i++ ) {
-            if (loadFiles[i].match(/\.html$/)) {
-                $(dialogFrame).load(loadFiles[i], function(){
-                    
-                    if (typeof loadHtmlCallback === 'function') {
-                        loadHtmlCallback();
-                    }
-                });
-            }
+        if (contentHtmlPath.match(/\.html$/)) {
+            $(dialogFrame).load(contentHtmlPath, function(){
+                
+                if (typeof loadHtmlCallback === 'function') {
+                    loadHtmlCallback();
+                }
+            });
         }
     }
 
@@ -70,15 +56,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(loadFiles, gi
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
     }
 
-    this.setFadeOutCallback = function(callback) {
-        fadeOutCallback = callback;
-    }
+    // this.setFadeOutCallback = function(callback) {
+    //     fadeOutCallback = callback;
+    // }
 
-    this.fadeOut = function() {
+    this.fadeOut = function(fadeOutCallback) {
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
-            appFrame.removeChild(dialogBaseFrame)
-            if (fadeOutCallback) {
-                fadeOutCallback.call();
+            dialogBaseFrame.parentNode.removeChild(dialogBaseFrame);
+            if (typeof fadeOutCallback === 'function') {
+                fadeOutCallback();
             }
         });
     }
