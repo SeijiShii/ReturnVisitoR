@@ -2,7 +2,8 @@
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
-    var mapDiv,
+    var _isWideScreen,
+        mapDiv,
         map,
         tmpMarker,
         logoButton,
@@ -101,9 +102,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     }
 
-    function refreshMapDiv(isWideScreen) {
+    function refreshMapDiv() {
 
-        if (isWideScreen) {
+        if (_isWideScreen) {
             mapDiv.style.left = DRAWER_WIDTH + 'px';
             mapDiv.style.width = (window.innerWidth - DRAWER_WIDTH) + 'px';
 
@@ -156,8 +157,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         openCloseDrawer(true, true);
     }
 
-    function refreshLogoButton(isWideScreen, animated) {
-        if (isWideScreen) {
+    function refreshLogoButton(animated) {
+        if (_isWideScreen) {
             if (animated) {
                 $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
                     logoButton.style.width = 0;
@@ -182,8 +183,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         fadeDrawerOverlay(false, false);
     }
 
-    function refreshDrawerOverlay(isWideScreen) {
-        if (isWideScreen) {
+    function refreshDrawerOverlay() {
+        if (_isWideScreen) {
             drawerOverlay.removeEventListener('click', onClickDrawerOverlay);
         } else {
             drawerOverlay.addEventListener('click', onClickDrawerOverlay);  
@@ -257,9 +258,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }), false);
     }
 
-    function openCloseDrawer(isWideScreen, open, animated) {
+    function openCloseDrawer(open, animated) {
 
-        if (isWideScreen) {
+        if (_isWideScreen) {
             return;
         }
 
@@ -280,9 +281,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     }
 
-    function refreshDrawer(isWideScreen) {
+    function refreshDrawer() {
         
-        if (isWideScreen) {
+        if (_isWideScreen) {
             drawer.style.left = 0;
         } else {
             drawer.style.left = '-' + DRAWER_WIDTH + 'px';
@@ -290,12 +291,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     }
 
     // ドロワー上のロゴボタン
-    function initDrawerLogoButton(isWideScreen) {
+    function initDrawerLogoButton() {
 
         // console.log('initDrawerLogoButton called!')
 
         drawerLogoButton = document.getElementById('drawer_logo_button');
-        refreshDrawerLogoButton(isWideScreen);
+        refreshDrawerLogoButton();
         
     }
 
@@ -305,8 +306,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             fadeDrawerOverlay(false, true);
     }
 
-    function refreshDrawerLogoButton(isWideScreen) {
-        if (isWideScreen) {
+    function refreshDrawerLogoButton() {
+        if (_isWideScreen) {
             drawerLogoButton.removeEventListener('click', onDrawerLogoClick);
         } else {
             drawerLogoButton.addEventListener('click', onDrawerLogoClick);
@@ -323,11 +324,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     return {
         refreshElements: function(isWideScreen, animated) {
 
-            refreshMapDiv(isWideScreen);
-            refreshDrawer(isWideScreen);
-            refreshDrawerOverlay(isWideScreen);
-            refreshLogoButton(isWideScreen, animated);
-            refreshDrawerLogoButton(isWideScreen);
+            _isWideScreen = isWideScreen;
+
+            refreshMapDiv();
+            refreshDrawer();
+            refreshDrawerOverlay();
+            refreshLogoButton(animated);
+            refreshDrawerLogoButton();
     
             // if (mapLongClickDialog) {
             //     mapLongClickDialog.refreshDialogHeight();
