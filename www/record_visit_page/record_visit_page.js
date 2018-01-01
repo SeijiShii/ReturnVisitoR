@@ -1,36 +1,9 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-// 171220 DONE 現在位置の保存と読み出し機能を追加する。
-// 171221 DONE refreshAdFrame() adFrameの位置更新メソッドを追加
-// 171221 TODO オーバレイとドロワーを追加する。
-//          DONE オーバレイをまず実装する。
-//          DONE 次いでドロワーを実装する。
-//              DONE ドロワーに左スワイプ閉じを実装
-// 171222 DONE 幅広画面の時、ドロワーのメニューが常時表示されるようにする。
 
 "use strict"
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function(options) {
 
-    var adFrame,
-        appFrame,
+    var loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         logoButton,
         addressText,
         nameText,
@@ -40,87 +13,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
-        args,
-        place;
-
-        function setArgs() {
-        
-            args = {};
-            var pairs = location.search.substring(1).split('&');
+        place,
+        _isWideScreen;
     
-            for (var i = 0 ; i < pairs.length ; i++) {
-                var kv = pairs[i].split('=');
-                args[kv[0]] = kv[1]
-            }
-        }
-    
-        function initPlaceData() {
-            if (args.method === 'RECORD_NEW_PLACE') {
-                var latLng = {
-                    lat : args.lat,
-                    lng : args.lng
-                }
-                place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place(latLng)
-            }
-        }
-        
-    function initAppFrame() {
-        appFrame = document.getElementById('app_frame');
-    }
+    function initPlaceData() {
 
-    function onDeviceReady() {
-        // console.log('onDeviceReady called!');
-    
-        setArgs();
-        initPlaceData();
-
-        initAdFrame();
-        refreshAdFrame();
-
-        initAppFrame();
-        refreshAppFrame();
-
-        initAddressText();
-        requestReverseGeocoding();
-
-        initAddPersonButton();
-
-        // initLogoButton();
-        // refreshLogoButton(false);
-    }
-
-    function onResizeScreen() {
-        // console.log('onResiseScreen called!');
-        cordova.fireDocumentEvent('plugin_touch', {});
-    
-        if (cordova.platform === 'browser') {
-            // ブラウザでは連続的に呼ばれるので
-            if (resizeTimer !== false) {
-                clearTimeout(resizeTimer);
-            }
-
-            var resizeTimer = setTimeout(refreshScreenElements, 200);
-
-        } else {
-            refreshScreenElements();
+        if (options.method === 'RECORD_NEW_PLACE') {
+            place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place(options.latLng)
         }
     }
-    
-    function refreshScreenElements() {
-
-        refreshAppFrame();
-        refreshAdFrame();
-        // refreshLogoButton(true);
-
-    }
-
-    function refreshAppFrame() {
-        // console.log('window.innerHeight: ' + window.innerHeight);
-        appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
         
-        // console.log('appFrame.style.height: ' + appFrame.style.height);
-        
-    }
     
     function initLogoButton() {
         // console.log('initLogoButton called!')
@@ -131,40 +33,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function onClickLogoButton() {
 
     }
-
-    // function refreshLogoButton(animated) {
-    //     if (isWideScreen()) {
-    //         if (animated) {
-    //             $(logoButton).fadeTo(DRAWER_DURATION, 0, function(){
-    //                 logoButton.style.width = 0;
-    //             });   
-    //         } else {
-    //             logoButton.style.opacity = 0;
-    //             logoButton.style.width = 0;
-    //         }
-    //     } else {
-    //         logoButton.style.width = LOGO_BUTTON_SIZE;
-    //         if (animated) {
-    //             $(logoButton).fadeTo(DRAWER_DURATION, 1);
-    //         } else {
-    //             logoButton.style.opacity = 1;
-    //         }
-    //     }
-    // }
-
-    function initAdFrame() {
-        adFrame = document.getElementById('ad_frame');
-    }
-
-    function refreshAdFrame() {
-        adFrame.style.top = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
-    }
-
-
-    function isWideScreen() {
-        return window.innerWidth > WIDTH_BREAK_POINT;
-    }
-
 
 
     function initAddressText() {
@@ -220,16 +88,49 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
 
-    var dataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/data_object.js');
-    document.getElementsByTagName('head')[0].appendChild(dataObject);
+    function loadDialogFiles() {
+        loadFile.appendHtmlToAppFrame('./dialogs/dialog_base.html')
+        loadFile.loadCss('./dialogs/dialog_base.css');
+        loadFile.loadScript('./dialogs/dialog_base.js', function(){
+            // console.log('DialogBase loaded!')
+            loadAddPersonDialogFiles();
 
-    var placeOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/place.js');
-    document.getElementsByTagName('head')[0].appendChild(placeOject);
+        });
+    }
 
-    var personOject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile('../data/person.js');
-    document.getElementsByTagName('head')[0].appendChild(personOject);
+    function loadAddPersonDialogFiles() {
+        loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
+        loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
+            // console.log('DialogBase loaded!')
+            loadNewPersonDialogFiles();
 
-    document.addEventListener('deviceready', onDeviceReady, false);
-    window.addEventListener('resize', onResizeScreen);
+        });
+    }
 
+    function loadNewPersonDialogFiles() {
+        loadFile.loadCss('./dialogs/new_person_dialog/new_person_dialog.css');
+        loadFile.loadScript('./dialogs/new_person_dialog/new_person_dialog.js', function(){
+            // console.log('DialogBase loaded!')
+
+        });
+    }
+
+    loadFile.loadScript('../data/data_object.js');
+    loadFile.loadScript('../data/place.js');
+    loadFile.loadScript('../data/person.js');
+    
+
+    initPlaceData();
+    initAddressText();
+    requestReverseGeocoding();
+    initAddPersonButton();
+
+    loadDialogFiles();
+
+    return {
+        refreshElements : function(isWideScreen) {
+            _isWideScreen = isWideScreen;
+            
+        }
+    }
 }());

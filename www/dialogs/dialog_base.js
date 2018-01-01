@@ -39,7 +39,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
             e.stopPropagation();
 
-            console.log('Dialog overlay clicked!');
+            // console.log('Dialog overlay clicked!');
             _this.fadeOut(_overlayClickCallback);
         });
     }
@@ -59,7 +59,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         }
 
         dialogFrame.addEventListener('click', function(){
-            console.log('Touch on dialog frame!');
+            // console.log('Touch on dialog frame!');
         });
     }
 

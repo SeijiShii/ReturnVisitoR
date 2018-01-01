@@ -1,81 +1,22 @@
-<!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
-<html>
-    <head>
-        <!--
-        Customize this policy to fit your own app's needs. For more guidance, see:
-            https://github.com/apache/cordova-plugin-whitelist/blob/master/README.md#content-security-policy
-        Some notes:
-            * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
-            * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
-            * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
-                * Enable inline JS: add 'unsafe-inline' to default-src
-        -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-        <link rel="stylesheet" type="text/css" href="../css/base.css">
-        <link rel="stylesheet" type="text/css" href="../css/responsive_panes.css">
-        <link rel="stylesheet" type="text/css" href="./record_visit_page.css">
-        <link rel="stylesheet" type="text/css" href="../dialogs/dialog_base.css">
-        <link rel="stylesheet" type="text/css" href="../dialogs/add_person_dialog/add_person_dialog.css">
-        <link rel="stylesheet" type="text/css" href="../dialogs/new_person_dialog/new_person_dialog.css">
-        <link rel="stylesheet" type="text/css" href="../jquery-ui-1.12.1\jquery-ui.min.css">
-        <title>Record Visit</title>
-    </head>
-    <body>
-        <div id="app_frame">
-            <div class="primary_pane">
-                <div id="title_bar">
-                    <img src="../img/logo_36.png" alt="Logo Button" id="logo_button">
-                    <h1 class="page_title">Record Visit</h1>
-                </div>
-                <div id="primary_inner_pane">
-                    <textarea cols="30" rows="3" id="address_text" placeholder="Address" class="text_area"></textarea>
-                    <input class="text_input" type="text" placeholder="Place Name" maxlength="100" id="palce_name_text">
-                    <input class="text_input" type="text" placeholder="Room Number" maxlength="100" id="room_number_text">
-                    <div id="person_container"></div>
-                    <div id="add_person_button" class="button green_button"><span class="circle_plus">+</span>Persons Seen</div>
-
-                </div>
-            </div>
-            <div class="secondary_pane">
-                <p id="ok_button" class="button">OK</p>
-                <p id="cancel_button" class="button cancel_button">Cancel</p>
-               
-            </div>
+<div id="record_visit_page_frame" class="page_frame">
+    <div class="primary_pane">
+        <div id="title_bar">
+            <img src="./img/logo_36.png" alt="Logo Button" id="logo_button">
+            <h1 class="page_title">Record Visit</h1>
         </div>
-        <div id="ad_frame">
+        <div id="primary_inner_pane">
+            <textarea cols="30" rows="3" id="address_text" placeholder="Address" class="text_area"></textarea>
+            <input class="text_input" type="text" placeholder="Place Name" maxlength="100" id="palce_name_text">
+            <input class="text_input" type="text" placeholder="Room Number" maxlength="100" id="room_number_text">
+            <div id="person_container"></div>
+            <div id="add_person_button" class="button green_button"><span class="circle_plus">+</span>Persons Seen</div>
 
         </div>
-        <!-- cordova.js must be called in intimately under www folder. may be lately binded in building process. -->
-        <script type="text/javascript" src="../cordova.js"></script>
-        <script type="text/javascript" src="../jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="../jquery-ui-1.12.1/jquery-ui.min.js"></script>    
-
-        <script type="text/javascript" src="../common_js/namespace.js"></script>
-        <script type="text/javascript" src="../common_js/load_file.js"></script>
-        <script type="text/javascript" src="../dialogs/dialog_base.js"></script>
-        <script type="text/javascript" src="../dialogs/add_person_dialog/add_person_dialog.js"></script>
-        <script type="text/javascript" src="../dialogs/new_person_dialog/new_person_dialog.js"></script>
-        <script type="text/javascript" src="./record_visit_page.js"></script>
-    </body>
-</html>
+    </div>
+    <div class="secondary_pane">
+        <p id="ok_button" class="button">OK</p>
+        <p id="cancel_button" class="button cancel_button">Cancel</p>
+        
+    </div>
+</div>

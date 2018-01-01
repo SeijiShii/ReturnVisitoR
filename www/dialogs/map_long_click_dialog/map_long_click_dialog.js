@@ -18,7 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
     function onClickNewPlace(e) {
 
         e.stopPropagation();
-        console.log('New place button clicked!');
+        // console.log('New place button clicked!');
 
         _this.fadeOutAndRemove(function(){
             if (typeof newPlaceButtonCallback === 'function') {
@@ -36,7 +36,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
 
         e.stopPropagation();
 
-        console.log('Cancel button clicked!');
+        // console.log('Cancel button clicked!');
 
         _this.fadeOut(function() {
             if (typeof cancelButtonCallback === 'function') {

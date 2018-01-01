@@ -55,7 +55,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
             var script = document.createElement('script');
             script.src = filePath;
             script.onload = function() {
-                console.log(filePath + ' is loaded!');
+                // console.log(filePath + ' is loaded!');
                 callback();
             }
             document.body.appendChild(script);

@@ -28,7 +28,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         WIDTH_BREAK_POINT = 500,
         DRAWER_WIDTH = 240,
         loadFile = returnvisitor.common.loadFile,
-        mapPage;
+        mapPage,
+        recordVisitPage;
     
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -104,11 +105,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     }
 
-    function onStartRecordVisit(latLng) {
-
-        $('#map_page_frame').fadeOut('slow', function(){
-
+    function loadRecordVisitPageFiles() {
+        loadFile.loadCss('./record_visit_page/record_visit_page.css');
+        loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {
+            recordVisitPage = returnvisitor.recordVisitPage;
         });
+    }
+
+    function onStartRecordVisit(latLng) {
+        loadRecordVisitPageFiles();
     }
 
     document.addEventListener('deviceready', onDeviceReady, false);
