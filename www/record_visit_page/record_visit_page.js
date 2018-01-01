@@ -1,7 +1,7 @@
 
 "use strict"
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function(options) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     var loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         logoButton,
@@ -14,12 +14,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function(options
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
         place,
-        _isWideScreen;
+        _isWideScreen,
+        _options;
     
     function initPlaceData() {
 
-        if (options.method === 'RECORD_NEW_PLACE') {
-            place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place(options.latLng)
+        if (_options.method === 'NEW_PLACE_VISIT') {
+            place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place(_options.latLng)
         }
     }
         
@@ -115,14 +116,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function(options
         });
     }
 
-    loadFile.loadScript('../data/data_object.js');
-    loadFile.loadScript('../data/place.js');
-    loadFile.loadScript('../data/person.js');
+    loadFile.loadScript('./data/data_object.js');
+    loadFile.loadScript('./data/place.js');
+    loadFile.loadScript('./data/person.js');
     
 
-    initPlaceData();
     initAddressText();
-    requestReverseGeocoding();
     initAddPersonButton();
 
     loadDialogFiles();
@@ -131,6 +130,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function(options
         refreshElements : function(isWideScreen) {
             _isWideScreen = isWideScreen;
             
+        },
+
+        setOptions : function(options) {
+            _options = options;
+            initPlaceData();
+            requestReverseGeocoding();
         }
     }
 }());

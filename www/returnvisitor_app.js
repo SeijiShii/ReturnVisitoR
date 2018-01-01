@@ -98,22 +98,31 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             loadFile.loadScript('./map_page/map_page.js', function() {
                 mapPage = returnvisitor.mapPage;
                 mapPage.refreshElements(isWideScreen(), false);
-                mapPage.setStartRecordVisitCallback(onStartRecordVisit);
+                mapPage.setNewPlaceVisitCallback(onNewPlaceVisit);
 
             });
         });
 
     }
 
-    function loadRecordVisitPageFiles() {
+    function loadRecordVisitPageFiles(options) {
         loadFile.loadCss('./record_visit_page/record_visit_page.css');
         loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {
-            recordVisitPage = returnvisitor.recordVisitPage;
+            loadFile.loadScript('./record_visit_page/record_visit_page.js', function() {
+                recordVisitPage = returnvisitor.recordVisitPage;
+                recordVisitPage.setOptions(options);
+            });
         });
     }
 
-    function onStartRecordVisit(latLng) {
-        loadRecordVisitPageFiles();
+    function onNewPlaceVisit(latLng) {
+        loadRecordVisitPageFiles({
+            method: 'NEW_PLACE_VISIT',
+            latLng: {
+                lat: latLng.lat,
+                lng: latLng.lng
+            }
+        });
     }
 
     document.addEventListener('deviceready', onDeviceReady, false);

@@ -5,24 +5,30 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
     return {
-        appendHtmlToAppFrame: function(filePath, callback) {
-
+        getHtmlAsElement: function(filePath, callback) {
+            
             $.get(filePath, function(data){
                 // console.log(data);
 
                 var node = document.createElement('div');
                 node.innerHTML = data;
 
-                var pageFrame = node.getElementsByTagName('div')[0];
+                if (typeof callback === 'function') {
+                    callback(node.getElementsByTagName('div')[0])
+                }
+            });
+        },
 
-                document.getElementById('app_frame').appendChild(pageFrame);
+        appendHtmlToAppFrame: function(filePath, callback) {
+
+            this.getHtmlAsElement(filePath, function(divElem) {
+
+                document.getElementById('app_frame').appendChild(divElem);
 
                 if (typeof callback === 'function') {
                     callback();
                 }
-
             });
-
         },
 
         loadCss: function(filePath) {
@@ -56,7 +62,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
             script.src = filePath;
             script.onload = function() {
                 // console.log(filePath + ' is loaded!');
-                callback();
+                if (typeof callback === 'function') {
+                    callback();
+                }
             }
             document.body.appendChild(script);
            

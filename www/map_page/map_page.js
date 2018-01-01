@@ -24,8 +24,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         CAMERA_ZOOM = 'camera_zoom',
         mapLongClickDialog,
         loadFile = returnvisitor.common.loadFile,
-        startRecordVisitCallback,
-        _latLngLongClicked;
+        newPlaceVisitCallback,
+        _latLng;
    
  
     function initGoogleMap() {
@@ -71,7 +71,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
 
-            _latLngLongClicked = latLng;
+            _latLng = latLng;
 
             // console.log('Map long clicked: ' + latLng.toUrlValue());
             map.animateCamera({
@@ -354,8 +354,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
                 mapPageFrame.parentElement.removeChild(mapPageFrame);
             });
 
-            if (typeof startRecordVisitCallback === 'function') {
-                startRecordVisitCallback(_latLngLongClicked);
+            if (typeof newPlaceVisitCallback === 'function') {
+                newPlaceVisitCallback(_latLng);
             }
         });
 
@@ -390,8 +390,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             }
         },
 
-        setStartRecordVisitCallback : function(callback) {
-            startRecordVisitCallback = callback;
+        setNewPlaceVisitCallback : function(callback) {
+            newPlaceVisitCallback = callback;
         }
     }
 
