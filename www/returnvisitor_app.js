@@ -19,13 +19,15 @@
 
 "use strict"
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     var adFrame,
         appFrame,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
-        DRAWER_WIDTH = 240;
+        DRAWER_WIDTH = 240,
+        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+        mapPage;
     
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -53,6 +55,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         initAppFrame();
         refreshAppFrame();
+
+        loadMapPageFiles();
     }
     
     function onResizeScreen() {
@@ -75,10 +79,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         refreshAppFrame();
         refreshAdFrame();
+
+        if (mapPage !== undefined) {
+            mapPage.refreshElements(isWideScreen(), true);
+        } 
     }
 
     function isWideScreen() {
         return window.innerWidth > WIDTH_BREAK_POINT;
+    }
+
+    function loadMapPageFiles() {
+
+        loadFile.loadCss('map_page_css', './map_page/map_page.css');
+        loadFile.loadHtmlToAppFrame('./map_page/map_page.html', function(){
+            loadFile.loadScript('./map_page/map_page.js', function() {
+                mapPage = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage;
+                mapPage.refreshElements(isWideScreen(), false);
+            });
+        });
+
     }
 
     document.addEventListener('deviceready', onDeviceReady, false);

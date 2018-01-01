@@ -2,22 +2,38 @@
  * @returns file element
  */
 
-RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common')
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = function(filePath){
+RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
-    console.log('loadFile called!, path: ' + filePath);
+    return {
+        loadHtmlToAppFrame: function(filePath, success) {
+            $('#app_frame').load(filePath, function(){
+                    
+                if (typeof success === 'function') {
+                    success();
+                }
+            });
+        },
 
-    var pathArray = filePath.split('/');
-    var fileName = pathArray[pathArray.length - 1];
-    var extension = fileName.split('.')[1];
+        loadCss: function(id, filePath) {
+            // すでにロードされているlinkタグであればキャンセルする。
+            var scriptTags = document.getElementsByTagName('head')[0].getElementsByTagName('link');
+            for (var i = 0 ; i < scriptTags.length ; i++) {
+                if (scriptTags[i].id === id) {
+                    return;
+                }
+            }
+            var fileElement = document.createElement('link');
+            fileElement.setAttribute('rel', 'stylesheet');
+            fileElement.setAttribute('type', 'text/css');
+            fileElement.setAttribute('href', filePath);
+            fileElement.setAttribute('id', id);
 
-    if (extension) {
-        if (extension === 'js') {
-            var fileElement = document.createElement('script');
-            fileElement.setAttribute('type', 'text/javascript');
-            fileElement.setAttribute('src', filePath);
+            document.getElementsByTagName('head')[0].appendChild(fileElement);
+        },
 
-            return fileElement;
+        loadScript: function(filePath, success) {
+            $.getScript(filePath, success);
         }
     } 
-};
+})();
