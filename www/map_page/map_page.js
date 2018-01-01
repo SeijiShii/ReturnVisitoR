@@ -2,7 +2,8 @@
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
-    var _isWideScreen,
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        _isWideScreen,
         mapDiv,
         map,
         tmpMarker,
@@ -21,7 +22,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom',
-        mapLongClickDialog;
+        mapLongClickDialog,
+        loadFile = returnvisitor.common.loadFile;
    
  
     function initGoogleMap() {
@@ -92,7 +94,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             }, function(marker){
                 tmpMarker = marker;
             });
-            mapLongClickDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog(mapDiv, latLng);
+            mapLongClickDialog = new returnvisitor.MapLongClickDialog(mapDiv, latLng);
             mapLongClickDialog.setFadeOutCallback(function(){
                 tmpMarker.remove();
                 mapLongClickDialog = null;
@@ -314,12 +316,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     }
 
+    function loadDialogBaseFiles() {
+        loadFile.appendHtmlToAppFrame('./dialogs/dialog_base.html')
+        loadFile.loadCss('./dialogs/dialog_base.css');
+        loadFile.loadScript('./dialogs/dialog_base.js', function(){
+            // console.log('DialogBase loaded!')
+            loadMapLongClickDialogFiles();
+
+        });
+    }
+
+    function loadMapLongClickDialogFiles() {
+        loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
+        loadFile.loadScript('./dialogs/map_long_click_dialog/map_long_click_dialog.js', function(){
+            // console.log('MapLongClickDialog loaded!')
+            onLoadedNeededFiles();
+        });
+
+    }
+
+
+    function onLoadedNeededFiles() {
+        console.log('onLoadedNeededFiles called!');
+    }
+
     loadCameraPosition();
     initGoogleMap();
     initLogoButton();
     initDrawerOverlay();
     initDrawer();
     initDrawerLogoButton();
+
+    loadDialogBaseFiles();
 
     return {
         refreshElements: function(isWideScreen, animated) {
@@ -337,4 +365,5 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             // }
         }
     }
+
 }());

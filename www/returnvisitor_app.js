@@ -21,12 +21,13 @@
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
-    var adFrame,
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        adFrame,
         appFrame,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         DRAWER_WIDTH = 240,
-        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+        loadFile = returnvisitor.common.loadFile,
         mapPage;
     
     function initAppFrame() {
@@ -91,10 +92,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     function loadMapPageFiles() {
 
-        loadFile.loadCss('map_page_css', './map_page/map_page.css');
-        loadFile.loadHtmlToAppFrame('./map_page/map_page.html', function(){
+        loadFile.loadCss('./map_page/map_page.css');
+        loadFile.appendHtmlToAppFrame('./map_page/map_page.html', function(){
             loadFile.loadScript('./map_page/map_page.js', function() {
-                mapPage = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage;
+                mapPage = returnvisitor.mapPage;
                 mapPage.refreshElements(isWideScreen(), false);
             });
         });

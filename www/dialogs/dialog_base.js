@@ -1,15 +1,14 @@
 "use strict"
 /**
  * ダイアログのベースとなるクラスオブジェクト。プロトタイプ継承してからダイアログとして用いる。そのまま用いることはない。
- * @param {HtmlElement} parent ダイアログをapendChildする親エレメント。
  * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
  * @param {Object} givenSize 省略可能。
  */
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadFiles, givenHeight) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(loadFiles, givenHeight) {
     
     // console.log('DialogBase called!');
 
-    var _parent = parent,
+    var appFrame = document.getElementById('app_frame');
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
@@ -33,7 +32,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
         dialogBaseFrame = document.createElement('div');
         dialogBaseFrame.id = 'dialog_base_frame';
 
-        _parent.appendChild(dialogBaseFrame);
+        appFrame.appendChild(dialogBaseFrame);
     }
 
     function initDialogOverlay() {
@@ -77,7 +76,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
 
     this.fadeOut = function() {
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
-            _parent.removeChild(dialogBaseFrame)
+            appFrame.removeChild(dialogBaseFrame)
             if (fadeOutCallback) {
                 fadeOutCallback.call();
             }
@@ -86,9 +85,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(parent, loadF
 
     this.refreshDialogHeight = function() {
         
-        // console.log('givenHeight > _parent.clientHeight * 0.9: ', givenHeight > _parent.clientHeight * 0.9)
-        if (_givenHeight > _parent.clientHeight * 0.9 ) {
-            dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
+        if (_givenHeight > appFrame.clientHeight * 0.9 ) {
+            dialogFrame.style.height = (appFrame.clientHeight * 0.9) + 'px';
             // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         } else {
             dialogFrame.style.height = _givenHeight + 'px';

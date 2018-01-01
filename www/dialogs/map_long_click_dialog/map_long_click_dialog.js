@@ -1,5 +1,5 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent, latLng) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(latLng) {
 
     var _this = this, // コールバックがからまって訳わからなくなったのでthisをキャッシュすることにした。
         _latLng = latLng,
@@ -8,8 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
         cancelButtonCallback;
 
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this, 
-        parent, 
-        ['../dialogs/map_long_click_dialog/map_long_click_dialog.html']);
+        ['./dialogs/map_long_click_dialog/map_long_click_dialog.html']);
 
     function initNewPlaceButton() {
         newPlaceButton = document.getElementById('new_place_button');
