@@ -8,13 +8,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     
     // console.log('DialogBase called!');
 
-    var dialogBaseFrame,
+    var _this = this,
+        appFrame = document.getElementById('app_frame'),
+        dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
         FADE_DURATION = 300,
         DEFAULT_HEIGHT = 300,
         _givenHeight,
-        loadHtmlCallback;
+        _loadHtmlCallback,
+        _overlayClickCallback;
     
     // console.log('givenHeight:', givenHeight);
 
@@ -32,7 +35,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
     function initDialogOverlay() {
         dialogOverlay = document.getElementById('dialog_overlay');
-        dialogOverlay.addEventListener('click', this.fadeOut.bind(this));
+        dialogOverlay.addEventListener('click', function(e) {
+
+            e.stopPropagation();
+
+            console.log('Dialog overlay clicked!');
+            _this.fadeOut(_overlayClickCallback);
+        });
     }
 
     function initDialogFrame() {
@@ -43,11 +52,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         if (contentHtmlPath.match(/\.html$/)) {
             $(dialogFrame).load(contentHtmlPath, function(){
                 
-                if (typeof loadHtmlCallback === 'function') {
-                    loadHtmlCallback();
+                if (typeof _loadHtmlCallback === 'function') {
+                    _loadHtmlCallback();
                 }
             });
         }
+
+        dialogFrame.addEventListener('click', function(){
+            console.log('Touch on dialog frame!');
+        });
     }
 
     this.fadeIn = function() {
@@ -55,16 +68,22 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         dialogBaseFrame.style.height = '100%';
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
     }
-
-    // this.setFadeOutCallback = function(callback) {
-    //     fadeOutCallback = callback;
-    // }
-
-    this.fadeOut = function(fadeOutCallback) {
+ 
+    this.fadeOut = function(callback) {
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
+            dialogBaseFrame.style.width = '0';
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    }
+
+    this.fadeOutAndRemove = function(callback) {
+        $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
+            dialogBaseFrame.style.width = '0';
             dialogBaseFrame.parentNode.removeChild(dialogBaseFrame);
-            if (typeof fadeOutCallback === 'function') {
-                fadeOutCallback();
+            if (typeof callback === 'function') {
+                callback();
             }
         });
     }
@@ -81,7 +100,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     }
 
     this.setLoadHtmlCallback = function(callback) {
-        loadHtmlCallback = callback;
+        _loadHtmlCallback = callback;
+    }
+
+    this.setOverlayClickCallback = function(callback) {
+        _overlayClickCallback = callback;
     }
 
     initDialogBaseFrame();

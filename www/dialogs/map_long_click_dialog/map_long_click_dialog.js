@@ -1,8 +1,7 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(latLng) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
 
     var _this = this, // コールバックがからまって訳わからなくなったのでthisをキャッシュすることにした。
-        _latLng = latLng,
         newPlaceButton,
         newPlaceButtonCallback,
         cancelButton,
@@ -13,29 +12,32 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(latLn
 
     function initNewPlaceButton() {
         newPlaceButton = document.getElementById('new_place_button');
-        newPlaceButton.addEventListener('click', onClickNewPlace);
+        newPlaceButton.addEventListener('click', onClickNewPlace, true);
     }
 
-    function onClickNewPlace() {
-        _this.fadeOut(function(){
+    function onClickNewPlace(e) {
+
+        e.stopPropagation();
+        console.log('New place button clicked!');
+
+        _this.fadeOutAndRemove(function(){
             if (typeof newPlaceButtonCallback === 'function') {
-                newPlaceButtonCallback(latLng);
+                newPlaceButtonCallback();
             }
         });
     }
 
-    // function getLatLngQueryString() {
-    //     var lat = _latLng.lat;
-    //     var lng = _latLng.lng;
-    //     return  "lat=" + lat + "&lng=" + lng;
-    // }
-
     function initCancelButton() {
         cancelButton = document.getElementById('cancel_button');
-        cancelButton.addEventListener('click', onClickCancelButton);
+        cancelButton.addEventListener('click', onClickCancelButton, true);
     }
 
-    function onClickCancelButton() {
+    function onClickCancelButton(e) {
+
+        e.stopPropagation();
+
+        console.log('Cancel button clicked!');
+
         _this.fadeOut(function() {
             if (typeof cancelButtonCallback === 'function') {
                 cancelButtonCallback();
@@ -56,6 +58,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(latLn
         initNewPlaceButton();
         initCancelButton();
     });
+
 }
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype,{

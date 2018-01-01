@@ -24,7 +24,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         CAMERA_ZOOM = 'camera_zoom',
         mapLongClickDialog,
         loadFile = returnvisitor.common.loadFile,
-        startRecordVisitCallback;
+        startRecordVisitCallback,
+        _latLngLongClicked;
    
  
     function initGoogleMap() {
@@ -70,6 +71,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
 
+            _latLngLongClicked = latLng;
+
             // console.log('Map long clicked: ' + latLng.toUrlValue());
             map.animateCamera({
                 target: {
@@ -95,32 +98,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             }, function(marker){
                 tmpMarker = marker;
             });
-            mapLongClickDialog = new returnvisitor.MapLongClickDialog(mapDiv, latLng);
-            
-            // mapLongClickDialog.setFadeOutCallback(function(){
-            //     tmpMarker.remove();
-            //     mapLongClickDialog = null;
-            // });
 
-            mapLongClickDialog.setCancelButtonCallback(function() {
-                tmpMarker.remove();
-                mapLongClickDialog = null;
-            });
-
-            mapLongClickDialog.setNewPlaceButtonCallback(function(latLng) {
-                tmpMarker.remove();
-                mapLongClickDialog = null;
-
-                map.remove();
-                var mapPageFrame = document.getElementById('map_page_frame');
-                $(mapPageFrame).fadeOut('slow', function() {
-                    mapPageFrame.parentElement.removeChild(mapPageFrame);
-                });
-
-                if (typeof startRecordVisitCallback === 'function') {
-                    startRecordVisitCallback(latLng);
-                }
-            });
+ 
 
             mapLongClickDialog.fadeIn();
         });
@@ -353,15 +332,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
         loadFile.loadScript('./dialogs/map_long_click_dialog/map_long_click_dialog.js', function(){
             // console.log('MapLongClickDialog loaded!')
-            // onLoadedNeededFiles();
+            initMapLongClickDialog();
+           
         });
 
     }
 
+    function initMapLongClickDialog() {
+        mapLongClickDialog = new returnvisitor.MapLongClickDialog();
 
-    // function onLoadedNeededFiles() {
-    //     // console.log('onLoadedNeededFiles called!');
-    // }
+        mapLongClickDialog.setCancelButtonCallback(function() {
+            tmpMarker.remove();
+        });
+
+        mapLongClickDialog.setNewPlaceButtonCallback(function() {
+            tmpMarker.remove();
+
+            map.remove();
+            var mapPageFrame = document.getElementById('map_page_frame');
+            $(mapPageFrame).fadeOut('slow', function() {
+                mapPageFrame.parentElement.removeChild(mapPageFrame);
+            });
+
+            if (typeof startRecordVisitCallback === 'function') {
+                startRecordVisitCallback(_latLngLongClicked);
+            }
+        });
+
+        mapLongClickDialog.setOverlayClickCallback(function() {
+            tmpMarker.remove();
+        });
+    }
+
 
     loadCameraPosition();
     initGoogleMap();
