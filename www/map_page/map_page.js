@@ -84,7 +84,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
                     lng: latLng.lng
                 },
                 icon: {
-                    url: "../img/pin_marker/m/pin_marker_gray.png",
+                    url: "./img/pin_marker/m/pin_marker_gray.png",
                     size: {
                         width: 25,
                         height: 35
