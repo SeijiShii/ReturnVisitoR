@@ -9,7 +9,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     // console.log('DialogBase called!');
 
     var _this = this,
-        appFrame = document.getElementById('app_frame'),
+        _parent,
+        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+        elements = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements,
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
@@ -17,7 +19,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         DEFAULT_HEIGHT = 300,
         _givenHeight,
         _loadHtmlCallback,
-        _overlayClickCallback;
+        _overlayClickCallback,
+        _isDialogElementAvailable = false,
+        _dialogElements;
     
     // console.log('givenHeight:', givenHeight);
 
@@ -29,12 +33,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
     // console.log('_givenHeight:', _givenHeight);
     
-    function initDialogBaseFrame () {
-        dialogBaseFrame = document.getElementById('dialog_base_frame');
+    function loadDialogBaseFiles() {
+
+        loadFile.loadCss('./dialogs/dialog_base.css');
+        loadFile.loadHtmlAsElement('./dialogs/dialog_base.html', function(divElm) {
+            dialogBaseFrame = divElm;
+
+            // console.log(dialogBaseFrame);
+
+            // _dialogElements = elements.getAllOffspring(dialogBaseFrame);
+            // console.log(_dialogElements);
+
+            initDialogOverlay();
+            initDialogFrame();
+
+            _isDialogElementAvailable = true;
+        });
     }
 
     function initDialogOverlay() {
-        dialogOverlay = document.getElementById('dialog_overlay');
+        dialogOverlay = elements.getElementById(dialogBaseFrame, 'dialog_overlay');
+
+        // console.log(dialogOverlay)
+
         dialogOverlay.addEventListener('click', function(e) {
 
             e.stopPropagation();
@@ -45,31 +66,63 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     }
 
     function initDialogFrame() {
-        dialogFrame = document.getElementById('dialog_frame');
+        dialogFrame = elements.getElementById(dialogBaseFrame, 'dialog_frame');
+
+        // console.log(dialogFrame);
 
         dialogFrame.style.height = _givenHeight + 'px';
 
-        if (contentHtmlPath.match(/\.html$/)) {
-            $(dialogFrame).load(contentHtmlPath, function(){
+        $(dialogFrame).load(contentHtmlPath, function(){
                 
-                if (typeof _loadHtmlCallback === 'function') {
-                    _loadHtmlCallback();
-                }
-            });
-        }
+            if (typeof _loadHtmlCallback === 'function') {
+                _loadHtmlCallback();
+            }
+        });
 
         dialogFrame.addEventListener('click', function(){
             // console.log('Touch on dialog frame!');
         });
     }
 
-    this.fadeIn = function() {
+
+    /**
+     * 
+     * @param {*} parent is the node in which dialog base frame will be appended.
+     * @param {*} callback is called when dialog base frame is successfully appended to the parent node. 
+     */
+    function appendDialogToParent(callback) {
+     
+        var timer = function() {
+            if (_isDialogElementAvailable) {
+                _parent.appendChild(dialogBaseFrame);
+                clearInterval(timerId);
+
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            }
+        }
+
+        var timerId = setInterval(timer, 50);
+        
+    }
+
+    this.fadeIn = function(parent) {
+
+        _parent = parent;
+
+        appendDialogToParent(function() {
+            _fadeIn();
+        });
+    }
+
+    function _fadeIn() {
         dialogBaseFrame.style.width = '100%';
         dialogBaseFrame.style.height = '100%';
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
     }
  
-    this.fadeOut = function(callback) {
+    function _fadeOut(callback) {
         $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
             dialogBaseFrame.style.width = '0';
             if (typeof callback === 'function') {
@@ -78,20 +131,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         });
     }
 
-    this.fadeOutAndRemove = function(callback) {
-        $(dialogBaseFrame).fadeTo(FADE_DURATION, 0, function() {
-            dialogBaseFrame.style.width = '0';
+    this.fadeOut = function(callback) {
+
+        _fadeOut(function() {
             dialogBaseFrame.parentNode.removeChild(dialogBaseFrame);
+            _parent = undefined;
+
             if (typeof callback === 'function') {
                 callback();
             }
-        });
+        })
     }
 
     this.refreshDialogHeight = function() {
         
-        if (_givenHeight > appFrame.clientHeight * 0.9 ) {
-            dialogFrame.style.height = (appFrame.clientHeight * 0.9) + 'px';
+        // append前に呼ばれることがあるので
+        if (_parent === undefined) {
+            return;
+        }
+
+        if (_givenHeight > _parent.clientHeight * 0.9 ) {
+            dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
             // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         } else {
             dialogFrame.style.height = _givenHeight + 'px';
@@ -107,8 +167,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         _overlayClickCallback = callback;
     }
 
-    initDialogBaseFrame();
-    initDialogOverlay.call(this);
-    initDialogFrame();
+
+    loadDialogBaseFiles();
+
 }
 

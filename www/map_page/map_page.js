@@ -100,8 +100,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             });
 
  
+            mapLongClickDialog.fadeIn(mapDiv);
 
-            mapLongClickDialog.fadeIn();
         });
 
     }
@@ -318,18 +318,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     }
 
-    function loadDialogBaseFiles() {
-        loadFile.appendHtmlToAppFrame('./dialogs/dialog_base.html')
-        loadFile.loadCss('./dialogs/dialog_base.css');
+    function startLoadDialogBaseScript() {
         loadFile.loadScript('./dialogs/dialog_base.js', function(){
-            // console.log('DialogBase loaded!')
             loadMapLongClickDialogFiles();
 
         });
     }
 
     function loadMapLongClickDialogFiles() {
-        loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
         loadFile.loadScript('./dialogs/map_long_click_dialog/map_long_click_dialog.js', function(){
             // console.log('MapLongClickDialog loaded!')
             initMapLongClickDialog();
@@ -372,7 +368,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     initDrawer();
     initDrawerLogoButton();
 
-    loadDialogBaseFiles();
+    startLoadDialogBaseScript();
+
+    // var offspring = returnvisitor.common.elements.getAllOffspring(document.body);
+    // console.log(offspring);
 
     return {
         refreshElements : function(isWideScreen, animated) {

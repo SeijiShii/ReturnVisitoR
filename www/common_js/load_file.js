@@ -1,11 +1,12 @@
-/**
- */
-
+"use strict"
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
     return {
-        getHtmlAsElement: function(filePath, callback) {
+        /**
+         * @param callback callback has 1 param which returns div element made from html file.
+         */
+        loadHtmlAsElement: function(filePath, callback) {
             
             $.get(filePath, function(data){
                 // console.log(data);
@@ -21,7 +22,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
         appendHtmlToAppFrame: function(filePath, callback) {
 
-            this.getHtmlAsElement(filePath, function(divElem) {
+            this.loadHtmlAsElement(filePath, function(divElem) {
 
                 document.getElementById('app_frame').appendChild(divElem);
 

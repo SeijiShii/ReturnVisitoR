@@ -5,10 +5,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
         newPlaceButton,
         newPlaceButtonCallback,
         cancelButton,
-        cancelButtonCallback;
+        cancelButtonCallback,
+        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor;
 
-    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this, 
+    returnvisitor.DialogBase.call(this, 
         './dialogs/map_long_click_dialog/map_long_click_dialog.html');
+
+    returnvisitor.common.loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
+
 
     function initNewPlaceButton() {
         newPlaceButton = document.getElementById('new_place_button');
@@ -20,7 +24,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
         e.stopPropagation();
         // console.log('New place button clicked!');
 
-        _this.fadeOutAndRemove(function(){
+        _this.fadeOut(function(){
             if (typeof newPlaceButtonCallback === 'function') {
                 newPlaceButtonCallback();
             }
