@@ -7,10 +7,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         maleButtonImage,
         femaleButton,
         femaleButtonImage,
-        buttonOnImagePath = './img/button_marker/button_marker_emerald.png',
-        buttonOffImagePath = './img/button_marker/button_marker_gray.png',
+        // buttonOnImagePath = './img/button_marker/button_marker_emerald.png',
+        // buttonOffImagePath = './img/button_marker/button_marker_gray.png',
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
+        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+        buttonMarkerPaths = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.buttonMarkerPaths;
 
     returnvisitor.DialogBase.call(this,
         ['./dialogs/new_person_dialog/new_person_dialog.html']);
@@ -27,8 +28,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     function onClickMaleButton() {
         _person.sex = 1;
-        fadeAndChangeButtonImage(maleButtonImage, buttonOnImagePath);
-        fadeAndChangeButtonImage(femaleButtonImage, buttonOffImagePath);        
+        fadeAndChangeButtonImage(maleButtonImage, buttonMarkerPaths.emeraldButton);
+        fadeAndChangeButtonImage(femaleButtonImage, buttonMarkerPaths.grayButton);        
     }
 
     function initFemaleButton() {
@@ -39,8 +40,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     function onClickFemaleButton() {
         _person.sex = 2;
-        fadeAndChangeButtonImage(maleButtonImage, buttonOffImagePath);
-        fadeAndChangeButtonImage(femaleButtonImage, buttonOnImagePath);
+        fadeAndChangeButtonImage(maleButtonImage, buttonMarkerPaths.grayButton);
+        fadeAndChangeButtonImage(femaleButtonImage, buttonMarkerPaths.emeraldButton);
     }
 
     function fadeAndChangeButtonImage(element, toPath) {
