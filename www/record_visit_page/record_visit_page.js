@@ -112,6 +112,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function loadAddPersonDialogScript() {
         loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
             addPersonDialog = new returnvisitor.AddPersonDialog();
+            addPersonDialog.onNewPersonClick = function() {
+                newPersonDialog.fadeIn(appFrame);
+            };
         });
     }
 
