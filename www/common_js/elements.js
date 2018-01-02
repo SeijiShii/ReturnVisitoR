@@ -29,6 +29,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements = (function(){
 
         },
 
+        /**
+         * @param parent Parent element to search child element into.
+         * @param id Element id to search for in the parent.
+         */
         getElementById : function(parent, id) {
             var offspring = this.getAllOffspring(parent);
 

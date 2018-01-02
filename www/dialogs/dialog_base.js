@@ -167,6 +167,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         _overlayClickCallback = callback;
     }
 
+    this.getElementById = function(id) {
+        return elements.getElementById(dialogBaseFrame, id);
+    }
 
     loadDialogBaseFiles();
 

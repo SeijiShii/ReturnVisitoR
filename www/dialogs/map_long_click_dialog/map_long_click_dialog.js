@@ -15,7 +15,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
 
 
     function initNewPlaceButton() {
-        newPlaceButton = document.getElementById('new_place_button');
+        newPlaceButton = _this.getElementById('new_place_button');
         newPlaceButton.addEventListener('click', onClickNewPlace, true);
     }
 
@@ -32,7 +32,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
     }
 
     function initCancelButton() {
-        cancelButton = document.getElementById('cancel_button');
+        cancelButton = _this.getElementById('cancel_button');
         cancelButton.addEventListener('click', onClickCancelButton, true);
     }
 
