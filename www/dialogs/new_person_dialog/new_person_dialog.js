@@ -29,9 +29,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     }
 
     function onClickMaleButton() {
-        _person.sex = 1;
-        fadeAndChangeButtonImage(maleButtonImage, buttonMarkerPaths.emeraldButton);
-        fadeAndChangeButtonImage(femaleButtonImage, buttonMarkerPaths.grayButton);        
+
+        console.log('onClickMaleButton! _person.sex:', _person.sex);
+
+        if (_person.sex != 1) {
+            _person.sex = 1;
+            maleToggleButton.toggled = true;
+            femaleToggleButton.toggled = false;
+
+        }
     }
 
     function initFemaleButton() {
@@ -42,16 +48,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     }
 
     function onClickFemaleButton() {
-        _person.sex = 2;
-        fadeAndChangeButtonImage(maleButtonImage, buttonMarkerPaths.grayButton);
-        fadeAndChangeButtonImage(femaleButtonImage, buttonMarkerPaths.emeraldButton);
-    }
 
-    function fadeAndChangeButtonImage(element, toPath) {
-        $(element).fadeOut(300, function() {
-            element.src = toPath;
-            $(element).fadeIn(300);
-        })
+        console.log('onClickFemaleButton! _person.sex:', _person.sex);
+
+        if (_person.sex != 2) {
+            _person.sex = 2;
+            maleToggleButton.toggled = false;
+            femaleToggleButton.toggled = true;
+        }
     }
 
     this.onDialogBaseReady = function(){

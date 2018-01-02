@@ -5,7 +5,7 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data')
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person = function(){
 
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this);
-    this.sex;
+    this.sex = 0;
     this.age;
     this.interest;
 

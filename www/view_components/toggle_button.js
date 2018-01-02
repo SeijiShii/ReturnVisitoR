@@ -7,10 +7,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
         buttonFrame,
         buttonOnImage,
         buttonOffImage,
+        BUTTON_FRAME_SIZE = '25px',
+        BUTTON_IMAGE_SIZE = '20px',
         markerPaths = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths,
         buttonFrameStyle = {
-            width: '25px',
-            height: '25px',
+            width: BUTTON_FRAME_SIZE,
+            height: BUTTON_FRAME_SIZE,
             top: 0,
             bottom: 0,
             left: 0,
@@ -19,8 +21,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
             position: 'absolute'
         },
         buttonImageStyle = {
-            width: '21px',
-            height: '21px',
+            width: BUTTON_IMAGE_SIZE,
+            height: BUTTON_IMAGE_SIZE,
             top: 0,
             bottom: 0,
             left: 0,
@@ -30,6 +32,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
         };
     
     this.onImagePath;
+    this._toggled;
 
     function initButtonFrame() {
         buttonFrame = document.createElement('div');
@@ -60,10 +63,58 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
         buttonFrame.appendChild(buttonOnImage);
     }
 
+    this.toggle = function(toggled, animated) {
+
+        console.log('this.toggle called! toggle:', toggled, 'animated:', animated);
+
+        if (animated) {
+            if (toggled) {
+                $(buttonOnImage).css({
+                    width : 0,
+                    height : 0,
+                    opacity : 1
+                });
+                $(buttonOnImage).animate({
+                    width : BUTTON_IMAGE_SIZE,
+                    height : BUTTON_IMAGE_SIZE
+                }, 300);
+                 
+            } else {
+                $(buttonOnImage).animate({
+                    width : 0,
+                    height : 0
+                }, 200, function(){
+                    buttonOnImage.style.opacity = 0;
+                });
+            }
+        } else {
+            if (toggled) {
+                buttonOnImage.style.opacity = 1;                 
+            } else {
+                buttonOnImage.style.opacity = 0;
+            }
+        }
+
+        _this._toggled = toggled;
+    }
+
+
     initButtonFrame();
     initOffImage();
     initOnImage();
-
-    
-
+    this.toggle(false, false);
 }
+
+Object.defineProperty(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton.prototype, 'toggled', {
+    get : function() {return this._toggled;},
+    set : function(value) {
+        console.log('toggled set!');
+        this.toggle(value, true);
+    }
+});
+
+Object.defineProperty(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton, 'on', {
+    get : function() {return this._toggled;},
+    set : function(value) {this.toggle(value, false);}
+});
+
