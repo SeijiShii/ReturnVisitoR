@@ -337,11 +337,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     function initMapLongClickDialog() {
         mapLongClickDialog = new returnvisitor.MapLongClickDialog();
 
-        mapLongClickDialog.setCancelButtonCallback(function() {
+        mapLongClickDialog.onCancelClick = function() {
             tmpMarker.remove();
-        });
+        };
 
-        mapLongClickDialog.setNewPlaceButtonCallback(function() {
+        mapLongClickDialog.onNewPlaceClick = function() {
             tmpMarker.remove();
 
             map.remove();
@@ -353,11 +353,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             if (typeof newPlaceVisitCallback === 'function') {
                 newPlaceVisitCallback(_latLng);
             }
-        });
+        };
 
-        mapLongClickDialog.setOverlayClickCallback(function() {
+        mapLongClickDialog.onOverlayClick = function() {
             tmpMarker.remove();
-        });
+        };
     }
 
 

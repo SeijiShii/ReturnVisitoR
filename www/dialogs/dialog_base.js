@@ -18,8 +18,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         FADE_DURATION = 300,
         DEFAULT_HEIGHT = 300,
         _givenHeight,
-        _loadHtmlCallback,
-        _overlayClickCallback,
         _isDialogElementAvailable = false,
         _dialogElements;
     
@@ -61,7 +59,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
             e.stopPropagation();
 
             // console.log('Dialog overlay clicked!');
-            _this.fadeOut(_overlayClickCallback);
+            _this.fadeOut(_this.onOverlayClick);
         });
     }
 
@@ -74,8 +72,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
         $(dialogFrame).load(contentHtmlPath, function(){
                 
-            if (typeof _loadHtmlCallback === 'function') {
-                _loadHtmlCallback();
+            if (typeof _this.onDialogBaseReady === 'function') {
+                _this.onDialogBaseReady();
             }
         });
 
@@ -157,14 +155,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
             dialogFrame.style.height = _givenHeight + 'px';
             // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
         }
-    }
-
-    this.setLoadHtmlCallback = function(callback) {
-        _loadHtmlCallback = callback;
-    }
-
-    this.setOverlayClickCallback = function(callback) {
-        _overlayClickCallback = callback;
     }
 
     this.getElementById = function(id) {

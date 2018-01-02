@@ -3,7 +3,8 @@
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
-    var loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         logoButton,
         addressText,
         nameText,
@@ -15,12 +16,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         LOGO_BUTTON_SIZE = '40px',
         place,
         _isWideScreen,
-        _options;
+        _options,
+        addPersonDialog,
+        newPersonDialog;
     
     function initPlaceData() {
 
         if (_options.method === 'NEW_PLACE_VISIT') {
-            place = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place(_options.latLng)
+            place = new returnvisitor.data.Place(_options.latLng)
         }
     }
         
@@ -84,35 +87,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickAddPersonButton() {
 
-        var personDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog(appFrame);
+        var personDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog();
         personDialog.fadeIn();
 
     }
 
     function loadDialogFiles() {
-        loadFile.appendHtmlToAppFrame('./dialogs/dialog_base.html')
-        loadFile.loadCss('./dialogs/dialog_base.css');
         loadFile.loadScript('./dialogs/dialog_base.js', function(){
-            // console.log('DialogBase loaded!')
-            loadAddPersonDialogFiles();
-
+            loadAddPersonDialogScript();
+            loadNewPersonDialogScript();
         });
     }
 
-    function loadAddPersonDialogFiles() {
-        loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
+    function loadAddPersonDialogScript() {
         loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
-            // console.log('DialogBase loaded!')
-            loadNewPersonDialogFiles();
-
+            addPersonDialog = new returnvisitor.AddPersonDialog();
         });
     }
 
-    function loadNewPersonDialogFiles() {
-        loadFile.loadCss('./dialogs/new_person_dialog/new_person_dialog.css');
+    function loadNewPersonDialogScript() {
         loadFile.loadScript('./dialogs/new_person_dialog/new_person_dialog.js', function(){
-            // console.log('DialogBase loaded!')
-
+            newPersonDialog = new returnvisitor.NewPersonDialog();
         });
     }
 

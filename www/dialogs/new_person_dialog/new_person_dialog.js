@@ -1,8 +1,5 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function(parent) {
-    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this,
-        parent, 
-        ['../dialogs/new_person_dialog/new_person_dialog.html']);
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     var _person,
         maleButton,
@@ -10,9 +7,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function(parent) 
         femaleButton,
         femaleButtonImage,
         buttonOnImagePath = '../img/button_marker/button_marker_emerald.png',
-        buttonOffImagePath = '../img/button_marker/button_marker_gray.png';
+        buttonOffImagePath = '../img/button_marker/button_marker_gray.png',
+        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
+
+    returnvisitor.DialogBase.call(this,
+        ['../dialogs/new_person_dialog/new_person_dialog.html']);
+
+    loadFile.loadCss('./dialogs/new_person_dialog/new_person_dialog.css');
     
-    _person = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person();
+    _person = new returnvisitor.data.Person();
     
     function initMaleButton() {
         maleButton = document.getElementById('male_button');
@@ -45,7 +49,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function(parent) 
         })
     }
 
-    this.setLoadHtmlCallback(function(){
+    this.setDialogBaseReadyCallback(function(){
         initMaleButton();
         initFemaleButton();
     })

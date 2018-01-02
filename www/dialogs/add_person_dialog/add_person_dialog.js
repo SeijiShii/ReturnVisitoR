@@ -1,24 +1,35 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(parent) {
-    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.call(this,
-        parent, 
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function() {
+
+    var _this = this,
+        newPersonButton,
+        _newPersonButtonCallback,
+        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
+
+    returnvisitor.DialogBase.call(this,
         ['../dialogs/add_person_dialog/add_person_dialog.html']);
     
-    var _parent = parent,
-        newPersonButton,
-        newPersonDialog;
+    loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
+
 
     function initNewPersonButton() {
-        newPersonButton = document.getElementById('new_person_button');
+        newPersonButton = _this.getElementById('new_person_button');
         newPersonButton.addEventListener('click', onClickNewPersonButton);
     }
 
     function onClickNewPersonButton() {
-        newPersonDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog(_parent);
-        newPersonDialog.fadeIn();
+        _this.fadeOut()
+        if (typeof _newPersonButtonCallback === 'function') {
+            _newPersonButtonCallback();
+        }
     }
 
-    this.setLoadHtmlCallback(function(){
+    this.setNewPersonButtonCallback = function(callback) {
+        _newPersonButtonCallback = callback;
+    }
+
+    this.setDialogBaseReadyCallback(function(){
         initNewPersonButton();
     });
 }
