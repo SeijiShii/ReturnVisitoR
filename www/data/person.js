@@ -11,13 +11,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person = function(){
 
 }
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.Sex = [
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.Sex = [
     'UNKNOWN', 
     'MALE', 
     'FEMALE'
 ]
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.Age = [
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.Age = [
     '_10',
     '11_20',
     '21_30',
@@ -29,7 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.Age = [
     '81_'
 ]
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.Interest = [
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.Interest = [
     'NONE',
     'NEGATIVE',
     'INDIFFERENT',

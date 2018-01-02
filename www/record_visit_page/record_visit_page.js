@@ -116,11 +116,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         });
     }
 
-    loadFile.loadScript('./data/data_object.js');
-    loadFile.loadScript('./data/place.js');
-    loadFile.loadScript('./data/person.js');
-    
-
     initAddressText();
     initAddPersonButton();
 
