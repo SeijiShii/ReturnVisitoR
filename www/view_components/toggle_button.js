@@ -65,7 +65,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
 
     this.toggle = function(toggled, animated) {
 
-        console.log('this.toggle called! toggle:', toggled, 'animated:', animated);
+        // console.log('this.toggle called! toggle:', toggled, 'animated:', animated);
 
         if (animated) {
             if (toggled) {
@@ -108,7 +108,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
 Object.defineProperty(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton.prototype, 'toggled', {
     get : function() {return this._toggled;},
     set : function(value) {
-        console.log('toggled set!');
         this.toggle(value, true);
     }
 });

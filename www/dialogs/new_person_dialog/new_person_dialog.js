@@ -10,6 +10,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         femaleToggleBase,
         femaleToggleButton,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        Person = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         buttonMarkerPaths = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.buttonMarkerPaths,
         viewComponents = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents;
@@ -19,7 +20,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     loadFile.loadCss('./dialogs/new_person_dialog/new_person_dialog.css');
     
-    _person = new returnvisitor.data.Person();
+    _person = new Person();
     
     function initMaleButton() {
         maleButton = _this.getElementById('male_button');
@@ -30,13 +31,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     function onClickMaleButton() {
 
-        console.log('onClickMaleButton! _person.sex:', _person.sex);
-
-        if (_person.sex != 1) {
-            _person.sex = 1;
+        if (_person.sex !== Person.sex.MALE) {
+            _person.sex = Person.sex.MALE;
             maleToggleButton.toggled = true;
             femaleToggleButton.toggled = false;
 
+            console.log('_person.sex:', _person.sex)
         }
     }
 
@@ -49,12 +49,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     function onClickFemaleButton() {
 
-        console.log('onClickFemaleButton! _person.sex:', _person.sex);
-
-        if (_person.sex != 2) {
-            _person.sex = 2;
+        if (_person.sex !== Person.sex.FEMALE) {
+            _person.sex = Person.sex.FEMALE;
             maleToggleButton.toggled = false;
             femaleToggleButton.toggled = true;
+
+            console.log('_person.sex:', _person.sex)
+
         }
     }
 

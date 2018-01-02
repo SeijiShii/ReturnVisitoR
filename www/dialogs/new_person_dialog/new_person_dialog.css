@@ -7,7 +7,7 @@
     margin: 5px auto;
 }
 
-#sex_select_group {
+.person_dialog_ui_group {
     position: relative;
     left :0;
     right: 0;
@@ -40,4 +40,32 @@
     height: 45px;
     float: left;
     margin-left: 5px;
+}
+
+.age_select_title {
+    height: 45px;
+    width: 20%;
+    text-align: center;
+    line-height: 45px;
+    float: left;
+}
+
+.age_selector_wrapper {
+    position: relative;
+    height: 45px;
+    width: 50%;
+    float: right
+}
+
+.age_selector {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    border: solid 1px gray;
+    border-radius: 5px;
+    outline: none;
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
 }
