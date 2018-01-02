@@ -11,9 +11,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
     
 }
 
-// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.Category = [
-//     'PLACE', 'ROOM', 'HOUSING_COMPLEX'
-// ]
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category = {
+    PLACE : 'Place', 
+    ROOM : 'Room', 
+    HOUSING_COMPLEX : 'Housing Complex'
+}
+
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {

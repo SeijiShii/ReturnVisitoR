@@ -5,6 +5,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+        Place = returnvisitor.data.Place,
         logoButton,
         addressText,
         nameText,
@@ -25,7 +26,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initPlaceData() {
 
         if (_options.method === 'NEW_PLACE_VISIT') {
-            _place = new returnvisitor.data.Place(_options.latLng, 'PLACE')
+            _place = new Place(_options.latLng, Place.category.PLACE)
         }
     }
         
@@ -96,7 +97,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function refreshRoomText() {
-        if ( _place.category === 'ROOM') {
+        if ( _place.category === Place.category.ROOM) {
             roomText.className = 'text_input';
         } else {
             roomText.className = 'text_input_invisible';        }
