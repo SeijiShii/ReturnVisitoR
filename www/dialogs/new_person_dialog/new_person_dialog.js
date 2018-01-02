@@ -4,14 +4,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     var _this = this,
         _person,
         maleButton,
-        maleButtonImage,
+        maleToggleBase,
+        maleToggleButton,
         femaleButton,
-        femaleButtonImage,
-        // buttonOnImagePath = './img/button_marker/button_marker_emerald.png',
-        // buttonOffImagePath = './img/button_marker/button_marker_gray.png',
+        femaleToggleBase,
+        femaleToggleButton,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
-        buttonMarkerPaths = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.buttonMarkerPaths;
+        buttonMarkerPaths = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.buttonMarkerPaths,
+        viewComponents = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents;
 
     returnvisitor.DialogBase.call(this,
         ['./dialogs/new_person_dialog/new_person_dialog.html']);
@@ -22,7 +23,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     
     function initMaleButton() {
         maleButton = _this.getElementById('male_button');
-        maleButtonImage = _this.getElementById('male_button_image');
+        maleToggleBase = _this.getElementById('male_toggle_button');
+        maleToggleButton = new viewComponents.ToggleButton(maleToggleBase);
         maleButton.addEventListener('click', onClickMaleButton);
     }
 
@@ -34,7 +36,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
     function initFemaleButton() {
         femaleButton = _this.getElementById('female_button');
-        femaleButtonImage = _this.getElementById('female_button_image');
+        femaleToggleBase = _this.getElementById('female_toggle_button');
+        femaleToggleButton = new viewComponents.ToggleButton(femaleToggleBase);
         femaleButton.addEventListener('click', onClickFemaleButton);
     }
 

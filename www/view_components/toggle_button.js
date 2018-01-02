@@ -2,7 +2,8 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = function(parent) {
 
-    var _parent = parent,
+    var _this = this,
+        _parent = parent,
         buttonFrame,
         buttonOnImage,
         buttonOffImage,
@@ -18,8 +19,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
             position: 'absolute'
         },
         buttonImageStyle = {
-            width: '20px',
-            height: '20px',
+            width: '21px',
+            height: '21px',
             top: 0,
             bottom: 0,
             left: 0,
@@ -50,7 +51,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
         buttonOnImage = document.createElement('img');
         $(buttonOnImage).css(buttonImageStyle);
         
-        if (onImagePath !== undefined) {
+        if (_this.onImagePath !== undefined) {
             buttonOnImage.src = onImagePath;
         } else {
             buttonOnImage.src = markerPaths.buttonMarkerPaths.emeraldButton;

@@ -30,6 +30,7 @@
 }
 
 .toggle_button_base {
+    position: relative;
     width: 30px;
     height: 45px;
     float: left;
