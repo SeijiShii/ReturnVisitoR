@@ -59,6 +59,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         refreshAppFrame();
 
         loadMapPageFiles();
+
+        // test
+        testNewPersonDialog();
     }
     
     function onResizeScreen() {
@@ -122,6 +125,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 lat: latLng.lat,
                 lng: latLng.lng
             }
+        });
+    }
+
+    //test
+    function testNewPersonDialog() {
+        loadFile.loadScript('./dialogs/dialog_base.js', function(){
+            loadNewPersonDialogScript();
+        });
+    }
+
+    function loadNewPersonDialogScript() {
+        loadFile.loadScript('./dialogs/new_person_dialog/new_person_dialog.js', function(){
+            var newPersonDialog = new returnvisitor.NewPersonDialog();
+            newPersonDialog.fadeIn(appFrame);
         });
     }
 

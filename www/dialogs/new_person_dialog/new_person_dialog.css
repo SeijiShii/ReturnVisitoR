@@ -1,45 +1,42 @@
+#name_text {
+    position: relative;
+    display: block;
+    width: 90%;
+    left: 0;
+    right: 0;
+    margin: 5px auto;
+}
+
 #sex_select_group {
+    position: relative;
     left :0;
     right: 0;
     margin: 5px auto;
-    vertical-align: middle;
 }
 
-.sex_text {
-    float: left;
+.sex_select_element {
     height: 45px;
+    float: left;
     line-height: 45px;
-    font-size: 15px;
-    color: #252525;
-    vertical-align: middle;
 }
 
-.sex_title {
-    width: 25%;
+.sex_select_title {
+    width: 20%;
     text-align: center;
 }
 
-.sex_option {
-    position: relative;
-    width: 30%;
+.sex_select_option {
+    width: 40%;
+}
+
+.toggle_button_base {
+    width: 30px;
+    height: 45px;
+    float: left;
+}
+
+.sex_option_text {
+    height: 45px;
+    float: left;
     margin-left: 5px;
-}
-
-.sex_option img {
-    width: 20px;
-    height: 20px;
-    /* margin-right: 5px; */
-    top: 0;
-    bottom: 0;
-    position: absolute;
-    margin: auto 5px;
-}
-
-.sex_option span {
-    position: absolute;
-    left: 30px;
-}
-
-.sex_option:active {
-    opacity: 0.3;
 }
