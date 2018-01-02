@@ -1,26 +1,27 @@
 "use strict"
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
-    var _person,
+    var _this = this,
+        _person,
         maleButton,
         maleButtonImage,
         femaleButton,
         femaleButtonImage,
-        buttonOnImagePath = '../img/button_marker/button_marker_emerald.png',
-        buttonOffImagePath = '../img/button_marker/button_marker_gray.png',
+        buttonOnImagePath = './img/button_marker/button_marker_emerald.png',
+        buttonOffImagePath = './img/button_marker/button_marker_gray.png',
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
 
     returnvisitor.DialogBase.call(this,
-        ['../dialogs/new_person_dialog/new_person_dialog.html']);
+        ['./dialogs/new_person_dialog/new_person_dialog.html']);
 
     loadFile.loadCss('./dialogs/new_person_dialog/new_person_dialog.css');
     
     _person = new returnvisitor.data.Person();
     
     function initMaleButton() {
-        maleButton = document.getElementById('male_button');
-        maleButtonImage = document.getElementById('male_button_image');
+        maleButton = _this.getElementById('male_button');
+        maleButtonImage = _this.getElementById('male_button_image');
         maleButton.addEventListener('click', onClickMaleButton);
     }
 
@@ -31,8 +32,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     }
 
     function initFemaleButton() {
-        femaleButton = document.getElementById('female_button');
-        femaleButtonImage = document.getElementById('female_button_image');
+        femaleButton = _this.getElementById('female_button');
+        femaleButtonImage = _this.getElementById('female_button_image');
         femaleButton.addEventListener('click', onClickFemaleButton);
     }
 
@@ -49,10 +50,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         })
     }
 
-    this.setDialogBaseReadyCallback(function(){
+    this.onDialogBaseReady = function(){
         initMaleButton();
         initFemaleButton();
-    })
+    };
     
 
 }

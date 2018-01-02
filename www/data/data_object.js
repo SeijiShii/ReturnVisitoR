@@ -21,12 +21,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype.generateI
     var dataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject;
     var milSec = new Date().valueOf();
     var idCounterString = ('0000' + dataObject.idCounter).slice(-4);
-    console.log('this.idCounter:', dataObject.idCounter)
+    // console.log('this.idCounter:', dataObject.idCounter)
     dataObject.idCounter += 1;
     if (dataObject.idCounter >= 10000) {
         dataObject.idCounter = 0;
     }
-    console.log('idCounter:', dataObject.idCounter)
+    // console.log('idCounter:', dataObject.idCounter)
 
     return idHeader + '_' + milSec + idCounterString;
 }

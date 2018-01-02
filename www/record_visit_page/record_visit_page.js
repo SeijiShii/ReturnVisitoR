@@ -18,7 +18,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         _isWideScreen,
         _options,
         addPersonDialog,
-        newPersonDialog;
+        newPersonDialog,
+        appFrame = document.getElementById('app_frame');
     
     function initPlaceData() {
 
@@ -87,8 +88,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickAddPersonButton() {
 
-        var personDialog = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog();
-        personDialog.fadeIn();
+        addPersonDialog.fadeIn(appFrame);
 
     }
 

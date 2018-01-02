@@ -72,6 +72,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
         $(dialogFrame).load(contentHtmlPath, function(){
                 
+            // console.log(dialogFrame);
+
             if (typeof _this.onDialogBaseReady === 'function') {
                 _this.onDialogBaseReady();
             }
@@ -106,6 +108,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     }
 
     this.fadeIn = function(parent) {
+
+        if (parent === undefined) {
+            console.log('DialogBase.fadeIn is called without specifying parent.')
+            return;
+        }
 
         _parent = parent;
 
