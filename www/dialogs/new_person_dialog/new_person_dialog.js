@@ -9,6 +9,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         femaleButton,
         femaleToggleBase,
         femaleToggleButton,
+        ageSelector,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
@@ -59,9 +60,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         }
     }
 
+    function initAgeSelector() {
+        ageSelector = _this.getElementById('age_selector');
+
+        console.log(Person.age.keys);
+        console.log(Person.age.values);
+
+
+    }
+
     this.onDialogBaseReady = function(){
         initMaleButton();
         initFemaleButton();
+        initAgeSelector();
     };
     
 
