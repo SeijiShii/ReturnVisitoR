@@ -2,17 +2,17 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter =  {
 
-    'keys' : {
-        enumerable: false,
-        get : function() {
-            var array = [];
-            Object.keys(this).forEach(function(key){
-                array.push(key);
-            }, this);
-            return array;
+    // 'keys' : {
+    //     enumerable: false,
+    //     get : function() {
+    //         var array = [];
+    //         Object.keys(this).forEach(function(key){
+    //             array.push(key);
+    //         }, this);
+    //         return array;
     
-        }
-    },
+    //     }
+    // },
 
     'values' : {
         enumerable : false,

@@ -18,6 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex = {
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age = {
     
+    AGE_UNKNOWN : 'Unknown',
     AGE_10      : '~10',
     AGE_11_20   : '11~20',
     AGE_21_30   : '21~30',

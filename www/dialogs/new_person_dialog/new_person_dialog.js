@@ -61,12 +61,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     }
 
     function initAgeSelector() {
-        ageSelector = _this.getElementById('age_selector');
+        var ageSelectorBase = _this.getElementById('age_selector_base');
 
-        console.log(Person.age.keys);
-        console.log(Person.age.values);
-
-
+        ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age);
     }
 
     this.onDialogBaseReady = function(){
