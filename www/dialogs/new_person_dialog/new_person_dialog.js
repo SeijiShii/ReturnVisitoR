@@ -64,6 +64,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         var ageSelectorBase = _this.getElementById('age_selector_base');
 
         ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age);
+        ageSelector.onSelectOption = function(selecteKey) {
+            console.log('Selected key: ', selecteKey);
+
+        }
     }
 
     this.onDialogBaseReady = function(){

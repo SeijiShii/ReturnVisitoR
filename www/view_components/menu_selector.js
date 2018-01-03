@@ -2,7 +2,8 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = function(parent, optionObject, initialSelectedKey) {
 
-    var _parent = parent,
+    var _this = this,
+        _parent = parent,
         selectorDiv,
         overlay,
         menuList,
@@ -11,7 +12,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         OPTION_HEIGHT = OPTION_HEIGHT_NUM + 'px',
         OPTION_ID_PREFIX = 'option_',
         keys = Object.keys(optionObject),
-        _selectedKey = initialSelectedKey;
+        _selectedKey = initialSelectedKey,
+        _selectedOption;
+    
+    // Callback
+    this.onSelectOption;
 
     function initSelectorDiv() {
         selectorDiv = document.createElement('div');
@@ -37,6 +42,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         _parent.appendChild(selectorDiv);
     }
+
 
     function getSelectorDivText() {
 
@@ -73,7 +79,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         var topPosition = rect.top - getSelectedKeyIndex() * OPTION_HEIGHT_NUM;
         
-        console.log(topPosition);
+        // console.log(topPosition);
 
         $(menuList).css({
             top : topPosition + 'px',
@@ -140,7 +146,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
             marginTop : 0,
             listStyle : 'none',
             paddingRight : '10px',
-            paddingLeft : '10px'
+            paddingLeft : '10px',
+            boxShadow : '3px 3px 3px #00000080'
         });
 
     }
@@ -164,10 +171,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
             }
             option.innerText = optionObject[keys[i]];
             option.id = OPTION_ID_PREFIX + keys[i]
-            option.addEventListener('click', onOptionClick)
+
+            option.addEventListener('touchstart', onOptionTouchStart)
+            option.addEventListener('mousedown', onOptionTouchStart)
+
+            option.addEventListener('touchend', onOptionTouchEnd)
+            option.addEventListener('mouseup', onOptionTouchEnd)
 
             menuList.appendChild(option);
 
+        }
+    }
+
+    function onOptionTouchStart(e) {
+        _selectedOption = e.srcElement;
+        _selectedOption.style.opacity = 0.3;
+    }
+
+    function onOptionTouchEnd(e) {
+        if ( e.srcElement === _selectedOption ) {
+            onOptionClick(e);
+            _selectedOption.style.opacity = 1;
         }
     }
 
@@ -175,10 +199,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         
         dismiss();
 
-        _selectedKey = e.srcElement.id.substring(OPTION_ID_PREFIX.length);
-        console.log(_selectedKey);
+        _selectedKey = _selectedOption.id.substring(OPTION_ID_PREFIX.length);
+        
+        // console.log(_selectedKey);
 
         selectorDiv.innerText = getSelectorDivText();
+
+        if ( typeof _this.onSelectOption === 'function' ) {
+            _this.onSelectOption(_selectedKey);
+        }
 
     }
  
