@@ -26,7 +26,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initPlaceData() {
 
         if (_options.method === 'NEW_PLACE_VISIT') {
-            _place = new Place(_options.latLng, Place.category.PLACE)
+            _place = new Place(_options.latLng, 'PLACE')
         }
     }
         
@@ -97,7 +97,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function refreshRoomText() {
-        if ( _place.category === Place.category.ROOM) {
+        if ( _place.category === 'ROOM') {
             roomText.className = 'text_input';
         } else {
             roomText.className = 'text_input_invisible';        }

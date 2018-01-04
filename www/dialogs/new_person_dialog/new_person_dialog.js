@@ -28,12 +28,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         maleToggleBase = _this.getElementById('male_toggle_button');
         maleToggleButton = new viewComponents.ToggleButton(maleToggleBase);
         maleButton.addEventListener('click', onClickMaleButton);
+
+        if (_person.sex === 'MALE') {
+            maleButton.toggled = true;
+            femaleToggleButton.toggled = false;
+        } else {
+            maleToggleButton.toggled = false
+        }
     }
 
     function onClickMaleButton() {
 
-        if (_person.sex !== Person.sex.MALE) {
-            _person.sex = Person.sex.MALE;
+        if (_person.sex !== 'MALE') {
+            _person.sex = 'MALE';
             maleToggleButton.toggled = true;
             femaleToggleButton.toggled = false;
 
@@ -46,12 +53,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         femaleToggleBase = _this.getElementById('female_toggle_button');
         femaleToggleButton = new viewComponents.ToggleButton(femaleToggleBase);
         femaleButton.addEventListener('click', onClickFemaleButton);
+
+        if (_person.sex === 'FWMALE') {
+            maleToggleButton.toggled = false;
+            femaleToggleButton.toggled = true;
+        } else {
+            femaleToggleButton.toggled = false
+        }
     }
 
     function onClickFemaleButton() {
 
-        if (_person.sex !== Person.sex.FEMALE) {
-            _person.sex = Person.sex.FEMALE;
+        if (_person.sex !== 'FEMALE') {
+            _person.sex = 'FEMALE';
             maleToggleButton.toggled = false;
             femaleToggleButton.toggled = true;
 
@@ -63,9 +77,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
     function initAgeSelector() {
         var ageSelectorBase = _this.getElementById('age_selector_base');
 
-        ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age);
+        ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age, _person.age);
         ageSelector.onSelectOption = function(selecteKey) {
-            console.log('Selected key: ', selecteKey);
+
+            _person.age = selecteKey;
+            console.log('_person.age:', _person.age);
 
         }
     }

@@ -17,6 +17,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category = {
     HOUSING_COMPLEX : 'Housing Complex'
 }
 
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
+
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {

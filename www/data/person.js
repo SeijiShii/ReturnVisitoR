@@ -4,17 +4,19 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data')
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person = function(){
 
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this);
-    this.sex = 0;
-    this.age;
-    this.interest;
+    this.sex = 'SEX_UNKNOWN';
+    this.age = 'AGE_UNKNOWN';
+    this.interest = 'INTEREST_NONE';
 
 }
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex = {
-    UNKNOWN : 'Unknown',
+    SEX_UNKNOWN : 'Unknown',
     MALE    : 'Male',
     FEMALE  : 'Female'
 } 
+
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age = {
     
@@ -32,10 +34,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age = {
 
 Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
 
-
-
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest = {
-    NONE                : 'None',
+    INTEREST_NONE       : 'None',
     NEGATIVE            : 'Negative',
     INDIFFERENT         : 'Indifferent',
     FAIR                : 'Fair',
@@ -43,6 +43,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest = {
     INTERESTED          : 'Interested',
     STRONGLY_INTERESTED : 'Strongly Interested' 
 } 
+
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {

@@ -34,11 +34,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         selectorDiv.innerText = getSelectorDivText();
 
-        selectorDiv.addEventListener('touchstart', onStartSelectorDivTouch);
-        selectorDiv.addEventListener('mousedown', onStartSelectorDivTouch);
-
-        selectorDiv.addEventListener('touchend', onEndSelectorDivTouch);
-        selectorDiv.addEventListener('mouseup', onEndSelectorDivTouch);
+        selectorDiv.addEventListener('click', onClickSelectorDiv);
 
         _parent.appendChild(selectorDiv);
     }
@@ -61,25 +57,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         return text + ' ▼';
     }
 
-    function onStartSelectorDivTouch() {
-        // console.log('Touch start!')
-        selectorDiv.style.opacity = 0.3
-    }
-
-    function onEndSelectorDivTouch() {
-        selectorDiv.style.opacity = 1;
-        onClickSelectorDiv();
-    }
-
     function onClickSelectorDiv() {
+
+        clickFade(selectorDiv)
 
         document.body.appendChild(overlay);
 
         var rect =  selectorDiv.getBoundingClientRect();
 
         var topPosition = rect.top - getSelectedKeyIndex() * OPTION_HEIGHT_NUM;
-        
-        // console.log(topPosition);
 
         $(menuList).css({
             top : topPosition + 'px',
@@ -89,6 +75,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         });
 
         document.body.appendChild(menuList);
+
+        menuList.style.height = (keys.length * (OPTION_HEIGHT_NUM + 1)) + 'px';
+        var menuBottom = parseInt(menuList.style.top) + parseInt(menuList.style.height)
+        
+        if (parseInt(menuList.style.height) >=  window.innerHeight) {
+            menuList.style.height = (window.innerHeight - 30) + 'px';
+            menuList.style.top = '10px';
+        } else {
+
+            if (parseInt(menuList.style.top) <= 0) {
+
+                menuList.style.top = '10px';
+
+            } else if (menuBottom >= window.innerHeight) {
+
+                menuList.style.bottom = '10px';
+
+            }
+        }
+
         $(menuList).fadeTo(100, 1);
     }
 
@@ -136,8 +142,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
     function initMenuList() {
         menuList = document.createElement('ul');
+
         $(menuList).css({
-            height : keys * OPTION_HEIGHT + 'px',
+            height : (keys.length * (OPTION_HEIGHT_NUM + 1)) + 'px',
             border : 'solid gray 1px',
             position : 'absolute',
             opacity : 0,
@@ -147,7 +154,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
             listStyle : 'none',
             paddingRight : '10px',
             paddingLeft : '10px',
-            boxShadow : '3px 3px 3px #00000080'
+            boxShadow : '3px 3px 3px #00000080',
+            overflow : 'auto'
         });
 
     }
@@ -172,26 +180,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
             option.innerText = optionObject[keys[i]];
             option.id = OPTION_ID_PREFIX + keys[i]
 
-            option.addEventListener('touchstart', onOptionTouchStart)
-            option.addEventListener('mousedown', onOptionTouchStart)
-
-            option.addEventListener('touchend', onOptionTouchEnd)
-            option.addEventListener('mouseup', onOptionTouchEnd)
+            option.addEventListener('click', onOptionClick)
 
             menuList.appendChild(option);
 
-        }
-    }
-
-    function onOptionTouchStart(e) {
-        _selectedOption = e.srcElement;
-        _selectedOption.style.opacity = 0.3;
-    }
-
-    function onOptionTouchEnd(e) {
-        if ( e.srcElement === _selectedOption ) {
-            onOptionClick(e);
-            _selectedOption.style.opacity = 1;
         }
     }
 
@@ -199,9 +191,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         
         dismiss();
 
+        _selectedOption = e.srcElement;
+
+        clickFade(_selectedOption);
+
         _selectedKey = _selectedOption.id.substring(OPTION_ID_PREFIX.length);
-        
-        // console.log(_selectedKey);
 
         selectorDiv.innerText = getSelectorDivText();
 
@@ -210,6 +204,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         }
 
     }
+
+    function clickFade(elm) {
+        $(elm).fadeTo(100, 0.3, function() {
+            $(elm).fadeTo(100, 1);
+        })
+    }
+
  
     initSelectorDiv();
     initOverlay();
