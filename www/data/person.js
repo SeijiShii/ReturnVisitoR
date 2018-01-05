@@ -38,6 +38,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest = {
     INTEREST_NONE       : 'None',
     NEGATIVE            : 'Negative',
     INDIFFERENT         : 'Indifferent',
+    TOO_BUSY            : 'Too Busy',
     FAIR                : 'Fair',
     KIND                : 'Kind',
     INTERESTED          : 'Interested',

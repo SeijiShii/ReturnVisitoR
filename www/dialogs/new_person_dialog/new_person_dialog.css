@@ -68,4 +68,17 @@
 
 }
 
+#interest_text {
+    width: 90%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin: auto; 
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
 

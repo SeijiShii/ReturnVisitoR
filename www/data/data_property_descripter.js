@@ -20,7 +20,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter =  {
             
             var array = [];
             
-            this.keys.forEach(function(key){
+            Object.keys(this).forEach(function(key){
                 array.push(this[key]);
             }, this);
     
@@ -36,6 +36,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter =  {
                     return key;
                 }
             }, this)
+        }
+    },
+
+    'indexOfKey' : {
+        enumerable : false,
+        value : function(key) {
+            var keys = Object.keys(this);
+            for ( var i = 0 ; i < keys.length ; i++ ) {
+                if (keys[i] === key) {
+                    return i;
+                }
+            }
         }
     }
 }

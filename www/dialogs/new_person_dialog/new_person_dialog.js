@@ -10,6 +10,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         femaleToggleBase,
         femaleToggleButton,
         ageSelector,
+        interestRater,
+        interestText,
+        INTEREST_PREFIX = 'Interest: ',
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
@@ -81,15 +84,47 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         ageSelector.onSelectOption = function(selecteKey) {
 
             _person.age = selecteKey;
-            console.log('_person.age:', _person.age);
+            // console.log('_person.age:', _person.age);
 
         }
+    }
+
+    function initInterestRater() {
+
+        var raterBase = _this.getElementById('interest_rater_base');
+
+        interestRater = new viewComponents.Rater(raterBase, Person.interest, buttonMarkerPaths);
+        interestRater.onSetRater = function(key) {
+            _person.interest = key;
+            refreshInterestText();
+            // console.log('_person.interest: ', _person.interest);
+        }
+
+    }
+
+    function initInterestText() {
+        interestText = _this.getElementById('interest_text');
+        refreshInterestText();
+    }
+
+    function refreshInterestText() {
+
+        var text;
+        if (_person.interest === undefined) {
+            text = INTEREST_PREFIX + Person.interest['INTEREST_NONE'];
+        } else{
+            text = INTEREST_PREFIX + Person.interest[_person.interest];
+        }
+
+        interestText.innerText = text;
     }
 
     this.onDialogBaseReady = function(){
         initMaleButton();
         initFemaleButton();
         initAgeSelector();
+        initInterestRater();
+        initInterestText();
     };
     
 
