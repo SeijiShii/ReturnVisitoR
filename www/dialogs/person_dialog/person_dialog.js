@@ -1,5 +1,5 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     var _this = this,
         _person,
@@ -20,9 +20,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
         viewComponents = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents;
 
     returnvisitor.DialogBase.call(this,
-        ['./dialogs/new_person_dialog/new_person_dialog.html']);
+        ['./dialogs/person_dialog/person_dialog.html']);
 
-    loadFile.loadCss('./dialogs/new_person_dialog/new_person_dialog.css');
+    loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     
     _person = new Person();
     
@@ -130,11 +130,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog = function() {
 
 }
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {
     constructor: {
         configurable: true,
         enumerable: true,
-        value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.NewPersonDialog,
+        value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog,
         writable: true
     }
 });

@@ -61,7 +61,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         loadMapPageFiles();
 
         // test
-        testNewPersonDialog();
+        testPersonDialog();
     }
     
     function onResizeScreen() {
@@ -129,15 +129,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     }
 
     //test
-    function testNewPersonDialog() {
+    function testPersonDialog() {
         loadFile.loadScript('./dialogs/dialog_base.js', function(){
-            loadNewPersonDialogScript();
+            loadPersonDialogScript();
         });
     }
 
-    function loadNewPersonDialogScript() {
-        loadFile.loadScript('./dialogs/new_person_dialog/new_person_dialog.js', function(){
-            var newPersonDialog = new returnvisitor.NewPersonDialog();
+    function loadPersonDialogScript() {
+        loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
+            var newPersonDialog = new returnvisitor.PersonDialog();
             newPersonDialog.fadeIn(appFrame);
         });
     }

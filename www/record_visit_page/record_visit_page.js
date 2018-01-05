@@ -20,7 +20,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         _isWideScreen,
         _options,
         addPersonDialog,
-        newPersonDialog,
+        personDialog,
         appFrame = document.getElementById('app_frame');
     
     function initPlaceData() {
@@ -106,7 +106,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function loadDialogFiles() {
         loadFile.loadScript('./dialogs/dialog_base.js', function(){
             loadAddPersonDialogScript();
-            loadNewPersonDialogScript();
+            loadPersonDialogScript();
         });
     }
 
@@ -114,14 +114,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
             addPersonDialog = new returnvisitor.AddPersonDialog();
             addPersonDialog.onNewPersonClick = function() {
-                newPersonDialog.fadeIn(appFrame);
+                personDialog.fadeIn(appFrame);
             };
         });
     }
 
-    function loadNewPersonDialogScript() {
-        loadFile.loadScript('./dialogs/new_person_dialog/new_person_dialog.js', function(){
-            newPersonDialog = new returnvisitor.NewPersonDialog();
+    function loadPersonDialogScript() {
+        loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
+            personDialog = new returnvisitor.PersonDialog();
         });
     }
 
