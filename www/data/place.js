@@ -6,13 +6,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this, 'place');
 
     this.latLng = latLng;
+    this.category = category; 
     this.address;
-    this.category;
+    
 }
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.Category = [
-    'PLACE', 'ROOM', 'HOUSING_COMPLEX'
-]
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category = {
+    PLACE : 'Place', 
+    ROOM : 'Room', 
+    HOUSING_COMPLEX : 'Housing Complex'
+}
+
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
+
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {

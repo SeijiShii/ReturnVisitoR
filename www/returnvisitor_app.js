@@ -60,6 +60,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         refreshAppFrame();
 
         loadMapPageFiles();
+
+        // test
+        testPersonDialog();
     }
     
     function onResizeScreen() {
@@ -111,7 +114,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {
             loadFile.loadScript('./record_visit_page/record_visit_page.js', function() {
                 recordVisitPage = returnvisitor.recordVisitPage;
-                recordVisitPage.setOptions(options);
+                recordVisitPage.initialize(options);
             });
         });
     }
@@ -123,6 +126,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 lat: latLng.lat,
                 lng: latLng.lng
             }
+        });
+    }
+
+    //test
+    function testPersonDialog() {
+        loadFile.loadScript('./dialogs/dialog_base.js', function(){
+            loadPersonDialogScript();
+        });
+    }
+
+    function loadPersonDialogScript() {
+        loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
+            var newPersonDialog = new returnvisitor.PersonDialog();
+            newPersonDialog.fadeIn(appFrame);
         });
     }
 

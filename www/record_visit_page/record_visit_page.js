@@ -5,6 +5,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
+        Place = returnvisitor.data.Place,
         logoButton,
         addressText,
         nameText,
@@ -14,17 +15,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LOGO_BUTTON_SIZE = '40px',
-        place,
+        ROOM_TEXT_HEIGHT = '30px',
+        _place,
         _isWideScreen,
         _options,
         addPersonDialog,
-        newPersonDialog,
+        personDialog,
         appFrame = document.getElementById('app_frame');
     
     function initPlaceData() {
 
         if (_options.method === 'NEW_PLACE_VISIT') {
-            place = new returnvisitor.data.Place(_options.latLng)
+            _place = new Place(_options.latLng, 'PLACE')
         }
     }
         
@@ -46,13 +48,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function requestReverseGeocoding() {
 
-        if (place.address) {
+        if (_place.address) {
             return;
         }
 
         // Latitude, longitude -> address
         plugin.google.maps.Geocoder.geocode({
-            "position": place.latLng
+            "position": _place.latLng
           }, function(results) {
   
             if (results.length === 0) {
@@ -74,10 +76,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             }
 
             addressText.value = address;
-            place.address = address;
+            _place.address = address;
 
-            // console.log('place.id:', place.id)
-            // console.log('address:', place.address);
           });
     }
 
@@ -92,27 +92,42 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
 
+    function initRoomText() {
+        roomText = document.getElementById('room_text');
+    }
+
+    function refreshRoomText() {
+        if ( _place.category === 'ROOM') {
+            roomText.className = 'text_input';
+        } else {
+            roomText.className = 'text_input_invisible';        }
+    }
+
     function loadDialogFiles() {
         loadFile.loadScript('./dialogs/dialog_base.js', function(){
             loadAddPersonDialogScript();
-            loadNewPersonDialogScript();
+            loadPersonDialogScript();
         });
     }
 
     function loadAddPersonDialogScript() {
         loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
             addPersonDialog = new returnvisitor.AddPersonDialog();
+            addPersonDialog.onNewPersonClick = function() {
+                personDialog.fadeIn(appFrame);
+            };
         });
     }
 
-    function loadNewPersonDialogScript() {
-        loadFile.loadScript('./dialogs/new_person_dialog/new_person_dialog.js', function(){
-            newPersonDialog = new returnvisitor.NewPersonDialog();
+    function loadPersonDialogScript() {
+        loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
+            personDialog = new returnvisitor.PersonDialog();
         });
     }
 
     initAddressText();
     initAddPersonButton();
+    initRoomText();
 
     loadDialogFiles();
 
@@ -122,10 +137,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             
         },
 
-        setOptions : function(options) {
+        initialize : function(options) {
             _options = options;
             initPlaceData();
             requestReverseGeocoding();
+            refreshRoomText();
         }
     }
 }());
