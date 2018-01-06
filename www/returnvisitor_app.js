@@ -29,7 +29,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         DRAWER_WIDTH = 240,
         loadFile = returnvisitor.common.loadFile,
         mapPage,
-        recordVisitPage;
+        recordVisitPage,
+        isWebGoogleMapReady = false;
     
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -128,4 +129,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);
 
+    return {
+        onWebGoogleMapReady : function() {
+            console.log('onWebGoogleMapReady called!');
+            isWebGoogleMapReady = true;
+        }
+    }
+
 }());
+
+

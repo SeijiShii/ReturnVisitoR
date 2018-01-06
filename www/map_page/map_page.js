@@ -106,6 +106,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     }
 
+    function initMapOnNative() {
+
+    }
+
+    function initMapOnBrowser() {
+
+    }
+
     function refreshMapDiv() {
 
         if (_isWideScreen) {
