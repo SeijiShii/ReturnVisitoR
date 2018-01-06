@@ -20,7 +20,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         viewComponents = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents;
 
     returnvisitor.DialogBase.call(this,
-        ['./dialogs/person_dialog/person_dialog.html']);
+        ['./dialogs/person_dialog/person_dialog.html'],
+        520);
 
     loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     
