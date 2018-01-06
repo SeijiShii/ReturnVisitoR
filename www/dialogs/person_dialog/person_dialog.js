@@ -13,6 +13,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         interestRater,
         interestText,
         INTEREST_PREFIX = 'Interest: ',
+        okButton,
+        deleteButton,
+        deleteButtonRow,
+        cancelButton,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
@@ -120,12 +124,58 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         interestText.innerText = text;
     }
 
+    function initOkButton() {
+        okButton = _this.getElementById('ok_button');
+        okButton.addEventListener('click', onClickOkButton);
+    }
+
+    function onClickOkButton() {
+
+        _this.fadeOut();
+
+        if(typeof _this.onClickOk === 'function') {
+            _this.onClickOk(_person);
+        }
+    }
+
+    function initDeleteButtonRow() {
+        deleteButtonRow = _this.getElementById('delete_button_row');
+    }
+
+    function initDeleteButton() {
+        deleteButton = _this.getElementById('delete_button');
+        deleteButton.addEventListener('click', onClickDeleteButton);
+
+    }
+
+    function onClickDeleteButton() {
+
+        alert('Hoge!')
+        
+    }
+
+    function initCancelButton() {
+        cancelButton = _this.getElementById('cancel_button');
+        cancelButton.addEventListener('click', onClickCancelButton);
+    }
+
+    function onClickCancelButton() {
+
+        _this.fadeOut();
+
+    }
+
     this.onDialogBaseReady = function(){
         initMaleButton();
         initFemaleButton();
         initAgeSelector();
         initInterestRater();
         initInterestText();
+
+        initOkButton();
+        initDeleteButtonRow();
+        initDeleteButton();
+        initCancelButton();
     };
     
 
