@@ -61,7 +61,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         loadMapPageFiles();
 
         // test
-        testPersonDialog();
+        // testPersonDialog();
     }
     
     function onResizeScreen() {
@@ -149,15 +149,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         onWebGoogleMapReady : function() {
             console.log('onWebGoogleMapReady called!');
 
-            var mapReadySetTimer = function() {
-                if (mapPage !== undefined) {
-                    mapPage.isWebGoogleMapReady = true;    
-                    console.log('mapPage is Ready and web google map is also ready!')
-                    clearTimeout(timerId);
-                }
+            if (mapPage !== undefined) {
+                mapPage.onBrowserMapLoaded();
             }
 
-            var timerId = setInterval(mapReadySetTimer, 50);
             
         }
     }
