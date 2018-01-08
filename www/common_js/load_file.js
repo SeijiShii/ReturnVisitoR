@@ -20,9 +20,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
             });
         },
 
-        appendHtmlToAppFrame: function(filePath, callback) {
+        appendHtmlToAppFrame: function(filePath, callback, opacity) {
 
             this.loadHtmlAsElement(filePath, function(divElem) {
+
+                if (opacity !== undefined) {
+                    divElem.style.opacity = opacity;
+                }
 
                 document.getElementById('app_frame').appendChild(divElem);
 

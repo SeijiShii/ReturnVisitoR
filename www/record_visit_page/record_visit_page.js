@@ -17,7 +17,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         LOGO_BUTTON_SIZE = '40px',
         ROOM_TEXT_HEIGHT = '30px',
         _place,
-        _isWideScreen,
+        // _isWideScreen,
         _options,
         addPersonDialog,
         personDialog,
@@ -125,6 +125,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         });
     }
 
+    function fadeIn() {
+        $('#record_visit_page_frame').fadeTo('slow', 1);
+    }
+
     initAddressText();
     initAddPersonButton();
     initRoomText();
@@ -132,16 +136,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     loadDialogFiles();
 
     return {
-        refreshElements : function(isWideScreen) {
-            _isWideScreen = isWideScreen;
+        // refreshElements : function(isWideScreen) {
+        //     _isWideScreen = isWideScreen;
             
-        },
+        // },
 
         initialize : function(options) {
             _options = options;
             initPlaceData();
             requestReverseGeocoding();
             refreshRoomText();
+
+            fadeIn();
         }
     }
 }());

@@ -115,7 +115,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 recordVisitPage = returnvisitor.recordVisitPage;
                 recordVisitPage.initialize(options);
             });
-        });
+        }, 0);
     }
 
     function onNewPlaceVisit(latLng) {
