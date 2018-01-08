@@ -29,8 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         DRAWER_WIDTH = 240,
         loadFile = returnvisitor.common.loadFile,
         mapPage,
-        recordVisitPage,
-        isWebGoogleMapReady = false;
+        recordVisitPage;
     
     function initAppFrame() {
         appFrame = document.getElementById('app_frame');
@@ -102,7 +101,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             loadFile.loadScript('./map_page/map_page.js', function() {
                 mapPage = returnvisitor.mapPage;
                 mapPage.refreshElements(isWideScreen(), false);
-                mapPage.setNewPlaceVisitCallback(onNewPlaceVisit);
+                mapPage.onNewPlaceVisitClick = onNewPlaceVisit;
 
             });
         });
@@ -143,13 +142,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         });
     }
 
+    
+
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);
 
     return {
         onWebGoogleMapReady : function() {
             console.log('onWebGoogleMapReady called!');
-            isWebGoogleMapReady = true;
+
+            var mapReadySetTimer = function() {
+                if (mapPage !== undefined) {
+                    mapPage.isWebGoogleMapReady = true;    
+                    console.log('mapPage is Ready and web google map is also ready!')
+                    clearTimeout(timerId);
+                }
+            }
+
+            var timerId = setInterval(mapReadySetTimer, 50);
+            
         }
     }
 

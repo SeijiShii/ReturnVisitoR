@@ -3,9 +3,12 @@
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        _this = this,
         _isWideScreen,
+        mapDivBase,
         mapDiv,
-        map,
+        nativeMap,
+        browserMap,
         tmpMarker,
         logoButton,
         drawerOverlay,
@@ -24,16 +27,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         CAMERA_ZOOM = 'camera_zoom',
         mapLongClickDialog,
         loadFile = returnvisitor.common.loadFile,
-        newPlaceVisitCallback,
-        _latLng;
+        _latLng,
+        isWebGoogleMapReady;
    
  
     function initGoogleMap() {
     
         mapDiv = document.getElementById('map_div');
+        var cameraPosition = loadCameraPosition();
 
-        var position = loadCameraPosition();
+        console.log(cameraPosition);
 
+        if (cordova) {
+            if (cordova.platformId === 'browser') {
+                initBrowserMap(cameraPosition);
+            } else {
+                initNativeMap(cameraPosition);
+            }
+        }
+    }
+
+    function initNativeMap(cameraPosition) {
         var options = {
             'mapType': plugin.google.maps.MapTypeId.HYBRID,
             'controls': {
@@ -58,23 +72,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         if (position) {
             options['camera'] = {
                 'target' : {
-                    lat: position.target.lat,
-                    lng: position.target.lng
+                    lat: cameraPosition.lat,
+                    lng: cameraPosition.lng
                 },
-                'zoom' : position.zoom
+                'zoom' : cameraPosition.zoom
             }
         }
     
-        map = plugin.google.maps.Map.getMap(mapDiv, options);
+        nativeMap = plugin.google.maps.Map.getMap(mapDiv, options);
         
-        map.on(plugin.google.maps.event.CAMERA_MOVE_END, saveCameraPosition);
+        nativeMap.on(plugin.google.maps.event.CAMERA_MOVE_END, function() {
+            saveCameraPosition(nativeMap.getCameraPosition().target, nativeMap.getCenter().zoom);
+        });
 
-        map.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
+        nativeMap.on(plugin.google.maps.event.MAP_LONG_CLICK, function(latLng){
 
             _latLng = latLng;
 
             // console.log('Map long clicked: ' + latLng.toUrlValue());
-            map.animateCamera({
+            nativeMap.animateCamera({
                 target: {
                     lat: latLng.lat,
                     lng: latLng.lng
@@ -82,7 +98,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
                 duration: 500
             });
 
-            map.addMarker({
+            nativeMap.addMarker({
                 position: {
                     lat: latLng.lat,
                     lng: latLng.lng
@@ -103,35 +119,72 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             mapLongClickDialog.fadeIn(mapDiv);
 
         });
+    }
+
+    function initBrowserMap(cameraPosition) {
+
+        browserMap = new google.maps.Map(mapDiv, {
+            center: {
+                lat : 0,
+                lng : 0
+            },
+            zoom : 4,
+            mapTypeId : google.maps.MapTypeId.HYBRID,
+            streetViewControl : false,
+            mapTypeControl: false,
+            fullscreenControl: false,
+        });
+
+        if (cameraPosition) {
+            browserMap.setOptions({
+                center: {
+                    lat : parseFloat(cameraPosition.lat),
+                    lng : parseFloat(cameraPosition.lng)
+                },
+                zoom : parseInt(cameraPosition.zoom)
+            });
+        }
+
+        browserMap.addListener('dragend', onBrowserMapCameraPositionChange) ;
+        browserMap.addListener('zoom_changed', onBrowserMapCameraPositionChange);
 
     }
 
-    function initMapOnNative() {
+    function onBrowserMapCameraPositionChange() {
+        var latLng = {
+            lat : browserMap.getCenter().lat(),
+            lng : browserMap.getCenter().lng()
+        }
+            
+        saveCameraPosition(latLng, browserMap.getZoom());
+    }
+
+    function initMapDivBase() {
+
+        mapDivBase = document.getElementById('map_div_base');
 
     }
 
-    function initMapOnBrowser() {
-
-    }
-
-    function refreshMapDiv() {
+    function refreshMapDivBase() {
 
         if (_isWideScreen) {
-            mapDiv.style.left = DRAWER_WIDTH + 'px';
-            mapDiv.style.width = (window.innerWidth - DRAWER_WIDTH) + 'px';
+            mapDivBase.style.left = DRAWER_WIDTH + 'px';
+            mapDivBase.style.width = (window.innerWidth - DRAWER_WIDTH) + 'px';
 
         } else {
-            mapDiv.style.left = 0;
-            mapDiv.style.width = window.innerWidth + 'px';
+            mapDivBase.style.left = 0;
+            mapDivBase.style.width = window.innerWidth + 'px';
         }
     }
-    
-    function saveCameraPosition() {
-        var position = map.getCameraPosition();
+
+    function saveCameraPosition(latLng, zoom) {
+
+        console.log(latLng, zoom);
+
         var storage = window.localStorage;
-        storage.setItem(LATITUDE, position.target.lat);
-        storage.setItem(LONGTUDE, position.target.lng);
-        storage.setItem(CAMERA_ZOOM, position.zoom);
+        storage.setItem(LATITUDE, latLng.lat);
+        storage.setItem(LONGTUDE, latLng.lng);
+        storage.setItem(CAMERA_ZOOM, zoom);
     };
 
     function loadCameraPosition() {
@@ -149,22 +202,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             return null;
         }
         return {
-            target: {
-                lat: lat,
-                lng: lng
-            },
+            lat: lat,
+            lng: lng,
             zoom: zoom
         };
     };
 
     function initLogoButton() {
-        // console.log('initLogoButton called!')
         logoButton = document.getElementById('logo_button');
         logoButton.addEventListener('click', onClickLogoButton);
     };
 
     function onClickLogoButton() {
-        // console.log('Logo button clicked!');
         fadeDrawerOverlay(true, true);
         openCloseDrawer(true, true);
     }
@@ -352,14 +401,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         mapLongClickDialog.onNewPlaceClick = function() {
             tmpMarker.remove();
 
-            map.remove();
+            nativeMap.remove();
             var mapPageFrame = document.getElementById('map_page_frame');
             $(mapPageFrame).fadeOut('slow', function() {
                 mapPageFrame.parentElement.removeChild(mapPageFrame);
             });
 
-            if (typeof newPlaceVisitCallback === 'function') {
-                newPlaceVisitCallback(_latLng);
+            if (typeof _this.onNewPlaceVisitClick === 'function') {
+                _this.onNewPlaceVisitClick(_latLng);
             }
         };
 
@@ -368,8 +417,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         };
     }
 
+    var refreshElements = function(isWideScreen, animated) {
+
+        _isWideScreen = isWideScreen;
+
+        refreshMapDivBase();
+        refreshDrawer();
+        refreshDrawerOverlay();
+        refreshLogoButton(animated);
+        refreshDrawerLogoButton();
+
+        if (mapLongClickDialog !== undefined) {
+            mapLongClickDialog.refreshDialogHeight();
+        }
+    }
+
 
     loadCameraPosition();
+    initMapDivBase();
     initGoogleMap();
     initLogoButton();
     initDrawerOverlay();
@@ -382,24 +447,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     // console.log(offspring);
 
     return {
-        refreshElements : function(isWideScreen, animated) {
-
-            _isWideScreen = isWideScreen;
-
-            refreshMapDiv();
-            refreshDrawer();
-            refreshDrawerOverlay();
-            refreshLogoButton(animated);
-            refreshDrawerLogoButton();
-    
-            if (mapLongClickDialog !== undefined) {
-                mapLongClickDialog.refreshDialogHeight();
-            }
-        },
-
-        setNewPlaceVisitCallback : function(callback) {
-            newPlaceVisitCallback = callback;
-        }
+        refreshElements : refreshElements,
+        isWebGoogleMapReady : isWebGoogleMapReady
     }
 
 }());
