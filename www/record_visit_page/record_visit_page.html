@@ -5,18 +5,19 @@
             <img src="./img/logo_36.png" alt="Logo Button" id="logo_button">
             <h1 class="page_title">Record Visit</h1>
         </div>
-        <div id="primary_inner_pane">
-            <textarea cols="30" rows="3" id="address_text" placeholder="Address" class="text_area"></textarea>
-            <input class="text_input" type="text" placeholder="Place Name" maxlength="100" id="palce_name_text">
-            <input class="text_input" type="text" placeholder="Room Number" maxlength="100" id="room_text">
-            <div id="person_container"></div>
-            <div id="add_person_button" class="button green_button"><span class="circle_plus">+</span>Persons Seen</div>
-
-        </div>
+        <textarea cols="30" rows="3" id="address_text" placeholder="Address" class="text_area"></textarea>
+        <input class="text_input" type="text" placeholder="Place Name" maxlength="100" id="palce_name_text">
+        <input class="text_input" type="text" placeholder="Room Number" maxlength="100" id="room_text">
+        <h2 id="person_seen_subtitle" class="page_subtitle record_visit_page_subtitle">Persons Seen</h2>
+        <div id="person_container"></div>
+        <div id="add_person_button" class="button green_button"><span class="circle_plus">+</span>Add Persons Seen</div>
     </div>
     <div class="secondary_pane">
-        <p id="ok_button" class="button">OK</p>
-        <p id="cancel_button" class="button cancel_button">Cancel</p>
-        
+        <div class="ui_row_height_45px">
+            <p id="ok_button" class="button record_visit_page_button">OK</p>
+        </div>
+        <div class="ui_row_height_45px">
+            <p id="cancel_button" class="button cancel_button record_visit_page_button">Cancel</p>
+        </div>
     </div>
 </div>

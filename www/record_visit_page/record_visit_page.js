@@ -10,6 +10,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         addressText,
         nameText,
         roomText,
+        personSeenSubtitle,
         personContainer,
         addPersonButton,
         AD_FRAME_HEIGHT = 50,
@@ -17,6 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         LOGO_BUTTON_SIZE = '40px',
         ROOM_TEXT_HEIGHT = '30px',
         _place,
+        _persons,
         // _isWideScreen,
         _options,
         addPersonDialog,
@@ -28,6 +30,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         if (_options.method === 'NEW_PLACE_VISIT') {
             _place = new Place(_options.latLng, 'PLACE')
         }
+    }
+
+    function initPersons() {
+        _persons = [];
     }
         
     
@@ -81,6 +87,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
           });
     }
 
+    function initPersonSeenSubtitle() {
+        personSeenSubtitle = document.getElementById('person_seen_subtitle');
+    }
+
+    function refreshPersonSeenSubtitle() {
+        if (_persons.length <= 0) {
+            $(personSeenSubtitle).css({
+                display : 'none',
+                height : 0,
+                margin : 0
+            });
+        } else {
+            $(personSeenSubtitle).css({
+                display : 'block',
+                height : '15px',
+                margin : '3px'
+            });
+        }
+    }
+
     function initAddPersonButton() {
         addPersonButton = document.getElementById('add_person_button');
         addPersonButton.addEventListener('click', onClickAddPersonButton);
@@ -98,9 +124,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function refreshRoomText() {
         if ( _place.category === 'ROOM') {
-            roomText.className = 'text_input';
+            roomText.style.display = 'block';
         } else {
-            roomText.className = 'text_input_invisible';        }
+            roomText.style.display = 'none';
+        }
     }
 
     function loadDialogFiles() {
@@ -127,9 +154,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function fadeIn() {
         $('#record_visit_page_frame').fadeTo('slow', 1);
+
     }
 
+    initPersons();
+
     initAddressText();
+    initPersonSeenSubtitle();
     initAddPersonButton();
     initRoomText();
 
@@ -146,6 +177,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             initPlaceData();
             requestReverseGeocoding();
             refreshRoomText();
+            refreshPersonSeenSubtitle();
 
             fadeIn();
         }
