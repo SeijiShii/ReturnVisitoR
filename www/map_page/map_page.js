@@ -40,7 +40,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         // console.log(cameraPosition);
 
         if (isBrowser()) {
-            loadFile.loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDmr4KjAGEvMjcmDdR7G6LdBIutoAAA2Yo&callback=RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app.onWebGoogleMapReady')
+            loadFile.loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDmr4KjAGEvMjcmDdR7G6LdBIutoAAA2Yo&callback=RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage.onBrowserMapReady')
         } else {
             initNativeMap(cameraPosition);
         }
@@ -121,7 +121,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         mapLongClickDialog.fadeIn(mapDiv);
     }
 
-    function initBrowserMap(cameraPosition) {
+    var _onBrowserMapReady = function() {
 
         browserMap = new google.maps.Map(mapDiv, {
             center: {
@@ -134,6 +134,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             mapTypeControl: false,
             fullscreenControl: false,
         });
+
+        var cameraPosition = loadCameraPosition();
 
         if (cameraPosition) {
             browserMap.setOptions({
@@ -545,7 +547,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     return {
         refreshElements         : _refreshElements,
-        onBrowserMapLoaded      : _onBrowserMapLoaded,
+        onBrowserMapReady      : _onBrowserMapReady,
         set onNewPlaceVisitClick(f) {
             _onNewPlaceVisitClick = f;
         },

@@ -145,18 +145,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);
 
-    return {
-        onWebGoogleMapReady : function() {
-            console.log('onWebGoogleMapReady called!');
-
-            if (mapPage !== undefined) {
-                mapPage.onBrowserMapLoaded();
-            }
-
-            
-        }
-    }
-
+   
 }());
 
 
