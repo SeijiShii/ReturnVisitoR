@@ -62,3 +62,172 @@ h2.record_visit_page_subtitle{
 .record_visit_page_button {
     float: right;
 }
+
+#person_container {
+    width: 90%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    border-top: solid 1px gray;
+}
+
+.person_seen_cell {
+    position: relative;
+    width: 100%;
+    height: 60px;
+    /* background-color: red; */
+    border-bottom: solid 1px gray;
+
+}
+
+.person_seen_cell .button_mark {
+    width: 40px;
+    height: 100%;
+    float: left;
+    position: relative;
+}
+
+.person_seen_cell .button_mark img {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+
+}
+
+.person_seen_cell .mid_column {
+    height: 100%;
+    float: left;
+}
+
+.person_seen_cell .mid_column .person_data {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    position: relative;
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.person_seen_cell .mid_column .person_switch {
+    width: 105px;
+    height: 30px;
+    float: left;
+    position: relative;
+}
+
+.person_seen_cell .mid_column .person_switch .switch_box {
+    width: 45px;
+    height: 30px;
+    position: relative;
+    float: left;
+}
+
+.person_seen_cell .mid_column .person_switch .switch_box .switch_slit {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    width: 35px;
+    background-color: gray;
+    border-radius: 2px;
+    margin: auto;
+    position: absolute;
+}
+
+.person_seen_cell .mid_column .person_switch .switch_box .switch_button {
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: skyblue;
+    top: 0;
+    bottom: 0;
+    position: absolute;
+    margin: auto;
+    left: 5px;
+}
+
+.person_seen_cell .mid_column .person_switch .switch_text {
+    width: 60px;
+    height: 30px;
+    line-height: 30px;
+    color: #333;
+    font-size: 10px;
+    position: relative;
+    float: left;
+}
+
+.person_seen_cell .mid_column .edit_button {
+    width: 40px;
+    height: 30px;
+    float: left;
+    position: relative
+}
+
+.person_seen_cell .mid_column .edit_button .dot {
+    background-color: gray;
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin: auto;
+}
+
+.person_seen_cell .mid_column .edit_button .left_dot {
+    margin-left : 11px;
+}
+
+.person_seen_cell .mid_column .edit_button .right_dot {
+    margin-left : 25px;
+}
+
+.person_seen_cell .remove_button {
+    width: 40px;
+    height: 60px;
+    line-height: 60px;
+    float: right;
+    position: relative;
+    font-size: 30px;
+    color: gray;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.person_seen_cell .remove_button .circle_minus {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    border: gray 1px solid;
+    border-radius: 13px;
+    margin: auto;
+}
+
+.person_seen_cell .remove_button .minus_line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 15px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: gray;
+    margin: auto;
+}

@@ -91,19 +91,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         personSeenSubtitle = document.getElementById('person_seen_subtitle');
     }
 
-    function refreshPersonSeenSubtitle() {
-        if (_persons.length <= 0) {
-            $(personSeenSubtitle).css({
-                display : 'none',
-                height : 0,
-                margin : 0
-            });
+    function refreshPersonSeenSubtitle(animate) {
+
+        if (animate !== undefined || animate == true) {
+
         } else {
-            $(personSeenSubtitle).css({
-                display : 'block',
-                height : '15px',
-                margin : '3px'
-            });
+            if (_persons.length <= 0) {
+                $(personSeenSubtitle).css({
+                    display : 'none',
+                    height : 0,
+                    margin : 0
+                });
+            } else {
+                $(personSeenSubtitle).css({
+                    display : 'block',
+                    height : '15px',
+                    margin : '3px'
+                });
+            }
         }
     }
 
