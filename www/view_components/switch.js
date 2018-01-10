@@ -6,9 +6,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Switch = function(pa
         _frame,
         _box,
         _buttonBase,
-        _button,
         _onButton,
-        _text,
         _isOn,
         RV_GREEN = '#34873b';
     
@@ -109,7 +107,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Switch = function(pa
     }
 
     function initButton() {
-        _button = document.createElement('span');
+        var _button = document.createElement('span');
         $(_button).css({
             width: '20px',
             height: '20px',
@@ -138,7 +136,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Switch = function(pa
     }
 
     function initText() {
-        _text = document.createElement('span');
+        var _text = document.createElement('span');
         $(_text).css({
             width: '60px',
             height: '30px',
