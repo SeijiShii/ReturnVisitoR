@@ -162,6 +162,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
 
+    // switch mock
+    function initSwitch() {
+        var rvSwitchBase = document.getElementById('rv_switch');
+        var rvSwitch = new returnvisitor.viewComponents.Switch(rvSwitchBase, 'Return Visit');
+
+        var stSwitchBase = document.getElementById('study_switch');
+        var stSwitch = new returnvisitor.viewComponents.Switch(stSwitchBase, 'Study');
+
+    }
+
+
     initPersons();
 
     initAddressText();
@@ -170,6 +181,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     initRoomText();
 
     loadDialogFiles();
+
+    // test
+    initSwitch();
 
     return {
         // refreshElements : function(isWideScreen) {
