@@ -6,6 +6,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         Place = returnvisitor.data.Place,
+        viewComponents = returnvisitor.viewComponents,
+        PersonSeenCell = viewComponents.PersonSeenCell,
         logoButton,
         addressText,
         nameText,
@@ -117,6 +119,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         addPersonButton.addEventListener('click', onClickAddPersonButton);
     }
 
+    function initPersonContainer() {
+        personContainer = document.getElementById('person_container');
+        var personCell = new PersonSeenCell(personContainer);
+    }
+
     function onClickAddPersonButton() {
 
         addPersonDialog.fadeIn(appFrame);
@@ -163,14 +170,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     // switch mock
-    function initSwitch() {
-        var rvSwitchBase = document.getElementById('rv_switch');
-        var rvSwitch = new returnvisitor.viewComponents.Switch(rvSwitchBase, 'Return Visit');
+    // function initSwitch() {
+    //     var rvSwitchBase = document.getElementById('rv_switch');
+    //     var rvSwitch = new returnvisitor.viewComponents.Switch(rvSwitchBase, 'Return Visit');
 
-        var stSwitchBase = document.getElementById('study_switch');
-        var stSwitch = new returnvisitor.viewComponents.Switch(stSwitchBase, 'Study');
+    //     var stSwitchBase = document.getElementById('study_switch');
+    //     var stSwitch = new returnvisitor.viewComponents.Switch(stSwitchBase, 'Study');
 
-    }
+    // }
 
 
     initPersons();
@@ -179,11 +186,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     initPersonSeenSubtitle();
     initAddPersonButton();
     initRoomText();
+    initPersonContainer();
 
     loadDialogFiles();
 
     // test
-    initSwitch();
+    // initSwitch();
 
     return {
         // refreshElements : function(isWideScreen) {

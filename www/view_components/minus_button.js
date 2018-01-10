@@ -21,6 +21,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MinusButton = functi
         initMinus();
 
         buttonFrame.addEventListener('click', onClickButton);
+
+        parent.appendChild(buttonFrame);
     }
 
     function initMinus() {
@@ -39,14 +41,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MinusButton = functi
             margin: 'auto',
         });
 
-        buttonFrame.appendChitl(minus);
+        buttonFrame.appendChild(minus);
 
     }
 
     function onClickButton() {
 
-        $(buttonFrame).fadeTo(200, 0.3, function(){
-            $(buttonFrame).fadeTo(200, 1);
+        $(buttonFrame).fadeTo(100, 0.3, function(){
+            $(buttonFrame).fadeTo(100, 1);
         });
 
         if (typeof _this.onClickButton === 'function') {
@@ -56,8 +58,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MinusButton = functi
 
     initButtonFrame();
 
-}
-
-.person_seen_cell .remove_button .minus_line {
- 
 }

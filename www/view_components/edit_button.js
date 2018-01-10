@@ -33,6 +33,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.EditButton = functio
         initDots();
 
         buttonFrame.addEventListener('click', onClickButton);
+
+        parent.appendChild(buttonFrame);
     }
 
     function initDots() {
@@ -40,25 +42,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.EditButton = functio
         var dot = document.createElement('span');
         $(dot).css(dotStyle);
 
-        buttonFrame.appendChitl(dot);
+        buttonFrame.appendChild(dot);
 
         var leftDot = document.createElement('span');
         $(leftDot).css(dotStyle);
         leftDot.style.marginLeft = '11px';
 
-        buttonFrame.appendChitl(leftDot);
+        buttonFrame.appendChild(leftDot);
 
         var rightDot = document.createElement('span');
         $(rightDot).css(dotStyle);
         rightDot.style.marginLeft = '25px';
 
-        buttonFrame.appendChitl(rightDot);
+        buttonFrame.appendChild(rightDot);
     }
 
     function onClickButton() {
 
-        $(buttonFrame).fadeTo(200, 0.3, function(){
-            $(buttonFrame).fadeTo(200, 1);
+        $(buttonFrame).fadeTo(100, 0.3, function(){
+            $(buttonFrame).fadeTo(100, 1);
         });
 
         if (typeof _this.onClickButton === 'function') {

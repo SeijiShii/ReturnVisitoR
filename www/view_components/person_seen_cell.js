@@ -3,7 +3,17 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewCo
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = function(parent, person) {
     var cellFrame,
         midColumn,
-        switchBox;
+        switchBox,
+        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        markerPaths = returnvisitor.common.markerPaths,
+        viewComponents = returnvisitor.viewComponents,
+        SwitchView = viewComponents.SwitchView,
+        EditButton = viewComponents.EditButton,
+        MinusButton = viewComponents.MinusButton,
+        _person = {};
+
+    _person.interest = 'STRONGLY_INTERESTED';
+    _person.data = '四伊清司 男性 31~40 丸刈り'
 
     function initCellFrame() {
         cellFrame = document.createElement('div');
@@ -12,12 +22,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             width: '100%',
             minHeight: '70px',
             height: 'auto !important',
-            height: '70px',
             borderBottom: 'solid 1px gray',
-            overflow: 'hidden',
         });
 
         parent.appendChild(cellFrame);
+
+        initButtonMark();
+        initMidColumn();
+        initRemoveButton();
+        addAnchor();
     }
 
     function initButtonMark() {
@@ -42,6 +55,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             right: 0,
             margin: 'auto'
         });
+
+        mark.src = markerPaths.buttonMarkerPaths.orangeButton;
 
         markDiv.appendChild(mark);
 
@@ -78,6 +93,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             marginRight: '20px'
         });
 
+        personData.innerText = _person.data;
+
         midColumn.appendChild(personData);
 
     }
@@ -91,6 +108,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         });
 
         midColumn.appendChild(switchBox);
+
+        initRVSwitch();
+        initStudySwitch();
+        initEditButton();
     }
 
     function initRVSwitch() {
@@ -101,6 +122,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             float: 'left',
             position: 'relative'
         });
+
+        var rvSwitch = new SwitchView(rvSwitchBase, 'Return Visit');
+
         switchBox.appendChild(rvSwitchBase);
     }
 
@@ -112,6 +136,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             float: 'left',
             position: 'relative'
         });
+
+        var stSwitch = new SwitchView(studySwitchBase, 'Study');
+
         switchBox.appendChild(studySwitchBase);
 
     }
@@ -124,6 +151,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             float: 'left',
             position: 'relative'
         });
+
+        var editButton = new EditButton(editButtonBase);
+
         switchBox.appendChild(editButtonBase);
 
     }
@@ -136,7 +166,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             float: 'right',
             position: 'relative'
         });
-        switchBox.appendChild(removeButtonBase);
+
+        var removeButton = new MinusButton(removeButtonBase);
+
+        cellFrame.appendChild(removeButtonBase);
+    }
+
+    function addAnchor() {
+        var anchor = document.createElement('div');
+        $(anchor).css({
+            width : '100%',
+            clear : 'both',
+            position : 'relative'
+        });
+        cellFrame.appendChild(anchor);
     }
 
     initCellFrame();

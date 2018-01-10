@@ -1,6 +1,6 @@
 "use strict"
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Switch = function(parent, switchText){
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwitchView = function(parent, switchText){
 
     var parent,
         _frame,
@@ -33,8 +33,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Switch = function(pa
 
     function onClickFrame(e) {
 
-        $(_frame).fadeTo(200, 0.3, function() {
-            $(_frame).fadeTo(200, 1);
+        $(_frame).fadeTo(100, 0.3, function() {
+            $(_frame).fadeTo(100, 1);
         });
 
         if (_isOn) {
