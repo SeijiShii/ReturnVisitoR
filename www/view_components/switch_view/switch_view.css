@@ -1,0 +1,68 @@
+.switch_view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 40px;
+    width: 105px;
+    margin: auto;
+}
+
+.switch_view .button_box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 40px;
+    width: 45px;
+}
+
+.switch_view .button_box .rail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: block;
+    height: 4px;
+    width: 35px;
+    border-radius: 2px;
+    margin: auto;
+    background-color: gray;
+}
+
+.switch_view .button_box #button_base {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 5px;
+    margin: auto 0;
+    width: 20px;
+    height: 20px;
+    background-color: darkgray;
+    border-radius: 10px;
+}
+
+.switch_view .button_box #button_base #on_button {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 20px;
+    height: 20px;
+    background-color: #34873b;
+    border-radius: 10px;
+}
+
+.switch_view #switch_text {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 45px;
+    width: 60px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 10px;
+    text-align: center
+}
