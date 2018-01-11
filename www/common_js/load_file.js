@@ -25,7 +25,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
                 });
             } else {
                 var node = document.createElement('div');
-                node.innerHTML = data;
+                node.innerHTML = htmlCache[filePath];
 
                 if (typeof callback === 'function') {
                     callback(node.getElementsByTagName('div')[0])

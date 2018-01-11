@@ -3,12 +3,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     var _this = this,
         _person,
-        maleButtonBase,
-        // maleToggleBase,
-        // maleToggleButton,
-        femaleButtonBase,
-        // femaleToggleBase,
-        // femaleToggleButton,
+        maleButton,
+        femaleButton,
         ageSelector,
         interestRater,
         interestText,
@@ -32,54 +28,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     _person = new Person();
     
     function initMaleButton() {
-        maleButtonBase = _this.getElementById('male_button_base');
-        var maleButton = new ToggleButton(maleButtonBase, 'Male');
-        // maleToggleBase = _this.getElementById('male_toggle_button');
-        // maleToggleButton = new viewComponents.ToggleButton(maleToggleBase);
-        // maleButton.addEventListener('click', onClickMaleButton);
-
-        // if (_person.sex === 'MALE') {
-        //     maleButton.toggled = true;
-        //     femaleToggleButton.toggled = false;
-        // } else {
-        //     maleToggleButton.toggled = false
-        // }
+        var maleButtonBase = _this.getElementById('male_button_base');
+        maleButton = new ToggleButton(maleButtonBase, 'Male', _person.sex === 'MALE');
+        maleButton.uncheckable = false;
+        maleButton.onChange = function(toggled) {
+            if (toggled) {
+                _person.sex = 'MALE';
+                femaleButton.toggle(false, true);
+            }
+        }
     }
-
-    // function onClickMaleButton() {
-
-    //     if (_person.sex !== 'MALE') {
-    //         _person.sex = 'MALE';
-    //         maleToggleButton.toggled = true;
-    //         femaleToggleButton.toggled = false;
-
-    //         console.log('_person.sex:', _person.sex)
-    //     }
-    // }
 
     function initFemaleButton() {
-        femaleButtonBase = _this.getElementById('female_button_base');
-        // femaleToggleBase = _this.getElementById('female_toggle_button');
-        var femaleButton = new ToggleButton(femaleButtonBase, 'Female');
-        // femaleButton.addEventListener('click', onClickFemaleButton);
-
-        // if (_person.sex === 'FWMALE') {
-        //     maleToggleButton.toggled = false;
-        //     femaleToggleButton.toggled = true;
-        // } else {
-        //     femaleToggleButton.toggled = false
-        // }
-    }
-
-    function onClickFemaleButton() {
-
-        if (_person.sex !== 'FEMALE') {
-            _person.sex = 'FEMALE';
-            maleToggleButton.toggled = false;
-            femaleToggleButton.toggled = true;
-
-            console.log('_person.sex:', _person.sex)
-
+        var femaleButtonBase = _this.getElementById('female_button_base');
+        femaleButton = new ToggleButton(femaleButtonBase, 'Female', _person.sex === 'FEMALE');
+        femaleButton.uncheckable = false;
+        femaleButton.onChange = function(toggled) {
+            if (toggled) {
+                _person.sex = 'FEMALE';
+                maleButton.toggle(false, true);
+            }
         }
     }
 
