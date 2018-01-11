@@ -2,22 +2,35 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
+    var htmlCache = {};
+
     return {
         /**
          * @param callback callback has 1 param which returns div element made from html file.
          */
         loadHtmlAsElement: function(filePath, callback) {
-            
-            $.get(filePath, function(data){
-                // console.log(data);
 
+            if (htmlCache[filePath] === undefined) {
+                $.get(filePath, function(data){
+                    // console.log(data);
+
+                    htmlCache[filePath] = data;
+    
+                    var node = document.createElement('div');
+                    node.innerHTML = data;
+    
+                    if (typeof callback === 'function') {
+                        callback(node.getElementsByTagName('div')[0])
+                    }
+                });
+            } else {
                 var node = document.createElement('div');
                 node.innerHTML = data;
 
                 if (typeof callback === 'function') {
                     callback(node.getElementsByTagName('div')[0])
                 }
-            });
+            }
         },
 
         appendHtmlToAppFrame: function(filePath, callback, opacity) {
