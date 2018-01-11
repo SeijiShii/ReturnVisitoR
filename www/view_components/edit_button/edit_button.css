@@ -1,0 +1,27 @@
+.edit_button {
+    width: 40px;
+    height: 40px;
+    position: relative;
+    display: block;
+}
+
+.edit_button .dot {
+    background-color: gray;
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    margin: auto;
+}
+
+.edit_button .left_dot {
+    margin-left: 11px;
+}
+
+.edit_button .right_dot {
+    margin-left: 25px;
+}

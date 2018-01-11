@@ -8,7 +8,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         markerPaths = returnvisitor.common.markerPaths,
         viewComponents = returnvisitor.viewComponents,
         SwitchView = viewComponents.SwitchView,
-        EditButton = viewComponents.EditButton,
+        // EditButton = viewComponents.EditButton,
+        SmallSquareButton = viewComponents.SmallSquareButton,
         MinusButton = viewComponents.MinusButton,
         _person = {};
 
@@ -152,7 +153,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             position: 'relative'
         });
 
-        var editButton = new EditButton(editButtonBase);
+        var editButton = new SmallSquareButton(editButtonBase, './view_components/edit_button/edit_button.html', './view_components/edit_button/edit_button.css');
 
         switchBox.appendChild(editButtonBase);
 
@@ -167,7 +168,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             position: 'relative'
         });
 
-        var removeButton = new MinusButton(removeButtonBase);
+        var removeButton = new SmallSquareButton(removeButtonBase, './view_components/minus_button/minus_button.html', './view_components/minus_button/minus_button.css');
 
         cellFrame.appendChild(removeButtonBase);
     }
