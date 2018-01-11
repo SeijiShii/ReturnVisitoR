@@ -521,9 +521,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         refreshLogoButton(animated);
         refreshDrawerLogoButton();
 
-        if (mapLongClickDialog !== undefined) {
-            mapLongClickDialog.refreshDialogHeight();
-        }
+        // if (mapLongClickDialog !== undefined) {
+        //     mapLongClickDialog.refreshDialogHeight();
+        // }
     }
 
     var _onBrowserMapLoaded = function() {

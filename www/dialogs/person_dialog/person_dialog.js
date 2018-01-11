@@ -3,12 +3,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     var _this = this,
         _person,
-        maleButton,
-        maleToggleBase,
-        maleToggleButton,
-        femaleButton,
-        femaleToggleBase,
-        femaleToggleButton,
+        maleButtonBase,
+        // maleToggleBase,
+        // maleToggleButton,
+        femaleButtonBase,
+        // femaleToggleBase,
+        // femaleToggleButton,
         ageSelector,
         interestRater,
         interestText,
@@ -18,56 +18,57 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         deleteButtonRow,
         cancelButton,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        Person = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person,
-        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
-        buttonMarkerPaths = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.buttonMarkerPaths,
-        viewComponents = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents;
+        Person = returnvisitor.data.Person,
+        loadFile = returnvisitor.common.loadFile,
+        buttonMarkerPaths =returnvisitor.common.markerPaths.buttonMarkerPaths,
+        viewComponents = returnvisitor.viewComponents,
+        ToggleButton = viewComponents.ToggleButton;
 
     returnvisitor.DialogBase.call(this,
-        ['./dialogs/person_dialog/person_dialog.html'],
-        520);
+        ['./dialogs/person_dialog/person_dialog.html']);
 
     loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     
     _person = new Person();
     
     function initMaleButton() {
-        maleButton = _this.getElementById('male_button');
-        maleToggleBase = _this.getElementById('male_toggle_button');
-        maleToggleButton = new viewComponents.ToggleButton(maleToggleBase);
-        maleButton.addEventListener('click', onClickMaleButton);
+        maleButtonBase = _this.getElementById('male_button_base');
+        var maleButton = new ToggleButton(maleButtonBase, 'Male');
+        // maleToggleBase = _this.getElementById('male_toggle_button');
+        // maleToggleButton = new viewComponents.ToggleButton(maleToggleBase);
+        // maleButton.addEventListener('click', onClickMaleButton);
 
-        if (_person.sex === 'MALE') {
-            maleButton.toggled = true;
-            femaleToggleButton.toggled = false;
-        } else {
-            maleToggleButton.toggled = false
-        }
+        // if (_person.sex === 'MALE') {
+        //     maleButton.toggled = true;
+        //     femaleToggleButton.toggled = false;
+        // } else {
+        //     maleToggleButton.toggled = false
+        // }
     }
 
-    function onClickMaleButton() {
+    // function onClickMaleButton() {
 
-        if (_person.sex !== 'MALE') {
-            _person.sex = 'MALE';
-            maleToggleButton.toggled = true;
-            femaleToggleButton.toggled = false;
+    //     if (_person.sex !== 'MALE') {
+    //         _person.sex = 'MALE';
+    //         maleToggleButton.toggled = true;
+    //         femaleToggleButton.toggled = false;
 
-            console.log('_person.sex:', _person.sex)
-        }
-    }
+    //         console.log('_person.sex:', _person.sex)
+    //     }
+    // }
 
     function initFemaleButton() {
-        femaleButton = _this.getElementById('female_button');
-        femaleToggleBase = _this.getElementById('female_toggle_button');
-        femaleToggleButton = new viewComponents.ToggleButton(femaleToggleBase);
-        femaleButton.addEventListener('click', onClickFemaleButton);
+        femaleButtonBase = _this.getElementById('female_button_base');
+        // femaleToggleBase = _this.getElementById('female_toggle_button');
+        var femaleButton = new ToggleButton(femaleButtonBase, 'Female');
+        // femaleButton.addEventListener('click', onClickFemaleButton);
 
-        if (_person.sex === 'FWMALE') {
-            maleToggleButton.toggled = false;
-            femaleToggleButton.toggled = true;
-        } else {
-            femaleToggleButton.toggled = false
-        }
+        // if (_person.sex === 'FWMALE') {
+        //     maleToggleButton.toggled = false;
+        //     femaleToggleButton.toggled = true;
+        // } else {
+        //     femaleToggleButton.toggled = false
+        // }
     }
 
     function onClickFemaleButton() {

@@ -1,4 +1,4 @@
-#dialog_base_frame {
+.dialog_base_frame {
     position: absolute;
     left: 0;
     top: 0;
@@ -7,7 +7,7 @@
     opacity: 0;    
 }
 
-#dialog_overlay {
+.dialog_overlay {
     position : absolute;
     left: 0;
     top: 0;
@@ -16,7 +16,7 @@
     height: 100%;
 }
 
-#dialog_frame {
+.dialog_frame {
     position: absolute;
     left: 0;
     right: 0;
@@ -29,9 +29,9 @@
     margin: auto;
     overflow: auto;
     width: 80%;
+    height: 90%;
 }
 
-#dialog_frame::-webkit-scrollbar{
+.dialog_frame::-webkit-scrollbar{
     display: none;
 }
-

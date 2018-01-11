@@ -16,18 +16,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         dialogOverlay,
         dialogFrame,
         FADE_DURATION = 300,
-        DEFAULT_HEIGHT = 300,
+        // DEFAULT_HEIGHT = 300,
         _givenHeight,
         _isDialogElementAvailable = false,
         _dialogElements;
     
     // console.log('givenHeight:', givenHeight);
 
-    if (givenHeight) {
-        _givenHeight = givenHeight;
-    } else {
-        _givenHeight = DEFAULT_HEIGHT;
-    }
+    // if (givenHeight) {
+    //     _givenHeight = givenHeight;
+    // } else {
+    //     _givenHeight = DEFAULT_HEIGHT;
+    // }
 
     // console.log('_givenHeight:', _givenHeight);
     
@@ -148,21 +148,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         })
     }
 
-    this.refreshDialogHeight = function() {
+    // this.refreshDialogHeight = function() {
         
-        // append前に呼ばれることがあるので
-        if (_parent === undefined) {
-            return;
-        }
+    //     // append前に呼ばれることがあるので
+    //     if (_parent === undefined) {
+    //         return;
+    //     }
 
-        if (_givenHeight > _parent.clientHeight * 0.9 ) {
-            dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
-            // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
-        } else {
-            dialogFrame.style.height = _givenHeight + 'px';
-            // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
-        }
-    }
+    //     if (_givenHeight > _parent.clientHeight * 0.9 ) {
+    //         dialogFrame.style.height = (_parent.clientHeight * 0.9) + 'px';
+    //         // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
+    //     } else {
+    //         dialogFrame.style.height = _givenHeight + 'px';
+    //         // console.log('dialogFrame.clientHeight: ', dialogFrame.clientHeight)
+    //     }
+    // }
 
     this.getElementById = function(id) {
         return elements.getElementById(dialogBaseFrame, id);

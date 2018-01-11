@@ -1,24 +1,16 @@
 <h2 class="dialog_title">Person</h2>
-<input type="text" class="text_input" id="name_text" placeholder="Name">
-<div class="ui_row_height_45px person_dialog_ui_group">
-    <div class="sex_select_element sex_select_title">Sex:</div>
-    <div id="male_button" class="sex_select_element sex_select_option">
-        <div id="male_toggle_button" class="toggle_button_base"></div>
-        <div class="sex_option_text">Male</div>
-    </div>
-    <div id="female_button" class="sex_select_element sex_select_option">
-        <div id="female_toggle_button" class="toggle_button_base"></div>
-        <div class="sex_option_text">Female</div>
-    </div>
+<input type="text" class="text_input name_text" id="name_text" placeholder="Name">
+<div class="ui_row_height_45px sex_row">
+    <div class="sex_select_title">Sex:</div>
+    <div id="male_button_base" class="sex_select_option"></div>
+    <div id="female_button_base" class="sex_select_option"></div>
 </div>
-<div class="ui_row_height_45px person_dialog_ui_group">
+<div class="ui_row_height_45px age_row">
     <div class="age_select_title">Age:</div>
-    <div class="age_selector_wrapper">
-        <div id="age_selector_base"></div>
-    </div>
+    <div id="age_selector_base" class="age_selector_base"></div>
 </div>
 <p id="interest_text">Interest:</p>
-<div id="interest_rater_base" class="ui_row_height_45px person_dialog_ui_group" ></div>
+<div id="interest_rater_base" class="ui_row_height_45px" ></div>
 <textarea id="person_note_text" class="text_area" placeholder="Note"></textarea>
 <div class="ui_row_height_45px">
     <span id="ok_button" class="button person_dialog_button">OK</span>

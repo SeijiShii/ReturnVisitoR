@@ -1,0 +1,59 @@
+.toggle_button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 40px;
+    width: auto;
+}
+
+.toggle_button .button_box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 40px;
+    width: 40px;
+}
+
+.toggle_button .button_box .button_base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background-color: gray;
+}
+
+.toggle_button .button_box .button_base #on_button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    /* margin: auto; */
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    background-color: #34873b;
+}
+
+.toggle_button #toggle_text {
+    position: absolute;
+    display: block;
+    width: auto;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    text-align: center;
+    top: 0;
+    left: 40px;
+
+}
