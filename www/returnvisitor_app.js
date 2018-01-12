@@ -62,13 +62,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         loadMapPageFiles();
 
         // test
-        // loadRecordVisitPageFiles({
-        //     method: 'NEW_PLACE_VISIT',
-        //     latLng: {
-        //         lat: 36.7726275,
-        //         lng: 140.7301261
-        //     }
-        // });
+        loadRecordVisitPageFiles({
+            method: 'NEW_PLACE_VISIT',
+            latLng: {
+                lat: 36.7726275,
+                lng: 140.7301261
+            }
+        });
     }
     
     function onResizeScreen() {
@@ -88,8 +88,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     }
     
     function refreshScreenElements() {
-
-        // console.log('refreshScreenElements called!');
 
         refreshAppFrame();
         refreshAdFrame();
