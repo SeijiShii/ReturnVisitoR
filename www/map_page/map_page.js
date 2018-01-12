@@ -117,8 +117,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             tmpMarker = marker;
         });
 
-
-        mapLongClickDialog.fadeIn(mapDiv);
+        initMapLongClickDialog();
     }
 
     var _onBrowserMapReady = function() {
@@ -172,7 +171,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         var isPressing = false;
 
         function onMousedown(e) {
-            // console.log('Mousedown!', e);
             isPressing = true;
 
             var checkPressing = function() {
@@ -185,12 +183,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
 
         function onMouseup(e) {
-            // console.log('Mouseup!', e);
             isPressing = false;
         }
 
         function onDragStart(e) {
-            // console.log('Drag start!,', e);
             isPressing = false;
         }
 
@@ -234,7 +230,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         // });
 
 
-        mapLongClickDialog.fadeIn(mapDiv);
+        initMapLongClickDialog();
     }
 
     function initMapDivBase() {
@@ -463,39 +459,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     function loadMapLongClickDialogFiles() {
         loadFile.loadScript('./dialogs/map_long_click_dialog/map_long_click_dialog.js', function(){
             // console.log('MapLongClickDialog loaded!')
-            initMapLongClickDialog();
            
         });
 
     }
 
     function initMapLongClickDialog() {
-        mapLongClickDialog = new returnvisitor.MapLongClickDialog();
+        mapLongClickDialog = new returnvisitor.MapLongClickDialog(mapDiv);
 
-        mapLongClickDialog.onCancelClick = function() {
-            tmpMarker.remove();
-        };
+        mapLongClickDialog.onFadedOut = function() {
+            removeTmpMarker();
+        }
 
         mapLongClickDialog.onNewPlaceClick = function() {
-
-            removeTmpMarker();
-
-            // tmpMarker.remove();
-
-            // nativeMap.remove();
-            // var mapPageFrame = document.getElementById('map_page_frame');
-            // $(mapPageFrame).fadeOut('slow', function() {
-            //     mapPageFrame.parentElement.removeChild(mapPageFrame);
-            // });
 
             if (typeof _onNewPlaceVisitClick === 'function') {
                 _onNewPlaceVisitClick(_latLng);
             }
         };
 
-        mapLongClickDialog.onOverlayClick = function() {
-            removeTmpMarker();
-        };
     }
 
     function removeTmpMarker() {
@@ -521,9 +503,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         refreshLogoButton(animated);
         refreshDrawerLogoButton();
 
-        // if (mapLongClickDialog !== undefined) {
-        //     mapLongClickDialog.refreshDialogHeight();
-        // }
+        if (mapLongClickDialog !== undefined) {
+            mapLongClickDialog.refreshDialogHeight();
+        }
     }
 
     var _onBrowserMapLoaded = function() {

@@ -3,12 +3,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     var _this = this,
         _person,
+        nameText,
         maleButton,
         femaleButton,
         ageSelector,
         interestRater,
         interestText,
         INTEREST_PREFIX = 'Interest: ',
+        noteText,
         okButton,
         deleteButton,
         deleteButtonRow,
@@ -27,6 +29,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     
     _person = new Person();
     
+    function initNameText() {
+        nameText = _this.getElementById('person_name_text');
+    }
+
     function initMaleButton() {
         var maleButtonBase = _this.getElementById('male_button_base');
         maleButton = new ToggleButton(maleButtonBase, 'Male', _person.sex === 'MALE');
@@ -71,7 +77,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         interestRater.onSetRater = function(key) {
             _person.interest = key;
             refreshInterestText();
-            // console.log('_person.interest: ', _person.interest);
+            console.log('_person.interest: ', _person.interest);
         }
 
     }
@@ -93,12 +99,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         interestText.innerText = text;
     }
 
+    function initNoteText() {
+        noteText = _this.getElementById('person_note_text');
+    }
+
     function initOkButton() {
         okButton = _this.getElementById('ok_button');
         okButton.addEventListener('click', onClickOkButton);
     }
 
     function onClickOkButton() {
+
+        _person.name = nameText.value;
+        _person.note = noteText.value;
 
         _this.fadeOut();
 
@@ -135,16 +148,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     this.onDialogBaseReady = function(){
+        initNameText();
         initMaleButton();
         initFemaleButton();
         initAgeSelector();
         initInterestRater();
         initInterestText();
+        initNoteText();
 
         initOkButton();
         initDeleteButtonRow();
         initDeleteButton();
         initCancelButton();
+
     };
     
 

@@ -1,5 +1,5 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(parent) {
 
     var _this = this, // コールバックがからまって訳わからなくなったのでthisをキャッシュすることにした。
         newPlaceButton,
@@ -8,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
 
     returnvisitor.DialogBase.call(this, 
-        './dialogs/map_long_click_dialog/map_long_click_dialog.html');
+        './dialogs/map_long_click_dialog/map_long_click_dialog.html', parent);
 
     loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
 
@@ -22,11 +22,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
         e.stopPropagation();
         // console.log('New place button clicked!');
 
-        _this.fadeOut(function(){
-            if (typeof _this.onNewPlaceClick === 'function') {
-                _this.onNewPlaceClick();
-            }
-        });
+        _this.fadeOut();
+
+        if (typeof _this.onNewPlaceClick === 'function') {
+            _this.onNewPlaceClick();
+        }
     }
 
     function initCancelButton() {
@@ -37,14 +37,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function() {
     function onClickCancelButton(e) {
 
         e.stopPropagation();
-
-        // console.log('Cancel button clicked!');
-
-        _this.fadeOut(function() {
-            if (typeof _this.onCancelClick === 'function') {
-                _this.onCancelClick();
-            }
-        });
+        _this.fadeOut();
     }
 
     this.onDialogBaseReady = function() {

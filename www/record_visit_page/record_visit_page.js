@@ -21,10 +21,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         ROOM_TEXT_HEIGHT = '30px',
         _place,
         _persons,
-        // _isWideScreen,
         _options,
         addPersonDialog,
-        personDialog,
         appFrame = document.getElementById('app_frame');
     
     function initPlaceData() {
@@ -153,14 +151,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
             addPersonDialog = new returnvisitor.AddPersonDialog();
             addPersonDialog.onNewPersonClick = function() {
-                personDialog.fadeIn(appFrame);
+                var personDialog = new returnvisitor.PersonDialog();
+                personDialog.onClickOk = function(person) {
+                    console.log(person);
+                } 
+                // personDialog.fadeIn(appFrame);
             };
         });
     }
 
     function loadPersonDialogScript() {
         loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
-            personDialog = new returnvisitor.PersonDialog();
+            
         });
     }
 
@@ -168,17 +170,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         $('#record_visit_page_frame').fadeTo('slow', 1);
 
     }
-
-    // switch mock
-    // function initSwitch() {
-    //     var rvSwitchBase = document.getElementById('rv_switch');
-    //     var rvSwitch = new returnvisitor.viewComponents.Switch(rvSwitchBase, 'Return Visit');
-
-    //     var stSwitchBase = document.getElementById('study_switch');
-    //     var stSwitch = new returnvisitor.viewComponents.Switch(stSwitchBase, 'Study');
-
-    // }
-
 
     initPersons();
 
