@@ -120,6 +120,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function initPersonContainer() {
         personContainer = document.getElementById('person_container');
+        var personCell = new PersonSeenCell(personContainer);
     }
 
     function onClickAddPersonButton() {

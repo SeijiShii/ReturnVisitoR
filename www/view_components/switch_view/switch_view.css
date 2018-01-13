@@ -31,7 +31,7 @@
     background-color: gray;
 }
 
-.switch_view .button_box #button_base {
+.switch_view .button_box .button_base {
     display: block;
     position: absolute;
     top: 0;
@@ -44,7 +44,7 @@
     border-radius: 10px;
 }
 
-.switch_view .button_box #button_base #on_button {
+.switch_view .button_box .button_base .on_button {
     display: block;
     position: absolute;
     top: 0;
@@ -55,7 +55,7 @@
     border-radius: 10px;
 }
 
-.switch_view #switch_text {
+.switch_view .switch_text {
     display: block;
     position: absolute;
     top: 0;

@@ -17,11 +17,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwitchView = functio
         loadFile.loadHtmlAsElement('./view_components/switch_view/switch_view.html', function(div){
             _frame = div;
 
-            _buttonBase = elements.getElementById(_frame, 'button_base');
-            _onButton = elements.getElementById(_frame, 'on_button');
+            _buttonBase = elements.getElementByClassName(_frame, 'button_base');
+            _onButton = elements.getElementByClassName(_frame, 'on_button');
             _onButton.style.opacity = 0;
 
-            _text = elements.getElementById(_frame, 'switch_text')
+            _text = elements.getElementByClassName(_frame, 'switch_text')
             _text.innerText = switchText;
 
             _frame.addEventListener('click', onClickFrame);

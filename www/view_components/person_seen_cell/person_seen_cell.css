@@ -1,0 +1,92 @@
+.cell_frame {
+    position: relative;
+    width: 100%;
+    min-height: 70px;
+    height: auto;
+    border-bottom: solid 1px gray;
+    /* background-color: red; */
+}
+
+.cell_frame .mark_div {
+    width: 30px;
+    min-height: 70px;
+    height: 100%;
+    float: left;
+    position: relative;
+    /* background-color: blue; */
+}
+
+.cell_frame .mark_div img {
+    width: 20px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    margin: auto;
+    /* background-color: green; */
+}
+
+.cell_frame .mid_column {
+    position: relative;
+    min-height: 70px;
+    height: 100%;
+    float: left;
+    /* background-color: yellowgreen; */
+}
+
+.cell_frame .mid_column .person_data {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    position: relative;
+    height: 30px;
+    line-height: 30px;
+    margin: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+
+}
+
+.cell_frame .mid_column .button_box {
+    position: relative;
+    min-height: 40px;
+    /* width: 100px; */
+    /* background-color: pink; */
+}
+
+.cell_frame .mid_column .button_box .switch_base {
+    width: 105px;
+    height: 40px;
+    float: left;
+    position: relative;
+}
+
+.cell_frame .mid_column .button_box .rv_switch_base {
+    /* background-color: blueviolet; */
+}
+
+.cell_frame .mid_column .button_box .study_switch_base {
+    /* background-color: aqua; */
+}
+
+.cell_frame .mid_column .button_box .edit_button_base {
+    width: 40px;
+    height: 40px;
+    float: left;
+    position: relative;
+    /* background-color: orange; */
+}
+
+.cell_frame .remove_button_base {
+    width: 40px;
+    height: 40px;
+    float: right;
+    position: relative;
+    /* background-color: gold; */
+}
+
+.cell_frame .anchor {
+    clear: both;
+}
