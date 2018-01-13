@@ -14,7 +14,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function() {
 
     function initNewPersonButton() {
         
-        newPersonButton = _this.getElementById('new_person_button');
+        newPersonButton = _this.getElementByClassName('new_person_button');
         newPersonButton.addEventListener('click', onClickNewPersonButton);
     }
 

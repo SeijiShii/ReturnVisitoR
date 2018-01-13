@@ -120,7 +120,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function initPersonContainer() {
         personContainer = document.getElementById('person_container');
-        var personCell = new PersonSeenCell(personContainer);
     }
 
     function onClickAddPersonButton() {
@@ -157,6 +156,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             personDialog = new returnvisitor.PersonDialog();
             personDialog.onClickOk = function(person) {
                 console.log(person);
+                _persons.push(person);
             } 
         };
     }
@@ -186,10 +186,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     // initSwitch();
 
     return {
-        // refreshElements : function(isWideScreen) {
-        //     _isWideScreen = isWideScreen;
-            
-        // },
 
         initialize : function(options) {
             _options = options;

@@ -30,7 +30,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     }
 
     function initDialogOverlay() {
-        dialogOverlay = elements.getElementById(dialogBaseFrame, 'dialog_overlay');
+        dialogOverlay = elements.getElementByClassName(dialogBaseFrame, 'dialog_overlay');
 
         dialogOverlay.addEventListener('click', function(e) {
 
@@ -41,7 +41,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     }
 
     function loadDialogContent(callback) {
-        dialogFrame = elements.getElementById(dialogBaseFrame, 'dialog_frame');
+        dialogFrame = elements.getElementByClassName(dialogBaseFrame, 'dialog_frame');
 
         $(dialogFrame).load(contentHtmlPath, function(){
                 
@@ -110,8 +110,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
     }
 
-    this.getElementById = function(id) {
-        return elements.getElementById(dialogBaseFrame, id);
+    this.getElementByClassName = function(id) {
+        return elements.getElementByClassName(dialogBaseFrame, id);
     }
 
     loadDialogBaseFiles();

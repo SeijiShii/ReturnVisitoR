@@ -30,11 +30,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     _person = new Person();
     
     function initNameText() {
-        nameText = _this.getElementById('person_name_text');
+        nameText = _this.getElementByClassName('person_name_text');
     }
 
     function initMaleButton() {
-        var maleButtonBase = _this.getElementById('male_button_base');
+        var maleButtonBase = _this.getElementByClassName('male_button_base');
         maleButton = new ToggleButton(maleButtonBase, 'Male', _person.sex === 'MALE');
         maleButton.uncheckable = false;
         maleButton.onChange = function(toggled) {
@@ -46,7 +46,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     function initFemaleButton() {
-        var femaleButtonBase = _this.getElementById('female_button_base');
+        var femaleButtonBase = _this.getElementByClassName('female_button_base');
         femaleButton = new ToggleButton(femaleButtonBase, 'Female', _person.sex === 'FEMALE');
         femaleButton.uncheckable = false;
         femaleButton.onChange = function(toggled) {
@@ -58,7 +58,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     function initAgeSelector() {
-        var ageSelectorBase = _this.getElementById('age_selector_base');
+        var ageSelectorBase = _this.getElementByClassName('age_selector_base');
 
         ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age, _person.age);
         ageSelector.onSelectOption = function(selecteKey) {
@@ -71,7 +71,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     function initInterestRater() {
 
-        var raterBase = _this.getElementById('interest_rater_base');
+        var raterBase = _this.getElementByClassName('interest_rater_base');
 
         interestRater = new viewComponents.Rater(raterBase, Person.interest, buttonMarkerPaths);
         interestRater.onSetRater = function(key) {
@@ -83,7 +83,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     function initInterestText() {
-        interestText = _this.getElementById('interest_text');
+        interestText = _this.getElementByClassName('interest_text');
         refreshInterestText();
     }
 
@@ -100,11 +100,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     function initNoteText() {
-        noteText = _this.getElementById('person_note_text');
+        noteText = _this.getElementByClassName('person_note_text');
     }
 
     function initOkButton() {
-        okButton = _this.getElementById('ok_button');
+        okButton = _this.getElementByClassName('ok_button');
         okButton.addEventListener('click', onClickOkButton);
     }
 
@@ -121,11 +121,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     function initDeleteButtonRow() {
-        deleteButtonRow = _this.getElementById('delete_button_row');
+        deleteButtonRow = _this.getElementByClassName('delete_button_row');
     }
 
     function initDeleteButton() {
-        deleteButton = _this.getElementById('delete_button');
+        deleteButton = _this.getElementByClassName('delete_button');
         deleteButton.addEventListener('click', onClickDeleteButton);
 
     }
@@ -137,7 +137,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     }
 
     function initCancelButton() {
-        cancelButton = _this.getElementById('cancel_button');
+        cancelButton = _this.getElementByClassName('cancel_button');
         cancelButton.addEventListener('click', onClickCancelButton);
     }
 

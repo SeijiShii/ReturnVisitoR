@@ -32,7 +32,7 @@
     background-color: gray;
 }
 
-.toggle_button .button_box .button_base #on_button {
+.toggle_button .button_box .button_base .on_button {
     position: absolute;
     top: 0;
     left: 0;
@@ -45,7 +45,7 @@
     background-color: #34873b;
 }
 
-.toggle_button #toggle_text {
+.toggle_button .toggle_text {
     position: absolute;
     display: block;
     width: auto;

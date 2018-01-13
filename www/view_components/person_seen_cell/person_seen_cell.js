@@ -4,18 +4,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
     var cellFrame,
         midColumn,
         switchBox,
-        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        markerPaths = returnvisitor.common.markerPaths,
-        viewComponents = returnvisitor.viewComponents,
-        SwitchView = viewComponents.SwitchView,
-        // EditButton = viewComponents.EditButton,
+        returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        loadFile        = returnvisitor.common.loadFile,
+        markerPaths     = returnvisitor.common.markerPaths,
+        viewComponents  = returnvisitor.viewComponents,
+        SwitchView      = viewComponents.SwitchView,
         SmallSquareButton = viewComponents.SmallSquareButton,
-        MinusButton = viewComponents.MinusButton,
-        _person = {};
-
-    _person.interest = 'STRONGLY_INTERESTED';
-    _person.data = '四伊清司 男性 31~40 丸刈り'
-
+        MinusButton     = viewComponents.MinusButton;
+        
     function initCellFrame() {
         cellFrame = document.createElement('div');
         $(cellFrame).css({

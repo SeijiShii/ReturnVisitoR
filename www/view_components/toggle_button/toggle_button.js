@@ -35,11 +35,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.ToggleButton = funct
     };
 
     function initOnButton() {
-        _onButton = elements.getElementById(_frame, 'on_button');
+        _onButton = elements.getElementByClassName(_frame, 'on_button');
     }
 
     function initText() {
-        _text = elements.getElementById(_frame, 'toggle_text');
+        _text = elements.getElementByClassName(_frame, 'toggle_text');
         if (text !== undefined) {
             _text.innerText = text;
         } else {

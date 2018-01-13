@@ -13,7 +13,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
     loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
 
     function initNewPlaceButton() {
-        newPlaceButton = _this.getElementById('new_place_button');
+        newPlaceButton = _this.getElementByClassName('new_place_button');
         newPlaceButton.addEventListener('click', onClickNewPlace, true);
     }
 
@@ -30,7 +30,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
     }
 
     function initCancelButton() {
-        cancelButton = _this.getElementById('cancel_button');
+        cancelButton = _this.getElementByClassName('cancel_button');
         cancelButton.addEventListener('click', onClickCancelButton, true);
     }
 
