@@ -18,7 +18,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         Person          = returnvisitor.data.Person,
         viewComponents  = returnvisitor.viewComponents,
         SwitchView      = viewComponents.SwitchView,
-        SmallSquareButton = viewComponents.SmallSquareButton;
+        SmallSquareButton = viewComponents.SmallSquareButton,
+        EXTRACTED_HEIGHT = '80px';
     
     
     function initialize() {
@@ -88,14 +89,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
     }
 
     function _appendAndExtract(parent) {
-        var exHeight = cellFrame.clientHeight;
+
         cellFrame.style.height = 0;
 
         parent.appendChild(cellFrame);
 
         $(cellFrame).animate({
-            height : exHeight + 'px'
-        }, exHeight * 30);
+            height : EXTRACTED_HEIGHT
+        }, 500);
     }
 
     function waitAppendUntilReady(appendFunc, parent) {
