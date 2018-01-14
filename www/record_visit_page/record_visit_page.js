@@ -172,7 +172,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function addPersonSeenCell(person) {
         var personSeenCell = new PersonSeenCell(person);
-        personSeenCell.appendAndExtract(personContainer);
+        personSeenCell.appendTo(personContainer);
+        // personSeenCell.appendAndExtract(personContainer);
     }
 
     function loadPersonDialogScript() {

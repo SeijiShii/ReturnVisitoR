@@ -1,27 +1,33 @@
 "use strict"
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwitchView = function(parent, switchText){
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwitchView = function(parent, switchText, initialState){
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = returnvisitor.common.loadFile, 
         elements = returnvisitor.common.elements,
         _frame,
-        _buttonBase,
-        _onButton,
+        _greenRect,
         _text,
-        _isOn,
+        _isOn = false,
         RV_GREEN = '#34873b';
+    
+    if (initialState !== undefined) {
+        _isOn = initialState;
+    }
     
     function initFrame() {
         loadFile.loadCss('./view_components/switch_view/switch_view.css')
         loadFile.loadHtmlAsElement('./view_components/switch_view/switch_view.html', function(div){
             _frame = div;
 
-            _buttonBase = elements.getElementByClassName(_frame, 'button_base');
-            _onButton = elements.getElementByClassName(_frame, 'on_button');
-            _onButton.style.opacity = 0;
+            _greenRect = elements.getElementByClassName(_frame, 'green_rect');
+            if (_isOn) {
+                _greenRect.style.width = '100%';
+            } else {
+                _greenRect.style.width = '0';
+            }
 
-            _text = elements.getElementByClassName(_frame, 'switch_text')
+            _text = elements.getElementByClassName(_frame, 'switch_text');
             _text.innerText = switchText;
 
             _frame.addEventListener('click', onClickFrame);
@@ -37,15 +43,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwitchView = functio
         });
 
         if (_isOn) {
-            $(_buttonBase).animate({
-                left : '5px',
+
+            $(_greenRect).animate({
+                width: 0
             }, 300);
-            $(_onButton).fadeTo(300, 0);
+
         } else {
-            $(_buttonBase).animate({
-                left : '20px',
-            }, 300); 
-            $(_onButton).fadeTo(300, 1);
+
+            $(_greenRect).animate({
+                width: '100%'
+            }, 300);
 
         }
 

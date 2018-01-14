@@ -59,12 +59,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
 
     function initRVSwitch() {
         var rvSwitchBase = elements.getElementByClassName(cellFrame, 'rv_switch_base');
-        var rvSwitch = new SwitchView(rvSwitchBase, 'Return Visit');
+        var rvSwitch = new SwitchView(rvSwitchBase, 'Return Visit', false);
     }
 
     function initStudySwitch() {
         var studySwitchBase = elements.getElementByClassName(cellFrame, 'study_switch_base');
-        var stSwitch = new SwitchView(studySwitchBase, 'Study');
+        var stSwitch = new SwitchView(studySwitchBase, 'Study', false);
     }
 
     function initEditButton() {
