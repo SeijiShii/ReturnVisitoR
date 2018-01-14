@@ -1,92 +1,100 @@
 .cell_frame {
     position: relative;
     width: 100%;
-    min-height: 70px;
-    height: auto;
-    border-bottom: solid 1px gray;
+    height: 80px;
+
+    border-bottom: gray solid 1px;
+
     /* background-color: red; */
 }
 
-.cell_frame .mark_div {
-    width: 30px;
-    min-height: 70px;
-    height: 100%;
-    float: left;
+.cell_frame .button_base {
     position: relative;
-    /* background-color: blue; */
+    width: 40px;
+    height: 40px;
+
 }
 
-.cell_frame .mark_div img {
-    width: 20px;
-    height: 20px;
+.cell_frame .first_row {
+    position: relative;
+    width: 100%;
+    height: 40px;
+
+    /* background-color: blueviolet; */
+}
+
+.cell_frame .first_row .mark_div {
+
+    position: relative;
+    width: 30px;
+    height: 40px;
+    float: left;
+
+    /* background-color: yellowgreen; */
+
+}
+
+.cell_frame .first_row .mark_div img {
+    position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    position: absolute;
+    width: 20px;
+    height: 20px;
     margin: auto;
-    /* background-color: green; */
-}
 
-.cell_frame .mid_column {
-    position: relative;
-    min-height: 70px;
-    height: 100%;
-    float: left;
-    /* background-color: yellowgreen; */
-}
-
-.cell_frame .mid_column .person_data {
-    font-size: 12px;
-    color: #333;
-    text-align: center;
-    position: relative;
-    height: 30px;
-    line-height: 30px;
-    margin: 0;
-    margin-left: 20px;
-    margin-right: 20px;
-
-}
-
-.cell_frame .mid_column .button_box {
-    position: relative;
-    min-height: 40px;
-    /* width: 100px; */
-    /* background-color: pink; */
-}
-
-.cell_frame .mid_column .button_box .switch_base {
-    width: 70px;
-    height: 40px;
-    float: left;
-    position: relative;
-}
-
-.cell_frame .mid_column .button_box .rv_switch_base {
-    /* background-color: blueviolet; */
-}
-
-.cell_frame .mid_column .button_box .study_switch_base {
     /* background-color: aqua; */
 }
 
-.cell_frame .mid_column .button_box .edit_button_base {
-    width: 40px;
+.cell_frame .first_row .person_data {
+    width: auto;
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    color: #333;
+    padding-left: 20px;
+    float: left;
+
+    /* background-color: chocolate; */
+}
+
+.cell_frame .first_row .remove_button_base {
+
+    float: right;
+    
+    /* background-color: darkgreen; */
+}
+
+.cell_frame .second_row {
+    position: relative;
+    width: auto;
+    height: 40px;
+    padding-left: 30px;
+
+    /* background-color: darkorchid; */
+
+}
+
+.cell_frame .switch_base {
+    position: relative;
+    width: 70px;
     height: 40px;
     float: left;
-    position: relative;
-    /* background-color: orange; */
 }
 
-.cell_frame .remove_button_base {
-    width: 40px;
-    height: 40px;
+.cell_frame .second_row .rv_switch_base {
+    
+    /* background-color: darkolivegreen; */
+
+}
+
+.cell_frame .second_row .study_switch_base {
+    /* background-color: deepskyblue; */
+}
+
+.cell_frame .second_row .edit_button_base {
     float: right;
-    position: relative;
-    /* background-color: gold; */
-}
 
-.cell_frame .anchor {
-    clear: both;
+    /* background-color: darksalmon; */
 }

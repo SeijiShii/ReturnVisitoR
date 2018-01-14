@@ -53,5 +53,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.prototype = Object.crea
         enumerable: true,
         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person,
         writable: true
+    },
+
+    data : {
+        set : undefined,
+        get : function() {
+            var s = '';
+            if (this.name !== undefined && this.name.length > 0) {
+                s = s + this.name + ' ';
+            }
+
+            s = s + RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex[this.sex] + ' ' + RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age[this.age];
+
+            if (this.note !== undefined && this.note.length > 0) {
+                s = s + ' ' + this.note;
+            }
+
+            return s;
+        }
     }
 })

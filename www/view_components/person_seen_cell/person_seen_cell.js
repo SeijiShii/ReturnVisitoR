@@ -44,7 +44,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         var mark = elements.getElementByClassName(cellFrame, 'button_mark');
 
         var pathArray = Object.values(markerPaths.buttonMarkerPaths);
-        console.log(pathArray);
+        // console.log(pathArray);
         mark.src = pathArray[Person.interest.indexOfKey(person.interest)];
         // mark.src = markerPaths.buttonMarkerPaths.orangeButton;
     }
@@ -53,7 +53,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
     function initPersonData() {
          
         var personData = elements.getElementByClassName(cellFrame, 'person_data');
-        // personData.innerText = person.data;
+        personData.innerText = person.data;
 
     }
 
