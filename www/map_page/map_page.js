@@ -467,16 +467,22 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     function initMapLongClickDialog() {
         mapLongClickDialog = new returnvisitor.MapLongClickDialog(mapDiv);
 
-        mapLongClickDialog.onFadedOut = function() {
+        mapLongClickDialog.onOverlayClick = function() {
             removeTmpMarker();
         }
 
         mapLongClickDialog.onNewPlaceClick = function() {
 
+            removeTmpMarker();
+            
             if (typeof _onNewPlaceVisitClick === 'function') {
                 _onNewPlaceVisitClick(_latLng);
             }
         };
+
+        mapLongClickDialog.onCancelClick = function() {
+            removeTmpMarker();
+        }
 
     }
 

@@ -1,15 +1,21 @@
 "use strict"
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = function(parent, person) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = function(person) {
+
+    if (person === undefined) {
+        throw new Error('Argument person must not be undefined!');
+    }
 
     var _this = this,
         cellFrame,
         midColumn,
         switchBox,
+        _isFrameReady = false,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile        = returnvisitor.common.loadFile,
         elements        = returnvisitor.common.elements,
         markerPaths     = returnvisitor.common.markerPaths,
+        Person          = returnvisitor.data.Person,
         viewComponents  = returnvisitor.viewComponents,
         SwitchView      = viewComponents.SwitchView,
         SmallSquareButton = viewComponents.SmallSquareButton;
@@ -27,7 +33,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
             initEditButton();
             initRemoveButton();
 
-            parent.appendChild(cellFrame);
+            _isFrameReady = true;
 
         });
     }
@@ -37,8 +43,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
 
         var mark = elements.getElementByClassName(cellFrame, 'button_mark');
 
-        // mark.src = markerPaths.buttonMarkerPaths[Person.interest.indexOfKey(person.interest)];
-        mark.src = markerPaths.buttonMarkerPaths.orangeButton;
+        var pathArray = Object.values(markerPaths.buttonMarkerPaths);
+        console.log(pathArray);
+        mark.src = pathArray[Person.interest.indexOfKey(person.interest)];
+        // mark.src = markerPaths.buttonMarkerPaths.orangeButton;
     }
 
 
@@ -70,7 +78,48 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
 
         var removeButton = new SmallSquareButton(removeButtonBase, './view_components/minus_button/minus_button.html', './view_components/minus_button/minus_button.css');
     }
+
+    function _appendTo(parent) {
+        parent.appendChild(cellFrame);
+
+        if ( typeof _this.appendCallback === 'function' ) {
+            _this.appendCallback();
+        }
+    }
+
+    function _appendAndExtract(parent) {
+        var exHeight = cellFrame.clientHeight;
+        cellFrame.style.height = 0;
+
+        parent.appendChild(cellFrame);
+
+        $(cellFrame).animate({
+            height : exHeight + 'px'
+        }, exHeight * 30);
+    }
+
+    function waitAppendUntilReady(appendFunc, parent) {
+        
+        var timer = function() {
+
+            if (_isFrameReady) {
+                clearInterval(timerId);
+                appendFunc(parent);
+            } else {
+                console.log('Wait for person seen cell ready.');
+            }
+        }
+        var timerId = setInterval(timer, 50);
+    }
    
+    this.appendTo = function(parent) {
+        waitAppendUntilReady(_appendTo, parent);
+    }
+
+    this.appendAndExtract = function(parent) {
+        waitAppendUntilReady(_appendAndExtract, parent);
+    }
+
     initialize();
 }
 

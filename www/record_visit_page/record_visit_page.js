@@ -14,6 +14,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         roomText,
         personSeenSubtitle,
         personContainer,
+        _isPersonContainerReady = false,
         addPersonButton,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
@@ -120,7 +121,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function initPersonContainer() {
         personContainer = document.getElementById('person_container');
-        var personCell = new PersonSeenCell(personContainer);
+        _isPersonContainerReady = true;
+
+        // var personCell = new PersonSeenCell();
+        // personCell.appendTo(personContainer);
+        // personCell.appendCallback = function() {
+        //     _isPersonContainerReady = true;
+        // }
     }
 
     function onClickAddPersonButton() {
@@ -158,8 +165,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             personDialog.onClickOk = function(person) {
                 console.log(person);
                 _persons.push(person);
+                addPersonSeenCell(person);
             } 
         };
+    }
+
+    function addPersonSeenCell(person) {
+        var personSeenCell = new PersonSeenCell(person);
+        personSeenCell.appendAndExtract(personContainer);
     }
 
     function loadPersonDialogScript() {
@@ -195,7 +208,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             refreshRoomText();
             refreshPersonSeenSubtitle();
 
-            fadeIn();
+            var timer = function() {
+                if (_isPersonContainerReady) {
+                    clearInterval(timerId);
+                    fadeIn();
+                } else {
+                    console.log('Waiting for person container ready.')
+                }
+            }
+
+            var timerId = setInterval(timer, 50);
         }
     }
 }());

@@ -113,11 +113,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         _person.name = nameText.value;
         _person.note = noteText.value;
 
-        _this.fadeOut();
-
-        if(typeof _this.onClickOk === 'function') {
-            _this.onClickOk(_person);
-        }
+        _this.fadeOut(_this.onClickOk, _person);
     }
 
     function initDeleteButtonRow() {

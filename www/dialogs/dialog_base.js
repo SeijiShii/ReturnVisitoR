@@ -36,7 +36,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
             e.stopPropagation();
 
-            _this.fadeOut();
+            _this.fadeOut(_this.onOverlayClick);
         });
     }
 
@@ -96,13 +96,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
     }
 
-    this.fadeOut = function() {
+    this.fadeOut = function(callback, arg) {
 
         $(dialogBaseFrame).fadeOut(FADE_DURATION, function(){
             dialogBaseFrame.parentNode.removeChild(dialogBaseFrame);
 
-            if (typeof _this.onFadedOut === 'function') {
-                _this.onFadedOut();
+            if (typeof callback === 'function') {
+                callback(arg);
             }
 
             _this = undefined;
