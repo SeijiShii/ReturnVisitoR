@@ -77,6 +77,22 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         var removeButtonBase = elements.getElementByClassName(cellFrame, 'remove_button_base');
 
         var removeButton = new SmallSquareButton(removeButtonBase, './view_components/minus_button/minus_button.html', './view_components/minus_button/minus_button.css');
+
+        removeButton.onClickButton = onClickRemoveButton;
+    }
+
+    function onClickRemoveButton() {
+        $(cellFrame).animate({
+            height : 0
+        }, 300, function(){
+            cellFrame.parentNode.removeChild(cellFrame);
+            
+            if ( typeof _this.onRemoveCell === 'function' ) {
+                _this.onRemoveCell();
+            }
+
+            _this = null;
+        });
     }
 
     function _appendTo(parent) {
@@ -95,7 +111,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
 
         $(cellFrame).animate({
             height : EXTRACTED_HEIGHT
-        }, 500);
+        }, 300);
     }
 
     function waitAppendUntilReady(appendFunc, parent) {
