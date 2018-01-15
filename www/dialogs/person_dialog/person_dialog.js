@@ -74,7 +74,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
         var raterBase = _this.getElementByClassName('interest_rater_base');
 
-        interestRater = new viewComponents.Rater(raterBase, raterColors.interestColors, 5);
+        var interestValue = Person.interest.indexOfKey(_person.interest);
+        interestRater = new viewComponents.Rater(raterBase, raterColors.interestColors, interestValue);
         interestRater.onSetRater = function(val) {
             var keys = Object.keys(Person.interest);
             _person.interest = keys[val];

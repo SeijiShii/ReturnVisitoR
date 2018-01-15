@@ -161,13 +161,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initAddPersonDialog() {
         addPersonDialog = new returnvisitor.AddPersonDialog();
         addPersonDialog.onNewPersonClick = function() {
-            personDialog = new returnvisitor.PersonDialog();
-            personDialog.onClickOk = function(person) {
-                console.log(person);
-                _persons.push(person);
-                addPersonSeenCell(person);
-            } 
+            initPersonDialog();
         };
+    }
+
+    function initPersonDialog() {
+        personDialog = new returnvisitor.PersonDialog();
+        personDialog.onClickOk = function(person) {
+            console.log(person);
+            _persons.push(person);
+            addPersonSeenCell(person);
+        } 
     }
 
     function addPersonSeenCell(person) {
@@ -179,6 +183,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function loadPersonDialogScript() {
         loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
             
+            // TEST
+            initPersonDialog();
         });
     }
 

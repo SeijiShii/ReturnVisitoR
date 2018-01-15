@@ -14,7 +14,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile        = returnvisitor.common.loadFile,
         elements        = returnvisitor.common.elements,
-        markerPaths     = returnvisitor.common.markerPaths,
+        // markerPaths     = returnvisitor.common.markerPaths,
+        raterColors     = returnvisitor.common.raterColors,
         Person          = returnvisitor.data.Person,
         viewComponents  = returnvisitor.viewComponents,
         SwitchView      = viewComponents.SwitchView,
@@ -44,10 +45,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
 
         var mark = elements.getElementByClassName(cellFrame, 'button_mark');
 
-        var pathArray = Object.values(markerPaths.buttonMarkerPaths);
-        // console.log(pathArray);
-        mark.src = pathArray[Person.interest.indexOfKey(person.interest)];
-        // mark.src = markerPaths.buttonMarkerPaths.orangeButton;
+        // var pathArray = Object.values(markerPaths.buttonMarkerPaths);
+        mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(person.interest)];
     }
 
 

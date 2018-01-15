@@ -34,7 +34,7 @@
 
 }
 
-.cell_frame .first_row .mark_div img {
+.cell_frame .first_row .mark_div .button_mark {
     position: absolute;
     top: 0;
     left: 0;
@@ -43,6 +43,7 @@
     width: 20px;
     height: 20px;
     margin: auto;
+    border-radius: 10px;
 
     /* background-color: aqua; */
 }
