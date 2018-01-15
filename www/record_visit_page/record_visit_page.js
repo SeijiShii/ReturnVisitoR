@@ -160,12 +160,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function initAddPersonDialog() {
-        var persons = [_everSeenPersons];
-        persons.removeByIds(_visit.personVisitIds);
+        // var persons = [_everSeenPersons];
+        // persons.removeByIds(_visit.personVisitIds);
 
-        console.log(persons);
+        // console.log(persons);
 
-        addPersonDialog = new returnvisitor.AddPersonDialog(persons);
+        addPersonDialog = new returnvisitor.AddPersonDialog(_everSeenPersons);
         addPersonDialog.onNewPersonClick = function() {
             initPersonDialog();
         };

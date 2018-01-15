@@ -1,10 +1,11 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(persons) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeenPersons) {
 
     var _this = this,
         newPersonButton,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
+        loadFile = returnvisitor.common.loadFile,
+        PersonCell = returnvisitor.viewComponents.PersonCell;
 
     returnvisitor.DialogBase.call(this,
         ['./dialogs/add_person_dialog/add_person_dialog.html']);
@@ -26,11 +27,31 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(persons)
     }
 
     function initEverSeenText() {
+        var everSeenText = _this.getElementByClassName('ever_seen_text');
+        if (everSeenPersons.length <= 0) {
+            $(everSeenText).css({
+                display : 'none'
+            })
+        } else {
+            $(everSeenText).css({
+                display : 'block'
+            })
+        }
+    }
+
+    function initEverSeenContainer() {
+        var everSeenContainer = _this.getElementByClassName('ever_seen_container');
+
+        for ( var i = 0 ; i < everSeenPersons.length ; i++ ) {
+            var personCell = new PersonCell(everSeenContainer, everSeenPersons[i]);
+        }
 
     }
 
     this.onDialogBaseReady = function(){
         initNewPersonButton();
+        initEverSeenText();
+        initEverSeenContainer();
     };
 }
 

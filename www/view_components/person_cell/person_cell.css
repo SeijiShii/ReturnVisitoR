@@ -1,11 +1,3 @@
-.test_frame {
-    position: relative;
-    width: 90%;
-    height: auto;
-    
-    background-color: whitesmoke;
-}
-
 .cell_frame {
     position: relative;
     width: auto;
