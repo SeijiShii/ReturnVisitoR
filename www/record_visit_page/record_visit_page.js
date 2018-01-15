@@ -6,6 +6,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         Place = returnvisitor.data.Place,
+        Visit = returnvisitor.data.Visit,
         viewComponents = returnvisitor.viewComponents,
         PersonSeenCell = viewComponents.PersonSeenCell,
         logoButton,
@@ -21,6 +22,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         LOGO_BUTTON_SIZE = '40px',
         ROOM_TEXT_HEIGHT = '30px',
         _place,
+        _visit,
         _persons,
         _options,
         addPersonDialog,
@@ -32,6 +34,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         if (_options.method === 'NEW_PLACE_VISIT') {
             _place = new Place(_options.latLng, 'PLACE')
         }
+    }
+
+    function initVisitData() {
+        _visit = new Visit(_place.id);
     }
 
     function initPersons() {
@@ -211,6 +217,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         initialize : function(options) {
             _options = options;
             initPlaceData();
+            initVisitData();
+            
             requestReverseGeocoding();
             refreshRoomText();
             refreshPersonSeenSubtitle();
