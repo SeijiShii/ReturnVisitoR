@@ -1,8 +1,8 @@
 "use strict"
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = function(person) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = function(personVisit) {
 
-    if (person === undefined) {
+    if (personVisit === undefined) {
         throw new Error('Argument person must not be undefined!');
     }
 
@@ -24,8 +24,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
     
     
     function initialize() {
-        loadFile.loadCss('./view_components/person_seen_cell/person_seen_cell.css');
-        loadFile.loadHtmlAsElement('./view_components/person_seen_cell/person_seen_cell.html', function(div){
+        loadFile.loadCss('./view_components/person_visit_cell/person_visit_cell.css');
+        loadFile.loadHtmlAsElement('./view_components/person_visit_cell/person_visit_cell.html', function(div){
             cellFrame = div;
 
             initButtonMark();
@@ -46,14 +46,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
         var mark = elements.getElementByClassName(cellFrame, 'button_mark');
 
         // var pathArray = Object.values(markerPaths.buttonMarkerPaths);
-        mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(person.interest)];
+        mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(personVisit.interest)];
     }
 
 
     function initPersonData() {
          
         var personData = elements.getElementByClassName(cellFrame, 'person_data');
-        personData.innerText = person.data;
+        personData.innerText = personVisit.personData;
 
     }
 
@@ -122,7 +122,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonSeenCell = fun
                 clearInterval(timerId);
                 appendFunc(parent);
             } else {
-                console.log('Wait for person seen cell ready.');
+                console.log('Wait for person visit cell ready.');
             }
         }
         var timerId = setInterval(timer, 50);

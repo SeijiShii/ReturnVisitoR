@@ -1,5 +1,5 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(persons) {
 
     var _this = this,
         newPersonButton,
@@ -23,6 +23,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function() {
         if (typeof _this.onNewPersonClick === 'function') {
             _this.onNewPersonClick();
         }
+    }
+
+    function initEverSeenText() {
+
     }
 
     this.onDialogBaseReady = function(){

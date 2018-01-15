@@ -11,3 +11,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject = function(idHeader
 
 }
 
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype.equals = function(otherObj) {
+    return this.is === otherObj.id;
+}
