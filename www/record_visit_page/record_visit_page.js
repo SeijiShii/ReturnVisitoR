@@ -46,7 +46,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         
     
     function initLogoButton() {
-        // console.log('initLogoButton called!')
         logoButton = document.getElementById('logo_button');
         logoButton.addEventListener('click', onClickLogoButton);
     };
@@ -174,8 +173,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initPersonDialog() {
         personDialog = new returnvisitor.PersonDialog();
         personDialog.onClickOk = function(person) {
-            console.log(person);
+            // console.log(person);
             _persons.push(person);
+            _place.personIds.push(person.id);
+            _visit.addPersonVisit(person.id);
+
+            console.log(_place);
+            console.log(_visit);
+
             addPersonSeenCell(person);
         } 
     }
@@ -218,7 +223,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             _options = options;
             initPlaceData();
             initVisitData();
-            
+
             requestReverseGeocoding();
             refreshRoomText();
             refreshPersonSeenSubtitle();

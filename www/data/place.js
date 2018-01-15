@@ -8,6 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
     this.latLng = latLng;
     this.category = category; 
     this.address;
+    this.personIds = []; // Person ids ever seen in this place.
     
 }
 

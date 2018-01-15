@@ -3,13 +3,19 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit = function(placeId){
 
-    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this, 'visit');
+    var data = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data;
+
+    data.DataObject.call(this, 'visit');
     
     this.placeId = placeId;
     this.dateTime = new Date();
     this.personVisitIds = [];
     this.placements = [];
     
+    this.addPersonVisit = function(personId) {
+        var personVisit = new data.PersonVisit(personId, this.id);
+        this.personVisitIds.push(personVisit.id);
+    }
 
 }
 
