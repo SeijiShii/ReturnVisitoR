@@ -93,7 +93,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
             if (elm.classList !== undefined) {
                 if (elm.classList.contains('button_div')) {  
                     _value = elm.id.substring(BUTTON_ID_PREFIX.length);
-                    console.log(_value);
+                    // console.log(_value);
                     break;
                 }            
             }

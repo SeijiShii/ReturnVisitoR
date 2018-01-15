@@ -79,9 +79,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
             var keys = Object.keys(Person.interest);
             _person.interest = keys[val];
             refreshInterestText();
-            console.log('_person.interest: ', _person.interest);
+            // console.log('_person.interest: ', _person.interest);
         }
-
     }
 
     function initInterestText() {
