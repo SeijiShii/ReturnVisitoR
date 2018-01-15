@@ -4,6 +4,7 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data')
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person = function(){
 
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this, 'person');
+    
     this.sex = 'SEX_UNKNOWN';
     this.age = 'AGE_UNKNOWN';
     this.interest = 'INTEREST_NONE';
