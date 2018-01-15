@@ -1,15 +1,8 @@
-.test_frame {
-    position: relative;
-    width: 60px;
-    height: 40PX;
-    
-    background-color: whitesmoke;
-}
-
 .button_div {
     position: relative;
     width: 40px;
     height: 40px;
+    float: left;
 }
 
 .button_div .rater_button {
@@ -29,6 +22,15 @@
 }
 
 .button_div .color_button {
-    background-color: orangered;
+    /* background-color: orangered; */
 }
 
+.rater_div {
+    height: 40px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    margin: auto;
+}

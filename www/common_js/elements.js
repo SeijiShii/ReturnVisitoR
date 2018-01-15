@@ -9,6 +9,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements = (function(){
             var offspring = [];
 
             var pushOffspring = function(_element) {
+
+                if (_element === undefined) {
+                    return;
+                }
+                
                 var children = _element.children;
                 // console.log(children);
 

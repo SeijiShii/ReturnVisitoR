@@ -18,6 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = returnvisitor.data.Person,
         loadFile = returnvisitor.common.loadFile,
+        raterColors = returnvisitor.common.raterColors,
         buttonMarkerPaths =returnvisitor.common.markerPaths.buttonMarkerPaths,
         viewComponents = returnvisitor.viewComponents,
         ToggleButton = viewComponents.ToggleButton;
@@ -73,9 +74,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
         var raterBase = _this.getElementByClassName('interest_rater_base');
 
-        interestRater = new viewComponents.Rater(raterBase, Person.interest, buttonMarkerPaths);
-        interestRater.onSetRater = function(key) {
-            _person.interest = key;
+        interestRater = new viewComponents.Rater(raterBase, raterColors.interestColors, 5);
+        interestRater.onSetRater = function(val) {
+            var keys = Object.keys(Person.interest);
+            _person.interest = keys[val];
             refreshInterestText();
             console.log('_person.interest: ', _person.interest);
         }

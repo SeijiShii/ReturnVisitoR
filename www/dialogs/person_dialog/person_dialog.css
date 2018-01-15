@@ -48,7 +48,7 @@
 
 }
 
-#interest_text {
+.interest_text {
     width: 90%;
     height: 30px;
     line-height: 30px;
@@ -61,7 +61,7 @@
     margin-top: 10px;
 }
 
-#person_note_text {
+.person_note_text {
     display: block;
     width: 90%;
     height: 50px;
