@@ -8,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeen
         PersonCell = returnvisitor.viewComponents.PersonCell;
 
     returnvisitor.DialogBase.call(this,
-        ['./dialogs/add_person_dialog/add_person_dialog.html']);
+        ['./dialogs/add_person_dialog/add_person_dialog.html'], 'add_person_dialog');
     
     loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
 
@@ -73,10 +73,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeen
         }
     }
 
+    function initCancelButton() {
+        var cancelButton = _this.getElementByClassName('cancel_button');
+        cancelButton.addEventListener('click', onCancelClick);
+    }
+
+    function onCancelClick() {
+        _this.fadeOut();
+    }
+
     this.onDialogBaseReady = function(){
         initNewPersonButton();
         initEverSeenText();
         initEverSeenContainer();
+        initCancelButton();
     };
 }
 

@@ -24,7 +24,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
         ToggleButton = viewComponents.ToggleButton;
 
     returnvisitor.DialogBase.call(this,
-        ['./dialogs/person_dialog/person_dialog.html']);
+        ['./dialogs/person_dialog/person_dialog.html'], 'person_dialog');
 
     loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     

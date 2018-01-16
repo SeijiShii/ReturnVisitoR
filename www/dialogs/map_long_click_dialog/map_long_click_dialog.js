@@ -8,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.MapLongClickDialog = function(paren
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
 
     returnvisitor.DialogBase.call(this, 
-        './dialogs/map_long_click_dialog/map_long_click_dialog.html', parent);
+        './dialogs/map_long_click_dialog/map_long_click_dialog.html', 'map_long_click_dialog', parent);
 
     loadFile.loadCss('./dialogs/map_long_click_dialog/map_long_click_dialog.css');
 
