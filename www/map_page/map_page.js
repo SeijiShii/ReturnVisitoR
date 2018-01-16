@@ -450,7 +450,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     }
 
     function startLoadDialogBaseScript() {
-        loadFile.loadScript('./dialogs/dialog_base.js', function(){
+        loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
             loadMapLongClickDialogFiles();
 
         });

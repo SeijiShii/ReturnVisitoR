@@ -12,6 +12,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         PersonVisitCell = viewComponents.PersonVisitCell,
         elements = returnvisitor.common.elements,
         elementsEffect = returnvisitor.common.elementsEffect,
+        dateTime = returnvisitor.common.dateTime,
         logoButton,
         addressText,
         nameText,
@@ -33,6 +34,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         _options,
         addPersonDialog,
         personDialog,
+        datePickerDialog,
         appFrame = document.getElementById('app_frame');
     
     function initPlaceData() {
@@ -195,6 +197,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         dateText.addEventListener('click', onClickDateText);
     }
 
+    function refreshDateText() {
+        dateText.innerText = dateTime.dateString(_visit.dateTime);
+    }
+
     function onClickDateText() {
         elementsEffect.blink(dateText);
     }
@@ -202,6 +208,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initTimeText() {
         timeText = elements.getElementByClassName(appFrame, 'time_text');
         timeText.addEventListener('click', onClickTimeText);
+    }
+
+    function refreshTimeText() {
+        timeText.innerText = dateTime.timeString(_visit.dateTime);
     }
 
     function onClickTimeText() {
@@ -212,6 +222,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
             loadAddPersonDialogScript();
             loadPersonDialogScript();
+            loadDatePickerScript();
         });
     }
 
@@ -283,6 +294,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         });
     }
 
+    function loadDatePickerScript() {
+        loadFile.loadScript('./dialogs/date_picker_dialog/date_picker_dialog.js', function(){
+            
+            // TEST
+            initDatePickerDialog();
+
+        });
+    }
+
+    function initDatePickerDialog() {
+        datePickerDialog = new returnvisitor.DatePickerDialog();
+    }
+
     function fadeIn() {
         $('#record_visit_page_frame').fadeTo('slow', 1);
 
@@ -303,12 +327,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     return {
 
         initialize : function(options) {
+
             _options = options;
             initPlaceData();
             initVisitData();
 
             requestReverseGeocoding();
             refreshRoomText();
+            refreshDateText();
+            refreshTimeText();
             refreshPersonVisitText(false);
             refreshPersonContainer();
 
