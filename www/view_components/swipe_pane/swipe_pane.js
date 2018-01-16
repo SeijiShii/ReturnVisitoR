@@ -17,9 +17,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
             // });
 
-            initInnerFrame();
-
             parent.appendChild(paneFrame);
+            initInnerFrame();
+            
         });
     }
 
@@ -28,14 +28,68 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         var innerFrame = elements.getElementByClassName(paneFrame, 'inner_frame');
 
         var swipe = new Swipe(innerFrame);
-        swipe.ySwipeEnabled = true;
+        
+        var originLeft = elements.positionInParent(innerFrame).left;
+        var $frame = $(innerFrame)
 
-        // innerFrame.addEventListener('touchstart', function(){
-        //     console.log('Inner frame touch!');
-        // }, false);
-        // innerFrame.addEventListener('click', function(){
-        //     console.log('Inner frame click!');
-        // });
+        swipe.swipeStroke = paneFrame.clientWidth * 0.2;
+        console.log('swipeStroke:', swipe.swipeStroke);
+
+        swipe.onXSwipe = function(xStroke) {
+
+            var oldLeft = elements.positionInParent(innerFrame).left;
+
+            $frame.css({
+                left : oldLeft + xStroke
+            });
+        }
+
+        swipe.onXSwipeEnd = function(xStroke, speed) {
+
+            var currentLeft = elements.positionInParent(innerFrame).left, 
+                goalLeft,
+                distance,
+                time;
+            
+            if (xStroke > 0) {
+                // Swipe to right.
+
+                distance = Math.abs(currentLeft);
+                time = distance / speed;
+
+                $frame.animate({
+                    left : 0
+                }, time, function(){
+                    $frame.css({
+                        left : '-100%'
+                    });
+                });
+
+            } else {
+                // Swipe to left.
+
+                goalLeft = innerFrame.clientWidth * -0.667;
+                distance = Math.abs(goalLeft - currentLeft);
+
+                time = distance / speed;
+
+                $frame.animate({
+                    left : '-200%'
+                } , time, function(){
+                    $frame.css({
+                        left : '-100%'
+                    });
+                });
+            }
+
+        }
+
+        swipe.onSwipeCancel = function() {
+            $frame.animate({
+                left : '-100%'
+            } , 'slow');
+        }
+
 
     }
 
