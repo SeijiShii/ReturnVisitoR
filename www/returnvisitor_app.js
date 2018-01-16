@@ -139,7 +139,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     //test
     // function testPersonDialog() {
-    //     loadFile.loadScript('./dialogs/dialog_base.js', function(){
+    //     loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
     //         loadPersonDialogScript();
     //     });
     // }

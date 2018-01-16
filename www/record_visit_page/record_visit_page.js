@@ -10,10 +10,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         PersonVisit = returnvisitor.data.PersonVisit,
         viewComponents = returnvisitor.viewComponents,
         PersonVisitCell = viewComponents.PersonVisitCell,
+        elements = returnvisitor.common.elements,
+        elementsEffect = returnvisitor.common.elementsEffect,
         logoButton,
         addressText,
         nameText,
         roomText,
+        dateText,
+        timeText,
         personVisitSubtitle,
         personContainer,
         _isPersonContainerReady = false,
@@ -186,8 +190,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         }
     }
 
+    function initDateText() {
+        dateText = elements.getElementByClassName(appFrame, 'date_text');
+        dateText.addEventListener('click', onClickDateText);
+    }
+
+    function onClickDateText() {
+        elementsEffect.blink(dateText);
+    }
+
+    function initTimeText() {
+        timeText = elements.getElementByClassName(appFrame, 'time_text');
+        timeText.addEventListener('click', onClickTimeText);
+    }
+
+    function onClickTimeText() {
+        elementsEffect.blink(timeText);
+    }
+
     function loadDialogFiles() {
-        loadFile.loadScript('./dialogs/dialog_base.js', function(){
+        loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
             loadAddPersonDialogScript();
             loadPersonDialogScript();
         });
@@ -257,7 +279,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
             
             // TEST
-            initPersonDialog();
+            // initPersonDialog();
         });
     }
 
@@ -272,12 +294,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     initPersonVisitText();
     initAddPersonButton();
     initRoomText();
+    initDateText();
+    initTimeText();
     initPersonContainer();
 
     loadDialogFiles();
-
-    // test
-    // initSwitch();
 
     return {
 

@@ -19,8 +19,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
     
     function loadDialogBaseFiles() {
 
-        loadFile.loadCss('./dialogs/dialog_base.css');
-        loadFile.loadHtmlAsElement('./dialogs/dialog_base.html', function(divElm) {
+        loadFile.loadCss('./dialogs/dialog_base/dialog_base.css');
+        loadFile.loadHtmlAsElement('./dialogs/dialog_base/dialog_base.html', function(divElm) {
             dialogBaseFrame = divElm;
 
             initDialogOverlay();
