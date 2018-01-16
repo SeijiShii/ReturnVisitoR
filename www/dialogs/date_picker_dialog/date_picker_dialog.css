@@ -1,0 +1,10 @@
+.date_picker_dialog .calendar_frame {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.date_picker_dialog .cancel_button {
+    float: right;
+    margin: 0;
+}

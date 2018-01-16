@@ -1,0 +1,49 @@
+.swipe_pane_frame {
+    width: 100%;
+    height: 100%;
+
+    background-color: red;
+
+}
+
+.swipe_pane_frame .inner_frame {
+    position: absolute;
+    width: 300%;
+    height: 100%;
+    left: -100%;
+    top: 0;
+
+    background-color: blue;
+
+}
+
+.swipe_pane_frame .inner_frame .child_pane {
+
+    position: absolute;
+    width: 33.3%;
+    height: 100%;
+    top: 0;
+
+}
+.swipe_pane_frame .inner_frame .left_pane {
+
+    left: 0;
+
+    background-color: yellowgreen;
+}
+
+.swipe_pane_frame .inner_frame  .center_pane {
+
+    left: 33.3%;
+
+    background-color: green;
+
+}
+
+.swipe_pane_frame .inner_frame .right_pane {
+
+    left: 66.7%;
+
+    background-color: orange;
+}
+    
