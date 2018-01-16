@@ -74,3 +74,7 @@ h2.record_visit_page_subtitle{
     height: auto;
     position: relative;
 }
+
+.date_time_row {
+    border-bottom: 1px solid gray;
+}

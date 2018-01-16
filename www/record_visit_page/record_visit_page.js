@@ -134,6 +134,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
 
+    function refreshPersonContainer() {
+        if (_visit.personVisitIds.length <= 0) {
+            $(personContainer).css({
+                display : 'none'
+            });
+        } else {
+            $(personContainer).css({
+                display : 'block'
+            });
+        }
+    }
+
     function onClickAddPersonButton() {
 
         initAddPersonDialog();
@@ -203,12 +215,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function addPersonVisitCell(person) {
+        refreshPersonContainer();
         var personVisitCell = new PersonVisitCell(person);
         // personVisitCell.appendTo(personContainer);
         personVisitCell.appendAndExtract(personContainer);
         personVisitCell.onRemoveCell = function(personVisit) {
+            
             _visit.personVisitIds.splice(_visit.personVisitIds.indexOf(personVisit.id), 1);
             _personVisits.removeById(personVisit.id);
+
+            refreshPersonContainer();
         }
     }
 
@@ -248,6 +264,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             requestReverseGeocoding();
             refreshRoomText();
             refreshPersonVisitSubtitle();
+            refreshPersonContainer();
 
             var timer = function() {
                 if (_isPersonContainerReady) {
