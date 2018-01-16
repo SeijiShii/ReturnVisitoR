@@ -16,7 +16,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SmallSquareButton = 
         
     }
 
-    function onClickButton() {
+    function onClickButton(e) {
+
+        e.stopPropagation();
 
         $(buttonFrame).fadeTo(100, 0.3, function(){
             $(buttonFrame).fadeTo(100, 1);

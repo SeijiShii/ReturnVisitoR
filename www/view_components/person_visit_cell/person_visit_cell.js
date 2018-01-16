@@ -7,6 +7,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
     }
 
     var _this = this,
+        _personVisit = personVisit,
         cellFrame,
         midColumn,
         switchBox,
@@ -88,7 +89,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
             cellFrame.parentNode.removeChild(cellFrame);
             
             if ( typeof _this.onRemoveCell === 'function' ) {
-                _this.onRemoveCell();
+                _this.onRemoveCell(_personVisit);
             }
 
             _this = null;

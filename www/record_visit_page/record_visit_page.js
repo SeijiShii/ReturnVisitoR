@@ -25,6 +25,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         _place,
         _visit,
         _everSeenPersons,
+        _personVisits,
         _options,
         addPersonDialog,
         personDialog,
@@ -39,6 +40,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function initVisitData() {
         _visit = new Visit(_place.id);
+
+        _personVisits = [];
     }
 
     function initPersons() {
@@ -165,34 +168,48 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         // console.log(persons);
 
-        addPersonDialog = new returnvisitor.AddPersonDialog(_everSeenPersons);
+        var blockedPersonIds = [];
+        for (var i = 0 ; i < _personVisits.length ; i++ ) {
+            blockedPersonIds.push(_personVisits[i].personId);
+        }
+
+        addPersonDialog = new returnvisitor.AddPersonDialog(_everSeenPersons, blockedPersonIds);
         addPersonDialog.onNewPersonClick = function() {
             initPersonDialog();
         };
+
+        addPersonDialog.onClickPersonCell = function(person) {
+            addPersonToVisit(person);
+        }
     }
 
     function initPersonDialog() {
         personDialog = new returnvisitor.PersonDialog();
         personDialog.onClickOk = function(person) {
-            
-            _everSeenPersons.push(person);
-
-            _place.personIds.push(person.id);
-
-            var personVisit = new PersonVisit(person, _visit.id);
-            _visit.addPersonVisit(personVisit.id);
-
-            // console.log(_place);
-            // console.log(_visit);
-
-            addPersonVisitCell(personVisit);
+            addPersonToVisit(person);
         } 
+    }
+
+    function addPersonToVisit(person) {
+
+        _everSeenPersons.addData(person);
+        _place.personIds.addElement(person.id);
+
+        var personVisit = new PersonVisit(person, _visit.id);
+        _personVisits.addData(personVisit);
+        _visit.personVisitIds.addElement(personVisit.id);
+
+        addPersonVisitCell(personVisit);
     }
 
     function addPersonVisitCell(person) {
         var personVisitCell = new PersonVisitCell(person);
         // personVisitCell.appendTo(personContainer);
         personVisitCell.appendAndExtract(personContainer);
+        personVisitCell.onRemoveCell = function(personVisit) {
+            _visit.personVisitIds.splice(_visit.personVisitIds.indexOf(personVisit.id), 1);
+            _personVisits.removeById(personVisit.id);
+        }
     }
 
     function loadPersonDialogScript() {

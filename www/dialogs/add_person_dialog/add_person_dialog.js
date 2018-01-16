@@ -1,5 +1,5 @@
 "use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeenPersons) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeenPersons, blockedPersonIds) {
 
     var _this = this,
         newPersonButton,
@@ -42,10 +42,35 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeen
     function initEverSeenContainer() {
         var everSeenContainer = _this.getElementByClassName('ever_seen_container');
 
-        for ( var i = 0 ; i < everSeenPersons.length ; i++ ) {
-            var personCell = new PersonCell(everSeenContainer, everSeenPersons[i]);
-        }
+        if (everSeenPersons.length <= 0) {
 
+            $(everSeenContainer).css({
+                display : 'none'
+            });
+
+        } else {
+            
+            $(everSeenContainer).css({
+                display : 'block'
+            });
+
+            for ( var i = 0 ; i < everSeenPersons.length ; i++ ) {
+
+                var personCell = new PersonCell(everSeenContainer, everSeenPersons[i], blockedPersonIds.includes(everSeenPersons[i].id));
+
+                personCell.onReadyCell = function() {
+                    _this.refreshDialogHeight();
+                }
+
+                personCell.onClickCell = function(person) {
+                    _this.fadeOut(function(){
+                        if ( typeof _this.onClickPersonCell === 'function' ) {
+                            _this.onClickPersonCell(person);
+                        }
+                    });
+                }
+            }
+        }
     }
 
     this.onDialogBaseReady = function(){

@@ -12,11 +12,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit = function(placeId){
     this.personVisitIds = [];
     this.placements = [];
     
-    this.addPersonVisit = function(personId) {
-        var personVisit = new data.PersonVisit(personId, this.id);
-        this.personVisitIds.push(personVisit.id);
-    }
-
 }
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype, {

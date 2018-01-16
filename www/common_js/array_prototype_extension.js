@@ -1,7 +1,7 @@
 'use strict'
 Array.prototype.includesId = function(id) {
     for ( var i = 0 ; i < this.length ; i++ ) {
-        if (this[i] === id) {
+        if (this[i].id === id) {
             return true;
         }
     }
@@ -24,7 +24,7 @@ Array.prototype.indexOfData = function(data) {
 }
 
 Array.prototype.removeData = function(data) {
-    if (this.indexOfData(data)) {
+    if (this.indexOfData(data) >= 0) {
         this.splice(this.indexOfData(data), 1);
     }
 }
@@ -45,11 +45,10 @@ Array.prototype.indexOfId = function(id) {
 }
 
 Array.prototype.removeById = function(id) {
-    if (this.indexOfId(id)) {
+    if (this.indexOfId(id) >= 0) {
         this.splice(this.indexOfId(id), 1);
     }
 }
-
 
 Array.prototype.removeByIds = function(ids) {
     for (var i = 0 ; i < array.length ; i++) {
@@ -57,3 +56,15 @@ Array.prototype.removeByIds = function(ids) {
     }
 }
 
+Array.prototype.addData = function(data) {
+    if (this.includesData(data)) {
+        this.removeData(data);
+    } 
+    this.push(data);
+}
+
+Array.prototype.addElement = function(element) {
+    if (!this.includes(element)) {
+        this.push(element);
+    } 
+}
