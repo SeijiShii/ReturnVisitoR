@@ -98,13 +98,36 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
           });
     }
 
-    function initPersonVisitSubtitle() {
+    function initPersonVisitText() {
         personVisitSubtitle = document.getElementById('person_seen_subtitle');
     }
 
-    function refreshPersonVisitSubtitle(animate) {
+    function refreshPersonVisitText(animated) {
 
-        if (animate !== undefined || animate == true) {
+        if (animated) {
+            if (_visit.personVisitIds.length <= 0) {
+
+                $(personVisitSubtitle).animate({
+                    height : 0
+                }, 200, function(){
+                    $(personVisitSubtitle).css({
+                        display : 'none',
+                        height : 0,
+                        margin : 0
+                    });
+                });
+
+            } else {
+                $(personVisitSubtitle).css({
+                    display : 'block',
+                    height : 0,
+                    margin : '3px'
+                });
+
+                $(personVisitSubtitle).animate({
+                    height : '15px'
+                }, 200);
+            }
 
         } else {
             if (_visit.personVisitIds.length <= 0) {
@@ -215,6 +238,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function addPersonVisitCell(person) {
+        refreshPersonVisitText(true);
         refreshPersonContainer();
         var personVisitCell = new PersonVisitCell(person);
         // personVisitCell.appendTo(personContainer);
@@ -225,6 +249,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             _personVisits.removeById(personVisit.id);
 
             refreshPersonContainer();
+            refreshPersonVisitText(true);
         }
     }
 
@@ -244,7 +269,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     initPersons();
 
     initAddressText();
-    initPersonVisitSubtitle();
+    initPersonVisitText();
     initAddPersonButton();
     initRoomText();
     initPersonContainer();
@@ -263,7 +288,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
             requestReverseGeocoding();
             refreshRoomText();
-            refreshPersonVisitSubtitle();
+            refreshPersonVisitText(false);
             refreshPersonContainer();
 
             var timer = function() {
