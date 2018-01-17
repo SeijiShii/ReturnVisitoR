@@ -85,6 +85,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         calendarFramePane.onPaneReady = function() {
             setCurrentCalendar();
+            setLastCalendar();
+            setNextCalendar();
         }
 
         
@@ -99,6 +101,31 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         var currentCalendar = generateCalendarFrame(new Date());
         calendarFramePane.setCenterContent(currentCalendar);
     }
+
+    function setLastCalendar() {
+
+        var lastMonth = new Date();
+        // lastMonth.setDate(0);
+
+        dateTime.addMonth(lastMonth, -1);
+
+        var lastCalendar = generateCalendarFrame(lastMonth);
+
+        calendarFramePane.setLeftContent(lastCalendar);
+    }
+
+    function setNextCalendar() {
+
+        var nextMonth = new Date();
+
+        dateTime.addMonth(nextMonth, 1);
+
+        var nextCalendar = generateCalendarFrame(nextMonth);
+
+        calendarFramePane.setRightContent(nextCalendar);
+    }
+
+    
 
     this.resizePane =function() {
 

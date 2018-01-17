@@ -9,6 +9,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
         HOUR    = MINUTE * 60,
         DAY     = HOUR * 24;
 
+    function shiftMonth(date, plus) {
+
+        var day = date.getDate();
+
+        date.setDate(0);
+
+        if (plus) {
+            _addDate(date, 32);
+        }
+
+        date.setDate(day);
+
+    }
+
+    function _addDate(date, n) {
+        var addedDate = new Date();
+        addedDate.setTime(date.getTime() + n * DAY);
+
+        return addedDate;
+    }
+
     return {
         dateString : function(date) {
             if (localeCheck.isJA()) {
@@ -56,13 +77,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
             }
         },
 
-        addedDate : function(date, n) {
-
-            var addedDate = new Date();
-            addedDate.setTime(date.getTime() + n * DAY);
-
-            return addedDate;
-        },
+        addedDate : _addDate,
 
         clonedDate : function(date) {
 
@@ -96,6 +111,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
                 return;
             } else {
                 date.setTime(date.getTime() - (day - 1) * DAY);
+            }
+        },
+
+        addMonth : function(date, n) {
+
+            for ( var i = 0 ; i < Math.abs(n) ; i++ ) {
+                shiftMonth(date, n > 1);
             }
         }
 
