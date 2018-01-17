@@ -9,25 +9,65 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
         HOUR    = MINUTE * 60,
         DAY     = HOUR * 24;
 
-    function shiftMonth(date, plus) {
-
-        var day = date.getDate();
-
-        date.setDate(0);
+    function shiftMonth(date, originalDay, plus) {
 
         if (plus) {
-            _addDate(date, 32);
+
+            // To first day of next month
+            date.setDate(32);
+            date.setDate(1);
+
+            var lastDayOfNextMonth = _monthLastDay(date);
+
+            if (originalDay < lastDayOfNextMonth) {
+                date.setDate(originalDay);
+            } else {
+                date.setDate(lastDayOfNextMonth);
+            }
+
+        } else {
+
+            date.setDate(0);
+            var lastDayOfLastMonth = date.getDate();
+
+            if (originalDay < lastDayOfLastMonth) {
+                date.setDate(originalDay);
+            } else {
+                date.setDate(lastDayOfLastMonth);
+            }
         }
-
-        date.setDate(day);
-
     }
 
     function _addDate(date, n) {
-        var addedDate = new Date();
-        addedDate.setTime(date.getTime() + n * DAY);
+        date.setTime(date.getTime() + n * DAY);
+    }
 
-        return addedDate;
+    function _clonedDate(date) {
+
+        var clonedDate = new Date();
+        clonedDate.setTime(date.getTime());
+
+        return clonedDate;
+    }
+
+    function _monthLastDay(date) {
+
+        var clone = _clonedDate(date);
+        clone.setDate(32);
+        // console.log(clone.toDateString());
+        clone.setDate(0);
+        // console.log(clone.toDateString());
+
+        return clone.getDate();
+    }
+
+    function _addMonth(date, n) {
+
+        var day = date.getDate();
+
+        for ( var i = 0 ; i < Math.abs(n) ; i++ ) {
+            shiftMonth(date, day, n >= 0);
+        }
     }
 
     return {
@@ -77,18 +117,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
             }
         },
 
-        addedDate : _addDate,
+        addDate : _addDate,
+        clonedDate : _clonedDate,
+        addMonth : _addMonth,
 
-        clonedDate : function(date) {
-
-            var clonedDate = new Date();
-            clonedDate.setTime(date.getTime());
-
-            return clonedDate;
-        },
-
-        addDate : function(date, n) {
-            date.setTime(date.getTime() + n * DAY);
+        addedDate : function(date, n) {
+            var clone = _clonedDate(date);
+            _addDate(clone, n);
+            return clone;
         },
 
         setSunday : function(date) {
@@ -114,12 +150,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
             }
         },
 
-        addMonth : function(date, n) {
-
-            for ( var i = 0 ; i < Math.abs(n) ; i++ ) {
-                shiftMonth(date, n > 1);
-            }
-        }
 
     }
 })();

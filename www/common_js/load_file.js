@@ -66,6 +66,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
         },
 
         loadScript: function(filePath, callback) {
+
             // $.getScript(filePath, callback);
 
             // すでにロードされているfilePathであればキャンセルする。
@@ -80,10 +81,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
             script.src = filePath;
             script.onload = function() {
                 // console.log(filePath + ' is loaded!');
+
                 if (typeof callback === 'function') {
                     callback();
                 }
             }
+
             document.body.appendChild(script);
            
         }

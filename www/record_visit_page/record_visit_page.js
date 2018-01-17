@@ -328,7 +328,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         initialize : function(options) {
 
-          
+            var date = new Date();
+            console.log(date.toDateString());
+            date.setDate(33);
+            console.log(date.toDateString());
+            date.setMonth(13);
+            console.log(date.toDateString());
+
             _options = options;
             initPlaceData();
             initVisitData();
