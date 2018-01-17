@@ -88,7 +88,7 @@
     overflow-y: auto;
 }
 
-.calendar_pane .calendar_table {
+.calendar_pane .calendar_base .calendar_table {
     /* position: relative; */
     width: 100%;
     height: 100%;
@@ -96,12 +96,12 @@
     
 }
 
-.calendar_pane .calendar_table .days_header {
+.calendar_pane .calendar_base .calendar_table .days_header {
     width: 100%;
     height: 30px;
 }
 
-.calendar_pane .calendar_table .days_header td {
+.calendar_pane .calendar_base .calendar_table .days_header td {
     width: 40px;
     height: 30px;
     background-color: lightgray;
@@ -112,12 +112,12 @@
     
 }
 
-.calendar_pane .calendar_table .calendar_row {
+.calendar_pane .calendar_base .calendar_table .calendar_row {
     width: 100%;
     height: 40px;
 }
 
-.calendar_pane .calendar_table .calendar_row td {
+.calendar_pane .calendar_base .calendar_table .calendar_row td {
     width: 40px;
     height: 40px;
     background-color: whitesmoke;
@@ -129,6 +129,6 @@
 
 }
 
-.calendar_pane .calendar_table .calendar_row td.empty {
+.calendar_pane .calendar_base .calendar_table .calendar_row td.empty {
     visibility: hidden;
 }

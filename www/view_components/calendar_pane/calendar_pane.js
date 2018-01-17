@@ -157,7 +157,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         this.date = dateTime.clonedDate(date);
 
         var table = document.createElement('table');
-        table.classList.add('this.dateendar_table');
+        table.classList.add('calendar_table');
 
         var daysHeader = document.createElement('tr');
         daysHeader.classList.add('days_header');
