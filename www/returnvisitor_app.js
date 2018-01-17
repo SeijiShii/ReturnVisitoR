@@ -94,9 +94,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         refreshAppFrame();
         refreshAdFrame();
 
-        if (mapPage !== undefined) {
+        if (mapPage) {
             mapPage.refreshElements(isWideScreen(), true);
         } 
+
+        if (recordVisitPage) {
+            recordVisitPage.refreshElements();
+        }
     }
 
     function isWideScreen() {

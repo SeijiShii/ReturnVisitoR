@@ -4,7 +4,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DatePickerDialog = function() {
     var _this = this,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = returnvisitor.common.loadFile,
-        CalendarPane = returnvisitor.viewComponents.CalendarPane;
+        CalendarPane = returnvisitor.viewComponents.CalendarPane,
+        calendarDiv,
+        calendarPane;
 
     returnvisitor.DialogBase.call(this,
         ['./dialogs/date_picker_dialog/date_picker_dialog.html'], 'date_picker_dialog');
@@ -12,13 +14,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DatePickerDialog = function() {
     loadFile.loadCss('./dialogs/date_picker_dialog/date_picker_dialog.css');
 
     function initCalendarDiv() {
-        var calendarDiv = _this.getElementByClassName('calendar_div');
-
-        var calendarPane = new CalendarPane(calendarDiv);
-        
-        // var swipePane = new SwipePane(calendarFrame);
+        calendarDiv = _this.getElementByClassName('calendar_div');
+        refreshCalendarDivHeight();
+        calendarPane = new CalendarPane(calendarDiv);        
     }
 
+    function refreshCalendarDivHeight() {
+        $(calendarDiv).css({
+            height : (calendarDiv.parentNode.clientHeight - 55 ) + 'px'
+        })
+    }
+    
     function initCancelButton() {
         var cancelButton = _this.getElementByClassName('cancel_button');
         cancelButton.addEventListener('click', onCancelClick);
@@ -31,8 +37,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DatePickerDialog = function() {
     this.onDialogBaseReady = function(){
         initCalendarDiv();
         initCancelButton();
-
     };
+
+    this.onDialogResize = function() {
+
+        refreshCalendarDivHeight();
+
+        if (calendarPane) {
+            calendarPane.resizePane();
+        }
+    }
 }
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DatePickerDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {

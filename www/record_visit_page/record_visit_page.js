@@ -350,6 +350,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             }
 
             var timerId = setInterval(timer, 50);
+        },
+
+        refreshElements : function() {
+            if (datePickerDialog) {
+                datePickerDialog.refreshDialogHeight();
+            }
         }
     }
 }());

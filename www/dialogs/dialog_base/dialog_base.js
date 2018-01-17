@@ -45,15 +45,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         dialogFrame.classList.add(dialogFrameClassName);
 
         $(dialogFrame).load(contentHtmlPath, function(){
-                
-            if (typeof _this.onDialogBaseReady === 'function') {
-                _this.onDialogBaseReady();
-            }
-
+    
             if (parent !== undefined) {
                 parent.appendChild(dialogBaseFrame);
             } else {
                 document.getElementById('app_frame').appendChild(dialogBaseFrame);
+            }
+
+            if (typeof _this.onDialogBaseReady === 'function') {
+                _this.onDialogBaseReady();
             }
 
             _this.refreshDialogHeight();
@@ -87,14 +87,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
         // console.log('dialogBaseFrame.parentNode.clientHeight:', dialogBaseFrame.parentNode.clientHeight);
 
-        var parentHeight = dialogBaseFrame.parentNode.clientHeight;
+        if (dialogBaseFrame.parentNode) {
+            var parentHeight = dialogBaseFrame.parentNode.clientHeight;
 
-        if (contentHeight < parentHeight * 0.9) {
-            dialogFrame.style.height = (contentHeight + 20) + 'px';
-        } else {
-            dialogFrame.style.height = (parentHeight * 0.9) + 'px';
+            if (contentHeight < parentHeight * 0.9) {
+                dialogFrame.style.height = (contentHeight + 20) + 'px';
+            } else {
+                dialogFrame.style.height = (parentHeight * 0.9) + 'px';
+            }
+    
+            if ( typeof _this.onDialogResize === 'function' ) {
+                _this.onDialogResize();
+            }
         }
-
     }
 
     this.fadeOut = function(callback, arg) {
