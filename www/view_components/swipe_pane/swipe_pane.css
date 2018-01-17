@@ -25,14 +25,14 @@
     top: 0;
 
 }
-.swipe_pane_frame .inner_frame .left_pane {
+.swipe_pane_frame .inner_frame .pane0 {
 
     left: 0;
 
     /* background-color: yellowgreen; */
 }
 
-.swipe_pane_frame .inner_frame  .center_pane {
+.swipe_pane_frame .inner_frame  .pane1 {
 
     left: 33.3%;
 
@@ -40,7 +40,7 @@
 
 }
 
-.swipe_pane_frame .inner_frame .right_pane {
+.swipe_pane_frame .inner_frame .pane2 {
 
     left: 66.7%;
 

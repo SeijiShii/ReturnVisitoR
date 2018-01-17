@@ -9,9 +9,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         Swipe       = returnvisitor.common.Swipe,
         paneFrame,
         innerFrame,
-        centerPane,
-        leftPane,
-        rightPane,
+        childPanes = [],
         centerPaneCache;
 
     function initialize() {
@@ -68,7 +66,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                 distance = Math.abs(currentLeft);
                 time = distance / speed;
 
-                replaceWithCanvas(leftPane, function(cache){
+                replaceWithCanvas(childPanes[0], function(cache){
 
                     $frame.animate({
                         left : 0
@@ -77,8 +75,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                             left : '-100%'
                         });
                         setCacheToCenter(cache);
-                        leftPane.innerHTML = '';
-                        rightPane.innerHTML = centerPaneCache;
+                        childPanes[0].innerHTML = '';
+                        childPanes[2].innerHTML = centerPaneCache;
                     });
     
                 });
@@ -92,7 +90,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 time = distance / speed;
 
-                replaceWithCanvas(rightPane, function(cache){
+                replaceWithCanvas(childPanes[2], function(cache){
                     $frame.animate({
                         left : '-200%'
                     } , time, function(){
@@ -102,8 +100,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
     
                         setCacheToCenter(cache);
         
-                        rightPane.innerHTML = '';
-                        leftPane.innerHTML = centerPaneCache;
+                        childPanes[2].innerHTML = '';
+                        childPanes[0].innerHTML = centerPaneCache;
                     });
                 });
             }
@@ -118,9 +116,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
     function initContentPane() {
 
-        centerPane = elements.getElementByClassName(paneFrame, 'center_pane');
-        leftPane = elements.getElementByClassName(paneFrame, 'left_pane');
-        rightPane = elements.getElementByClassName(paneFrame, 'right_pane');
+        childPanes.push(elements.getElementByClassName(paneFrame, 'pane0'));
+        childPanes.push(elements.getElementByClassName(paneFrame, 'pane1'));
+        childPanes.push(elements.getElementByClassName(paneFrame, 'pane2'));
     }
 
 
@@ -129,7 +127,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
         console.log('shiftToRight')
 
-        replaceWithCanvas(rightPane, function(cache){
+        replaceWithCanvas(childPanes[2], function(cache){
             var $frame = $(innerFrame);
             $frame.animate({
                 left : '-200%'
@@ -142,8 +140,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 setCacheToCenter(cache);
     
-                rightPane.innerHTML = '';
-                leftPane.innerHTML = centerPaneCache;
+                childPanes[2].innerHTML = '';
+                childPanes[0].innerHTML = centerPaneCache;
             });
         });
     }
@@ -152,7 +150,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
         console.log('shiftToLeft')
 
-        replaceWithCanvas(leftPane, function(cache){
+        replaceWithCanvas(childPanes[0], function(cache){
 
             var $frame = $(innerFrame);
             $frame.animate({
@@ -164,15 +162,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 setCacheToCenter(cache);
     
-                leftPane.innerHTML = '';
-                rightPane.innerHTML = centerPaneCache;
+                childPanes[0].innerHTML = '';
+                childPanes[2].innerHTML = centerPaneCache;
             });
         });
     }
 
     function setCacheToCenter(cache) {
-        centerPaneCache = centerPane.innerHTML;
-        centerPane.innerHTML = cache;
+        centerPaneCache = childPanes[1].innerHTML;
+        childPanes[1].innerHTML = cache;
     }
 
     function setContent(pane, elm) {
@@ -181,15 +179,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
     }
 
     this.setCenterContent = function(elm) {
-        setContent(centerPane, elm);
+        setContent(childPanes[1], elm);
     }
 
     this.setLeftContent = function(elm) {
-        setContent(leftPane, elm);
+        setContent(childPanes[0], elm);
     }
 
     this.setRightContent = function(elm) {
-        setContent(rightPane, elm);
+        setContent(childPanes[2], elm);
     }
 
     function replaceWithCanvas(pane, then2) {
