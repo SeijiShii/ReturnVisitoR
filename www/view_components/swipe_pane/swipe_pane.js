@@ -11,7 +11,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         innerFrame,
         centerPane,
         leftPane,
-        rightPane;
+        rightPane,
+        centerPaneCache,
+        leftPaneCache,
+        rightPaneCache;
 
     function initialize() {
         loadFile.loadCss('./view_components/swipe_pane/swipe_pane.css');
@@ -111,17 +114,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
     this.shiftLeft = function() {
 
+        console.log('shiftLeft')
+
+        copyRightPaneToCanvas();
+        
         var $frame = $(innerFrame);
         $frame.animate({
             left : '-200%'
         }, 'slow' ,function(){
             $frame.css({
                 left : '-100%'
-            })
+            });
+            centerPaneCache = centerPane.innerHTML;
+            centerPane.innerHTML = rightPaneCache;
+
+            rightPane.innerHTML = '';
         });
     }
 
     this.shiftRight = function() {
+
+        console.log('shiftRight')
+
+        copyLeftPaneToCanvas();
 
         var $frame = $(innerFrame);
         $frame.animate({
@@ -129,7 +144,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         }, 'slow' ,function(){
             $frame.css({
                 left : '-100%'
-            })
+            });
+            centerPaneCache = centerPane.innerHTML;
+            centerPane.innerHTML = leftPaneCache;
+
+            leftPane.innerHTML = '';
         });
     }
 
@@ -150,6 +169,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         setContent(rightPane, elm);
     }
 
+    function copyLeftPaneToCanvas() {
+        html2canvas(leftPane).then(function(canvas){
+            $(canvas).css({
+                position: 'absolute',
+                top : 0,
+                left : 0
+            });
+
+            leftPaneCache = leftPane.innerHTML;
+            leftPane.innerHTML = '';
+            leftPane.appendChild(canvas);     
+        });
+        
+    }
+
+    function copyRightPaneToCanvas() {
+        html2canvas(rightPane).then(function(canvas){
+            $(canvas).css({
+                position: 'absolute',
+                top : 0,
+                left : 0
+            });
+
+            rightPaneCache = rightPane.innerHTML;
+            rightPane.innerHTML = '';
+            rightPane.appendChild(canvas);     
+        });
+    }
     
 
     initialize();

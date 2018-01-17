@@ -98,29 +98,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     function setCurrentCalendar() {
 
-        var currentCalendar = generateCalendarFrame(new Date());
+        var currentCalendar = new CalendarFrame(_date);
         calendarFramePane.setCenterContent(currentCalendar);
     }
 
     function setLastCalendar() {
 
-        var lastMonth = new Date();
-        // lastMonth.setDate(0);
+        var lastMonth = dateTime.clonedDate(_date);
 
         dateTime.addMonth(lastMonth, -1);
 
-        var lastCalendar = generateCalendarFrame(lastMonth);
+        var lastCalendar = new CalendarFrame(lastMonth);
 
         calendarFramePane.setLeftContent(lastCalendar);
     }
 
     function setNextCalendar() {
 
-        var nextMonth = new Date();
+        var nextMonth = dateTime.clonedDate(_date);
 
         dateTime.addMonth(nextMonth, 1);
 
-        var nextCalendar = generateCalendarFrame(nextMonth);
+        var nextCalendar = new CalendarFrame(nextMonth);
 
         calendarFramePane.setRightContent(nextCalendar);
     }
@@ -138,7 +137,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         }
     }
 
-    function generateCalendarFrame(date) {
+    var CalendarFrame = function(date) {
+
+        var cal = dateTime.clonedDate(date);
 
         var table = document.createElement('table');
         table.classList.add('calendar_table');
@@ -170,7 +171,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         // Calendar rows
 
         var yearMonth = date.getFullYear() * 12 + date.getMonth();
-        var cal = dateTime.clonedDate(date);
         cal.setDate(1);
         
         if (_this.isMondayStart) {
@@ -201,7 +201,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
                 dateTime.addDate(cal, 1)
             }
 
-            console.log(cal.toDateString());
+            // console.log(cal.toDateString());
             
         }
 
@@ -210,8 +210,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         calendarBase.appendChild(table);
 
         return calendarBase;
-
-
      
     }
 
