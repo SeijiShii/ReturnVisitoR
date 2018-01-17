@@ -16,10 +16,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         leftButton,
         rightButton,
         calendarFrame,
-        swipePane,
+        calendarFramePane,
         _date = date,
         HEADER_HEIGHT_NUM = 45
         ;
+    
+    this.isMondayStart = true;
 
     function initialize() {
 
@@ -37,6 +39,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
             initLeftButton();
             initRightButton();
             initCalendarFrame();
+
         });
     }
 
@@ -54,6 +57,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     function onLeftClick() {
         elementsEffect.blink(leftButton);
+        calendarFramePane.shiftRight();
     }
 
     function initRightButton() {
@@ -64,6 +68,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     function onRightClick() {
         elementsEffect.blink(rightButton);
+        calendarFramePane.shiftLeft();
     }
 
 
@@ -76,18 +81,111 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         resizeCalendarFrame();
 
-        swipePane = new SwipePane(calendarFrame);
+        calendarFramePane = new SwipePane(calendarFrame);
+
+        calendarFramePane.onPaneReady = function() {
+            setCurrentCalendar();
+        }
+
+        
     }
 
     function resizeCalendarFrame() {
         calendarFrame.style.height = (paneFrame.clientHeight - HEADER_HEIGHT_NUM ) + 'px';
     }
 
+    function setCurrentCalendar() {
+
+        var currentCalendar = generateCalendarFrame(new Date());
+        calendarFramePane.setCenterContent(currentCalendar);
+    }
+
     this.resizePane =function() {
+
+        if (paneFrame) {
+            paneFrame.style.height = (paneFrame.paner)
+        }
 
         if (calendarFrame) {
             resizeCalendarFrame();
         }
+    }
+
+    function generateCalendarFrame(date) {
+
+        var table = document.createElement('table');
+        table.classList.add('calendar_table');
+
+        var daysHeader = document.createElement('tr');
+        daysHeader.classList.add('days_header');
+        table.appendChild(daysHeader);
+
+        // Days header
+        var sunday = new Date();
+        sunday = dateTime.addedDate(sunday, -sunday.getDay())
+
+        var days = [];
+        for (var i = 0 ; i < 7 ; i++) {
+            days.push(dateTime.dayString(dateTime.addedDate(sunday, i)));
+        }
+
+        if (_this.isMondayStart) {
+            var first = days.shift();
+            days.push(first);
+        }
+
+        for ( var i = 0 ; i < 7 ; i++ ) {
+            var dayTD = document.createElement('td');
+            dayTD.innerText = days[i];
+            daysHeader.appendChild(dayTD);
+        }
+
+        // Calendar rows
+
+        var yearMonth = date.getFullYear() * 12 + date.getMonth();
+        var cal = dateTime.clonedDate(date);
+        cal.setDate(1);
+        
+        if (_this.isMondayStart) {
+            dateTime.setMonday(cal);
+        } else {
+            dateTime.setSunday(cal);
+        }
+
+        while ( yearMonth >= cal.getFullYear() * 12 + cal.getMonth()) {
+
+            var calRow = document.createElement('tr');
+            calRow.classList.add('calendar_row');
+
+            table.appendChild(calRow);
+
+            for ( var i = 0 ; i < 7 ; i++ ) {
+
+                var calDT = document.createElement('td');
+
+                if (yearMonth == cal.getFullYear() * 12 + cal.getMonth()) {
+                    calDT.innerText = cal.getDate();
+                } else {
+                    calDT.innerText = '';
+                    calDT.classList.add('empty');
+                }
+
+                calRow.appendChild(calDT);
+                dateTime.addDate(cal, 1)
+            }
+
+            console.log(cal.toDateString());
+            
+        }
+
+        var calendarBase = document.createElement('div');
+        calendarBase.classList.add('calendar_base');
+        calendarBase.appendChild(table);
+
+        return calendarBase;
+
+
+     
     }
 
 

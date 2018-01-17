@@ -2,7 +2,7 @@
     width: 100%;
     height: 100%;
 
-    background-color: red;
+    /* background-color: red; */
 
 }
 
@@ -13,7 +13,7 @@
     left: -100%;
     top: 0;
 
-    background-color: blue;
+    /* background-color: blue; */
 
 }
 
@@ -29,14 +29,14 @@
 
     left: 0;
 
-    background-color: yellowgreen;
+    /* background-color: yellowgreen; */
 }
 
 .swipe_pane_frame .inner_frame  .center_pane {
 
     left: 33.3%;
 
-    background-color: green;
+    /* background-color: green; */
 
 }
 
@@ -44,6 +44,6 @@
 
     left: 66.7%;
 
-    background-color: orange;
+    /* background-color: orange; */
 }
     
