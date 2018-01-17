@@ -18,8 +18,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     this.ySwipeEnabled = false;
     this.swipeStroke = DEFAULT_STROKE;
 
-    target.addEventListener('touchstart', onTouchStart, false);
-    target.addEventListener('touchmove', onTouchMove, false);
+    target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
+    target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
     target.addEventListener('touchend', handleEnd, false);
     target.addEventListener('touchcancel', onCancel, false);
 

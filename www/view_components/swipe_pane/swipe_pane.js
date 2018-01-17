@@ -12,9 +12,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         centerPane,
         leftPane,
         rightPane,
-        centerPaneCache,
-        leftPaneCache,
-        rightPaneCache;
+        centerPaneCache;
 
     function initialize() {
         loadFile.loadCss('./view_components/swipe_pane/swipe_pane.css');
@@ -70,13 +68,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                 distance = Math.abs(currentLeft);
                 time = distance / speed;
 
-                $frame.animate({
-                    left : 0
-                }, time, function(){
-                    $frame.css({
-                        left : '-100%'
+                replaceWithCanvas(leftPane, function(cache){
+
+                    $frame.animate({
+                        left : 0
+                    }, time, function(){
+                        $frame.css({
+                            left : '-100%'
+                        });
+                        setCacheToCenter(cache);
+                        leftPane.innerHTML = '';
+                        rightPane.innerHTML = centerPaneCache;
                     });
+    
                 });
+
 
             } else {
                 // Swipe to left.
@@ -86,11 +92,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 time = distance / speed;
 
-                $frame.animate({
-                    left : '-200%'
-                } , time, function(){
-                    $frame.css({
-                        left : '-100%'
+                replaceWithCanvas(rightPane, function(cache){
+                    $frame.animate({
+                        left : '-200%'
+                    } , time, function(){
+                        $frame.css({
+                            left : '-100%'
+                        });
+    
+                        setCacheToCenter(cache);
+        
+                        rightPane.innerHTML = '';
+                        leftPane.innerHTML = centerPaneCache;
                     });
                 });
             }
@@ -112,44 +125,54 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
 
 
-    this.shiftLeft = function() {
+    this.shiftToRight = function() {
 
-        console.log('shiftLeft')
+        console.log('shiftToRight')
 
-        copyRightPaneToCanvas();
-        
-        var $frame = $(innerFrame);
-        $frame.animate({
-            left : '-200%'
-        }, 'slow' ,function(){
-            $frame.css({
-                left : '-100%'
+        replaceWithCanvas(rightPane, function(cache){
+            var $frame = $(innerFrame);
+            $frame.animate({
+                left : '-200%'
+            }, 'slow' ,function(){
+                $frame.css({
+                    left : '-100%'
+                });
+
+                // console.log(cache);
+
+                setCacheToCenter(cache);
+    
+                rightPane.innerHTML = '';
+                leftPane.innerHTML = centerPaneCache;
             });
-            centerPaneCache = centerPane.innerHTML;
-            centerPane.innerHTML = rightPaneCache;
-
-            rightPane.innerHTML = '';
         });
     }
 
-    this.shiftRight = function() {
+    this.shiftToLeft = function() {
 
-        console.log('shiftRight')
+        console.log('shiftToLeft')
 
-        copyLeftPaneToCanvas();
+        replaceWithCanvas(leftPane, function(cache){
 
-        var $frame = $(innerFrame);
-        $frame.animate({
-            left : 0
-        }, 'slow' ,function(){
-            $frame.css({
-                left : '-100%'
+            var $frame = $(innerFrame);
+            $frame.animate({
+                left : 0
+            }, 'slow' ,function(){
+                $frame.css({
+                    left : '-100%'
+                });
+
+                setCacheToCenter(cache);
+    
+                leftPane.innerHTML = '';
+                rightPane.innerHTML = centerPaneCache;
             });
-            centerPaneCache = centerPane.innerHTML;
-            centerPane.innerHTML = leftPaneCache;
-
-            leftPane.innerHTML = '';
         });
+    }
+
+    function setCacheToCenter(cache) {
+        centerPaneCache = centerPane.innerHTML;
+        centerPane.innerHTML = cache;
     }
 
     function setContent(pane, elm) {
@@ -169,35 +192,22 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         setContent(rightPane, elm);
     }
 
-    function copyLeftPaneToCanvas() {
-        html2canvas(leftPane).then(function(canvas){
+    function replaceWithCanvas(pane, then2) {
+        html2canvas(pane).then(function(canvas){
             $(canvas).css({
                 position: 'absolute',
                 top : 0,
                 left : 0
             });
 
-            leftPaneCache = leftPane.innerHTML;
-            leftPane.innerHTML = '';
-            leftPane.appendChild(canvas);     
-        });
-        
-    }
+            var paneCache = pane.innerHTML;
+            pane.innerHTML = '';
+            pane.appendChild(canvas);  
+            // console.log(cache);   
 
-    function copyRightPaneToCanvas() {
-        html2canvas(rightPane).then(function(canvas){
-            $(canvas).css({
-                position: 'absolute',
-                top : 0,
-                left : 0
-            });
-
-            rightPaneCache = rightPane.innerHTML;
-            rightPane.innerHTML = '';
-            rightPane.appendChild(canvas);     
+            then2(paneCache);
         });
     }
-    
 
     initialize();
 } 
