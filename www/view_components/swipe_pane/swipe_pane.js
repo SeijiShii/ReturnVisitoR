@@ -81,7 +81,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                     });
                 });
             }
-
         }
 
         swipe.onSwipeCancel = function() {
@@ -89,10 +88,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                 left : '-100%'
             } , 'slow');
         }
-
-
     }
-
-
     initialize();
 } 

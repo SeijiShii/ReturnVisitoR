@@ -4,17 +4,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DatePickerDialog = function() {
     var _this = this,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = returnvisitor.common.loadFile,
-        SwipePane = returnvisitor.viewComponents.SwipePane;
+        CalendarPane = returnvisitor.viewComponents.CalendarPane;
 
     returnvisitor.DialogBase.call(this,
         ['./dialogs/date_picker_dialog/date_picker_dialog.html'], 'date_picker_dialog');
     
     loadFile.loadCss('./dialogs/date_picker_dialog/date_picker_dialog.css');
 
-    function initCalendarFrame() {
-        var calendarFrame = _this.getElementByClassName('calendar_frame');
+    function initCalendarDiv() {
+        var calendarDiv = _this.getElementByClassName('calendar_div');
+
+        var calendarPane = new CalendarPane(calendarDiv);
         
-        var swipePane = new SwipePane(calendarFrame);
+        // var swipePane = new SwipePane(calendarFrame);
     }
 
     function initCancelButton() {
@@ -27,7 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DatePickerDialog = function() {
     }
 
     this.onDialogBaseReady = function(){
-        initCalendarFrame();
+        initCalendarDiv();
         initCancelButton();
 
     };

@@ -328,6 +328,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         initialize : function(options) {
 
+          
             _options = options;
             initPlaceData();
             initVisitData();
