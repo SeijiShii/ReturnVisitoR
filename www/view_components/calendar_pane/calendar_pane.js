@@ -9,7 +9,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
         elements        = common.elements,
-        dateTime        = common.dateTime,
         elementsEffect  = common.elementsEffect,
         paneFrame,
         monthText,
@@ -73,7 +72,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
 
     function refreshMonthText() {
-        monthText.innerText = dateTime.monthString(_date);
+        monthText.innerText = _date.monthString();
     }
 
     function initCalendarFrame() {
@@ -93,15 +92,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
             _date = centerContent.date;
             refreshMonthText();
 
-            var clonedMonth = dateTime.clonedDate(centerContent.date);
+            var clonedMonth = centerContent.date.clone();
 
             if (toLeft) {
                 // Add right content (next month)
-                dateTime.addMonth(clonedMonth, 1);
+                clonedMonth.addMonth(1);
 
             } else {
                 // Add left contetn (last month)
-                dateTime.addMonth(clonedMonth, -1);
+                clonedMonth.addMonth(-1);
             }
 
             return new CalendarContent(clonedMonth);
@@ -116,12 +115,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         var calendarContents = [];
         
-        var clone = dateTime.clonedDate(_date);
-        dateTime.addMonth(clone, -1);
+        var clone = _date.clone();
+        clone.addMonth(-1);
 
         for ( var i = 0 ; i < 3 ; i++ ) {
             calendarContents.push(new CalendarContent(clone));
-            dateTime.addMonth(clone, 1);
+            clone.addMonth(1);
         }
 
         calendarFramePane.setContents(calendarContents);
@@ -140,12 +139,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     var CalendarContent = function(date) {
 
-        var __date__ = dateTime.clonedDate(date);
+        var __date__ = date.clone();
         // console.log(__date__.toDateString());
 
         var calendar = document.createElement('div');
         calendar.classList.add('calendar_base');
-        calendar.date = dateTime.clonedDate(__date__);
+        calendar.date = __date__.clone(); 
 
         var table = document.createElement('table');
         table.classList.add('calendar_table');
@@ -155,12 +154,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         table.appendChild(daysHeader);
 
         // Days header
-        var sunday = new Date();
-        sunday = dateTime.addedDate(sunday, -sunday.getDay())
+        var aDay = new Date();
+        aDay.setSunday();
 
         var days = [];
         for (var i = 0 ; i < 7 ; i++) {
-            days.push(dateTime.dayString(dateTime.addedDate(sunday, i)));
+            days.push(aDay.dayString());
+            aDay.addDate(1);
         }
 
         if (_this.isMondayStart) {
@@ -180,9 +180,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         __date__.setDate(1);
         
         if (_this.isMondayStart) {
-            dateTime.setMonday(__date__);
+            __date__.setMonday();
         } else {
-            dateTime.setSunday(__date__);
+            __date__.setSunday();
         }
 
         while ( yearMonth >= __date__.getFullYear() * 12 + __date__.getMonth()) {
@@ -204,7 +204,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
                 }
 
                 calRow.appendChild(calDT);
-                dateTime.addDate(__date__, 1)
+                __date__.addDate(1);
             }
 
             // console.log(cal.toDateString());

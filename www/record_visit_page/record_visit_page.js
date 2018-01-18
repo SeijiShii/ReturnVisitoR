@@ -12,7 +12,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         PersonVisitCell = viewComponents.PersonVisitCell,
         elements = returnvisitor.common.elements,
         elementsEffect = returnvisitor.common.elementsEffect,
-        dateTime = returnvisitor.common.dateTime,
         logoButton,
         addressText,
         nameText,
@@ -198,7 +197,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function refreshDateText() {
-        dateText.innerText = dateTime.dateString(_visit.dateTime);
+        dateText.innerText = _visit.dateTime.dateString()
     }
 
     function onClickDateText() {
@@ -211,7 +210,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function refreshTimeText() {
-        timeText.innerText = dateTime.timeString(_visit.dateTime);
+        timeText.innerText = _visit.dateTime.timeString();
     }
 
     function onClickTimeText() {
@@ -328,12 +327,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         initialize : function(options) {
 
-            var date = new Date();
-            console.log(date.toDateString());
-            date.setDate(33);
-            console.log(date.toDateString());
-            date.setMonth(13);
-            console.log(date.toDateString());
 
             _options = options;
             initPlaceData();
