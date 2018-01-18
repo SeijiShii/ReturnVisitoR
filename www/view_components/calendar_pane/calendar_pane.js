@@ -10,6 +10,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         loadFile        = common.loadFile,
         elements        = common.elements,
         elementsEffect  = common.elementsEffect,
+        touchEventFilter = common.touchEventFilter,
         paneFrame,
         monthText,
         leftButton,
@@ -17,6 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         calendarFrame,
         calendarFramePane,
         _date = date,
+        DATE_CELL_PREFIX = 'date_cell_',
         HEADER_HEIGHT_NUM = 45;
         // calendarFrames = [];
     
@@ -176,6 +178,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         // Calendar rows
 
+        var today = new Date();
+
         var yearMonth = date.getFullYear() * 12 + date.getMonth();
         __date__.setDate(1);
         
@@ -194,16 +198,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
             for ( var i = 0 ; i < 7 ; i++ ) {
 
-                var calDT = document.createElement('td');
+                var dateCell = document.createElement('td');
+                dateCell.classList.add('calendar_cell');
 
                 if (yearMonth == __date__.getFullYear() * 12 + __date__.getMonth()) {
-                    calDT.innerText = __date__.getDate();
+                    dateCell.innerText = __date__.getDate();
                 } else {
-                    calDT.innerText = '';
-                    calDT.classList.add('empty');
+                    dateCell.innerText = '';
+                    dateCell.classList.add('empty');
                 }
 
-                calRow.appendChild(calDT);
+                if (__date__.isSameDate(today)) {
+                    dateCell.classList.add('today');
+                }
+
+                dateCell.id = DATE_CELL_PREFIX + __date__.getTime();
+                dateCell.addEventListener('click', onClickDateCell);
+
+                calRow.appendChild(dateCell);
                 __date__.addDate(1);
             }
 
@@ -214,20 +226,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         calendar.appendChild(table);
 
-        var dateString = document.createElement('div');
-        $(dateString).css({
-            position : 'absolute',
-            fontSize : '15px',
-            top : 0,
-            left : 0
-        });
-        dateString.innerText = calendar.date.toDateString();
-        calendar.appendChild(dateString);
+        // var dateString = document.createElement('div');
+        // $(dateString).css({
+        //     position : 'absolute',
+        //     fontSize : '15px',
+        //     top : 0,
+        //     left : 0
+        // });
+        // dateString.innerText = calendar.date.toDateString();
+        // calendar.appendChild(dateString);
 
         return calendar;
      
     }
 
+    function onClickDateCell(e) {
+
+        var cell = touchEventFilter.getTarget(e, 'calendar_cell');
+        elementsEffect.blink(cell);
+        var id = cell.id;
+        console.log(id);
+
+    }
 
     initialize();
 }

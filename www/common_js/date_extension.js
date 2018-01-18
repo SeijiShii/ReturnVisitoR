@@ -102,3 +102,7 @@ Date.prototype.setMonday = function() {
         this.addDate(-this.getDay() + 1 );
     }
 }
+
+Date.prototype.isSameDate = function(date) {
+    return this.getFullYear() == date.getFullYear() && this.getMonth() == date.getMonth() && this.getDate() == date.getDate();
+}

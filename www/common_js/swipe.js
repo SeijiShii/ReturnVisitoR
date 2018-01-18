@@ -20,12 +20,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
     target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
-    target.addEventListener('touchend', handleEnd, false);
+    target.addEventListener('touchend', handleEnd, true);
     target.addEventListener('touchcancel', onCancel, false);
 
     target.addEventListener('mousedown', onMouseDown, false);
     target.addEventListener('mousemove', onMouseMove, false);
-    target.addEventListener('mouseup', handleEnd, false);
+    target.addEventListener('mouseup', handleEnd, true);
     target.addEventListener('mouseleave', onCancel, false);
 
     function onTouchStart(event) {
