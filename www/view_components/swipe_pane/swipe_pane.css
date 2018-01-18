@@ -17,26 +17,25 @@
 
 }
 
-.swipe_pane_frame .inner_frame .child_pane {
+.swipe_pane_frame .inner_frame .content {
 
     position: absolute;
-    width: 33.3%;
+    width: 33.33%;
     height: 100%;
     top: 0;
+    /* float: left; */
 
 }
-.swipe_pane_frame .inner_frame .pane0 {
+/* .swipe_pane_frame .inner_frame .pane0 {
 
     left: 0;
 
-    /* background-color: yellowgreen; */
+ 
 }
 
 .swipe_pane_frame .inner_frame  .pane1 {
 
     left: 33.3%;
-
-    /* background-color: green; */
 
 }
 
@@ -44,6 +43,6 @@
 
     left: 66.7%;
 
-    /* background-color: orange; */
-}
+
+} */
     

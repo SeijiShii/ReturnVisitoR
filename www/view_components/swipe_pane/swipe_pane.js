@@ -9,8 +9,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         Swipe       = returnvisitor.common.Swipe,
         paneFrame,
         innerFrame,
-        childPanes = [],
-        centerPaneCache;
+        centerPaneCache,
+        ONE_THIRD = 33.333333333;
 
     function initialize() {
         loadFile.loadCss('./view_components/swipe_pane/swipe_pane.css');
@@ -23,7 +23,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
             parent.appendChild(paneFrame);
             initInnerFrame();
-            initContentPane();
+            // initContentPanes();
 
             if (typeof _this.onPaneReady === 'function') {
                 _this.onPaneReady();
@@ -66,19 +66,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                 distance = Math.abs(currentLeft);
                 time = distance / speed;
 
-                replaceWithCanvas(childPanes[0], function(cache){
-
-                    $frame.animate({
-                        left : 0
-                    }, time, function(){
-                        $frame.css({
-                            left : '-100%'
-                        });
-                        setCacheToCenter(cache);
-                        childPanes[0].innerHTML = '';
-                        childPanes[2].innerHTML = centerPaneCache;
+                $frame.animate({
+                    left : 0
+                }, time, function(){
+                    $frame.css({
+                        left : '-100%'
                     });
-    
+
+                    shiftContentsInInnerFrame(false)
                 });
 
 
@@ -90,19 +85,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 time = distance / speed;
 
-                replaceWithCanvas(childPanes[2], function(cache){
-                    $frame.animate({
-                        left : '-200%'
-                    } , time, function(){
-                        $frame.css({
-                            left : '-100%'
-                        });
-    
-                        setCacheToCenter(cache);
-        
-                        childPanes[2].innerHTML = '';
-                        childPanes[0].innerHTML = centerPaneCache;
+                $frame.animate({
+                    left : '-200%'
+                } , time, function(){
+                    $frame.css({
+                        left : '-100%'
                     });
+
+                    shiftContentsInInnerFrame(true);
+
                 });
             }
         }
@@ -114,97 +105,111 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         }
     }
 
-    function initContentPane() {
+    this.animateToShowRightContent = function() {
 
-        childPanes.push(elements.getElementByClassName(paneFrame, 'pane0'));
-        childPanes.push(elements.getElementByClassName(paneFrame, 'pane1'));
-        childPanes.push(elements.getElementByClassName(paneFrame, 'pane2'));
-    }
+        console.log('animateToShowRightContent')
 
-
-
-    this.shiftToRight = function() {
-
-        console.log('shiftToRight')
-
-        replaceWithCanvas(childPanes[2], function(cache){
-            var $frame = $(innerFrame);
-            $frame.animate({
-                left : '-200%'
-            }, 'slow' ,function(){
-                $frame.css({
-                    left : '-100%'
-                });
-
-                // console.log(cache);
-
-                setCacheToCenter(cache);
-    
-                childPanes[2].innerHTML = '';
-                childPanes[0].innerHTML = centerPaneCache;
+        var $frame = $(innerFrame);
+        $frame.animate({
+            left : '-200%'
+        }, 'slow' ,function(){
+            $frame.css({
+                left : '-100%'
             });
+
+            // console.log(cache);
+
+            shiftContentsInInnerFrame(true);
+
         });
     }
 
-    this.shiftToLeft = function() {
+    this.animateToShowLeftContent = function() {
 
-        console.log('shiftToLeft')
+        console.log('animateToShowLeftContent')
 
-        replaceWithCanvas(childPanes[0], function(cache){
-
-            var $frame = $(innerFrame);
-            $frame.animate({
-                left : 0
-            }, 'slow' ,function(){
-                $frame.css({
-                    left : '-100%'
-                });
-
-                setCacheToCenter(cache);
-    
-                childPanes[0].innerHTML = '';
-                childPanes[2].innerHTML = centerPaneCache;
+        var $frame = $(innerFrame);
+        $frame.animate({
+            left : 0
+        }, 'slow' ,function(){
+            $frame.css({
+                left : '-100%'
             });
+
+            shiftContentsInInnerFrame(false);
+
         });
     }
 
-    function setCacheToCenter(cache) {
-        centerPaneCache = childPanes[1].innerHTML;
-        childPanes[1].innerHTML = cache;
+    this.setContents = function(contents) {
+
+        for ( var i = 0 ; i < 3 ; i++ ) {
+
+            contents[i].style.left = ONE_THIRD * i + '%';
+            contents[i].classList.add('content')
+            innerFrame.appendChild(contents[i]);
+        } 
     }
 
-    function setContent(pane, elm) {
-        pane.innerHTML = '';
-        pane.appendChild(elm);
+    this.getContent = function(index) {
+        return innerFrame.children[index]; 
     }
 
-    this.setCenterContent = function(elm) {
-        setContent(childPanes[1], elm);
-    }
+    function shiftContentsInInnerFrame(toLeft) {
 
-    this.setLeftContent = function(elm) {
-        setContent(childPanes[0], elm);
-    }
+        if (toLeft) {
 
-    this.setRightContent = function(elm) {
-        setContent(childPanes[2], elm);
-    }
+            console.log('Shift to Left');
+            // console.log(innerFrame.firstElementChild.date.toDateString());
 
-    function replaceWithCanvas(pane, then2) {
-        html2canvas(pane).then(function(canvas){
-            $(canvas).css({
-                position: 'absolute',
-                top : 0,
-                left : 0
-            });
+            // Remove content in left.
+            innerFrame.removeChild(innerFrame.firstElementChild);
 
-            var paneCache = pane.innerHTML;
-            pane.innerHTML = '';
-            pane.appendChild(canvas);  
-            // console.log(cache);   
+            // console.log(innerFrame.firstElementChild.date.toDateString());
+            
+            // center one comes to first. and set to left.
+            innerFrame.firstElementChild.style.left = 0;
+            // Right one and so on.
+            innerFrame.lastElementChild.style.left = ONE_THIRD + '%';
 
-            then2(paneCache);
-        });
+            if ( typeof _this.onShiftContent === 'function' ) {
+                var newContent = _this.onShiftContent(innerFrame.lastElementChild, toLeft); 
+
+                if (newContent === undefined) {
+                    return;
+                }
+
+                newContent.style.left = ONE_THIRD * 2 + '%';
+                newContent.classList.add('content');
+                innerFrame.append(newContent);
+            }
+
+           
+
+        } else {
+            // toRight
+
+            console.log('Shift to right')
+
+            console.log(innerFrame.lastElementChild.date.toDateString());
+
+            innerFrame.removeChild(innerFrame.lastElementChild);
+            innerFrame.firstElementChild.style.left = ONE_THIRD + '%';
+            innerFrame.lastElementChild.style.left = ONE_THIRD * 2 + '%';
+
+            if ( typeof _this.onShiftContent === 'function' ) {
+                var newContent = _this.onShiftContent(innerFrame.firstElementChild, toLeft); 
+
+                if (newContent === undefined) {
+                    return;
+                }
+                
+                newContent.style.left = 0;
+                newContent.classList.add('content');
+                innerFrame.prepend(newContent);
+            }
+
+        }
     }
 
     initialize();

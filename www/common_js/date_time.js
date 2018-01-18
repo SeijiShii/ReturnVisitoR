@@ -14,6 +14,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dateTime = (function(){
         if (plus) {
 
             // To first day of next month
+            date.setDate(1);
             date.setDate(32);
             date.setDate(1);
 
