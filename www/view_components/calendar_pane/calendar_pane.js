@@ -87,19 +87,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
             setCalendarContents();
         } 
         
-        calendarFramePane.onShiftContent = function(centerContent, toLeft) {
+        calendarFramePane.onShiftContentInInnerFrame = function(centerContent, toLeft) {
 
             console.log(centerContent.date.toDateString());
             _date = centerContent.date;
             refreshMonthText();
 
+            var clonedMonth = dateTime.clonedDate(centerContent.date);
+
             if (toLeft) {
                 // Add right content (next month)
+                dateTime.addMonth(clonedMonth, 1);
 
             } else {
                 // Add left contetn (last month)
-
+                dateTime.addMonth(clonedMonth, -1);
             }
+
+            return new CalendarContent(clonedMonth);
         }
     }
 

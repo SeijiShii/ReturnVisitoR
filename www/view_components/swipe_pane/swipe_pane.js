@@ -172,8 +172,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
             // Right one and so on.
             innerFrame.lastElementChild.style.left = ONE_THIRD + '%';
 
-            if ( typeof _this.onShiftContent === 'function' ) {
-                var newContent = _this.onShiftContent(innerFrame.lastElementChild, toLeft); 
+            if ( typeof _this.onShiftContentInInnerFrame === 'function' ) {
+                var newContent = _this.onShiftContentInInnerFrame(innerFrame.lastElementChild, toLeft); 
 
                 if (newContent === undefined) {
                     return;
@@ -197,8 +197,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
             innerFrame.firstElementChild.style.left = ONE_THIRD + '%';
             innerFrame.lastElementChild.style.left = ONE_THIRD * 2 + '%';
 
-            if ( typeof _this.onShiftContent === 'function' ) {
-                var newContent = _this.onShiftContent(innerFrame.firstElementChild, toLeft); 
+            if ( typeof _this.onShiftContentInInnerFrame === 'function' ) {
+                var newContent = _this.onShiftContentInInnerFrame(innerFrame.firstElementChild, toLeft); 
 
                 if (newContent === undefined) {
                     return;
