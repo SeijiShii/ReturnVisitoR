@@ -1,0 +1,10 @@
+.time_picker_dialog .time_picker_div {
+    position: relative;
+    width: 100%;
+    height: 250px;
+}
+
+.time_picker_dialog .button {
+    float: right;
+    margin: 0;
+}

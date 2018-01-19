@@ -34,6 +34,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         addPersonDialog,
         personDialog,
         datePickerDialog,
+        timePickerDialog,
         appFrame = document.getElementById('app_frame');
     
     function initPlaceData() {
@@ -223,6 +224,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             loadAddPersonDialogScript();
             loadPersonDialogScript();
             loadDatePickerScript();
+            loadTimePickerScript();
         });
     }
 
@@ -311,9 +313,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         }
     }
 
-    function fadeIn() {
-        $('#record_visit_page_frame').fadeTo('slow', 1);
+    function loadTimePickerScript() {
+        loadFile.loadScript('./dialogs/time_picker_dialog/time_picker_dialog.js', function(){
+            
+            // TEST
+            initTimePickerDialog();
 
+        });
+    }
+
+    function initTimePickerDialog() {
+        timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
+    }
+
+    function fadeIn() {
+
+        var $pageFrame = $('#record_visit_page_frame')
+
+        $pageFrame.fadeTo('slow', 1);
     }
 
     initPersons();
@@ -328,10 +345,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     loadDialogFiles();
 
+    // coordinatesTest();
+
+    // function coordinatesTest() {
+
+    //     var canvas = document.getElementById('test_canvas');
+    //     console.log(canvas.getContext('2d'));
+
+    //     $(canvas).css({
+    //         position : 'ablsote',
+    //         top : 0,
+    //         left : 0
+    //     });
+
+    //     var centerX = 100,
+    //         centerY = 100,
+    //         context = canvas.getContext('2d');
+
+    //     context.fillStyle = 'green'
+
+    //     var coordinates = returnvisitor.common.coordinates;
+    //     for ( var i = 0 ; i < 12 ; i++ ) {
+    //         var point = coordinates.byHour(i, 60);
+    //         context.beginPath();
+    //         context.arc(centerX + point.x, centerY + point.y, 10, 0, 2 * Math.PI);
+    //         context.fill();
+
+    //     }
+    // }
+
     return {
 
         initialize : function(options) {
-
 
             _options = options;
             initPlaceData();
@@ -348,12 +393,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
                 if (_isPersonContainerReady) {
                     clearInterval(timerId);
                     fadeIn();
+
                 } else {
                     console.log('Waiting for person container ready.')
                 }
             }
 
             var timerId = setInterval(timer, 50);
+
         },
 
         refreshElements : function() {
