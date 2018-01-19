@@ -107,7 +107,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
     this.animateToShowRightContent = function() {
 
-        console.log('animateToShowRightContent')
+        // console.log('animateToShowRightContent')
 
         var $frame = $(innerFrame);
         $frame.animate({
@@ -126,7 +126,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
     this.animateToShowLeftContent = function() {
 
-        console.log('animateToShowLeftContent')
+        // console.log('animateToShowLeftContent')
 
         var $frame = $(innerFrame);
         $frame.animate({
@@ -159,7 +159,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
         if (toLeft) {
 
-            console.log('Shift to Left');
+            // console.log('Shift to Left');
             // console.log(innerFrame.firstElementChild.date.toDateString());
 
             // Remove content in left.
@@ -189,9 +189,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         } else {
             // toRight
 
-            console.log('Shift to right')
+            // console.log('Shift to right')
 
-            console.log(innerFrame.lastElementChild.date.toDateString());
+            // console.log(innerFrame.lastElementChild.date.toDateString());
 
             innerFrame.removeChild(innerFrame.lastElementChild);
             innerFrame.firstElementChild.style.left = ONE_THIRD + '%';

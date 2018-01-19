@@ -3,6 +3,7 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     var _this = this,
+        _target = target,
         DEFAULT_STROKE = 50,
         startX,
         startY, 
@@ -11,7 +12,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         newX,
         newY,
         startTime,
-        isSwiping = false;
+        isSwiping = false,
+        isBlockListenerSet = false;
 
 
     this.xSwipeEnabled = true;
@@ -20,13 +22,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
     target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
-    target.addEventListener('touchend', handleEnd, true);
+    target.addEventListener('touchend', handleEnd, false);
     target.addEventListener('touchcancel', onCancel, false);
 
     target.addEventListener('mousedown', onMouseDown, false);
     target.addEventListener('mousemove', onMouseMove, false);
-    target.addEventListener('mouseup', handleEnd, true);
+    target.addEventListener('mouseup', handleEnd, false);
     target.addEventListener('mouseleave', onCancel, false);
+
+    // target.addEventListener('click', function(e){
+    //     console.log('On click pane!');
+    //     e.stopPropagation();
+    // }, true);
 
     function onTouchStart(event) {
         
@@ -52,6 +59,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function onMouseDown(event) {
 
+
         startTime = new Date().getTime();
 
         startX = event.screenX;
@@ -68,10 +76,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function onTouchMove(event) {
 
+        // event.stopPropagation();
+
         // これがないとtouchendイベントが発火しない。
         event.preventDefault();
 
         if (isSwiping) {
+
+            addClickBlockListenerIfYet();
+
             oldX = newX;
             oldY = newY;
     
@@ -83,8 +96,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     }
 
     function onMouseMove(event) {
-
+    
         if (isSwiping) {
+
+            addClickBlockListenerIfYet();
+
             oldX = newX;
             oldY = newY;
     
@@ -128,7 +144,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         }
     }
 
-    function handleEnd() {
+    function handleEnd(event) {
+
+      // console.log('Touch up');
+        // event.stopPropagation();
+
+        event.preventDefault();
 
         isSwiping = false;
         var duration = new Date().getTime() - startTime;
@@ -196,6 +217,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
             }
         }
 
+        removeClickBlockListenerIfSet();
+
     }
 
     function onCancel() {
@@ -204,5 +227,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
             _this.onSwipeCancel();
         }
     }
+
+    function addClickBlockListenerIfYet() {
+
+        if (isBlockListenerSet) {
+            return
+        }
+
+        _target.addEventListener('click', clickBlockLisntener, true);
+      // console.log('Block set!')
+
+        isBlockListenerSet = true;
+    } 
+
+    function removeClickBlockListenerIfSet() {
+
+        if (isBlockListenerSet) {
+            _target.removeEventListener('click', clickBlockLisntener);
+          // console.log('Block removed!')
+            isBlockListenerSet = false;
+        }
+
+    }
+
+    function clickBlockLisntener(e) {
+        e.stopPropagation();
+      // console.log('Click killed!');
+    }
+
 
 }
