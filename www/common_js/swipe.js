@@ -13,7 +13,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         newY,
         startTime,
         isSwiping = false,
-        isBlockListenerSet = false;
+        isToBlockClick = false;
 
 
     this.xSwipeEnabled = true;
@@ -30,10 +30,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     target.addEventListener('mouseup', handleEnd, false);
     target.addEventListener('mouseleave', onCancel, false);
 
-    // target.addEventListener('click', function(e){
-    //     console.log('On click pane!');
-    //     e.stopPropagation();
-    // }, true);
+    target.addEventListener('click', clickBlockLisntener, true);
 
     function onTouchStart(event) {
         
@@ -83,7 +80,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
         if (isSwiping) {
 
-            addClickBlockListenerIfYet();
+            // addClickBlockListenerIfYet();
+
+            isToBlockClick = true;
 
             oldX = newX;
             oldY = newY;
@@ -99,7 +98,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     
         if (isSwiping) {
 
-            addClickBlockListenerIfYet();
+            // addClickBlockListenerIfYet();
+            isToBlockClick = true;
 
             oldX = newX;
             oldY = newY;
@@ -146,7 +146,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function handleEnd(event) {
 
-      // console.log('Touch up');
+    //   console.log('Touch up');
         // event.stopPropagation();
 
         event.preventDefault();
@@ -217,7 +217,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
             }
         }
 
-        removeClickBlockListenerIfSet();
+        // removeClickBlockListenerIfSet();
 
     }
 
@@ -228,31 +228,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         }
     }
 
-    function addClickBlockListenerIfYet() {
-
-        if (isBlockListenerSet) {
-            return
-        }
-
-        _target.addEventListener('click', clickBlockLisntener, true);
-      // console.log('Block set!')
-
-        isBlockListenerSet = true;
-    } 
-
-    function removeClickBlockListenerIfSet() {
-
-        if (isBlockListenerSet) {
-            _target.removeEventListener('click', clickBlockLisntener);
-          // console.log('Block removed!')
-            isBlockListenerSet = false;
-        }
-
-    }
-
     function clickBlockLisntener(e) {
-        e.stopPropagation();
-      // console.log('Click killed!');
+        
+        if (isToBlockClick) {
+            e.stopPropagation();
+            // console.log('Click killed!');
+            isToBlockClick = false;
+        }
+        
     }
 
 

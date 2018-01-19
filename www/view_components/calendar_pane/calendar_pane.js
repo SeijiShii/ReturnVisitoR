@@ -90,7 +90,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         
         calendarFramePane.onShiftContentInInnerFrame = function(centerContent, toLeft) {
 
-            console.log(centerContent.date.toDateString());
+            // console.log(centerContent.date.toDateString());
             _date = centerContent.date;
             refreshMonthText();
 
@@ -245,7 +245,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         var cell = touchEventFilter.getTarget(e, 'calendar_cell');
         elementsEffect.blink(cell);
         var id = cell.id;
-        console.log(id);
+        var milliSec = id.substring(DATE_CELL_PREFIX.length);
+        var cellDate = new Date();
+        cellDate.setTime(milliSec);
+
+        console.log(cellDate.toDateString());
 
     }
 
