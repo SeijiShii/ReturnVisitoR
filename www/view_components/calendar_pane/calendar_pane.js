@@ -84,10 +84,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         calendarFramePane = new SwipePane(calendarFrame);
 
-        calendarFramePane.onPaneReady = function() {
+        calendarFramePane.onInnerFrameReady = function() {
             setCalendarContents();
-        } 
-        
+        }
+
         calendarFramePane.onShiftContentInInnerFrame = function(centerContent, toLeft) {
 
             // console.log(centerContent.date.toDateString());
@@ -249,7 +249,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         var cellDate = new Date();
         cellDate.setTime(milliSec);
 
-        console.log(cellDate.toDateString());
+        // console.log(cellDate.toDateString());
+
+        if ( typeof _this.onClickDateCell === 'function' ) {
+            _this.onClickDateCell(cellDate);
+        }
 
     }
 

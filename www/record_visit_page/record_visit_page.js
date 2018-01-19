@@ -202,6 +202,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickDateText() {
         elementsEffect.blink(dateText);
+        initDatePickerDialog();
     }
 
     function initTimeText() {
@@ -297,13 +298,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         loadFile.loadScript('./dialogs/date_picker_dialog/date_picker_dialog.js', function(){
             
             // TEST
-            initDatePickerDialog();
+            // initDatePickerDialog();
 
         });
     }
 
-    function initDatePickerDialog() {
-        datePickerDialog = new returnvisitor.DatePickerDialog();
+    function initDatePickerDialog(date) {
+        datePickerDialog = new returnvisitor.DatePickerDialog(_visit.dateTime);
+        datePickerDialog.onClickDateCell = function(date) {
+            _visit.dateTime = date;
+            refreshDateText();
+        }
     }
 
     function fadeIn() {

@@ -17,19 +17,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         loadFile.loadHtmlAsElement('./view_components/swipe_pane/swipe_pane.html', function(div){
             paneFrame = div;
 
-            // paneFrame.addEventListener('click', function(){
-
-            // });
-
             parent.appendChild(paneFrame);
             initInnerFrame();
-            // initContentPanes();
-
-            if (typeof _this.onPaneReady === 'function') {
-                _this.onPaneReady();
-            }
+            waitForInnerFrameReadyCallbackReady();
             
         });
+    }
+
+    function waitForInnerFrameReadyCallbackReady() {
+
+        var timerStartTime = new Date().getTime();
+                
+        var waitTimer = function() {
+
+            var counter = new Date().getTime() - timerStartTime;
+
+            if (counter > 500) {
+                throw new Error('ERROR_TIME_OUT: SwipePane inner frame takes more than 500ms to get ready!')
+            }
+
+            if ( typeof _this.onInnerFrameReady === 'function' ) {
+                clearInterval(waitTimerId);
+                _this.onInnerFrameReady();
+            } 
+
+            console.log('SwipePane: waiting inner frame ready for ' + counter + 'ms');
+        }
+
+        var waitTimerId = setInterval(waitTimer, 20);
     }
 
     function initInnerFrame() {
