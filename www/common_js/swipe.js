@@ -20,15 +20,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     this.ySwipeEnabled = false;
     this.swipeStroke = DEFAULT_STROKE;
 
-    target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
-    target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
-    target.addEventListener('touchend', handleEnd, false);
-    target.addEventListener('touchcancel', onCancel, false);
+    if (cordova.platformId == 'android') {
 
-    target.addEventListener('mousedown', onMouseDown, false);
-    target.addEventListener('mousemove', onMouseMove, false);
-    target.addEventListener('mouseup', handleEnd, false);
-    target.addEventListener('mouseleave', onCancel, false);
+        target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
+        target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
+        target.addEventListener('touchend', handleEnd, false);
+        target.addEventListener('touchcancel', onCancel, false);
+
+    } else {
+
+        target.addEventListener('mousedown', onMouseDown, false);
+        target.addEventListener('mousemove', onMouseMove, false);
+        target.addEventListener('mouseup', handleEnd, false);
+        target.addEventListener('mouseleave', onCancel, false);
+    
+    }
 
     target.addEventListener('click', clickBlockLisntener, true);
 
@@ -80,7 +86,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
         if (isSwiping) {
 
-            // addClickBlockListenerIfYet();
+            // console.log('Swipe touch start!');
 
             isToBlockClick = true;
 
@@ -146,10 +152,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function handleEnd(event) {
 
-    //   console.log('Touch up');
-        // event.stopPropagation();
-
-        event.preventDefault();
+      console.log('Touch up');
 
         isSwiping = false;
         var duration = new Date().getTime() - startTime;
@@ -216,9 +219,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
                 }
             }
         }
-
-        // removeClickBlockListenerIfSet();
-
     }
 
     function onCancel() {
@@ -232,7 +232,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         
         if (isToBlockClick) {
             e.stopPropagation();
-            // console.log('Click killed!');
+            console.log('Click killed!');
             isToBlockClick = false;
         }
         

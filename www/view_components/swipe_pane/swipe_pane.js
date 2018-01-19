@@ -196,7 +196,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 newContent.style.left = ONE_THIRD * 2 + '%';
                 newContent.classList.add('content');
-                innerFrame.append(newContent);
+                innerFrame.appendChild(newContent);
             }
 
            
@@ -221,7 +221,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                 
                 newContent.style.left = 0;
                 newContent.classList.add('content');
-                innerFrame.prepend(newContent);
+                innerFrame.insertBefore(newContent, innerFrame.firstElementChild);
             }
 
         }
