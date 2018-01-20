@@ -1,15 +1,19 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = function(parent, time) {
+
 
     var _this = this,
         _time = time,
         paneFrame,
-        // clockFrame,
         hourFrame,
+        minuteFrame,
+        minuteHand,
         hourText,
+        minuteText,
         hourChildFrames = [],
-        clockButtons = [],
+        hourButtons = [],
+        minuteButtons = [],
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common = returnvisitor.common,
         loadFile = common.loadFile,
@@ -18,9 +22,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         coordinates = common.coordinates,
         touchEventFilter = common.touchEventFilter,
         HOUR_PREFIX = 'hour_button_',
+        MINUTE_PREFIX = 'minute_button_',
         CLOCK_PANE_SIZE = 200,
-        HOUR_FRAME_ID_PREFIX = 'clock_hour_frame_'
-        ;
+        MINUTE_CLOCK_RADIUS = 80,
+        HOUR_FRAME_ID_PREFIX = 'clock_hour_frame_',
+        _isHourFrameShowing = true;
+        
     
     function initialize() {
 
@@ -29,15 +36,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             paneFrame = elm;
 
             initHourFrame();
+            initMinuteFrame();
+            initMinuteHand();
             initHourText();
+            initMinuteText();
 
             parent.appendChild(paneFrame);
 
             // waitCallbackReady();
-        })
+        });
 
     }
 
+    // eslint-disable-next-line no-unused-vars
     function waitCallbackReady() {
 
         var startTime = new Date().getTime();
@@ -55,10 +66,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
                 clearInterval(waitTimerId);
                 _this.onPaneFrameReady();
             }
-            console.log('Waiting time picker pane callback ready for ' + counter + 'ms.');
-        }
+            // console.log('Waiting time picker pane callback ready for ' + counter + 'ms.');
+        };
         var waitTimerId = setInterval(waitTimer, 50);
     }
+
 
     function initHourFrame() {
         
@@ -97,7 +109,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
         for ( var i = 0 ; i < 12 ; i++ ) {
 
-            var ckButton = new ClockButton(hour, isActive);
+            var ckButton = new HourButton(hour, isActive);
 
             var pos = ckButton.positionFromCenter();
             $(ckButton.button).css({
@@ -106,7 +118,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             });
 
             frame.appendChild(ckButton.button);
-            clockButtons.push(ckButton);
+            hourButtons.push(ckButton);
 
             hour++;
         }
@@ -131,12 +143,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         }
 
         for ( var i = 0 ; i < 24 ; i++ ) {
-            clockButtons[i].activate();
+            hourButtons[i].activate();
         }
 
     }
 
-    function ClockButton(n, isActive) {
+    function HourButton(n, isActive) {
 
         this.isActive = isActive;
 
@@ -148,11 +160,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         this.numValue = n;
         this.button.innerText = n;
         this.button.id = HOUR_PREFIX + n;
-        this.button.addEventListener('click', onClickClockButton, true);
+        this.button.addEventListener('click', onClickHourButton, true);
    
     }
 
-    function onClickClockButton(e) {
+    function onClickHourButton(e) {
 
         e.stopPropagation();
 
@@ -167,7 +179,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
     }
 
-    ClockButton.prototype.activate = function() {
+    HourButton.prototype.activate = function() {
 
         this.isActive = !this.isActive;
 
@@ -179,9 +191,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         }, 300, 'easeOutQuint');
 
         $(this.button).animate(this.sizeOptions, 300, 'easeOutQuint');
-    }
+    };
 
-    ClockButton.prototype.positionFromCenter = function() {
+    HourButton.prototype.positionFromCenter = function() {
         var pos;
 
         pos = coordinates.byHour(this.numValue, this.clockRadius());
@@ -189,26 +201,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         return {
             x : pos.x - this.buttonRadius(),
             y : pos.y - this.buttonRadius()
-        }
-    }
+        };
+    };
 
-    ClockButton.prototype.clockRadius = function() {
+    HourButton.prototype.clockRadius = function() {
         if (this.isActive) {
             return 80;
         } else {
             return 60;
         }
-    }
+    };
 
-    ClockButton.prototype.buttonRadius = function() {
+    HourButton.prototype.buttonRadius = function() {
         if (this.isActive) {
             return 15;
         } else {
             return 13;
         }
-    }
+    };
 
-    ClockButton.prototype.sizeOptions = function() {
+    HourButton.prototype.sizeOptions = function() {
 
         return {
             width : this.buttonRadius() * 2 + 'px',
@@ -218,18 +230,240 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             lineHeight : this.buttonRadius() * 2 + 'px'
         };
 
-    }
+    };
 
     function initHourText() {
         hourText = elements.getElementByClassName(paneFrame, 'hour_text');
         refreshHourText();
+        hourText.addEventListener('click', onClickHourText);
     }
     
     function refreshHourText() {
         hourText.innerText = _time.getHours();
+        if (_isHourFrameShowing) {
+            hourText.style.color = 'springgreen';
+        } else {
+            hourText.style.color = 'gray';
+        }
     }
 
+    function onClickHourText() {
+        elementsEffect.blink(hourText);
+        showUpHourFrame();
+
+    }
+
+    function initMinuteText() {
+        minuteText = elements.getElementByClassName(paneFrame, 'minute_text');
+        refreshMinuteText();
+        minuteText.addEventListener('click', onClickMinuteText);
+    }
+
+    function refreshMinuteText() {
+        minuteText.innerText = _time.getPaddedMinutes();
+        if (_isHourFrameShowing) {
+            minuteText.style.color = 'gray';
+        } else {
+            minuteText.style.color = 'springgreen';
+        }
+    }
+
+    function onClickMinuteText() {
+        elementsEffect.blink(minuteText);
+        showUpMinuteFrame();
+    }
+
+    function showUpHourFrame() {
+
+    }
+
+    function showUpMinuteFrame() {
+
+    }
+
+    function initMinuteFrame() {
+        minuteFrame = elements.getElementByClassName(paneFrame, 'minute_frame');
+
+        for ( var i = 0 ; i < 60 ; i++ ) {
+            var minuteButton = new MinuteButton(i);
+            var pos = minuteButton.positionFromCenter();
+            $(minuteButton.button).css({
+                top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
+                left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+            });
+
+            minuteButtons.push(minuteButton);
+            minuteFrame.appendChild(minuteButton.button);
+        }
+    }
+
+    function MinuteButton(n) {
+
+        this.button = document.createElement('div'); 
+
+        this.button.classList.add('minute_button');
+        if ( isMultiple5(n) ) {
+            this.button.classList.add('minute_multiple_5');
+            this.button.innerText = n;
+        }
+
+        this.numValue = n;
+        this.button.id = MINUTE_PREFIX + n;
+
+        var touch = new MinuteButtonTouch(this);
+        touch.onTouchUp = function(minButton) {
+            console.log(minButton.numValue);
+        };
+    }
+
+    MinuteButton.prototype.positionFromCenter = function() {
+
+        var pos = coordinates.byMinute(this.numValue, MINUTE_CLOCK_RADIUS);
+        
+        return {
+            x : pos.x - this.buttonRadius(),
+            y : pos.y - this.buttonRadius()
+        };
+    };
+
+    MinuteButton.prototype.buttonRadius = function() {
+
+        if (isMultiple5(this.numValue)) {
+            return 12.5;
+        } else {
+            return 7.5;
+        }
+    };
+
+    var isMinButtonTouchDown = false;
+    function MinuteButtonTouch(minuteButton) {
+
+        var _this = this,
+            button = minuteButton.button;
+
+        button.addEventListener('mousedown', onMouseDown);
+        button.addEventListener('mouseenter', onMouseEnter);
+        button.addEventListener('mouseleave', onMouseLeave);
+        button.addEventListener('mouseup', onMouseUp);
+
+        function onMouseDown(e) {
+            var minButton = getButton(e);
+            isMinButtonTouchDown = true;
+            activateButton(minButton, true);
+
+            refreshMinuteHand(minButton.numValue, true);
+        }
+
+        function onMouseEnter(e) {
+
+            var minButton = getButton(e);
+
+            console.log('Mouse enter to ' + minButton.numValue);
+            console.log('minButton.isTouchDown: ' + isMinButtonTouchDown);
+
+            if (isMinButtonTouchDown) {
+                activateButton(minButton, true);
+                refreshMinuteHand(minButton.numValue, true);
+            }
+
+        }
+
+        function onMouseLeave(e) {
+
+            var minButton = getButton(e);
+
+            if (isMinButtonTouchDown) {
+                activateButton(minButton, false);
+                refreshMinuteHand(minButton.numValue, false);
+
+            }
+        }
+
+        function onMouseUp(e) {
+
+            var minButton = getButton(e);
+
+            isMinButtonTouchDown = false;
+            activateButton(minButton, false);
+            refreshMinuteHand(minButton.numValue, false);
+
+            if ( typeof _this.onTouchUp === 'function' ) {
+                _this.onTouchUp(minButton);
+            }
+        }
+
+        function getButton(e) {
+            var button = touchEventFilter.getTarget(e, 'minute_button');
+            var numValue = button.id.substring(MINUTE_PREFIX.length);
+
+            return minuteButtons[numValue];
+        }
+
+        function activateButton(minuteButton, active) {
+
+            var $button = $(minuteButton.button);
+
+            if (isMultiple5(minuteButton.numValue)) {
+
+                if (active) {
+
+                    $button.css({
+                        backgroundColor : 'white',
+                        color : 'springgreen'
+                    });
+                } else {
+
+                    $button.css({
+                        backgroundColor : 'springgreen',
+                        color : 'white'
+                    });
+                }
+
+            } else {
+
+                if (active) {
+
+                    $button.css({
+                        backgroundColor : 'springgreen',
+                    });
+                } else {
+
+                    $button.css({
+                        backgroundColor : 'transparent',
+                    });
+                }
+
+            }
+        }
+    }
+
+    function initMinuteHand() {
+        minuteHand = elements.getElementByClassName(paneFrame, 'minute_hand');
+    }
+
+    function refreshMinuteHand(min, show) {
+
+        var $hand = $(minuteHand),
+            degree = coordinates.minToDegree(min) + 90;
+
+        $hand.css({
+            transform : 'rotate(' + degree + 'deg)'
+        });
+
+        if (show) {
+            minuteHand.style.opacity = 1;
+        } else {
+            minuteHand.style.opacity = 0;
+        }
+        
+    }
+
+
+    function isMultiple5(n) {
+        return parseInt( n / 5 ) * 5 == n; 
+    }
+    
     initialize();
     
-}
+};
 

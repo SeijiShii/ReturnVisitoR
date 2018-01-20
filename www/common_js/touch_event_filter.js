@@ -1,8 +1,13 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.touchEventFilter = (function(){
 
     function _getTarget(event, className) {
+
+        if (className === undefined) {
+            throw new Error('Argument "className" must not be blank!');
+        }
+
         if (cordova.platformId === 'android') {
 
             return event.currentTarget;
@@ -26,6 +31,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.touchEventFilter = (function
 
             return _getTarget(event, className).id;
         }
-    }
+    };
 
-})()
+})();

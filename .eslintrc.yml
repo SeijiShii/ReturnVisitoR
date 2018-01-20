@@ -1,0 +1,13 @@
+env:
+  browser: true
+  node: true
+extends: 'eslint:recommended'
+rules:
+  indent:
+    - 4
+  linebreak-style:
+    - windows
+  quotes:
+    - single
+  semi:
+    - always
