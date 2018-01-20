@@ -46,14 +46,9 @@
 
 }
 
-.time_picker_pane .clock_frame .clock_button {
+.time_picker_pane .clock_frame .hour_button {
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 15px;
-    font-size: 15px;
     text-align: center;
-    line-height: 30px;
     background-color: springgreen;
     color: white;
 }
