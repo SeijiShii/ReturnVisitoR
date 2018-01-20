@@ -2,8 +2,8 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.coordinates = (function(){
 
-    var ONE_MINUTE = -(2 * Math.PI / 60),
-        ONE_HOUR = -(2 * Math.PI / 12),
+    var ONE_MINUTE = 2 * Math.PI / 60,
+        ONE_HOUR = 2 * Math.PI / 12,
         TIME_ZERO = -(2 * Math.PI / 4);
 
     function _byRadian(radian, radius) {
