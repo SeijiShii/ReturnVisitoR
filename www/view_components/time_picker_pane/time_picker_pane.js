@@ -8,12 +8,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         paneFrame,
         hourFrame,
         minuteFrame,
-        minuteHand,
         hourText,
         minuteText,
         hourChildFrames = [],
         hourButtons = [],
-        minuteButtons = [],
+        minuteMarks = [],
+        subMinMarks = {},
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common = returnvisitor.common,
         loadFile = common.loadFile,
@@ -22,7 +22,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         coordinates = common.coordinates,
         touchEventFilter = common.touchEventFilter,
         HOUR_PREFIX = 'hour_button_',
-        MINUTE_PREFIX = 'minute_button_',
+        // MINUTE_PREFIX = 'minute_button_',
         CLOCK_PANE_SIZE = 200,
         MINUTE_CLOCK_RADIUS = 80,
         HOUR_FRAME_ID_PREFIX = 'clock_hour_frame_',
@@ -37,13 +37,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
             initHourFrame();
             initMinuteFrame();
-            initMinuteHand();
             initHourText();
             initMinuteText();
 
             parent.appendChild(paneFrame);
 
-            // waitCallbackReady();
         });
 
     }
@@ -285,177 +283,191 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         minuteFrame = elements.getElementByClassName(paneFrame, 'minute_frame');
 
         for ( var i = 0 ; i < 60 ; i++ ) {
-            var minuteButton = new MinuteButton(i);
-            var pos = minuteButton.positionFromCenter();
-            $(minuteButton.button).css({
-                top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
-                left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
-            });
 
-            minuteButtons.push(minuteButton);
-            minuteFrame.appendChild(minuteButton.button);
+            if (isMultiple5(i)) {
+                var minMark = new MinuteMark(i);
+                var pos = minMark.positionFromCenter();
+                $(minMark.mark).css({
+                    top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
+                    left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+                });
+                minuteMarks.push(minMark);
+                minuteFrame.appendChild(minMark.mark);
+            }
         }
+
+        initMinuteFrameTouch();
     }
 
-    function MinuteButton(n) {
+    function MinuteMark(n) {
 
-        this.button = document.createElement('div'); 
+        this.mark = document.createElement('div'); 
 
-        this.button.classList.add('minute_button');
-        if ( isMultiple5(n) ) {
-            this.button.classList.add('minute_multiple_5');
-            this.button.innerText = n;
-        }
-
+        this.mark.classList.add('minute_mark');
+        this.mark.innerText = n;
         this.numValue = n;
-        this.button.id = MINUTE_PREFIX + n;
 
-        var touch = new MinuteButtonTouch(this);
-        touch.onTouchUp = function(minButton) {
-            console.log(minButton.numValue);
-        };
     }
 
-    MinuteButton.prototype.positionFromCenter = function() {
+    MinuteMark.prototype.MARK_RADIUS = 12.5;
+    MinuteMark.prototype.positionFromCenter = function() {
 
         var pos = coordinates.byMinute(this.numValue, MINUTE_CLOCK_RADIUS);
         
         return {
-            x : pos.x - this.buttonRadius(),
-            y : pos.y - this.buttonRadius()
+            x : pos.x - this.MARK_RADIUS,
+            y : pos.y - this.MARK_RADIUS
         };
     };
 
-    MinuteButton.prototype.buttonRadius = function() {
+    MinuteMark.prototype.blink = function(active) {
 
-        if (isMultiple5(this.numValue)) {
-            return 12.5;
+        var $mark = $(this.mark);
+
+        if (active) {
+
+            $mark.css({
+                backgroundColor : 'white',
+                color : 'springgreen'
+            });
         } else {
-            return 7.5;
+
+            $mark.css({
+                backgroundColor : 'springgreen',
+                color : 'white'
+            });
         }
     };
 
-    var isMinButtonTouchDown = false;
-    function MinuteButtonTouch(minuteButton) {
+    function initMinuteFrameTouch() {
 
-        var _this = this,
-            button = minuteButton.button;
+        var _isTouchDown = false; 
 
-        button.addEventListener('mousedown', onMouseDown);
-        button.addEventListener('mouseenter', onMouseEnter);
-        button.addEventListener('mouseleave', onMouseLeave);
-        button.addEventListener('mouseup', onMouseUp);
+        minuteFrame.addEventListener('mousedown', onMouseDown);
+        minuteFrame.addEventListener('mouseleave', onMouseLeave);
+        minuteFrame.addEventListener('mousemove', onMouseMove);
+        minuteFrame.addEventListener('mouseup', onMouseUp);
 
         function onMouseDown(e) {
-            var minButton = getButton(e);
-            isMinButtonTouchDown = true;
-            activateButton(minButton, true);
+            
+            _isTouchDown = true;
 
-            refreshMinuteHand(minButton.numValue, true);
+            toMinuteSet(e);
         }
 
-        function onMouseEnter(e) {
+        function onMouseMove(e) {
+            
+            if(_isTouchDown) {
 
-            var minButton = getButton(e);
-
-            console.log('Mouse enter to ' + minButton.numValue);
-            console.log('minButton.isTouchDown: ' + isMinButtonTouchDown);
-
-            if (isMinButtonTouchDown) {
-                activateButton(minButton, true);
-                refreshMinuteHand(minButton.numValue, true);
+                toMinuteSet(e);
             }
 
         }
 
-        function onMouseLeave(e) {
-
-            var minButton = getButton(e);
-
-            if (isMinButtonTouchDown) {
-                activateButton(minButton, false);
-                refreshMinuteHand(minButton.numValue, false);
-
-            }
+        function onMouseLeave() {
+            _isTouchDown = false;
         }
 
         function onMouseUp(e) {
 
-            var minButton = getButton(e);
-
-            isMinButtonTouchDown = false;
-            activateButton(minButton, false);
-            refreshMinuteHand(minButton.numValue, false);
-
-            if ( typeof _this.onTouchUp === 'function' ) {
-                _this.onTouchUp(minButton);
-            }
+            _isTouchDown = false;
+            clearMinMarks();
         }
 
-        function getButton(e) {
-            var button = touchEventFilter.getTarget(e, 'minute_button');
-            var numValue = button.id.substring(MINUTE_PREFIX.length);
-
-            return minuteButtons[numValue];
+        function frameCenter() {
+            var frameRect = minuteFrame.getBoundingClientRect();
+            return {
+                x : frameRect.top + CLOCK_PANE_SIZE / 2,
+                y : frameRect. left + CLOCK_PANE_SIZE / 2
+            };
         }
 
-        function activateButton(minuteButton, active) {
+        function getPositionFromCenter(e) {
 
-            var $button = $(minuteButton.button);
+            var center = frameCenter();
+            
+            return {
+                x : e.clientX - center.x,
+                y : e.clientY - center.y 
+            };
+        }
 
-            if (isMultiple5(minuteButton.numValue)) {
+        function isInRange(dist) {
+            return dist > 60 && dist < 100;
+        }
 
-                if (active) {
+        function toMinuteSet(e) {
 
-                    $button.css({
-                        backgroundColor : 'white',
-                        color : 'springgreen'
-                    });
-                } else {
+            var pos = getPositionFromCenter(e);
 
-                    $button.css({
-                        backgroundColor : 'springgreen',
-                        color : 'white'
-                    });
-                }
+            if (isInRange(coordinates.distance(pos))) {
 
-            } else {
+                var min = coordinates.positionToMinute(pos);
 
-                if (active) {
-
-                    $button.css({
-                        backgroundColor : 'springgreen',
-                    });
-                } else {
-
-                    $button.css({
-                        backgroundColor : 'transparent',
-                    });
-                }
-
+                setMinute(min);
             }
         }
     }
 
-    function initMinuteHand() {
-        minuteHand = elements.getElementByClassName(paneFrame, 'minute_hand');
+    function clearMinMarks() {
+
+        for ( var i = 0 ; i < minuteMarks.length ; i++ ) {
+            minuteMarks[i].blink(false);
+            minuteMarks[i].mark.style.zIndex = 200;
+        }
+
+
     }
 
-    function refreshMinuteHand(min, show) {
+    function setMinute(min) {
 
-        var $hand = $(minuteHand),
-            degree = coordinates.minToDegree(min) + 90;
+        clearMinMarks();
+        removeOtherSubMarks(min);
+        
+        if (isMultiple5(min)) {
+            var minMark = minuteMarks[min / 5];
+            minMark.blink(true);
+            minMark.mark.style.zIndex = 400;
 
-        $hand.css({
-            transform : 'rotate(' + degree + 'deg)'
-        });
-
-        if (show) {
-            minuteHand.style.opacity = 1;
         } else {
-            minuteHand.style.opacity = 0;
+            addSubMinuteMark(min);
+            
         }
         
+        
+    }
+
+    function addSubMinuteMark(n) {
+
+        var subMark = subMinMarks[n];
+
+        if (!subMark) {
+            subMark = new MinuteMark(n);
+            subMinMarks[n] = subMark;
+            minuteFrame.appendChild(subMark.mark);
+            var pos = subMark.positionFromCenter();
+            $(subMark.mark).css({
+                zIndex : 300,
+                top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
+                left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+            });
+        }
+
+        subMark.mark.style.opacity = 1;
+
+    }
+
+    function removeOtherSubMarks(n) {
+
+        for (var key in subMinMarks) {
+
+            if (key != n) {
+
+                var subMark = subMinMarks[key];
+                subMark.mark.style.opacity = 0;
+            } 
+        }
+
     }
 
 
