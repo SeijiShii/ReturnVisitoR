@@ -23,6 +23,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.touchEventFilter = (function
             }  
         }
     }
+    
+    function _touchToPosition(evt) {
+
+        if (cordova.platformId === 'android') {
+
+            var touch = evt.touches[0];
+
+            return {
+                x : touch.pageX,
+                y : touch.pageY
+            };
+            
+        } else {
+
+            return {
+                x : evt.clientX,
+                y : evt.clientY
+            };
+        }
+    }
 
     return {
         getTarget : _getTarget,
@@ -30,7 +50,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.touchEventFilter = (function
         getTargetId : function(event, className) {
 
             return _getTarget(event, className).id;
-        }
+        },
+
+        touchToPosition : _touchToPosition,
     };
 
 })();

@@ -111,10 +111,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
             var ckButton = new HourButton(hour, isActive);
 
-            var pos = ckButton.positionFromCenter();
+            var pos = ckButton.positionOnHourFrame();
+
+            // console.log(hour, pos.x, pos.y);
+
             $(ckButton.button).css({
-                top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
-                left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+                left : pos.x + 'px',
+                top : pos.y + 'px'
             });
 
             frame.appendChild(ckButton.button);
@@ -183,24 +186,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
         this.isActive = !this.isActive;
 
-        var pos = this.positionFromCenter();
+        var pos = this.positionOnHourFrame();
 
         $(this.button).animate({
-            top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
-            left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+            top : pos.y + 'px',
+            left : pos.x + 'px'
         }, 300, 'easeOutQuint');
 
         $(this.button).animate(this.sizeOptions, 300, 'easeOutQuint');
     };
 
-    HourButton.prototype.positionFromCenter = function() {
+    HourButton.prototype.positionOnHourFrame = function() {
         var pos;
 
-        pos = coordinates.byHour(this.numValue, this.clockRadius());
+        pos = coordinates.hourToPostionFromCenter(this.numValue, this.clockRadius());
+
+        // console.log(this.numValue, pos.x, pos.y);
 
         return {
-            x : pos.x - this.buttonRadius(),
-            y : pos.y - this.buttonRadius()
+            x : (CLOCK_PANE_SIZE / 2) + pos.x - this.buttonRadius(),
+            y : (CLOCK_PANE_SIZE / 2) - pos.y - this.buttonRadius()
         };
     };
 
@@ -288,10 +293,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
             if (isMultiple5(i)) {
                 var minMark = new MinuteMark(i);
-                var pos = minMark.positionFromCenter();
+                var pos = minMark.positionOnMinuteFrame();
+
+                // console.log(i, pos.x, pos.y);
+
                 $(minMark.mark).css({
-                    top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
-                    left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+                    top : pos.y + 'px',
+                    left : pos.x + 'px'
                 });
                 minuteMarks.push(minMark);
                 minuteChildFrame.appendChild(minMark.mark);
@@ -312,13 +320,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     }
 
     MinuteMark.prototype.MARK_RADIUS = 12.5;
-    MinuteMark.prototype.positionFromCenter = function() {
+    MinuteMark.prototype.positionOnMinuteFrame = function() {
 
-        var pos = coordinates.byMinute(this.numValue, MINUTE_CLOCK_RADIUS);
-        
+        var pos = coordinates.minuteToPositionFromCenter(this.numValue, MINUTE_CLOCK_RADIUS);
+     
         return {
-            x : pos.x - this.MARK_RADIUS,
-            y : pos.y - this.MARK_RADIUS
+            x : CLOCK_PANE_SIZE / 2 + pos.x - this.MARK_RADIUS,
+            y : CLOCK_PANE_SIZE / 2 - pos.y - this.MARK_RADIUS
         };
     };
 
@@ -349,8 +357,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
             minuteChildFrame.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
             minuteChildFrame.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
-            // minuteChildFrame.addEventListener('mousemove', onMouseMove);
-            // minuteChildFrame.addEventListener('mouseup', onMouseUp); 
+            minuteChildFrame.addEventListener('touchcancel', onMouseLeave);
+            minuteChildFrame.addEventListener('touchend', onMouseUp); 
 
         } else {
 
@@ -362,12 +370,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
         function onMouseDown(e) {
             
-            console.log('On mouse down.');
-
             _isTouchDown = true;
-
             toMinuteSet(e);
-
         }
 
 
@@ -381,6 +385,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             _isTouchDown = false;
             clearMinMarks();
             clearOtherSubMarks();
+            refreshMinuteHandCanvas();
         }
 
         function onMouseUp() {
@@ -388,11 +393,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             _isTouchDown = false;
             clearMinMarks();
             clearOtherSubMarks();
+            refreshMinuteHandCanvas();
+
         }
 
         function onTouchStart(e) {
 
-            console.log('On touch start.');
+            // console.log('On touch start.');
             _isTouchDown = true;
 
             toMinuteSet(e);
@@ -400,9 +407,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
         function onTouchMove(e) {
 
-            console.log('On touch move.');
+            e.preventDefault();
 
-            toMinuteSet(e)
+            toMinuteSet(e);
 
         }
 
@@ -410,8 +417,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             var frameRect = minuteChildFrame.getBoundingClientRect();
 
             return {
-                x : frameRect.x + CLOCK_PANE_SIZE / 2,
-                y : frameRect. y + CLOCK_PANE_SIZE / 2
+                x : frameRect.left + CLOCK_PANE_SIZE / 2,
+                y : frameRect. top + CLOCK_PANE_SIZE / 2
             };
         }
 
@@ -419,9 +426,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
             var center = frameCenter();
 
+            var pos = touchEventFilter.touchToPosition(e);
+
             return {
-                x : e.clientX - center.x,
-                y : e.clientY - center.y 
+                x : center.x - pos.x,
+                y : center.y - pos.y 
             };
         }
 
@@ -433,16 +442,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
             if (_isTouchDown) {
                 var pos = getPositionFromCenter(e);
-                
+
                 if (isInRange(coordinates.distance(pos))) {
     
-                    var min = coordinates.positionToMinute(pos);
-    
+                    var min = coordinates.positionToMinute({
+                        x : pos.x,
+                        y : -pos.y
+                    });
+
                     setMinute(min);
                 } else {
 
                     clearMinMarks();
                     clearOtherSubMarks();
+                    refreshMinuteHandCanvas();
                 }
             }
         }
@@ -461,6 +474,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
         clearMinMarks();
         clearOtherSubMarks(min);
+        refreshMinuteHandCanvas(min);
         
         if (isMultiple5(min)) {
             var minMark = minuteMarks[min / 5];
@@ -468,9 +482,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             minMark.mark.style.zIndex = 400;
 
         } else {
-            addSubMinuteMark(min);
-            
+            addSubMinuteMark(min);  
         }
+        _time.setMinutes(min);
+        refreshMinuteText();
     }
 
     function addSubMinuteMark(n) {
@@ -481,11 +496,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             subMark = new MinuteMark(n);
             subMinMarks[n] = subMark;
             minuteChildFrame.appendChild(subMark.mark);
-            var pos = subMark.positionFromCenter();
+            var pos = subMark.positionOnMinuteFrame();
             $(subMark.mark).css({
                 zIndex : 300,
-                top : (CLOCK_PANE_SIZE / 2 + pos.x) + 'px',
-                left : (CLOCK_PANE_SIZE / 2 + pos.y) + 'px'
+                top : pos.y + 'px',
+                left : pos.x + 'px'
             });
         }
 
@@ -515,16 +530,54 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     function initMinuteHandCanvas() {
 
         minuteHandCanvas = elements.getElementByClassName(paneFrame, 'minute_hand_canvas');
+    }
 
-        if (minuteHandCanvas.getContext('2d')) {
-            var ctx = minuteHandCanvas.getContext('2d');
+    /**
+     * 
+     * @param {*} min If given undefined just clear canvas.
+     */
+    function refreshMinuteHandCanvas(min) {
 
-            ctx.beginPath();
-            ctx.arc(50, 50, 50, 0, Math.PI * 2);
-            ctx.stroke();
+        var centerX = CLOCK_PANE_SIZE / 2,
+            centerY = CLOCK_PANE_SIZE / 2,
+            ctx = minuteHandCanvas.getContext('2d');
 
+        if (ctx) {
+
+            ctx.clearRect(0, 0, 200, 200);
+
+            if (min || min == 0) {
+                ctx.fillStyle = 'springgreen';
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 10, 0, Math.PI * 2);
+                ctx.fill();
+    
+                ctx.strokeStyle = 'springgreen';
+                ctx.lineWidth = 20;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                var pos = minutePositionFromCenter(min);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+    
+                setTimeout(removeDrawing, 50);
+            }
         }
 
+        var removeDrawing = function() {
+            ctx.clearRect(0, 0, 200, 200);
+        };
+
+    }
+
+    function minutePositionFromCenter(min) {
+
+        var pos = coordinates.minuteToPositionFromCenter(min, MINUTE_CLOCK_RADIUS);
+
+        return {
+            x : CLOCK_PANE_SIZE / 2 + pos.x,
+            y : CLOCK_PANE_SIZE / 2 - pos.y
+        };
     }
     
     initialize();

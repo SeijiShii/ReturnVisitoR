@@ -2,24 +2,24 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.coordinates = (function(){
 
-    var ONE_MINUTE = 2 * Math.PI / 60,
-        ONE_HOUR = 2 * Math.PI / 12,
-        TIME_ZERO = -(2 * Math.PI / 4);
+    var ONE_MINUTE = -2 * Math.PI / 60,
+        ONE_HOUR = -2 * Math.PI / 12,
+        TIME_ZERO = Math.PI / 2;
 
-    function _byRadian(radian, radius) {
+    function _radianToPostionFromCenter(radian, radius) {
 
         return {
-            x : radius * Math.sin(radian),
-            y : radius * Math.cos(radian)
+            x : radius * Math.cos(radian),
+            y : radius * Math.sin(radian)
         };
     }
 
-    function _byHour(hour, radius) {
-        return _byRadian(_hourToRadian(hour), radius);
+    function _hourToPostionFromCenter(hour, radius) {
+        return _radianToPostionFromCenter(_hourToRadian(hour), radius);
     }
 
-    function _byMinute(minute, radius) {
-        return _byRadian(_minuteToRadian(minute), radius);
+    function _minuteToPositionFromCenter(minute, radius) {
+        return _radianToPostionFromCenter(_minuteToRadian(minute), radius);
     }
 
     function _hourToRadian(hour) {
@@ -64,7 +64,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.coordinates = (function(){
 
     function _radianToMinute(radian) {
         
-        var min = Math.round((radian - TIME_ZERO) / ONE_MINUTE);
+        var min = Math.round((TIME_ZERO + radian) / ONE_MINUTE);
 
         if (min < 0) {
             min += 60;
@@ -77,12 +77,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.coordinates = (function(){
     }
     
     return {
-        byRadian    : _byRadian,
-        byHour      : _byHour,
-        byMinute    : _byMinute,
+        radianToPostion    : _radianToPostionFromCenter,
+        hourToPostionFromCenter      : _hourToPostionFromCenter,
+        minuteToPositionFromCenter    : _minuteToPositionFromCenter,
         minToDegree : _minToDegree,
         distance    : _distance,
-        positionToMinute : _positionToMinute
+        positionToMinute : _positionToMinute,
+        // minuteToRadian : _minuteToRadian,
+        hourToRadian : _hourToRadian
 
     };
 })();
