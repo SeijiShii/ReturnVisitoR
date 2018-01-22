@@ -3,8 +3,8 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewCo
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = function(parent, time) {
 
 
+    this.time = time;
     var _this = this,
-        _time = time,
         paneFrame,
         hourFrame,
         minuteFrame,
@@ -92,7 +92,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
     function initHourChildFrames() {
 
-        var isActive = _time.getHours() <= 12,
+        var isActive = _this.time.getHours() <= 12,
             startTime = 1;
         for ( var i = 0 ; i < 2 ; i++ ) {
             
@@ -187,7 +187,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         elementsEffect.shrink(button);
         var hour = touchEventFilter.getTargetId(e, 'hour_button').substring(HOUR_PREFIX.length);
 
-        _time.setHours(hour);
+        _this.time.setHours(hour);
 
         refreshHourText();
 
@@ -255,7 +255,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     }
     
     function refreshHourText() {
-        hourText.innerText = _time.getHours();
+        hourText.innerText = _this.time.getHours();
         if (_isHourFrameShowing) {
             hourText.style.color = 'springgreen';
         } else {
@@ -279,7 +279,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     }
 
     function refreshMinuteText() {
-        minuteText.innerText = _time.getPaddedMinutes();
+        minuteText.innerText = _this.time.getPaddedMinutes();
         if (_isHourFrameShowing) {
             minuteText.style.color = 'gray';
         } else {
@@ -689,7 +689,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         } else {
             addSubMinuteMark(min);  
         }
-        _time.setMinutes(min);
+        _this.time.setMinutes(min);
         refreshMinuteText();
     }
 
