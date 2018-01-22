@@ -19,52 +19,6 @@
     right: 0;
     margin: 0 auto;
 
-
-}
-
-.time_picker_pane .clock_frame .minute_frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-
-    z-index: 100;
-}
-
-.time_picker_pane .clock_frame .minute_frame .minute_child_frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-}
-
-.time_picker_pane .clock_frame .minute_frame .minute_hand_canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-}
-
-
-.time_picker_pane .clock_frame .minute_mark {
-    position: absolute;
-    text-align: center;
-    background-color: springgreen;
-    color: white;
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
-    border-radius: 12.5px;
-    font-size: 17px;
-    z-index: 200;
-
 }
 
 .time_picker_pane .number_clock_frame {

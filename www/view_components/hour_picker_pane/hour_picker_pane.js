@@ -213,12 +213,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.hourPickerPane = (fu
             backgroundColor : 'transparent',
             width : 0,
             height : 0,
+            opacity : 0
         });
 
         $hourFrame.animate({
             width : '200px',
             height : '200px',
-            borderRadius : '100px'
+            borderRadius : '100px',
+            opacity  : 1
+
         }, POP_DURATION, 'easeOutQuint', function(){
             $hourFrame.css({
                 borderRadius : 0,
@@ -238,7 +241,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.hourPickerPane = (fu
             borderRadius : '100px',
             width : 0,
             height : 0,
-            zIndex : zIndex
+            zIndex : zIndex,
+            opacity : 0
 
         }, POP_DURATION, 'easeOutQuint',function(){
             $hourFrame.css({
