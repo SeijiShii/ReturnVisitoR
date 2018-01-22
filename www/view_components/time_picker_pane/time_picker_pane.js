@@ -353,39 +353,40 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             _isTouchDown = true;
 
             toMinuteSet(e);
+
         }
 
         function onMouseMove(e) {
             
-            if(_isTouchDown) {
-
-                toMinuteSet(e);
-            }
-
+            toMinuteSet(e);
         }
 
         function onMouseLeave() {
             _isTouchDown = false;
+            clearMinMarks();
+            clearOtherSubMarks();
         }
 
-        function onMouseUp(e) {
+        function onMouseUp() {
 
             _isTouchDown = false;
             clearMinMarks();
+            clearOtherSubMarks();
         }
 
         function frameCenter() {
             var frameRect = minuteFrame.getBoundingClientRect();
+
             return {
-                x : frameRect.top + CLOCK_PANE_SIZE / 2,
-                y : frameRect. left + CLOCK_PANE_SIZE / 2
+                x : frameRect.x + CLOCK_PANE_SIZE / 2,
+                y : frameRect. y + CLOCK_PANE_SIZE / 2
             };
         }
 
         function getPositionFromCenter(e) {
 
             var center = frameCenter();
-            
+
             return {
                 x : e.clientX - center.x,
                 y : e.clientY - center.y 
@@ -398,13 +399,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
         function toMinuteSet(e) {
 
-            var pos = getPositionFromCenter(e);
+            if (_isTouchDown) {
+                var pos = getPositionFromCenter(e);
+                
+                if (isInRange(coordinates.distance(pos))) {
+    
+                    var min = coordinates.positionToMinute(pos);
+    
+                    setMinute(min);
+                } else {
 
-            if (isInRange(coordinates.distance(pos))) {
-
-                var min = coordinates.positionToMinute(pos);
-
-                setMinute(min);
+                    clearMinMarks();
+                    clearOtherSubMarks();
+                }
             }
         }
     }
@@ -416,13 +423,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             minuteMarks[i].mark.style.zIndex = 200;
         }
 
-
     }
 
     function setMinute(min) {
 
         clearMinMarks();
-        removeOtherSubMarks(min);
+        clearOtherSubMarks(min);
         
         if (isMultiple5(min)) {
             var minMark = minuteMarks[min / 5];
@@ -433,8 +439,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             addSubMinuteMark(min);
             
         }
-        
-        
     }
 
     function addSubMinuteMark(n) {
@@ -457,7 +461,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
     }
 
-    function removeOtherSubMarks(n) {
+    function clearOtherSubMarks(n) {
+
+        // remove all submarks if n is undefined.
 
         for (var key in subMinMarks) {
 
