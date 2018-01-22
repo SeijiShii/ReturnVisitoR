@@ -1,9 +1,8 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     var _this = this,
-        _target = target,
         DEFAULT_STROKE = 50,
         startX,
         startY, 
@@ -124,7 +123,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
         if (_this.xSwipeEnabled && _this.ySwipeEnabled) {
 
-            var stroke2D = Math.sqrt(Math.pow(xStroke, 2) + Math.pow(yStroke));
+            // var stroke2D = Math.sqrt(Math.pow(xStroke, 2) + Math.pow(yStroke));
 
             // console.log('2D Swipe: x: ' + xStroke + ' y: ' + yStroke);
 
@@ -150,12 +149,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         }
     }
 
-    function handleEnd(event) {
+    function handleEnd() {
 
-      console.log('Touch up');
+    //   console.log('Touch up');
 
         isSwiping = false;
-        var duration = new Date().getTime() - startTime;
+        var duration = new Date().getTime() - startTime,
+            speed;
 
         var xStroke = newX - startX,
             yStroke = newY - startY;
@@ -172,7 +172,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
                 // console.log('2D Swipe end: x: ' + xStroke + ' y: ' + yStroke);
 
-                var speed = Math.abs(stroke2D / duration);
+                speed = Math.abs(stroke2D / duration);
 
                 if ( typeof _this.on2DSwipeEnd === 'function' ) {
                     _this.on2DSwipeEnd(xStroke, yStroke, speed);
@@ -189,7 +189,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
                 // console.log('X Swipe end: ' + xStroke);
 
-                var speed = Math.abs(xStroke / duration);
+                speed = Math.abs(xStroke / duration);
                 // console.log('speed:', speed)
 
                 if ( typeof _this.onXSwipeEnd === 'function' ) {
@@ -207,7 +207,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
                 // console.log('Y Swipe end: ' + yStroke);
 
-                var speed = Math.abs(yStroke / duration);
+                speed = Math.abs(yStroke / duration);
                 // console.log('speed:', speed)
 
                 if ( typeof _this.onYSwipeEnd === 'function' ) {
@@ -232,7 +232,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         
         if (isToBlockClick) {
             e.stopPropagation();
-            console.log('Click killed!');
+            // console.log('Click killed!');
             isToBlockClick = false;
         }
         

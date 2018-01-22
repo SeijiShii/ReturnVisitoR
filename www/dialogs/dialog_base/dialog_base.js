@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 /**
  * ダイアログのベースとなるクラスオブジェクト。プロトタイプ継承してからダイアログとして用いる。そのまま用いることはない。
  * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
@@ -14,8 +14,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
-        FADE_DURATION = 300,
-        _dialogElements;
+        FADE_DURATION = 300;
     
     function loadDialogBaseFiles() {
 
@@ -40,25 +39,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         });
     }
 
-    function loadDialogContent(callback) {
+    function loadDialogContent() {
         dialogFrame = elements.getElementByClassName(dialogBaseFrame, 'dialog_frame');
         dialogFrame.classList.add(dialogFrameClassName);
 
         $(dialogFrame).load(contentHtmlPath, function(){
-    
+
             if (parent !== undefined) {
                 parent.appendChild(dialogBaseFrame);
             } else {
                 document.getElementById('app_frame').appendChild(dialogBaseFrame);
             }
-
+           
             if (typeof _this.onDialogBaseReady === 'function') {
                 _this.onDialogBaseReady();
             }
 
             _this.refreshDialogHeight();
 
-            $(dialogBaseFrame).fadeTo(FADE_DURATION, 1)
+            $(dialogBaseFrame).fadeTo(FADE_DURATION, 1);
         });
 
     }
@@ -100,7 +99,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
                 _this.onDialogResize();
             }
         }
-    }
+    };
 
     this.fadeOut = function(callback, arg) {
 
@@ -112,15 +111,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
             }
 
             _this = undefined;
-        })
+        });
 
-    }
+    };
 
     this.getElementByClassName = function(id) {
         return elements.getElementByClassName(dialogBaseFrame, id);
-    }
+    };
+
 
     loadDialogBaseFiles();
 
-}
+};
 

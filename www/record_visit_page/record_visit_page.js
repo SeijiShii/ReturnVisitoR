@@ -328,7 +328,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function fadeIn() {
 
-        var $pageFrame = $('#record_visit_page_frame')
+        var $pageFrame = $('#record_visit_page_frame');
 
         $pageFrame.fadeTo('slow', 1);
     }

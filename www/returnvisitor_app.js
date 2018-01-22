@@ -17,7 +17,7 @@
  * under the License.
  */
 
-"use strict"
+'use strict';
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
@@ -26,7 +26,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         appFrame,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
-        DRAWER_WIDTH = 240,
+        // DRAWER_WIDTH = 240,
         loadFile = returnvisitor.common.loadFile,
         mapPage,
         recordVisitPage;
@@ -36,8 +36,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     }
 
     function refreshAppFrame() {
-        appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';  
-        // console.log('appFrame.clientHeight:', appFrame.clientHeight)      
+
+        appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
+        // adjustAppFrameHeightInAndroid();
+
     }    
 
     
@@ -52,7 +54,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
-    
+
         initAdFrame();
         refreshAdFrame();
 
@@ -71,6 +73,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 lng: 140.7301261
             }
         });
+
+        
     }
     
     function onResizeScreen() {
@@ -153,6 +157,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     //         var newPersonDialog = new returnvisitor.PersonDialog();
     //     });
     // }
+
 
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);

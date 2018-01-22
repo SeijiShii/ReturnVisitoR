@@ -53,6 +53,24 @@
     z-index: 300;
 }
 
+.time_picker_pane .clock_frame .minute_frame .minute_child_frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
+.time_picker_pane .clock_frame .minute_frame .minute_hand_canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+}
+
 .time_picker_pane .clock_frame .hour_button {
     position: absolute;
     text-align: center;
