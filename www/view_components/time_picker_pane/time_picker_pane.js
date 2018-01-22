@@ -7,6 +7,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         _time = time,
         paneFrame,
         hourFrame,
+        minuteFrame,
         minuteChildFrame,
         minuteHandCanvas,
         hourText,
@@ -26,6 +27,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         // MINUTE_PREFIX = 'minute_button_',
         CLOCK_PANE_SIZE = 200,
         MINUTE_CLOCK_RADIUS = 80,
+        POP_DURATION = 300,
         HOUR_FRAME_ID_PREFIX = 'clock_hour_frame_',
         _isHourFrameShowing = true;
         
@@ -37,8 +39,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             paneFrame = elm;
 
             initHourFrame();
-            initMinuteChildFrame();
-            initMinuteHandCanvas();
+            initMinuteFrame();
             initHourText();
             initMinuteText();
 
@@ -75,8 +76,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     function initHourFrame() {
         
         hourFrame = elements.getElementByClassName(paneFrame, 'hour_frame');
+        refreshHourFrame();
         
         initHourChildFrames();
+    }
+
+    function refreshHourFrame() {
+
+        if (_isHourFrameShowing) {
+            hourFrame.style.zIndex = 200;
+        } else {
+            hourFrame.style.zIndex = 100;
+        }
     }
 
     function initHourChildFrames() {
@@ -254,7 +265,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
     function onClickHourText() {
         elementsEffect.blink(hourText);
-        showUpHourFrame();
+
+        if (!_isHourFrameShowing) {
+            showUpHourFrame();
+        }
 
     }
 
@@ -275,16 +289,207 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
     function onClickMinuteText() {
         elementsEffect.blink(minuteText);
-        showUpMinuteChildFrame();
+
+        if (_isHourFrameShowing) {
+            showUpMinuteFrame();
+        }
+    }
+
+    function initMinuteFrame() {
+
+        minuteFrame = elements.getElementByClassName(paneFrame, 'minute_frame');
+        initMinuteChildFrame();
+        initMinuteHandCanvas();
+
+        refreshMinutFrame();
+    }
+
+    function refreshMinutFrame() {
+
+        if (_isHourFrameShowing) {
+
+            minuteFrame.style.zIndex = 100;
+
+        } else {
+
+            minuteFrame.style.zIndex = 200;
+        }
     }
 
     function showUpHourFrame() {
 
+        _isHourFrameShowing = true;
+
+        var $hourFrame = $(hourFrame);
+
+        $hourFrame.css({
+            backgroundColor : 'transparent',
+            width : 0,
+            height : 0,
+            zIndex : 200,
+        });
+
+        minuteFrame.style.zIndex = 100;
+
+        $hourFrame.animate({
+            width : '200px',
+            height : '200px',
+            borderRadius : '100px'
+        }, POP_DURATION, 'easeOutQuint', function(){
+            $hourFrame.css({
+                borderRadius : 0,
+                backgroundColor : 'white'
+            });
+        });
+
+        convergeMinuteFrame();
+        popHourButtons();
+        refreshHourText();
+        refreshMinuteText();
+        
     }
 
-    function showUpMinuteChildFrame() {
+    function convergeHourFrame() {
+
+        var $hourFrame = $(hourFrame);
+
+        $hourFrame.animate({
+            borderRadius : '100px',
+            width : 0,
+            height : 0,
+        }, POP_DURATION, 'easeOutQuint',function(){
+            $hourFrame.css({
+                borderRadius : 0,
+                width : '100%',
+                height : '100%'
+            });
+        });
+
+        convergHourButtons();
 
     }
+
+    function popHourButtons() {
+
+        for ( var i = 0 ; i < hourButtons.length ; i++ ) {
+
+            var hButton = hourButtons[i];
+            var $button = $(hButton.button);
+
+            $button.css({
+                top : 0,
+                left : 0
+            });
+
+            var pos = hButton.positionOnHourFrame();
+
+            $button.animate({
+                top : pos.y,
+                left : pos.x
+            }, POP_DURATION, 'easeOutQuint');
+
+        }
+
+    }
+
+    function convergHourButtons() {
+
+        for ( var i = 0 ; i < hourButtons.length ; i++ ) {
+
+            var hButton = hourButtons[i];
+            var $button = $(hButton.button);
+
+            $button.animate({
+                top : 0,
+                left : 0
+            }, POP_DURATION, 'easeOutQuint');
+
+        }
+    }
+
+    function showUpMinuteFrame() {
+
+        _isHourFrameShowing = false;
+
+        var $minFrame = $(minuteFrame);
+        $minFrame.css({
+            backgroundColor : 'transparent',
+            width : 0,
+            height : 0,
+            zIndex : 200,
+        });
+
+        hourFrame.style.zIndex = 100;
+
+        $minFrame.animate({
+            width : '200px',
+            height : '200px',
+            borderRadius : '100px'
+        }, POP_DURATION, 'easeOutQuint', function(){
+            $minFrame.css({
+                backgroundColor : 'white',
+                borderRadius : 0
+            });
+        });
+
+        convergeHourFrame();
+        popMinuteMarks();
+        refreshHourText();
+        refreshMinuteText();
+    }
+
+    function popMinuteMarks() {
+
+        for ( var i = 0 ; i < minuteMarks.length ; i++ ) {
+
+            var minMark = minuteMarks[i];
+            var $mark = $(minMark.mark);
+            $mark.css({
+                top : 0,
+                left : 0
+            });
+
+            var pos = minMark.positionOnMinuteFrame();
+            $mark.animate({
+                top : pos.y,
+                left : pos.x
+            }, POP_DURATION, 'easeOutQuint');
+        }
+    }
+
+    function convergeMinuteFrame() {
+        var $minFrame = $(minuteFrame);
+
+        $minFrame.animate({
+            borderRadius : '100px',
+            width : 0,
+            height : 0,
+        }, POP_DURATION, 'easeOutQuint', function(){
+            $minFrame.css({
+                borderRadius : 0,
+                width : '100%',
+                height : '100%',
+            });
+        });
+
+        convergeMinuteMarks();
+
+    }
+
+    function convergeMinuteMarks() {
+        
+        for ( var i = 0 ; i < minuteMarks.length ; i++ ) {
+
+            var minMark = minuteMarks[i];
+            var $mark = $(minMark.mark);
+           
+            $mark.animate({
+                top : 0,
+                left : 0
+            }, POP_DURATION, 'easeOutQuint');
+        }
+    }
+
 
     function initMinuteChildFrame() {
         minuteChildFrame = elements.getElementByClassName(paneFrame, 'minute_child_frame');
