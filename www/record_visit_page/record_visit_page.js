@@ -1,5 +1,5 @@
 
-"use strict"
+'use strict';
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
@@ -22,10 +22,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         personContainer,
         _isPersonContainerReady = false,
         addPersonButton,
-        AD_FRAME_HEIGHT = 50,
-        WIDTH_BREAK_POINT = 500,
-        LOGO_BUTTON_SIZE = '40px',
-        ROOM_TEXT_HEIGHT = '30px',
+        // LOGO_BUTTON_SIZE = '40px',
+        // ROOM_TEXT_HEIGHT = '30px',
         _place,
         _visit,
         _everSeenPersons,
@@ -58,7 +56,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initLogoButton() {
         logoButton = document.getElementById('logo_button');
         logoButton.addEventListener('click', onClickLogoButton);
-    };
+    }
 
     function onClickLogoButton() {
 
@@ -77,31 +75,31 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         // Latitude, longitude -> address
         plugin.google.maps.Geocoder.geocode({
-            "position": _place.latLng
-          }, function(results) {
-  
+            'position': _place.latLng
+        }, function(results) {
+
             if (results.length === 0) {
-              // Not found
-              return;
+                // Not found
+                return;
             }
-  
+
             // console.dir(results);
 
             var address = results[0].extra.lines[0];
             if (!address) {
                 [
-                results[0].subThoroughfare || "",
-                results[0].thoroughfare || "",
-                results[0].locality || "",
-                results[0].adminArea || "",
-                results[0].postalCode || "",
-                results[0].country || ""].join(", ");
+                    results[0].subThoroughfare || '',
+                    results[0].thoroughfare || '',
+                    results[0].locality || '',
+                    results[0].adminArea || '',
+                    results[0].postalCode || '',
+                    results[0].country || ''].join(', ');
             }
 
             addressText.value = address;
             _place.address = address;
 
-          });
+        });
     }
 
     function initPersonVisitText() {
@@ -198,7 +196,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function refreshDateText() {
-        dateText.innerText = _visit.dateTime.dateString()
+        dateText.innerText = _visit.dateTime.dateString();
     }
 
     function onClickDateText() {
@@ -230,7 +228,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function loadAddPersonDialogScript() {
-        loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){});
+        loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
+            //
+        });
     }
 
     function initAddPersonDialog() {
@@ -331,11 +331,48 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         };
     }
 
+    function initOkButton() {
+
+        var okButton = document.getElementById('ok_button');
+        okButton.addEventListener('click', onClickOkButton);
+    }
+
+    function onClickOkButton() {
+
+        fadeOut();
+    }
+
+    function initCancelButton() {
+
+        var cancelButton = document.getElementById('cancel_button');
+        cancelButton.addEventListener('click', onClickCancelButton);
+    }
+
+    function onClickCancelButton() {
+
+        fadeOut();
+    }
+
     function fadeIn() {
 
         var $pageFrame = $('#record_visit_page_frame');
 
+        $pageFrame.css({
+            width : '100%',
+            height : '100%'
+        });
         $pageFrame.fadeTo('slow', 1);
+    }
+
+    function fadeOut() {
+
+        var $pageFrame = $('#record_visit_page_frame');
+
+        $pageFrame.fadeTo('slow', 0, function(){
+            $pageFrame.css({
+                width : 0,
+            });
+        });
     }
 
     initPersons();
@@ -347,6 +384,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     initDateText();
     initTimeText();
     initPersonContainer();
+
+    initLogoButton();
+    initOkButton();
+    initCancelButton();
 
     loadDialogFiles();
 

@@ -66,13 +66,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         // testPersonDialog();
 
         // test
-        loadRecordVisitPageFiles({
-            method: 'NEW_PLACE_VISIT',
-            latLng: {
-                lat: 36.7726275,
-                lng: 140.7301261
-            }
-        });
+        // loadRecordVisitPageFiles({
+        //     method: 'NEW_PLACE_VISIT',
+        //     latLng: {
+        //         lat: 36.7726275,
+        //         lng: 140.7301261
+        //     }
+        // });
 
         
     }
@@ -136,13 +136,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     }
 
     function onNewPlaceVisit(latLng) {
-        loadRecordVisitPageFiles({
+
+        var options = {
             method: 'NEW_PLACE_VISIT',
             latLng: {
                 lat: latLng.lat,
                 lng: latLng.lng
             }
-        });
+        };
+
+        if (recordVisitPage) {
+            recordVisitPage.initialize(options);
+        } else {
+            loadRecordVisitPageFiles(options);
+        }
     }
 
     //test

@@ -27,5 +27,6 @@ module.exports = {
         "$" : false,
         "RETURNVISITOR_APP" : false,
         "cordova" : false,
+        "plugin" : false,
     }
 };
