@@ -217,6 +217,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickTimeText() {
         elementsEffect.blink(timeText);
+        initTimePickerDialog();
     }
 
     function loadDialogFiles() {
@@ -250,14 +251,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         addPersonDialog.onClickPersonCell = function(person) {
             addPersonToVisit(person);
-        }
+        };
     }
 
     function initPersonDialog() {
         personDialog = new returnvisitor.PersonDialog();
         personDialog.onClickOk = function(person) {
             addPersonToVisit(person);
-        } 
+        };
     }
 
     function addPersonToVisit(person) {
@@ -285,7 +286,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
             refreshPersonContainer();
             refreshPersonVisitText(true);
-        }
+        };
     }
 
     function loadPersonDialogScript() {
@@ -305,25 +306,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         });
     }
 
-    function initDatePickerDialog(date) {
+    function initDatePickerDialog() {
         datePickerDialog = new returnvisitor.DatePickerDialog(_visit.dateTime);
         datePickerDialog.onClickDateCell = function(date) {
             _visit.dateTime = date;
             refreshDateText();
-        }
+        };
     }
 
     function loadTimePickerScript() {
         loadFile.loadScript('./dialogs/time_picker_dialog/time_picker_dialog.js', function(){
             
             // TEST
-            initTimePickerDialog();
+            // initTimePickerDialog();
 
         });
     }
 
     function initTimePickerDialog() {
         timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
+        timePickerDialog.onSetTime = function(time) {
+            _visit.dateTime = time;
+            refreshTimeText();
+        };
     }
 
     function fadeIn() {
@@ -344,35 +349,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     initPersonContainer();
 
     loadDialogFiles();
-
-    // coordinatesTest();
-
-    // function coordinatesTest() {
-
-    //     var canvas = document.getElementById('test_canvas');
-    //     console.log(canvas.getContext('2d'));
-
-    //     $(canvas).css({
-    //         position : 'ablsote',
-    //         top : 0,
-    //         left : 0
-    //     });
-
-    //     var centerX = 100,
-    //         centerY = 100,
-    //         context = canvas.getContext('2d');
-
-    //     context.fillStyle = 'green'
-
-    //     var coordinates = returnvisitor.common.coordinates;
-    //     for ( var i = 0 ; i < 12 ; i++ ) {
-    //         var point = coordinates.byHour(i, 60);
-    //         context.beginPath();
-    //         context.arc(centerX + point.x, centerY + point.y, 10, 0, 2 * Math.PI);
-    //         context.fill();
-
-    //     }
-    // }
 
     return {
 

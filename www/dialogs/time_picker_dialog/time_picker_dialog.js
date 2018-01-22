@@ -1,12 +1,12 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog = function(time) {
 
     var _this = this,
+        _time = time.clone(),
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile = returnvisitor.common.loadFile,
         viewComponents = returnvisitor.viewComponents,
-        TimePickerPane = viewComponents.TimePickerPane,
-        timePickerPane;
+        timePickerPane = viewComponents.timePickerPane;
 
 
     returnvisitor.DialogBase.call(this,
@@ -17,7 +17,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog = function(time) {
     function initTimePickerPane() {
 
         var timePickerDiv = _this.getElementByClassName('time_picker_div');
-        timePickerPane = new TimePickerPane(timePickerDiv, time);
+        timePickerPane.initialize(timePickerDiv, time);
+    }
+
+    function initOkButton() {
+        
+        var okButton = _this.getElementByClassName('ok_button');
+        okButton.addEventListener('click', onOkClick);
+    }
+
+    function onOkClick() {
+
+        _time = timePickerPane.time;
+
+        if ( typeof _this.onSetTime === 'function' ) {
+            _this.onSetTime(_time);
+        }
+        _this.fadeOut();
+
     }
     
     function initCancelButton() {
@@ -32,14 +49,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog = function(time) {
     this.onDialogBaseReady = function(){
 
         initTimePickerPane();
+        initOkButton();
         initCancelButton();
     };
 
     this.onDialogResize = function() {
 
 
-    }
-}
+    };
+};
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {
     constructor: {

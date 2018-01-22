@@ -11,10 +11,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.minutePickerPane = (
         common = returnvisitor.common,
         loadFile = common.loadFile,
         elements = common.elements,
-        // elementsEffect = common.elementsEffect,
         coordinates = common.coordinates,
         touchEventFilter = common.touchEventFilter,
-        // viewComponents = returnvisitor.viewComponents,
         PANE_SIZE = 200,
         MINUTE_CLOCK_RADIUS = 80,
         POP_DURATION = 300,
@@ -42,6 +40,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.minutePickerPane = (
 
         minuteFrame = document.createElement('div');
         minuteFrame.classList.add('minute_frame');
+        minuteFrame.style.zIndex = _zIndex;
+        
         _parent.appendChild(minuteFrame);
 
         initMinuteChildFrame();
