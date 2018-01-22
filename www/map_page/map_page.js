@@ -539,6 +539,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         set onNewPlaceVisitClick(f) {
             _onNewPlaceVisitClick = f;
         },
-    }
+    };
 
 }());

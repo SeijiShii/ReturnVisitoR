@@ -395,9 +395,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
                     fadeIn();
 
                 } else {
-                    console.log('Waiting for person container ready.')
+                    // console.log('Waiting for person container ready.')
                 }
-            }
+            };
 
             var timerId = setInterval(timer, 50);
 
@@ -408,5 +408,5 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
                 datePickerDialog.refreshDialogHeight();
             }
         }
-    }
+    };
 }());

@@ -3,17 +3,16 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewCo
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = function(parent, time) {
 
 
-    this.time = time;
+    this._time = time;
     var _this = this,
         paneFrame,
-        hourFrame,
+        clockFrame,
+        hourPickerPane,
         minuteFrame,
         minuteChildFrame,
         minuteHandCanvas,
         hourText,
         minuteText,
-        hourChildFrames = [],
-        hourButtons = [],
         minuteMarks = [],
         subMinMarks = {},
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
@@ -23,13 +22,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         elementsEffect = common.elementsEffect,
         coordinates = common.coordinates,
         touchEventFilter = common.touchEventFilter,
-        HOUR_PREFIX = 'hour_button_',
-        // MINUTE_PREFIX = 'minute_button_',
+        viewComponents = returnvisitor.viewComponents,
         CLOCK_PANE_SIZE = 200,
         MINUTE_CLOCK_RADIUS = 80,
         POP_DURATION = 300,
-        HOUR_FRAME_ID_PREFIX = 'clock_hour_frame_',
-        _isHourFrameShowing = true;
+        _isHourPickerShowing = true;
         
     
     function initialize() {
@@ -38,7 +35,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         loadFile.loadHtmlAsElement('./view_components/time_picker_pane/time_picker_pane.html', function(elm){
             paneFrame = elm;
 
-            initHourFrame();
+            clockFrame = elements.getElementByClassName(paneFrame, 'clock_frame');
+
+            initHourPickerPane();
             initMinuteFrame();
             initHourText();
             initMinuteText();
@@ -72,182 +71,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         var waitTimerId = setInterval(waitTimer, 50);
     }
 
+    function initHourPickerPane() {
 
-    function initHourFrame() {
-        
-        hourFrame = elements.getElementByClassName(paneFrame, 'hour_frame');
-        refreshHourFrame();
-        
-        initHourChildFrames();
+        loadFile.loadScript('./view_components/hour_picker_pane/hour_picker_pane.js', function(){
+
+            hourPickerPane = viewComponents.hourPickerPane;
+            hourPickerPane.initialize(clockFrame, _this._time.getHours(), 200);
+            hourPickerPane.onClickHourButton = function(hour) {
+                _this._time.setHours(hour);
+                refreshHourText();
+            };
+        });
     }
 
-    function refreshHourFrame() {
-
-        if (_isHourFrameShowing) {
-            hourFrame.style.zIndex = 200;
-        } else {
-            hourFrame.style.zIndex = 100;
-        }
-    }
-
-    function initHourChildFrames() {
-
-        var isActive = _this.time.getHours() <= 12,
-            startTime = 1;
-        for ( var i = 0 ; i < 2 ; i++ ) {
-            
-            var childFrame = generateHourChildFrame(startTime, isActive);
-            childFrame.id = HOUR_FRAME_ID_PREFIX + i;
-            hourChildFrames.push(childFrame);
-            hourFrame.appendChild(childFrame);
-
-            startTime += 12;
-            isActive = !isActive;
-        }
-    }
-
-    function generateHourChildFrame(startHour, isActive) {
-
-        var hour = startHour;
-
-        var frame = document.createElement('div');
-        frame.classList.add('hour_child_frame');
-
-        frame.style.zIndex = 100;
-        if (isActive) {
-            frame.style.zIndex = 200;
-        }
-
-        for ( var i = 0 ; i < 12 ; i++ ) {
-
-            var ckButton = new HourButton(hour, isActive);
-
-            var pos = ckButton.positionOnHourFrame();
-
-            // console.log(hour, pos.x, pos.y);
-
-            $(ckButton.button).css({
-                left : pos.x + 'px',
-                top : pos.y + 'px'
-            });
-
-            frame.appendChild(ckButton.button);
-            hourButtons.push(ckButton);
-
-            hour++;
-        }
-
-        frame.addEventListener('click', onClickHourChildFrame);
-
-        return frame;
-    }
-
-    function onClickHourChildFrame(e) {
-
-        var frame = touchEventFilter.getTarget(e, 'hour_child_frame');
-
-        var frameIndex = frame.id.substring(HOUR_FRAME_ID_PREFIX.length);
-
-        if (frameIndex == 0) {
-            hourChildFrames[0].style.zIndex = 100;
-            hourChildFrames[1].style.zIndex = 200;
-        } else {
-            hourChildFrames[0].style.zIndex = 200;
-            hourChildFrames[1].style.zIndex = 100;
-        }
-
-        for ( var i = 0 ; i < 24 ; i++ ) {
-            hourButtons[i].activate();
-        }
-
-    }
-
-    function HourButton(n, isActive) {
-
-        this.isActive = isActive;
-
-        this.button = document.createElement('div');
-        this.button.classList.add('hour_button');
-
-        $(this.button).css(this.sizeOptions());
-
-        this.numValue = n;
-        this.button.innerText = n;
-        this.button.id = HOUR_PREFIX + n;
-        this.button.addEventListener('click', onClickHourButton, true);
-   
-    }
-
-    function onClickHourButton(e) {
-
-        e.stopPropagation();
-
-        var button = touchEventFilter.getTarget(e, 'hour_button');
-        elementsEffect.blink(button);
-        elementsEffect.shrink(button);
-        var hour = touchEventFilter.getTargetId(e, 'hour_button').substring(HOUR_PREFIX.length);
-
-        _this.time.setHours(hour);
-
-        refreshHourText();
-
-    }
-
-    HourButton.prototype.activate = function() {
-
-        this.isActive = !this.isActive;
-
-        var pos = this.positionOnHourFrame();
-
-        $(this.button).animate({
-            top : pos.y + 'px',
-            left : pos.x + 'px'
-        }, 300, 'easeOutQuint');
-
-        $(this.button).animate(this.sizeOptions, 300, 'easeOutQuint');
-    };
-
-    HourButton.prototype.positionOnHourFrame = function() {
-        var pos;
-
-        pos = coordinates.hourToPostionFromCenter(this.numValue, this.clockRadius());
-
-        // console.log(this.numValue, pos.x, pos.y);
-
-        return {
-            x : (CLOCK_PANE_SIZE / 2) + pos.x - this.buttonRadius(),
-            y : (CLOCK_PANE_SIZE / 2) - pos.y - this.buttonRadius()
-        };
-    };
-
-    HourButton.prototype.clockRadius = function() {
-        if (this.isActive) {
-            return 80;
-        } else {
-            return 60;
-        }
-    };
-
-    HourButton.prototype.buttonRadius = function() {
-        if (this.isActive) {
-            return 15;
-        } else {
-            return 13;
-        }
-    };
-
-    HourButton.prototype.sizeOptions = function() {
-
-        return {
-            width : this.buttonRadius() * 2 + 'px',
-            height : this.buttonRadius() * 2 + 'px',
-            borderRadius : this.buttonRadius() + 'px',
-            fontSize : this.buttonRadius() + 'px',
-            lineHeight : this.buttonRadius() * 2 + 'px'
-        };
-
-    };
-
+  
     function initHourText() {
         hourText = elements.getElementByClassName(paneFrame, 'hour_text');
         refreshHourText();
@@ -255,8 +92,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     }
     
     function refreshHourText() {
-        hourText.innerText = _this.time.getHours();
-        if (_isHourFrameShowing) {
+        hourText.innerText = _this._time.getHours();
+        if (_isHourPickerShowing) {
             hourText.style.color = 'springgreen';
         } else {
             hourText.style.color = 'gray';
@@ -266,8 +103,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     function onClickHourText() {
         elementsEffect.blink(hourText);
 
-        if (!_isHourFrameShowing) {
-            showUpHourFrame();
+        if (!_isHourPickerShowing) {
+
+            _isHourPickerShowing = true;
+
+            hourPickerPane.popPane(200);
+            convergeMinuteFrame();
+            refreshHourText();
+            refreshMinuteText();
         }
 
     }
@@ -279,8 +122,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     }
 
     function refreshMinuteText() {
-        minuteText.innerText = _this.time.getPaddedMinutes();
-        if (_isHourFrameShowing) {
+        minuteText.innerText = _this._time.getPaddedMinutes();
+        if (_isHourPickerShowing) {
             minuteText.style.color = 'gray';
         } else {
             minuteText.style.color = 'springgreen';
@@ -290,8 +133,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
     function onClickMinuteText() {
         elementsEffect.blink(minuteText);
 
-        if (_isHourFrameShowing) {
+        if (_isHourPickerShowing) {
+            
+            _isHourPickerShowing = false;
+
             showUpMinuteFrame();
+            hourPickerPane.convergePane(100);
+            refreshHourText();
+            refreshMinuteText();
         }
     }
 
@@ -306,7 +155,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
 
     function refreshMinutFrame() {
 
-        if (_isHourFrameShowing) {
+        if (_isHourPickerShowing) {
 
             minuteFrame.style.zIndex = 100;
 
@@ -316,100 +165,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         }
     }
 
-    function showUpHourFrame() {
-
-        _isHourFrameShowing = true;
-
-        var $hourFrame = $(hourFrame);
-
-        $hourFrame.css({
-            backgroundColor : 'transparent',
-            width : 0,
-            height : 0,
-            zIndex : 200,
-        });
-
-        minuteFrame.style.zIndex = 100;
-
-        $hourFrame.animate({
-            width : '200px',
-            height : '200px',
-            borderRadius : '100px'
-        }, POP_DURATION, 'easeOutQuint', function(){
-            $hourFrame.css({
-                borderRadius : 0,
-                backgroundColor : 'white'
-            });
-        });
-
-        convergeMinuteFrame();
-        popHourButtons();
-        refreshHourText();
-        refreshMinuteText();
-        
-    }
-
-    function convergeHourFrame() {
-
-        var $hourFrame = $(hourFrame);
-
-        $hourFrame.animate({
-            borderRadius : '100px',
-            width : 0,
-            height : 0,
-        }, POP_DURATION, 'easeOutQuint',function(){
-            $hourFrame.css({
-                borderRadius : 0,
-                width : '100%',
-                height : '100%'
-            });
-        });
-
-        convergHourButtons();
-
-    }
-
-    function popHourButtons() {
-
-        for ( var i = 0 ; i < hourButtons.length ; i++ ) {
-
-            var hButton = hourButtons[i];
-            var $button = $(hButton.button);
-
-            $button.css({
-                top : 0,
-                left : 0
-            });
-
-            var pos = hButton.positionOnHourFrame();
-
-            $button.animate({
-                top : pos.y,
-                left : pos.x
-            }, POP_DURATION, 'easeOutQuint');
-
-        }
-
-    }
-
-    function convergHourButtons() {
-
-        for ( var i = 0 ; i < hourButtons.length ; i++ ) {
-
-            var hButton = hourButtons[i];
-            var $button = $(hButton.button);
-
-            $button.animate({
-                top : 0,
-                left : 0
-            }, POP_DURATION, 'easeOutQuint');
-
-        }
-    }
-
     function showUpMinuteFrame() {
 
-        _isHourFrameShowing = false;
+        _isHourPickerShowing = false;
 
         var $minFrame = $(minuteFrame);
         $minFrame.css({
@@ -418,8 +176,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             height : 0,
             zIndex : 200,
         });
-
-        hourFrame.style.zIndex = 100;
 
         $minFrame.animate({
             width : '200px',
@@ -432,7 +188,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             });
         });
 
-        convergeHourFrame();
         popMinuteMarks();
         refreshHourText();
         refreshMinuteText();
@@ -499,8 +254,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
             if (isMultiple5(i)) {
                 var minMark = new MinuteMark(i);
                 var pos = minMark.positionOnMinuteFrame();
-
-                // console.log(i, pos.x, pos.y);
 
                 $(minMark.mark).css({
                     top : pos.y + 'px',
@@ -689,7 +442,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.TimePickerPane = fun
         } else {
             addSubMinuteMark(min);  
         }
-        _this.time.setMinutes(min);
+        _this._time.setMinutes(min);
         refreshMinuteText();
     }
 

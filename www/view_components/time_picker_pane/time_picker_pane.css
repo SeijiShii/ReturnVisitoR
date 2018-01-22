@@ -22,29 +22,6 @@
 
 }
 
-.time_picker_pane .clock_frame .hour_frame {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    width: 100%;
-    height: 100%;
-    background-color: white;
-}
-
-.time_picker_pane .clock_frame .hour_frame .hour_child_frame {
-    
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.7)
-
-}
-
 .time_picker_pane .clock_frame .minute_frame {
     position: absolute;
     top: 0;
@@ -56,7 +33,7 @@
     height: 100%;
     background-color: white;
 
-    /* z-index: 300; */
+    z-index: 100;
 }
 
 .time_picker_pane .clock_frame .minute_frame .minute_child_frame {
@@ -75,12 +52,6 @@
 
 }
 
-.time_picker_pane .clock_frame .hour_button {
-    position: absolute;
-    text-align: center;
-    background-color: springgreen;
-    color: white;
-}
 
 .time_picker_pane .clock_frame .minute_mark {
     position: absolute;
@@ -107,14 +78,5 @@
 
     background-color: whitesmoke;
 
-}
-
-.time_picker_pane .number_clock_frame .hour_text {
-
-    /* color: springgreen; */
-}
-
-.time_picker_pane .number_clock_frame .minute_text {
-    
 }
 
