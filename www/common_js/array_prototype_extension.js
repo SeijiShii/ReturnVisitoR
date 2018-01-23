@@ -19,7 +19,7 @@ Array.prototype.includesData = function(data) {
 }
 
 Array.prototype.indexOfData = function(data) {
-     return this.indexOfId(data.id);
+    return this.indexOfId(data.id);
 }
 
 Array.prototype.removeData = function(data) {

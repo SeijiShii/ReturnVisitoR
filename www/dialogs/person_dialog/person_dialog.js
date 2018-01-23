@@ -1,8 +1,8 @@
-"use strict"
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
+'use strict';
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function(person) {
 
     var _this = this,
-        _person,
+        _person = person,
         nameText,
         maleButton,
         femaleButton,
@@ -28,7 +28,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     
-    _person = new Person();
+    if (!_person) {
+        _person = new Person();
+    }
     
     function initNameText() {
         nameText = _this.getElementByClassName('person_name_text');
@@ -43,7 +45,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
                 _person.sex = 'MALE';
                 femaleButton.toggle(false, true);
             }
-        }
+        };
     }
 
     function initFemaleButton() {
@@ -55,7 +57,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
                 _person.sex = 'FEMALE';
                 maleButton.toggle(false, true);
             }
-        }
+        };
     }
 
     function initAgeSelector() {
@@ -67,7 +69,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
             _person.age = selecteKey;
             // console.log('_person.age:', _person.age);
 
-        }
+        };
     }
 
     function initInterestRater() {
@@ -81,7 +83,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
             _person.interest = keys[val];
             refreshInterestText();
             // console.log('_person.interest: ', _person.interest);
-        }
+        };
     }
 
     function initInterestText() {
@@ -130,7 +132,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
 
     function onClickDeleteButton() {
 
-        alert('Hoge!')
+        alert('Hoge!');
         
     }
 
@@ -162,7 +164,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function() {
     };
     
 
-}
+};
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {
     constructor: {

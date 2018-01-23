@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = function(personVisit) {
 
@@ -9,13 +9,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
     var _this = this,
         _personVisit = personVisit,
         cellFrame,
-        midColumn,
-        switchBox,
+        // midColumn,
+        // switchBox,
         _isFrameReady = false,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         loadFile        = returnvisitor.common.loadFile,
         elements        = returnvisitor.common.elements,
-        // markerPaths     = returnvisitor.common.markerPaths,
         raterColors     = returnvisitor.common.raterColors,
         Person          = returnvisitor.data.Person,
         viewComponents  = returnvisitor.viewComponents,
@@ -47,31 +46,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
         var mark = elements.getElementByClassName(cellFrame, 'button_mark');
 
         // var pathArray = Object.values(markerPaths.buttonMarkerPaths);
-        mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(personVisit.interest)];
+        mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(personVisit.person.interest)];
     }
 
 
     function initPersonData() {
          
         var personData = elements.getElementByClassName(cellFrame, 'person_data');
-        personData.innerText = personVisit.personData;
+        personData.innerText = personVisit.person.data;
 
     }
 
     function initRVSwitch() {
         var rvSwitchBase = elements.getElementByClassName(cellFrame, 'rv_switch_base');
-        var rvSwitch = new SwitchView(rvSwitchBase, 'Return Visit', false);
+        var rvSwitch = new SwitchView(rvSwitchBase, 'Return Visit', _personVisit.isRV);
     }
 
     function initStudySwitch() {
         var studySwitchBase = elements.getElementByClassName(cellFrame, 'study_switch_base');
-        var stSwitch = new SwitchView(studySwitchBase, 'Study', false);
+        var stSwitch = new SwitchView(studySwitchBase, 'Study', _personVisit.isStudy);
     }
 
     function initEditButton() {
         var editButtonBase = elements.getElementByClassName(cellFrame, 'edit_button_base');
         
         var editButton = new SmallSquareButton(editButtonBase, './view_components/edit_button/edit_button.html', './view_components/edit_button/edit_button.css');
+
+        // editButton.onClickButton = onClickEditButton;
     }
 
     function initRemoveButton() {
@@ -125,20 +126,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
             } else {
                 console.log('Wait for person visit cell ready.');
             }
-        }
+        };
         var timerId = setInterval(timer, 50);
     }
    
     this.appendTo = function(parent) {
         waitAppendUntilReady(_appendTo, parent);
-    }
+    };
 
     this.appendAndExtract = function(parent) {
         waitAppendUntilReady(_appendAndExtract, parent);
-    }
+    };
 
     initialize();
-}
+};
 
 
 

@@ -21,9 +21,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         VALUES4 = 'VALUES ( ?, ?, ?, ? )',
         VALUES5 = 'VALUES ( ?, ?, ?, ?, ? )',
         VALUES6 = 'VALUES ( ?, ?, ?, ?, ?, ? )',
-        PLACE_DATA_INSERT_QUERY = INSERT_QUERY + PLACE_TABLE_NAME + VALUES6,
-        VISIT_DATA_INSERT_QUERY = INSERT_QUERY + VISIT_TABLE_NAME + VALUES4,
-        PERSON_DATA_INSERT_QUETY = INSERT_QUERY + PERSON_TABLE_NAME + VALUES5, 
+        PLACE_INSERT_QUERY = INSERT_QUERY + PLACE_TABLE_NAME + VALUES6,
+        VISIT_INSERT_QUERY = INSERT_QUERY + VISIT_TABLE_NAME + VALUES4,
+        PERSON_INSERT_QUETY = INSERT_QUERY + PERSON_TABLE_NAME + VALUES5, 
+        PERSON_VISIT_INSERT_QUETY = INSERT_QUERY + PERSON_VISIT_TABLE_NAME + VALUES6,
         WHERE_ID = 'WHERE data_id=? ',   
         database;
     
@@ -41,6 +42,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
             txn.executeSql(DROP_TABLE_QUERY + PERSON_TABLE_NAME);
             txn.executeSql(CREATE_TABLE_QUERY + PERSON_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'sex, age, interest )');
 
+            txn.executeSql(DROP_TABLE_QUERY + PERSON_VISIT_TABLE_NAME);
+            txn.executeSql(CREATE_TABLE_QUERY + PERSON_VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'person_id, visit_id, is_rv, is_study )');
+
         });
     }
 
@@ -51,7 +55,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
         database.transaction(function(txn){
 
-            txn.executeSql(PLACE_DATA_INSERT_QUERY,[place.id, place.timeStamp.getTime(), place.category, place.latLng.lat, place.latLng.lng, place.address]);
+            txn.executeSql(PLACE_INSERT_QUERY,[place.id, place.timeStamp.getTime(), place.category, place.latLng.lat, place.latLng.lng, place.address]);
         });
     }
 
@@ -59,7 +63,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
         database.transaction(function(txn){
 
-            txn.executeSql(VISIT_DATA_INSERT_QUERY, [visit.id, visit.timeStamp.getTime(), visit.placeId, visit.dateTime.getTime()]);
+            txn.executeSql(VISIT_INSERT_QUERY, [visit.id, visit.timeStamp.getTime(), visit.place.id, visit.dateTime.getTime()]);
         });
     }
 
@@ -67,34 +71,89 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
         database.transaction(function(txn){
 
-            txn.executeSql(PERSON_DATA_INSERT_QUETY, [person.id, person.timeStamp.getTime(), person.sex, person.age, person.interest ]);
+            txn.executeSql(PERSON_INSERT_QUETY, [person.id, person.timeStamp.getTime(), person.sex, person.age, person.interest ]);
+        });
+    }
+
+    function _insertPersonVisit(personVisit, visitId) {
+
+        database.transaction(function(txn){
+
+            txn.executeSql(PERSON_VISIT_INSERT_QUETY, [personVisit.id, personVisit.timeStamp.getTime(), personVisit.person.id, visitId, personVisit.isRV, personVisit.isStudy ]);
         });
     }
 
     // InsertMultipleData
 
-    function _insertPersons(persons) {
+    // function _insertPersons(persons) {
 
-        for ( var i = 0 ; i < persons.length ; i++ ) {
-            _insertPerson(persons[i]);
-        }
-    }
+    //     for ( var i = 0 ; i < persons.length ; i++ ) {
+    //         _insertPerson(persons[i]);
+    //     }
+    // }
 
     // Update methods
     //      But not uses UPDATE but uses DELETE and INSERT
+
+    function _updatePlace(place) {
+
+        database.transaction(function(txn){
+
+            txn.executeSql(DELETE_QUERY + PLACE_TABLE_NAME + WHERE_ID, [place.id], function(txn, result){
+                // console.log(result);
+                _insertPlace(place);
+            }, function(e){
+                // console.log(e);
+            });
+        });
+    }
+
+    function _updateVisit(visit) {
+
+        _updatePlace(visit.place);
+
+        for ( var i = 0 ; i < visit.personVisits.length ; i++ ) {
+            _updatePersonVisit(visit.personVisits[i], visit.id);
+        }
+
+        database.transaction(function(txn){
+
+            txn.executeSql(DELETE_QUERY + VISIT_TABLE_NAME + WHERE_ID, [visit.id], function(txn, result){
+                // console.log(result);
+                _insertVisit(visit);
+
+            }, function(e){
+                // console.log(e);
+            });
+        });
+    }
 
     function _updatePerson(person) {
 
         database.transaction(function(txn){
 
             txn.executeSql(DELETE_QUERY + PERSON_TABLE_NAME + WHERE_ID, [person.id], function(txn, result){
-                console.log(result);
+                // console.log(result);
                 _insertPerson(person);
             }, function(e){
-                console.log(e);
+                // console.log(e);
             });
         });
+    }
 
+    function _updatePersonVisit(personVisit, visitId) {
+
+        _updatePerson(personVisit.person);
+        
+        database.transaction(function(txn){
+
+            txn.executeSql(DELETE_QUERY + PERSON_TABLE_NAME + WHERE_ID, [personVisit.id], function(txn, result){
+                // console.log(result);
+                _insertPersonVisit(personVisit, visitId);
+            }, function(e){
+                // console.log(e);
+            });
+        });
     }
 
     //      multiple update
@@ -163,12 +222,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     return {
 
-        insertPlace : _insertPlace,
-        insertVisit : _insertVisit,
-        insertPerson : _insertPerson,
-        insertPersons : _insertPersons,
-
+        updatePlace : _updatePlace,
+        updateVisit : _updateVisit,
         updatePerson : _updatePerson, 
+
         updatePersons : _updatePersons,
 
         loadPlaceById : _loadPlaceById,
