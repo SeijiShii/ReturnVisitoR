@@ -131,6 +131,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             loadFile.loadScript('./record_visit_page/record_visit_page.js', function() {
                 recordVisitPage = returnvisitor.recordVisitPage;
                 recordVisitPage.initialize(options);
+                recordVisitPage.onOkClicked = function(_place) {
+                    mapPage.onFinishEditVisit(_place);
+                };
             });
         }, 0);
     }

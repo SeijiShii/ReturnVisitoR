@@ -28,10 +28,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         // ROOM_TEXT_HEIGHT = '30px',
         _place,
         _visit,
-        _everSeenPersons,
+        // _everSeenPersons,
         _personVisits,
         _options,
         _onOkClicked,
+        _addedPersons = [],
         addPersonDialog,
         personDialog,
         datePickerDialog,
@@ -52,7 +53,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function initPersons() {
-        _everSeenPersons = [];
+        // _everSeenPersons = [];
     }
         
     
@@ -237,17 +238,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function initAddPersonDialog() {
-        // var persons = [_everSeenPersons];
-        // persons.removeByIds(_visit.personVisitIds);
-
-        // console.log(persons);
 
         var blockedPersonIds = [];
         for (var i = 0 ; i < _personVisits.length ; i++ ) {
             blockedPersonIds.push(_personVisits[i].personId);
         }
 
-        addPersonDialog = new returnvisitor.AddPersonDialog(_everSeenPersons, blockedPersonIds);
+        addPersonDialog = new returnvisitor.AddPersonDialog(_place.personIds, blockedPersonIds);
         addPersonDialog.onNewPersonClick = function() {
             initPersonDialog();
         };
@@ -266,7 +263,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function addPersonToVisit(person) {
 
-        _everSeenPersons.addData(person);
+        _addedPersons.push(person);
+
+        // _everSeenPersons.addData(person);
         _place.personIds.addElement(person.id);
 
         var personVisit = new PersonVisit(person, _visit.id);
@@ -342,8 +341,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickOkButton() {
 
-        dbHelper.insertPlaceData(_place);
-        dbHelper.insertVisitData(_visit);
+        dbHelper.insertPlace(_place);
+        dbHelper.insertVisit(_visit);
+
+        dbHelper.updatePersons(_addedPersons);
 
         fadeOut(_onOkClicked, _place);
     }

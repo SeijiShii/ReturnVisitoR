@@ -25,5 +25,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.creat
         enumerable: true,
         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
         writable: true
+    },
+
+    personIds : { 
+        get : function() {
+            return [];
+        }
     }
 });

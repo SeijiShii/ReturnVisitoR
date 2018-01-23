@@ -89,24 +89,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
 
     function onClickRaterButton(e) {
 
-        console.log(e.currentTarget.id);
-        
-        // if (cordova.platformId === 'android') {
-        //     _value = e.currentTarget.id.substring(BUTTON_ID_PREFIX.length); 
-        // } else {
-        //     for ( var i = 0 ; i < e.path.length ; i++ ) {
-        //         var elm = e.path[i];
-        //         if (elm.classList !== undefined) {
-        //             if (elm.classList.contains('button_div')) {  
-        //                 _value = elm.id.substring(BUTTON_ID_PREFIX.length);
-        //                 // console.log(_value);
-        //                 break;
-        //             }            
-        //         }
-        //     }  
-        // }
-
-        var id = touchEventFilter.getTargetId(e);
+        var id = touchEventFilter.getTargetId(e, 'button_div');
 
         _value = id.substring(BUTTON_ID_PREFIX.length);
 

@@ -28,5 +28,6 @@ module.exports = {
         "RETURNVISITOR_APP" : false,
         "cordova"           : false,
         "plugin"            : false,
+        "google"            : false,
     }
 };
