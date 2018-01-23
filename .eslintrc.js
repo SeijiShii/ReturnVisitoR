@@ -24,9 +24,9 @@ module.exports = {
 
     },
     "globals" : {
-        "$" : false,
+        "$"                 : false,
         "RETURNVISITOR_APP" : false,
-        "cordova" : false,
-        "plugin" : false,
+        "cordova"           : false,
+        "plugin"            : false,
     }
 };

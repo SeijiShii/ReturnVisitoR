@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, category){
@@ -7,18 +7,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
 
     this.latLng = latLng;
     this.category = category; 
-    this.address;
-    this.personIds = []; // Person ids ever seen in this place.
     
-}
+};
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category = {
     PLACE : 'Place', 
     ROOM : 'Room', 
     HOUSING_COMPLEX : 'Housing Complex'
-}
+};
 
-Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
 
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
@@ -28,4 +26,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.creat
         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
         writable: true
     }
-})
+});

@@ -10,8 +10,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         PersonVisit = returnvisitor.data.PersonVisit,
         viewComponents = returnvisitor.viewComponents,
         PersonVisitCell = viewComponents.PersonVisitCell,
-        elements = returnvisitor.common.elements,
-        elementsEffect = returnvisitor.common.elementsEffect,
+        common = returnvisitor.common,
+        elements = common.elements,
+        elementsEffect = common.elementsEffect,
+        dbHelper = common.dbHelper,
         logoButton,
         addressText,
         nameText,
@@ -29,6 +31,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         _everSeenPersons,
         _personVisits,
         _options,
+        _onOkClicked,
         addPersonDialog,
         personDialog,
         datePickerDialog,
@@ -59,7 +62,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
     function onClickLogoButton() {
-
+        fadeOut();
     }
 
 
@@ -339,7 +342,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function onClickOkButton() {
 
-        fadeOut();
+        dbHelper.insertPlaceData(_place);
+        dbHelper.insertVisitData(_visit);
+
+        fadeOut(_onOkClicked, _place);
     }
 
     function initCancelButton() {
@@ -364,7 +370,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         $pageFrame.fadeTo('slow', 1);
     }
 
-    function fadeOut() {
+    function fadeOut(callback, arg) {
 
         var $pageFrame = $('#record_visit_page_frame');
 
@@ -372,6 +378,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             $pageFrame.css({
                 width : 0,
             });
+
+            if ( typeof callback === 'function' ) {
+                callback(arg);
+            }
         });
     }
 
@@ -424,6 +434,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             if (datePickerDialog) {
                 datePickerDialog.refreshDialogHeight();
             }
+        },
+
+        set onOkClicked(f) {
+            _onOkClicked = f;
         }
     };
 }());

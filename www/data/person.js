@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person = function(){
@@ -9,15 +9,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person = function(){
     this.age = 'AGE_UNKNOWN';
     this.interest = 'INTEREST_NONE';
 
-}
+};
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex = {
     SEX_UNKNOWN : 'Unknown',
     MALE    : 'Male',
     FEMALE  : 'Female'
-} 
+};
 
-Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.sex, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age = {
     
@@ -33,7 +33,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age = {
     AGE_81_     : '81~'
 };
 
-Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.age, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest = {
     INTEREST_NONE       : 'None',
@@ -44,9 +44,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest = {
     KIND                : 'Kind',
     INTERESTED          : 'Interested',
     STRONGLY_INTERESTED : 'Strongly Interested' 
-} 
+};
 
-Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter)
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.interest, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {
@@ -73,4 +73,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.prototype = Object.crea
             return s;
         }
     }
-})
+});
