@@ -4,50 +4,54 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
 
     var htmlCache = {};
 
+    function _htmlToElement(html, callback, className) {
+
+        var node = document.createElement('div');
+        node.innerHTML = html;
+        var elm = node.getElementsByTagName('div')[0];
+        elm.classList.add(className);
+
+        if (typeof callback === 'function') {
+            callback(elm);
+        }
+    }
+
     return {
         /**
          * @param callback callback has 1 param which returns div element made from html file.
          */
-        loadHtmlAsElement: function(filePath, callback) {
+        loadHtmlAsElement: function(filePath, callback, className) {
 
             if (htmlCache[filePath] === undefined) {
                 $.get(filePath, function(data){
                     // console.log(data);
 
                     htmlCache[filePath] = data;
-    
-                    var node = document.createElement('div');
-                    node.innerHTML = data;
-    
-                    if (typeof callback === 'function') {
-                        callback(node.getElementsByTagName('div')[0])
-                    }
+
+                    _htmlToElement(data, callback, className);
+
                 });
             } else {
-                var node = document.createElement('div');
-                node.innerHTML = htmlCache[filePath];
 
-                if (typeof callback === 'function') {
-                    callback(node.getElementsByTagName('div')[0])
-                }
+                _htmlToElement(htmlCache[filePath], callback, className);
             }
         },
 
-        appendHtmlToAppFrame: function(filePath, callback, opacity) {
+        // appendHtmlToAppFrame: function(filePath, callback, opacity) {
 
-            this.loadHtmlAsElement(filePath, function(divElem) {
+        //     this.loadHtmlAsElement(filePath, function(divElem) {
 
-                if (opacity !== undefined) {
-                    divElem.style.opacity = opacity;
-                }
+        //         if (opacity !== undefined) {
+        //             divElem.style.opacity = opacity;
+        //         }
 
-                document.getElementById('app_frame').appendChild(divElem);
+        //         document.getElementById('app_frame').appendChild(divElem);
 
-                if (typeof callback === 'function') {
-                    callback();
-                }
-            });
-        },
+        //         if (typeof callback === 'function') {
+        //             callback();
+        //         }
+        //     });
+        // },
 
         loadCss: function(filePath) {
             // すでにロードされているlink pathであればキャンセルする。

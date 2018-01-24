@@ -22,58 +22,94 @@
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        viewComponents = returnvisitor.viewComponents,
+        common = returnvisitor.common,
+        loadFile = common.loadFile,
         adFrame,
         appFrame,
+        mapFrame,
+        controlFrame,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
-        // DRAWER_WIDTH = 240,
-        loadFile = returnvisitor.common.loadFile,
-        mapPage,
+        HEIGHT_BREAK_POINT = 250,
+        LAND_CONTROL_FRAME_WIDTH = 240,
+        CONTROL_FRAME_CLOSED_HEIGHT = 50,
+        mapPane,
         recordVisitPage;
     
-    function initAppFrame() {
-        appFrame = document.getElementById('app_frame');
+    function initFrames() {
+        appFrame        = document.getElementById('app_frame');
+        mapFrame        = document.getElementById('map_frame');
+        controlFrame    = document.getElementById('control_frame');
+        adFrame         = document.getElementById('ad_frame');
     }
 
-    function refreshAppFrame() {
+    function resizeAppFrame() {
 
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
-        // adjustAppFrameHeightInAndroid();
+    }
 
-    }    
+    function resizeMapFrame() {
 
+        var $mapFrame = $(mapFrame);
+
+        if (isWideScreen()) {
+
+            $mapFrame.css({
+                top : 0,
+                left : LAND_CONTROL_FRAME_WIDTH,
+                height : '100%',
+                width : window.innerWidth - LAND_CONTROL_FRAME_WIDTH,
+                float : 'right'
+            });
+
+        } else {
+
+            $mapFrame.css({
+                top : 0,
+                left : 0,
+                height : appFrame.clientHeight - CONTROL_FRAME_CLOSED_HEIGHT,
+                width : '100%'
+            });
+
+        }
+    }
+
+    function resizeControlFrame() {
+
+        var $cFrame = $(controlFrame);
+
+        if (isWideScreen()) {
+
+            $cFrame.css({
+                top : 0,
+                left : 0,
+                height : '100%',
+                width : LAND_CONTROL_FRAME_WIDTH,
+                float : 'left'
+            });
+
+        } else {
+
+            $cFrame.css({
+                top : appFrame.clientHeight - CONTROL_FRAME_CLOSED_HEIGHT,
+                left : 0,
+                height : CONTROL_FRAME_CLOSED_HEIGHT,
+                width : '100%'
+            });
+        }
+    }
     
-    function initAdFrame() {
-        adFrame = document.getElementById('ad_frame');
-    }
-
-    function refreshAdFrame() {
-        adFrame.style.top = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
-    }
-
-
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
 
-        initAdFrame();
-        refreshAdFrame();
+        initFrames();
 
-        initAppFrame();
-        refreshAppFrame();
+        resizeAppFrame();
+        resizeMapFrame();
+        resizeControlFrame();
 
-        loadMapPageFiles();
-
-        // testPersonDialog();
-
-        // test
-        // loadRecordVisitPageFiles({
-        //     method: 'NEW_PLACE_VISIT',
-        //     latLng: {
-        //         lat: 36.7726275,
-        //         lng: 140.7301261
-        //     }
-        // });
-
+        loadMapPaneFiles();
         
     }
     
@@ -95,72 +131,70 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     
     function refreshScreenElements() {
 
-        refreshAppFrame();
-        refreshAdFrame();
+        resizeAppFrame();
+        resizeMapFrame();
+        resizeControlFrame();
 
-        if (mapPage) {
-            mapPage.refreshElements(isWideScreen(), true);
-        } 
-
-        if (recordVisitPage) {
-            recordVisitPage.refreshElements();
-        }
     }
 
     function isWideScreen() {
         return window.innerWidth > WIDTH_BREAK_POINT;
     }
 
-    function loadMapPageFiles() {
+    function loadMapPaneFiles() {
 
-        loadFile.loadCss('./map_page/map_page.css');
-        loadFile.appendHtmlToAppFrame('./map_page/map_page.html', function(){
-            loadFile.loadScript('./map_page/map_page.js', function() {
-                mapPage = returnvisitor.mapPage;
-                mapPage.refreshElements(isWideScreen(), false);
-                mapPage.onNewPlaceVisitClick = onNewPlaceVisit;
+        loadFile.loadScript('./view_components/map_pane/map_pane.js', function(){
 
-            });
+            mapPane = viewComponents.mapPane;
+            mapPane.initialize(mapFrame);
+            
+            mapPane.onMapLongClick = function(latLng) {
+
+            };
+
+            mapPane.onClickMarker = function(place) {
+
+            };
+
         });
-
     }
 
-    function loadRecordVisitPageFiles(options, postFadeInCallback) {
-        loadFile.loadCss('./record_visit_page/record_visit_page.css');
-        loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {
-            loadFile.loadScript('./record_visit_page/record_visit_page.js', function() {
-                recordVisitPage = returnvisitor.recordVisitPage;
-                recordVisitPage.initialize(options, postFadeInCallback);
-                recordVisitPage.onOkClicked = function(_place) {
-                    mapPage.onFinishEditVisit(_place);
-                };
-                recordVisitPage.beforeFadeOutPage = function() {
-                    mapPage.hideFrame(false);
-                };
-            });
-        }, 0);
-    }
+    // function loadRecordVisitPageFiles(options, postFadeInCallback) {
+    //     loadFile.loadCss('./record_visit_page/record_visit_page.css');
+    //     loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {
+    //         loadFile.loadScript('./record_visit_page/record_visit_page.js', function() {
+    //             recordVisitPage = returnvisitor.recordVisitPage;
+    //             recordVisitPage.initialize(options, postFadeInCallback);
+    //             recordVisitPage.onOkClicked = function(_place) {
+    //                 mapPage.onFinishEditVisit(_place);
+    //             };
+    //             recordVisitPage.beforeFadeOutPage = function() {
+    //                 mapPage.hideFrame(false);
+    //             };
+    //         });
+    //     }, 0);
+    // }
 
-    function onNewPlaceVisit(latLng) {
+    // function onNewPlaceVisit(latLng) {
 
-        var options = {
-            method: 'NEW_PLACE_VISIT',
-            latLng: {
-                lat: latLng.lat,
-                lng: latLng.lng
-            }
-        };
+    //     var options = {
+    //         method: 'NEW_PLACE_VISIT',
+    //         latLng: {
+    //             lat: latLng.lat,
+    //             lng: latLng.lng
+    //         }
+    //     };
 
-        var postFadeInRVPage = function() {
-            mapPage.hideFrame(true);
-        };
+    //     var postFadeInRVPage = function() {
+    //         mapPage.hideFrame(true);
+    //     };
 
-        if (recordVisitPage) {
-            recordVisitPage.initialize(options, postFadeInRVPage);
-        } else {
-            loadRecordVisitPageFiles(options, postFadeInRVPage);
-        }
-    }
+    //     if (recordVisitPage) {
+    //         recordVisitPage.initialize(options, postFadeInRVPage);
+    //     } else {
+    //         loadRecordVisitPageFiles(options, postFadeInRVPage);
+    //     }
+    // }
 
     //test
     // function testPersonDialog() {
