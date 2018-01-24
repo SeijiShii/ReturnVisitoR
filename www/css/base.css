@@ -9,6 +9,8 @@ body {
     -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
     -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
     background-color:#888;
+    color: #333;
+
     background-attachment:fixed;
     font-size:12px;
     height:100%;
@@ -48,65 +50,46 @@ body {
 
 #app_frame #control_frame .control_header #logo_button {
 
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    left: 10px;
-    top: 10px;
-
+    position: relative;
+    width: 50px;
+    height: 50px;
+    float: left;
 }
 
 #app_frame #control_frame .control_header #logo_button img {
 
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
     width: 40px;
     height: 40px;
 
 }
 
-/* @media screen and (min-width: 500px) {
+#app_frame #control_frame .control_header #page_title {
 
-    #app_frame #map_frame {
-
-        width: 60%;
-        height: 100%;
-        float: right;
-    
-    }
-    
-    #app_frame #control_frame {
-    
-        width: 40%;
-        height: 100%;
-        float: left;
-    
-    }
+    position: relative;
+    display: block;
+    float: left;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
+    margin-left: 10px;
 }
-
-@media screen and (max-height: 250px) {
-
-    #app_frame #map_frame {
-
-        width: 100%;
-        height: 30%;
-    
-    }
-    
-    #app_frame #control_frame {
-    
-        width: 100%;
-        height: 70%;
-
-    }
-} */
 
 #ad_frame {
     position: fixed;
-    top: 100%;
     left: 0;
     background-color: #333;
     height: 50px;
     width: 100%;
+    bottom : 0
 }
+
+
 
 /* #app_title {
     font-size: 20px;

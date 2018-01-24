@@ -29,6 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         appFrame,
         mapFrame,
         controlFrame,
+        pageTitle,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         HEIGHT_BREAK_POINT = 250,
@@ -45,6 +46,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         mapFrame        = document.getElementById('map_frame');
         controlFrame    = document.getElementById('control_frame');
         adFrame         = document.getElementById('ad_frame');
+        pageTitle       = document.getElementById('page_title');
     }
 
     function resizeAppFrame() {
@@ -74,7 +76,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 height : appFrame.clientHeight - CONTROL_CLOSED_HEIGHT,
                 width : '100%'
             });
-
         }
     }
 
@@ -102,6 +103,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             });
         }
     }
+
+    function showOrHidePageTitle() {
+
+        if (isWideScreen()) {
+
+            pageTitle.style.display = 'none';
+
+        } else {
+
+            pageTitle.style.display = 'block';
+
+        }
+
+    }
     
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
@@ -111,6 +126,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         resizeAppFrame();
         resizeMapFrame();
         resizeControlFrame();
+        showOrHidePageTitle();
 
         loadMapPaneFiles();
         
@@ -137,6 +153,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         resizeAppFrame();
         resizeMapFrame();
         resizeControlFrame();
+        showOrHidePageTitle();
 
     }
 
