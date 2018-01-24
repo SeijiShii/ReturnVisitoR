@@ -4,7 +4,7 @@
  * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
  * @param {Object} givenSize 省略可能。
  */
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPath, dialogFrameClassName, parent) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPath, dialogFrameClassName) {
     
     // console.log('DialogBase called!');
 
@@ -45,11 +45,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
         $(dialogFrame).load(contentHtmlPath, function(){
 
-            if (parent !== undefined) {
-                parent.appendChild(dialogBaseFrame);
-            } else {
-                document.getElementById('app_frame').appendChild(dialogBaseFrame);
-            }
+            document.getElementById('app_frame').appendChild(dialogBaseFrame);
            
             if (typeof _this.onDialogBaseReady === 'function') {
                 _this.onDialogBaseReady();

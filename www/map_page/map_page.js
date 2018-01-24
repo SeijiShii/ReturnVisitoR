@@ -8,6 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         mapDivBase,
         mapDiv,
         nativeMap,
+        nativeEvent = plugin.google.maps.event,
         browserMap,
         tmpMarker,
         logoButton,
@@ -27,11 +28,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         CAMERA_ZOOM = 'camera_zoom',
         LONG_PRESS_DURATION = 1500,
         mapLongClickDialog,
-        loadFile = returnvisitor.common.loadFile,
-        markerPaths = returnvisitor.common.markerPaths,
+        common = returnvisitor.common,
+        loadFile = common.loadFile,
+        markerPaths = common.markerPaths,
         pinMarkerPaths = markerPaths.pinMarkerPaths,
-        _latLng,
+        dbHelper = common.dbHelper,
         _onNewPlaceVisitClick;
+        // _markers = [];
    
  
     function initGoogleMap() {
@@ -82,17 +85,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     
         nativeMap = plugin.google.maps.Map.getMap(mapDiv, options);
         
-        nativeMap.on(plugin.google.maps.event.CAMERA_MOVE_END, function() {
+        nativeMap.on(nativeEvent.CAMERA_MOVE_END, function() {
             saveCameraPosition(nativeMap.getCameraPosition().target, nativeMap.getCameraPosition().zoom);
         });
 
-        nativeMap.on(plugin.google.maps.event.MAP_LONG_CLICK, onLongClickNativeMap);
+        nativeMap.on(nativeEvent.MAP_LONG_CLICK, onLongClickNativeMap);
+
     }
 
     function onLongClickNativeMap(latLng) {
         
-        _latLng = latLng;
-
         // console.log('Map long clicked: ' + latLng.toUrlValue());
         nativeMap.animateCamera({
             target: {
@@ -119,7 +121,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             tmpMarker = marker;
         });
 
-        initMapLongClickDialog();
+        initMapLongClickDialog(latLng);
     }
 
     var _onBrowserMapReady = function() {
@@ -196,7 +198,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     function onLongClickBrowserMap(latLng) {
 
-        _latLng = {
+        var _latLng = {
             lat : latLng.lat(),
             lng : latLng.lng()
         };
@@ -204,7 +206,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         browserMap.panTo(_latLng);
 
         tmpMarker = new google.maps.Marker({
-            position : _latLng,
+            position : latLng,
             map : browserMap,
             icon : {
                 url : markerPaths.pinMarkerPaths.grayPin,
@@ -214,7 +216,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             
         });
 
-        initMapLongClickDialog();
+        initMapLongClickDialog(_latLng);
     }
 
     function initMapDivBase() {
@@ -448,19 +450,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     }
 
-    function initMapLongClickDialog() {
-        mapLongClickDialog = new returnvisitor.MapLongClickDialog();
+    function initMapLongClickDialog(latLng) {
+        mapLongClickDialog = new returnvisitor.MapLongClickDialog(latLng);
 
         mapLongClickDialog.onOverlayClick = function() {
             removeTmpMarker();
         };
 
-        mapLongClickDialog.onNewPlaceClick = function() {
+        mapLongClickDialog.onNewPlaceClick = function(latLng2) {
 
             removeTmpMarker();
             
             if (typeof _onNewPlaceVisitClick === 'function') {
-                _onNewPlaceVisitClick(_latLng);
+                _onNewPlaceVisitClick(latLng2);
             }
         };
 
@@ -498,7 +500,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     };
 
-    function addMarkerOnMap(latLng, interest) {
+    function addMarkerOnMap(place, interest) {
 
         var markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(interest)];
 
@@ -506,8 +508,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
             nativeMap.addMarker({
                 position: {
-                    lat: latLng.lat,
-                    lng: latLng.lng
+                    lat: place.latLng.lat,
+                    lng: place.latLng.lng
                 },
                 icon: {
                     url: markerPath,
@@ -518,12 +520,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
                 }
     
             }, function(marker){
-            
+          
+                console.log(marker);
+                marker.on(nativeEvent.MARKER_CLICK, onClickNativeMarker);
+                
             }); 
         } else {
 
             var marker = new google.maps.Marker({
-                position : latLng,
+                position : place.latLng,
                 map : browserMap,
                 icon : {
                     url : markerPath,
@@ -531,25 +536,47 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
                     scaledSize : new google.maps.Size(25, 35)                  
                 }
             });
-    
+
+            // marker.placeId = place.id;
+            // console.log(marker);
+
+            marker.addListener('click', onClickBrowserMarker);
         }
     }
+
+    function onClickBrowserMarker(e) {
+
+        var latLng = {
+            lat : e.latLng.lat(),
+            lng : e.latLng.lng()
+        };
+
+        dbHelper.loadPlaceByLatLng(latLng, function(dbData){
+            
+            console.log(dbData);
+        });
+    }
+
+    function onClickNativeMarker(latLng) {
+
+        dbHelper.loadPlaceByLatLng(latLng, function(dbData){
+            
+            console.log(dbData);
+        });
+    }
+
+    // TODO: dialog to show place data.
+    
 
     function _onFinishEditVisit(place) {
 
         place.queryInterest(function(interest) {
 
-            addMarkerOnMap(place.latLng, interest);
+            addMarkerOnMap(place, interest);
 
         });
         
     }
-
-    // var _onBrowserMapLoaded = function() {
-    //     var pos = loadCameraPosition();
-    //     initBrowserMap(pos);
-    // };
-
 
     loadCameraPosition();
     initMapDivBase();

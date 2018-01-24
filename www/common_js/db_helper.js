@@ -182,11 +182,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     }
 
+    // Load place
     function _loadPlaceById(id, callback) {
 
         _loadDataById(id, callback, PLACE_TABLE_NAME);
     }
 
+    function _loadPlaceByLatLng(latLng, callback) {
+
+        database.transaction(function(txn){
+
+            txn.executeSql(SELECT_ALL_QUERY + PLACE_TABLE_NAME + 'WHERE latitude = ? AND longitude = ?', [latLng.lat, latLng.lng], function(txn, result){
+                
+                var row;
+                if (result.rows) {
+                    row = result.rows.item(0);
+                }
+
+                callback(row);
+
+            }, function(){
+                
+                console.log(arguments);
+            });
+        });
+    }
+
+    // Load visit
     function _loadVisitById(id, callback) {
 
         _loadDataById(id, callback, VISIT_TABLE_NAME);
@@ -199,19 +221,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     //      Select all data
 
-    // function _loadAllData(callback, tableName) {
+    function _loadAllData(callback, tableName) {
 
-    //     database.transaction(function(txn){
+        database.transaction(function(txn){
 
-    //         txn.executeSql(SELECT_ALL_QUERY + tableName, [], function(txn, result){
-    //             if (result.rows) {
-    //                 callback(result.rows);
-    //             }
-    //         }, function(e){
-    //             console.log(e);
-    //         });
-    //     });        
-    // }
+            txn.executeSql(SELECT_ALL_QUERY + tableName, [], function(txn, result){
+                if (result.rows) {
+                    callback(result.rows);
+                }
+            }, function(e){
+                console.log(e);
+            });
+        });        
+    }
 
     function _loadAllPlaces(callback) {
 
@@ -238,8 +260,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         database.transaction(function(txn){
 
             txn.executeSql(SELECT_ALL_QUERY + VISIT_TABLE_NAME + 'WHERE place_id = ? AND datetime = (SELECT MAX(datetime) FROM visit_table WHERE place_id = ?) ', [place.id, place.id], function(txn, result){
-
-                console.log(arguments);
 
                 var data;
                 if (result.rows) {
@@ -283,6 +303,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         loadPlaceById : _loadPlaceById,
         loadVisitById : _loadVisitById,
         loadPersonById : _loadPersonById,
+
+        loadPlaceByLatLng : _loadPlaceByLatLng,
 
         loadAllVisitsToPlace : _loadAllVisitsToPlace,
         loadLastVisitToPlace : _loadLastVisitToPlace,
