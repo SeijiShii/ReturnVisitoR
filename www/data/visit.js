@@ -19,3 +19,106 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype = Object.creat
         value : RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit
     }
 });
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.setDBData = function(dbData, callback) {
+
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        dbHelper = returnvisitor.common.dbHelper,
+        data = returnvisitor.data,
+        Place = data.Place,
+        PersonVisit = data.PersonVisit,
+        isPlaceReady = false,
+        arePersonVisitsReady = false,
+        arePlacementsReady = true,
+        _this = this;
+    
+    this.id = dbData.data_id;
+    this.timeStamp.setTime(dbData.time_stamp);
+
+    this.dateTime.setTime(dbData.datetime);
+    
+    dbHelper.loadPlaceById(dbData.place_id, function(placeData){
+        _this.place = new Place();
+        _this.place.setDBData(placeData);
+
+        isPlaceReady = true;
+    });
+
+    dbHelper.loadPersonVisitsByVisitId(this, function(personVisitRows){
+
+        _this.personVisits = [];
+        var count = 0;
+
+        for (var i = 0 ; i < personVisitRows.length ; i++ ) {
+            var personVisit = new PersonVisit();
+            personVisit.setDBData(personVisitRows.item(i), function(){
+                count++;
+            });
+            _this.personVisits.push(personVisit);
+        }
+
+        var countTimer = function() {
+
+            if (count >= personVisitRows.length) {
+                clearInterval(timerId);
+                arePersonVisitsReady = true;
+            }
+        };
+
+        var timerId = setInterval(countTimer, 20);
+    });
+
+    // TODO: Set placements from daData.
+
+    var outerCountTimer = function(){
+
+        if (isPlaceReady && arePersonVisitsReady && arePlacementsReady) {
+            clearInterval(outerTimerId);
+            
+            if ( typeof callback === 'function' ) {
+                callback();
+            }
+        }
+    };
+
+    var outerTimerId = setInterval(outerCountTimer, 20);
+
+};
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.getBestPersonVisit = function() {
+
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        data = returnvisitor.data,
+        Person = data.Person,
+        personVisits = this.personVisits;
+
+    if (personVisits.length <= 0) {
+        return;
+    }
+
+    var bestPersonVisit = personVisits[0];
+    if (personVisits.length == 1) {
+        return bestPersonVisit;
+    }
+
+    for (var i = 1 ; i < personVisits.length ; i++ ) {
+        
+        if (Person.interest.indexOfKey(personVisits[i].person.interest) > Person.interest.indexOfKey(bestPersonVisit.person.interest)) {
+            bestPersonVisit = personVisits[i];
+        }
+    }
+
+    return bestPersonVisit;
+};
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.getInterest = function() {
+
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        data = returnvisitor.data,
+        Person = data.Person,
+        bestPersonVisit = this.getBestPersonVisit();
+    if (bestPersonVisit) {
+        return bestPersonVisit.person.interest;
+    } 
+    return 'INTEREST_NONE';
+};

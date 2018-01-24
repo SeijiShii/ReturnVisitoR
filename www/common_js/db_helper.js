@@ -173,7 +173,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         database.transaction(function(txn){
             txn.executeSql(SELECT_ALL_QUERY + tableName + WHERE_ID, [id], function(txn, result){
                 if (result.rows) {
-                    callback(result.rows[0]);
+                    callback(result.rows.item(0));
                 }
             });
         }, function(e) {
@@ -199,23 +199,75 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     //      Select all data
 
-    function _loadAllData(callback, tableName) {
+    // function _loadAllData(callback, tableName) {
+
+    //     database.transaction(function(txn){
+
+    //         txn.executeSql(SELECT_ALL_QUERY + tableName, [], function(txn, result){
+    //             if (result.rows) {
+    //                 callback(result.rows);
+    //             }
+    //         }, function(e){
+    //             console.log(e);
+    //         });
+    //     });        
+    // }
+
+    function _loadAllPlaces(callback) {
+
+        _loadAllData(callback, PLACE_TABLE_NAME);
+    }
+    
+    function _loadAllVisitsToPlace(place, callback) {
 
         database.transaction(function(txn){
 
-            txn.executeSql(SELECT_ALL_QUERY + tableName, [], function(txn, result){
+            txn.executeSql(SELECT_ALL_QUERY + VISIT_TABLE_NAME + 'WHERE place_id=? ', [place.id], function(txn, result){
+
                 if (result.rows) {
                     callback(result.rows);
                 }
             }, function(e){
                 console.log(e);
             });
-        });        
+        });
     }
 
-    function _loadAllPlaces(callback) {
+    function _loadLastVisitToPlace(place, callback) {
 
-        _loadAllData(callback, PLACE_TABLE_NAME);
+        database.transaction(function(txn){
+
+            txn.executeSql(SELECT_ALL_QUERY + VISIT_TABLE_NAME + 'WHERE place_id = ? AND datetime = (SELECT MAX(datetime) FROM visit_table WHERE place_id = ?) ', [place.id, place.id], function(txn, result){
+
+                console.log(arguments);
+
+                var data;
+                if (result.rows) {
+                    data = result.rows.item(0);
+
+                } else {
+                    data = null;
+                }
+                callback(data);
+
+            }, function(){
+                console.log(arguments);
+            });
+        });
+    }
+
+    function _loadPersonVisitsByVisitId(visit, callback) {
+
+        database.transaction(function(txn){
+
+            txn.executeSql(SELECT_ALL_QUERY + PERSON_VISIT_TABLE_NAME + 'WHERE visit_id = ?',[visit.id], function(txn, result){
+                
+                callback(result.rows);
+
+            }, function(){
+                console.log(arguments);
+            });
+        });
     } 
 
     _initialize();
@@ -232,6 +284,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         loadVisitById : _loadVisitById,
         loadPersonById : _loadPersonById,
 
+        loadAllVisitsToPlace : _loadAllVisitsToPlace,
+        loadLastVisitToPlace : _loadLastVisitToPlace,
+        loadPersonVisitsByVisitId : _loadPersonVisitsByVisitId,
         loadAllPlaces : _loadAllPlaces
 
     };

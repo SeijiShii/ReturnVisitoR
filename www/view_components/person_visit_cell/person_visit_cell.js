@@ -45,7 +45,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
 
         var mark = elements.getElementByClassName(cellFrame, 'button_mark');
 
-        // var pathArray = Object.values(markerPaths.buttonMarkerPaths);
         mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(personVisit.person.interest)];
     }
 

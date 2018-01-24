@@ -57,11 +57,11 @@ h2.record_visit_page_subtitle{
 
 #add_person_button {
     position: relative;
-    width: 90%;
-    clear: both;
+    width: 100%;
 }
 
 .record_visit_page_button {
+    width: 180px;
     float: right;
 }
 

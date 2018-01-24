@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter =  {
 
@@ -35,7 +35,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter =  {
                 if (this[key] === value) {
                     return key;
                 }
-            }, this)
+            }, this);
         }
     },
 
@@ -50,4 +50,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter =  {
             }
         }
     }
-}
+};

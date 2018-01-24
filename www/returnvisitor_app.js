@@ -125,14 +125,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     }
 
-    function loadRecordVisitPageFiles(options) {
+    function loadRecordVisitPageFiles(options, postFadeInCallback) {
         loadFile.loadCss('./record_visit_page/record_visit_page.css');
         loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {
             loadFile.loadScript('./record_visit_page/record_visit_page.js', function() {
                 recordVisitPage = returnvisitor.recordVisitPage;
-                recordVisitPage.initialize(options);
+                recordVisitPage.initialize(options, postFadeInCallback);
                 recordVisitPage.onOkClicked = function(_place) {
                     mapPage.onFinishEditVisit(_place);
+                };
+                recordVisitPage.beforeFadeOutPage = function() {
+                    mapPage.hideFrame(false);
                 };
             });
         }, 0);
@@ -148,10 +151,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             }
         };
 
+        var postFadeInRVPage = function() {
+            mapPage.hideFrame(true);
+        };
+
         if (recordVisitPage) {
-            recordVisitPage.initialize(options);
+            recordVisitPage.initialize(options, postFadeInRVPage);
         } else {
-            loadRecordVisitPageFiles(options);
+            loadRecordVisitPageFiles(options, postFadeInRVPage);
         }
     }
 

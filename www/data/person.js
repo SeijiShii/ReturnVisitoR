@@ -74,3 +74,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.prototype = Object.crea
         }
     }
 });
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Person.prototype.setDBData = function(dbData) {
+
+    this.id = dbData.data_id;
+    this.timeStamp.setTime(dbData.time_stamp);
+
+    this.sex = dbData.sex;
+    this.age = dbData.age;
+    this.interest = dbData.interest;
+};

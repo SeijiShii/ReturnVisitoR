@@ -34,3 +34,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths =  {
         orangeSquare    : './img/square_marker/square_marker_orange.png'
     }
 };
+
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.pinMarkerPaths, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
+
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.markerPaths.squeareMarkerPaths, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);

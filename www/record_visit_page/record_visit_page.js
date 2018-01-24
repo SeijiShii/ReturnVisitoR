@@ -31,7 +31,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         personDialog,
         datePickerDialog,
         timePickerDialog,
-        appFrame = document.getElementById('app_frame');
+        appFrame = document.getElementById('app_frame'),
+        _beforeFadeOutPage;
     
     function initVisitData() {
 
@@ -106,9 +107,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
                     height : 0
                 }, 200, function(){
                     $(personVisitSubtitle).css({
-                        display : 'none',
+                        // display : 'none',
                         height : 0,
-                        margin : 0
+                        margin : 0,
+                        visibility : 'hidden'
                     });
                 });
 
@@ -127,9 +129,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         } else {
             if (_visit.personVisits.length <= 0) {
                 $(personVisitSubtitle).css({
-                    display : 'none',
+                    // display : 'none',
                     height : 0,
-                    margin : 0
+                    margin : 0,
+                    visibility : 'hidden'
                 });
             } else {
                 $(personVisitSubtitle).css({
@@ -143,7 +146,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     function initAddPersonButton() {
         addPersonButton = document.getElementById('add_person_button');
-        addPersonButton.addEventListener('click', onClickAddPersonButton);
+        addPersonButton.addEventListener('click', onClickAddPersonButton, true);
     }
 
     function initPersonContainer() {
@@ -155,11 +158,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function refreshPersonContainer() {
         if (_visit.personVisits.length <= 0) {
             $(personContainer).css({
-                display : 'none'
+                display : 'none',
+                // height : 0,
+                // margin : 0
             });
         } else {
             $(personContainer).css({
-                display : 'block'
+                display : 'block',
+                height : 'auto'
             });
         }
     }
@@ -318,7 +324,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     function initOkButton() {
 
         var okButton = document.getElementById('ok_button');
-        okButton.addEventListener('click', onClickOkButton);
+        okButton.addEventListener('click', onClickOkButton, true);
     }
 
     function onClickOkButton() {
@@ -338,7 +344,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         fadeOut();
     }
 
-    function fadeIn() {
+    function fadeIn(postFadeIn) {
 
         var $pageFrame = $('#record_visit_page_frame');
 
@@ -346,10 +352,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             width : '100%',
             height : '100%'
         });
-        $pageFrame.fadeTo('slow', 1);
+        $pageFrame.fadeTo('slow', 1, function(){
+            
+            if ( typeof postFadeIn === 'function' ) {
+                postFadeIn();
+            }
+        });
     }
 
     function fadeOut(callback, arg) {
+
+        if ( typeof _beforeFadeOutPage === 'function' ) {
+            _beforeFadeOutPage();
+        }
 
         var $pageFrame = $('#record_visit_page_frame');
 
@@ -381,7 +396,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     return {
 
-        initialize : function(options) {
+        initialize : function(options, postFadeIn) {
 
             _options = options;
 
@@ -397,7 +412,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
             var timer = function() {
                 if (_isPersonContainerReady) {
                     clearInterval(timerId);
-                    fadeIn();
+                    fadeIn(postFadeIn);
 
                 } else {
                     // console.log('Waiting for person container ready.')
@@ -416,6 +431,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
         set onOkClicked(f) {
             _onOkClicked = f;
+        },
+
+        set beforeFadeOutPage(f) {
+            _beforeFadeOutPage = f;
         }
     };
 }());

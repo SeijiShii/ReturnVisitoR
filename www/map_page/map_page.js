@@ -3,6 +3,7 @@
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        Person = returnvisitor.data.Person,
         _isWideScreen,
         mapDivBase,
         mapDiv,
@@ -28,6 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         mapLongClickDialog,
         loadFile = returnvisitor.common.loadFile,
         markerPaths = returnvisitor.common.markerPaths,
+        pinMarkerPaths = markerPaths.pinMarkerPaths,
         _latLng,
         _onNewPlaceVisitClick;
    
@@ -447,7 +449,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     }
 
     function initMapLongClickDialog() {
-        mapLongClickDialog = new returnvisitor.MapLongClickDialog(mapDiv);
+        mapLongClickDialog = new returnvisitor.MapLongClickDialog();
 
         mapLongClickDialog.onOverlayClick = function() {
             removeTmpMarker();
@@ -496,17 +498,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     };
 
-    function addMarkerOnMap(place) {
+    function addMarkerOnMap(latLng, interest) {
+
+        var markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(interest)];
 
         if (cordova.platformId === 'android') {
 
             nativeMap.addMarker({
                 position: {
-                    lat: place.latLng.lat,
-                    lng: place.latLng.lng
+                    lat: latLng.lat,
+                    lng: latLng.lng
                 },
                 icon: {
-                    url: markerPaths.pinMarkerPaths.grayPin,
+                    url: markerPath,
                     size: {
                         width: 25,
                         height: 35
@@ -519,10 +523,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         } else {
 
             var marker = new google.maps.Marker({
-                position : place.latLng,
+                position : latLng,
                 map : browserMap,
                 icon : {
-                    url : markerPaths.pinMarkerPaths.grayPin,
+                    url : markerPath,
                     size : new google.maps.Size(34, 48),
                     scaledSize : new google.maps.Size(25, 35)                  
                 }
@@ -533,8 +537,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     function _onFinishEditVisit(place) {
 
-        addMarkerOnMap(place);
+        place.queryInterest(function(interest) {
 
+            addMarkerOnMap(place.latLng, interest);
+
+        });
+        
     }
 
     // var _onBrowserMapLoaded = function() {
@@ -563,7 +571,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             _onNewPlaceVisitClick = f;
         },
 
+        hideFrame : function(hide) {
+
+            var $mapPageFrame = $('#map_page_frame');
+            
+            if (hide) {
+
+                $mapPageFrame.css({
+                    visibility : 'hidden'
+                });
+
+            } else {
+
+                $mapPageFrame.css({
+                    visibility : 'visible'
+                });
+            }
+        },
+
         onFinishEditVisit : _onFinishEditVisit,
+        
     };
 
 }());

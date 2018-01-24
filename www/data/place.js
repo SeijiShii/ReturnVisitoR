@@ -3,10 +3,20 @@
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, category){
 
-    RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this, 'place');
-
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor;
+        
+    returnvisitor.data.DataObject.call(this, 'place');
+    
     this.latLng = latLng;
+    if (!this.latLng) {
+        this.latLng = {
+            latitude: 0,
+            longitude: 0
+        };
+    }
+
     this.category = category; 
+
     
 };
 
@@ -31,5 +41,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype = Object.creat
         get : function() {
             return [];
         }
-    }
+    },
+
 });
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype.queryInterest = function(callback) {
+        
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        common  = returnvisitor.common,
+        dbHelper = common.dbHelper,
+        data = returnvisitor.data,
+        Visit = data.Visit;
+
+    dbHelper.loadLastVisitToPlace(this, function(visitData){
+
+        var lastVisit = new Visit();
+        lastVisit.setDBData(visitData, function(){
+            var interest = lastVisit.getInterest();
+
+            if ( typeof callback === 'function' ) {
+                callback(interest);
+            }
+        });
+    });
+};
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype.setDBData = function(dbData) {
+
+    this.id = dbData.data_id;
+    this.timeStamp.setTime(dbData.time_stamp);
+
+    this.latLng.lat = dbData.latitude;
+    this.latLng.lng = dbData.longitude;
+    this.category = dbData.category;
+    this.address = dbData.address;
+};
