@@ -27,6 +27,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         loadFile = common.loadFile,
         adFrame,
         appFrame,
+        mapFrameBase,
         mapFrame,
         controlFrame,
         pageTitle,
@@ -43,6 +44,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     
     function initFrames() {
         appFrame        = document.getElementById('app_frame');
+        mapFrameBase    = document.getElementById('map_frame_base');
         mapFrame        = document.getElementById('map_frame');
         controlFrame    = document.getElementById('control_frame');
         adFrame         = document.getElementById('ad_frame');
@@ -54,13 +56,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
     }
 
-    function resizeMapFrame() {
+    function resizeMapFrameBase() {
 
-        var $mapFrame = $(mapFrame);
+        var $mapFrameBase = $(mapFrameBase);
 
         if (isWideScreen()) {
 
-            $mapFrame.css({
+            $mapFrameBase.css({
                 top : 0,
                 left : CONTROL_CLOSED_WIDTH,
                 height : '100%',
@@ -70,7 +72,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         } else {
 
-            $mapFrame.css({
+            $mapFrameBase.css({
                 top : 0,
                 left : 0,
                 height : appFrame.clientHeight - CONTROL_CLOSED_HEIGHT,
@@ -124,7 +126,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         initFrames();
 
         resizeAppFrame();
-        resizeMapFrame();
+        resizeMapFrameBase();
         resizeControlFrame();
         showOrHidePageTitle();
 
@@ -151,7 +153,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     function refreshScreenElements() {
 
         resizeAppFrame();
-        resizeMapFrame();
+        resizeMapFrameBase();
         resizeControlFrame();
         showOrHidePageTitle();
 
@@ -170,6 +172,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             
             mapPane.onMapLongClick = function(latLng) {
 
+                mapPane.enableGestures(false);
+                fadeMapOverlay(true);
             };
 
             mapPane.onClickMarker = function(place) {
@@ -177,6 +181,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             };
 
         });
+    }
+
+    function fadeMapOverlay(fadeIn) {
+
+        var $overlay = $('#map_overlay');
+
+        if (fadeIn) {
+
+            $overlay.css({
+                width : '100%'
+            });
+            $overlay.fadeTo(1, 300);
+
+        } else {
+
+            $overlay.fadeTo(0, 300, function(){
+                $overlay.css({
+                    width : 0
+                });
+            });
+
+        }
     }
 
     // function loadRecordVisitPageFiles(options, postFadeInCallback) {
