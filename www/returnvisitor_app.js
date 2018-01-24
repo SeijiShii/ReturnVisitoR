@@ -32,10 +32,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         HEIGHT_BREAK_POINT = 250,
-        LAND_CONTROL_FRAME_WIDTH = 240,
-        CONTROL_FRAME_CLOSED_HEIGHT = 50,
+        CONTROL_CLOSED_WIDTH = 120,     /** Control frame width of closed state in wide screen mode*/
+        CONTROL_OPEN_WIDTH = 300,       /** Control frame width of open state in wide screen mode */
+        CONTROL_CLOSED_HEIGHT = 50,     /** Control frame height of closed state in narrow portrait mode */
+        CONTROL_OPEN_HEIGT = 350,       /** Control frame height of open state in narrow portrait mode */
+
         mapPane,
-        recordVisitPage;
+        recordVisitPane;
     
     function initFrames() {
         appFrame        = document.getElementById('app_frame');
@@ -57,9 +60,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
             $mapFrame.css({
                 top : 0,
-                left : LAND_CONTROL_FRAME_WIDTH,
+                left : CONTROL_CLOSED_WIDTH,
                 height : '100%',
-                width : window.innerWidth - LAND_CONTROL_FRAME_WIDTH,
+                width : window.innerWidth - CONTROL_CLOSED_WIDTH,
                 float : 'right'
             });
 
@@ -68,7 +71,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             $mapFrame.css({
                 top : 0,
                 left : 0,
-                height : appFrame.clientHeight - CONTROL_FRAME_CLOSED_HEIGHT,
+                height : appFrame.clientHeight - CONTROL_CLOSED_HEIGHT,
                 width : '100%'
             });
 
@@ -85,16 +88,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 top : 0,
                 left : 0,
                 height : '100%',
-                width : LAND_CONTROL_FRAME_WIDTH,
+                width : CONTROL_CLOSED_WIDTH,
                 float : 'left'
             });
 
         } else {
 
             $cFrame.css({
-                top : appFrame.clientHeight - CONTROL_FRAME_CLOSED_HEIGHT,
+                top : appFrame.clientHeight - CONTROL_CLOSED_HEIGHT,
                 left : 0,
-                height : CONTROL_FRAME_CLOSED_HEIGHT,
+                height : CONTROL_CLOSED_HEIGHT,
                 width : '100%'
             });
         }
