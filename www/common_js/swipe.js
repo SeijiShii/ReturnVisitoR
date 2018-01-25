@@ -151,7 +151,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function handleEnd() {
 
-    //   console.log('Touch up');
+        // console.log('Touch up');
 
         isSwiping = false;
         var duration = new Date().getTime() - startTime,
@@ -221,6 +221,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         }
     }
 
+    this.cancel = function() {
+        onCancel();
+    };
+
     function onCancel() {
         isSwiping = false;
         if ( typeof _this.onSwipeCancel === 'function' ) {
@@ -239,4 +243,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     }
 
 
-}
+};

@@ -23,9 +23,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         viewComponents = returnvisitor.viewComponents,
-        common = returnvisitor.common,
-        loadFile = common.loadFile,
-        elementsEffect = common.elementsEffect,
+        common          = returnvisitor.common,
+        loadFile        = common.loadFile,
+        elementsEffect  = common.elementsEffect,
+        Swipe           = common.Swipe,
         adFrame,
         appFrame,
         slideFrame,
@@ -54,10 +55,40 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         slideFrame      = document.getElementById('slide_frame');
         mapFrame        = document.getElementById('map_frame');
         mapPaneBase     = document.getElementById('map_pane_base');
-        drawerFrame     = document.getElementById('drawer_frame');
         controlFrame    = document.getElementById('control_frame');
         adFrame         = document.getElementById('ad_frame');
         pageTitle       = document.getElementById('page_title');
+    }
+
+    function initDrawerFrame() {
+
+        drawerFrame     = document.getElementById('drawer_frame');
+
+        var drawerSwipe = new Swipe(drawerFrame);
+
+        drawerSwipe.onXSwipeEnd = function(stroke) {
+
+            if (stroke < 0) {
+                openCloseDrawer();
+            } 
+        };
+
+        drawerSwipe.onXSwipe = function(stroke) {
+
+            $(drawerFrame).css({
+                left : parseInt(drawerFrame.style.left) + stroke
+            });
+
+            if (parseInt(drawerFrame.style.left) > 0) {
+                drawerSwipe.cancel();
+            }
+        };
+
+        drawerSwipe.onSwipeCancel = function(){
+
+            animateDrawer();
+        }
+
     }
 
     function resizeAppFrame() {
@@ -126,6 +157,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         // console.log('onDeviceReady called!');
 
         initFrames();
+        initDrawerFrame();
         initMaOverlay();
         initToolHeaderLogo();
         initToolHeader();
@@ -257,7 +289,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     function openCloseDrawer() {
 
         _isDrawerOpen = !_isDrawerOpen;
-        
+        animateDrawer();
+        switchMapOverlay(_isDrawerOpen);
+    }
+
+    function animateDrawer() {
+
         var $drawerFrame = $(drawerFrame);
 
         if (_isDrawerOpen) {
@@ -274,9 +311,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         }
 
-        switchMapOverlay(_isDrawerOpen);
     }
-
 
 
     // function loadRecordVisitPageFiles(options, postFadeInCallback) {
