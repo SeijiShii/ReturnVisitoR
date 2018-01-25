@@ -40,14 +40,29 @@
     </head>
     <body>
         <div id="app_frame">
-            <div id="map_frame_base">
-                <div id="map_frame"></div>
-                <div id="map_overlay"></div>
-            </div>
-            <div id="control_frame">
-                <div class="control_header">
-                    <span id="logo_button"><img src="./img/logo_36.png"></span>
-                    <span id="page_title">Return Visitor</span>
+            <div id="slide_frame">        <!-- Vertically slide -->
+                <div id="map_frame">
+                    <div id="map_pane_base"></div>
+                    <div id="map_overlay"></div>
+                    <div id="tool_header">
+                        <div id="tool_header_logo">
+                            <img class="logo" src="./img/logo/logo_72.png">
+                        </div>
+                    </div>
+                    <div id="drawer_frame" >
+                        <div id="drawer_header">
+                            <div class="drawer_logo">
+                                <img class="logo" src="./img/logo/logo_72.png">
+                            </div>
+                            <h1 class="app_title">Return Visitor</h1>
+                        </div>
+                    </div>
+                </div>
+                <div id="control_frame">
+                    <div class="control_header">
+                        <span id="logo_button"><img class="logo" src="./img/logo/logo_72.png"></span>
+                        <span id="page_title">Return Visitor</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -76,6 +91,7 @@
         <script type="text/javascript" src="./common_js/touch_event_filter.js"></script>
         <script type="text/javascript" src="./common_js/coordinates.js"></script>
         <script type="text/javascript" src="./common_js/db_helper.js"></script>
+        <script type="text/javascript" src="./common_js/native_map_extension.js"></script>
 
         <script type="text/javascript" src="./view_components/toggle_button/toggle_button.js"></script>
         <script type="text/javascript" src="./view_components/menu_selector.js"></script>

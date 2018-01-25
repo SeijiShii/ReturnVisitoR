@@ -25,27 +25,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         viewComponents = returnvisitor.viewComponents,
         common = returnvisitor.common,
         loadFile = common.loadFile,
+        elementsEffect = common.elementsEffect,
         adFrame,
         appFrame,
-        mapFrameBase,
+        slideFrame,
         mapFrame,
+        toolHeader,
+        toolHeaderLogo,
+        mapPaneBase,
         controlFrame,
+        drawerFrame,
+        drawerHeader,
         pageTitle,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
-        HEIGHT_BREAK_POINT = 250,
-        CONTROL_CLOSED_WIDTH = 120,     /** Control frame width of closed state in wide screen mode*/
-        CONTROL_OPEN_WIDTH = 300,       /** Control frame width of open state in wide screen mode */
-        CONTROL_CLOSED_HEIGHT = 50,     /** Control frame height of closed state in narrow portrait mode */
-        CONTROL_OPEN_HEIGT = 350,       /** Control frame height of open state in narrow portrait mode */
+        DRAWER_WIDTH = 200,
+        DRAWER_DURATION = 300,
 
         mapPane,
-        recordVisitPane;
+        recordVisitPane,
+        _isDrawerOpen   = false,
+        _isControlShowing = false;
     
     function initFrames() {
         appFrame        = document.getElementById('app_frame');
-        mapFrameBase    = document.getElementById('map_frame_base');
+        slideFrame      = document.getElementById('slide_frame');
         mapFrame        = document.getElementById('map_frame');
+        mapPaneBase     = document.getElementById('map_pane_base');
+        drawerFrame     = document.getElementById('drawer_frame');
         controlFrame    = document.getElementById('control_frame');
         adFrame         = document.getElementById('ad_frame');
         pageTitle       = document.getElementById('page_title');
@@ -56,79 +63,68 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
     }
 
-    function resizeMapFrameBase() {
+    function resizeMapPaneBase() {
 
-        var $mapFrameBase = $(mapFrameBase);
+        var $mapPaneBase = $(mapPaneBase);
 
         if (isWideScreen()) {
 
-            $mapFrameBase.css({
+            $mapPaneBase.css({
                 top : 0,
-                left : CONTROL_CLOSED_WIDTH,
+                left : DRAWER_WIDTH,
                 height : '100%',
-                width : window.innerWidth - CONTROL_CLOSED_WIDTH,
+                width : window.innerWidth - DRAWER_WIDTH,
                 float : 'right'
             });
 
         } else {
 
-            $mapFrameBase.css({
-                top : 0,
-                left : 0,
-                height : appFrame.clientHeight - CONTROL_CLOSED_HEIGHT,
-                width : '100%'
-            });
-        }
-    }
-
-    function resizeControlFrame() {
-
-        var $cFrame = $(controlFrame);
-
-        if (isWideScreen()) {
-
-            $cFrame.css({
+            $mapPaneBase.css({
                 top : 0,
                 left : 0,
                 height : '100%',
-                width : CONTROL_CLOSED_WIDTH,
-                float : 'left'
-            });
-
-        } else {
-
-            $cFrame.css({
-                top : appFrame.clientHeight - CONTROL_CLOSED_HEIGHT,
-                left : 0,
-                height : CONTROL_CLOSED_HEIGHT,
                 width : '100%'
             });
         }
     }
 
-    function showOrHidePageTitle() {
+    function resizeDrawerFrame() {
+
+        var $drawerFrame = $(drawerFrame);
 
         if (isWideScreen()) {
 
-            pageTitle.style.display = 'none';
+            $drawerFrame.css({
+                top : 0,
+                left : 0,
+                height : '100%',
+                width : DRAWER_WIDTH,
+                float : 'left',
+                boxShadow : 'none'
+            });
 
         } else {
 
-            pageTitle.style.display = 'block';
-
+            $drawerFrame.css({
+                top : 0,
+                left : -DRAWER_WIDTH,
+                height : '100%',
+                width : DRAWER_WIDTH,
+                float : 'left',
+                boxShadow : '5px 0 10px'
+            });
         }
-
     }
     
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
 
         initFrames();
+        initToolHeaderLogo();
+        initToolHeader();
+        initDrawerHeader();
 
-        resizeAppFrame();
-        resizeMapFrameBase();
-        resizeControlFrame();
-        showOrHidePageTitle();
+        resizeFrames();
 
         loadMapPaneFiles();
         
@@ -143,19 +139,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 clearTimeout(resizeTimer);
             }
 
-            var resizeTimer = setTimeout(refreshScreenElements, 200);
+            var resizeTimer = setTimeout(resizeFrames, 200);
 
         } else {
-            refreshScreenElements();
+            resizeFrames();
         }
     }
     
-    function refreshScreenElements() {
+    function resizeFrames() {
 
         resizeAppFrame();
-        resizeMapFrameBase();
-        resizeControlFrame();
-        showOrHidePageTitle();
+        resizeMapPaneBase();
+        resizeDrawerFrame();
+        fadeToolHeaderLogo(!_isDrawerOpen);
 
     }
 
@@ -168,12 +164,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         loadFile.loadScript('./view_components/map_pane/map_pane.js', function(){
 
             mapPane = viewComponents.mapPane;
-            mapPane.initialize(mapFrame);
+            mapPane.initialize(mapPaneBase);
             
             mapPane.onMapLongClick = function(latLng) {
 
-                mapPane.enableGestures(false);
-                fadeMapOverlay(true);
             };
 
             mapPane.onClickMarker = function(place) {
@@ -183,27 +177,105 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         });
     }
 
-    function fadeMapOverlay(fadeIn) {
+    function switchMapOverlay(set) {
 
         var $overlay = $('#map_overlay');
 
-        if (fadeIn) {
+        if (set) {
 
             $overlay.css({
                 width : '100%'
             });
-            $overlay.fadeTo(1, 300);
 
         } else {
 
-            $overlay.fadeTo(0, 300, function(){
-                $overlay.css({
-                    width : 0
-                });
+            $overlay.css({
+                width : 0
             });
 
         }
     }
+
+    function initToolHeader() {
+
+        toolHeader = document.getElementById('tool_header');
+    }
+
+    function fadeToolHeaderLogo(fadeIn) {
+
+        var $logo = $(toolHeaderLogo);
+
+        if (fadeIn) {
+
+            $logo.fadeTo(DRAWER_DURATION, 1);
+            
+        } else {
+
+            $logo.fadeTo(DRAWER_DURATION, 0);
+
+        }
+    }
+
+
+    function initToolHeaderLogo() {
+
+        toolHeaderLogo  = document.getElementById('tool_header_logo');
+        toolHeaderLogo.addEventListener('click', onClickToolHeaderLogo);
+    }
+
+    function onClickToolHeaderLogo() {
+
+        if (isWideScreen()) {
+            return;
+        }
+
+        elementsEffect.blink(toolHeaderLogo);
+        openCloseDrawer();
+    }
+
+
+    function initDrawerHeader() {
+
+        drawerHeader = document.getElementById('drawer_header');
+        drawerHeader.addEventListener('click', onClickDrawerHeader);
+
+    }
+
+    function onClickDrawerHeader() {
+
+        if (isWideScreen()) {
+            return;
+        }
+
+        elementsEffect.blink(drawerHeader);
+        openCloseDrawer();
+    }
+
+    function openCloseDrawer() {
+
+        _isDrawerOpen = !_isDrawerOpen;
+        
+        var $drawerFrame = $(drawerFrame);
+
+        if (_isDrawerOpen) {
+
+            $drawerFrame.animate({
+                left : 0
+            }, DRAWER_DURATION);
+
+        } else {
+
+            $drawerFrame.animate({
+                left : -DRAWER_WIDTH
+            }, DRAWER_DURATION);
+
+        }
+
+        switchMapOverlay(_isDrawerOpen);
+        fadeToolHeaderLogo(!_isDrawerOpen);
+    }
+
+
 
     // function loadRecordVisitPageFiles(options, postFadeInCallback) {
     //     loadFile.loadCss('./record_visit_page/record_visit_page.css');
