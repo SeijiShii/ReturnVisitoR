@@ -37,6 +37,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         mapOverlay,
         controlFrame,
         drawerFrame,
+        drawerSwipe,
         drawerHeader,
         pageTitle,
         AD_FRAME_HEIGHT = 50,
@@ -64,8 +65,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         drawerFrame     = document.getElementById('drawer_frame');
 
-        var drawerSwipe = new Swipe(drawerFrame);
-
+        drawerSwipe = new Swipe(drawerFrame);
         drawerSwipe.onXSwipeEnd = function(stroke) {
 
             if (stroke < 0) {
@@ -87,7 +87,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         drawerSwipe.onSwipeCancel = function(){
 
             animateDrawer();
-        }
+        };
 
     }
 
@@ -128,6 +128,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     function resizeDrawerFrame() {
 
         var $drawerFrame = $(drawerFrame);
+        drawerSwipe.swipeEnabled = !isWideScreen();
 
         if (isWideScreen()) {
 

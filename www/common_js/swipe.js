@@ -15,6 +15,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         isToBlockClick = false;
 
 
+    this.swipeEnabled = true;
     this.xSwipeEnabled = true;
     this.ySwipeEnabled = false;
     this.swipeStroke = DEFAULT_STROKE;
@@ -38,6 +39,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     target.addEventListener('click', clickBlockLisntener, true);
 
     function onTouchStart(event) {
+
+        if (!_this.swipeEnabled) {
+            return;
+        } 
         
         // console.log(event);
 
@@ -61,6 +66,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function onMouseDown(event) {
 
+        if (!_this.swipeEnabled) {
+            return;
+        }
 
         startTime = new Date().getTime();
 
@@ -152,7 +160,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     function handleEnd() {
 
         // console.log('Touch up');
-
+        
+        if (!_this.swipeEnabled) {
+            return;
+        }
+        
         isSwiping = false;
         var duration = new Date().getTime() - startTime,
             speed;
@@ -226,6 +238,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
     };
 
     function onCancel() {
+        
+        if (!_this.swipeEnabled) {
+            return;
+        }
+
         isSwiping = false;
         if ( typeof _this.onSwipeCancel === 'function' ) {
             _this.onSwipeCancel();
