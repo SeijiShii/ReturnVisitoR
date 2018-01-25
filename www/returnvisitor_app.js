@@ -33,6 +33,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         toolHeader,
         toolHeaderLogo,
         mapPaneBase,
+        mapOverlay,
         controlFrame,
         drawerFrame,
         drawerHeader,
@@ -45,6 +46,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         mapPane,
         recordVisitPane,
         _isDrawerOpen   = false,
+        _isMapOverlaySet = false,
         _isControlShowing = false;
     
     function initFrames() {
@@ -86,6 +88,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 width : '100%'
             });
         }
+
+        if (_isMapOverlaySet) {
+            switchMapOverlay(false);
+        }
     }
 
     function resizeDrawerFrame() {
@@ -120,6 +126,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         // console.log('onDeviceReady called!');
 
         initFrames();
+        initMaOverlay();
         initToolHeaderLogo();
         initToolHeader();
         initDrawerHeader();
@@ -151,7 +158,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         resizeAppFrame();
         resizeMapPaneBase();
         resizeDrawerFrame();
-        fadeToolHeaderLogo(!_isDrawerOpen);
 
     }
 
@@ -177,9 +183,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         });
     }
 
+    function initMaOverlay() {
+
+        mapOverlay = document.getElementById('map_overlay');
+        mapOverlay.addEventListener('click', onClickMapOverlay);
+    }
+
+    function onClickMapOverlay() {
+
+        openCloseDrawer();
+    }
+
     function switchMapOverlay(set) {
 
-        var $overlay = $('#map_overlay');
+        var $overlay = $(mapOverlay);
 
         if (set) {
 
@@ -194,28 +211,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             });
 
         }
+
+        _isMapOverlaySet = set;
     }
 
     function initToolHeader() {
 
         toolHeader = document.getElementById('tool_header');
     }
-
-    function fadeToolHeaderLogo(fadeIn) {
-
-        var $logo = $(toolHeaderLogo);
-
-        if (fadeIn) {
-
-            $logo.fadeTo(DRAWER_DURATION, 1);
-            
-        } else {
-
-            $logo.fadeTo(DRAWER_DURATION, 0);
-
-        }
-    }
-
 
     function initToolHeaderLogo() {
 
@@ -272,7 +275,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         }
 
         switchMapOverlay(_isDrawerOpen);
-        fadeToolHeaderLogo(!_isDrawerOpen);
     }
 
 
