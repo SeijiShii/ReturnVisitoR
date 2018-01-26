@@ -30,65 +30,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         adFrame,
         appFrame,
         slideFrame,
-        mapFrame,
-        toolHeader,
-        toolHeaderLogo,
-        mapPaneBase,
-        mapOverlay,
-        controlFrame,
-        drawerFrame,
-        drawerSwipe,
-        drawerHeader,
-        pageTitle,
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
-        DRAWER_WIDTH = 200,
-        DRAWER_DURATION = 300,
+        LAUNCH_DURATION = 300,
+        mapPage,
+        recordVisitPane;
 
-        mapPane,
-        recordVisitPane,
-        _isDrawerOpen   = false,
-        _isMapOverlaySet = false,
-        _isControlShowing = false;
-    
     function initFrames() {
         appFrame        = document.getElementById('app_frame');
         slideFrame      = document.getElementById('slide_frame');
-        mapFrame        = document.getElementById('map_frame');
-        mapPaneBase     = document.getElementById('map_pane_base');
-        controlFrame    = document.getElementById('control_frame');
         adFrame         = document.getElementById('ad_frame');
-        pageTitle       = document.getElementById('page_title');
-    }
-
-    function initDrawerFrame() {
-
-        drawerFrame     = document.getElementById('drawer_frame');
-
-        drawerSwipe = new Swipe(drawerFrame);
-        drawerSwipe.onXSwipeEnd = function(stroke) {
-
-            if (stroke < 0) {
-                openCloseDrawer();
-            } 
-        };
-
-        drawerSwipe.onXSwipe = function(stroke) {
-
-            $(mapFrame).css({
-                left : parseInt(mapFrame.style.left) + stroke
-            });
-
-            if (parseInt(mapFrame.style.left) > 0) {
-                drawerSwipe.cancel();
-            }
-        };
-
-        drawerSwipe.onSwipeCancel = function(){
-
-            animateDrawer();
-        };
-
     }
 
     // resize frames
@@ -97,55 +48,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
     }
-
-    function resizeMapFrame() {
-
-        var $mapFrame = $(mapFrame);
-
-        if (isWideScreen()) {
-
-            $mapFrame.css({
-                width : window.innerWidth + DRAWER_WIDTH,
-                left : 0
-            });
-
-        } else {
-
-            $mapFrame.css({
-                width : window.innerWidth + DRAWER_WIDTH,
-                left : -DRAWER_WIDTH
-            });
-        }
-
-
-    }
-
-    function resizeMapPaneBase() {
-
-        var $mapPaneBase = $(mapPaneBase);
-
-        $mapPaneBase.css({
-            width : window.innerWidth,
-        });
-
-        if (_isMapOverlaySet) {
-            switchMapOverlay(false);
-        }
-    }
     
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
 
         initFrames();
-        initDrawerFrame();
-        initMaOverlay();
-        initToolHeaderLogo();
-        initToolHeader();
-        initDrawerHeader();
 
         resizeFrames();
 
-        loadMapPaneFiles();
+        loadMapPage();
         
     }
     
@@ -168,11 +79,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     function resizeFrames() {
 
         resizeAppFrame();
-        resizeMapFrame();
-        resizeMapPaneBase();
 
-        drawerSwipe.swipeEnabled = !isWideScreen();
-        fadeToolHeaderLogo(!isWideScreen(), false);
+        if (mapPage) {
+            mapPage.resizePage(isWideScreen());
+        }
 
     }
 
@@ -180,164 +90,48 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         return window.innerWidth > WIDTH_BREAK_POINT;
     }
 
-    function loadMapPaneFiles() {
+    function loadMapPage() {
+        loadFile.loadCss('./pages/map_page/map_page.css');
+        loadFile.loadScript('./pages/map_page/map_page.js', function(){
 
-        loadFile.loadScript('./view_components/map_pane/map_pane.js', function(){
+            mapPage = returnvisitor.mapPage;
+            mapPage.initialize(function(frame){
 
-            mapPane = viewComponents.mapPane;
-            mapPane.initialize(mapPaneBase);
-            
-            mapPane.onMapLongClick = function(latLng) {
-
-            };
-
-            mapPane.onClickMarker = function(place) {
-
-            };
-
+                setInitialContent(frame);
+            });
         });
     }
 
-    function initMaOverlay() {
+    function setInitialContent(content) {
 
-        mapOverlay = document.getElementById('map_overlay');
-        mapOverlay.addEventListener('click', onClickMapOverlay);
+        $(content).css({
+            top : 0,
+            left : 0
+        });
+        slideFrame.appendChild(content);
     }
 
-    function onClickMapOverlay() {
+    function launchNextContent(content, oldContent) {
 
-        openCloseDrawer();
-    }
+        var $new = $(content);
+        $new.css({
+            top : '50%',
+            left : 0
+        });
+        slideFrame.appendChild(content);
 
-    function switchMapOverlay(set) {
-
-        var $overlay = $(mapOverlay);
-
-        if (set) {
-
-            $overlay.css({
-                width : '100%'
+        var $slide = $(slideFrame)
+        $slide.animate({
+            top : '100%'
+        }, LAUNCH_DURATION, function(){
+            slideFrame.removeChild(oldContent);
+            $slide.css({
+                top : 0
             });
-
-        } else {
-
-            $overlay.css({
-                width : 0
+            $new.css({
+                top : 0
             });
-
-        }
-
-        _isMapOverlaySet = set;
-    }
-
-    function initToolHeader() {
-
-        toolHeader = document.getElementById('tool_header');
-    }
-
-    function initToolHeaderLogo() {
-
-        toolHeaderLogo  = document.getElementById('tool_header_logo');
-        toolHeaderLogo.addEventListener('click', onClickToolHeaderLogo);
-    }
-
-    function fadeToolHeaderLogo(fadeIn, animated) {
-
-        var $logo = $(toolHeaderLogo);
-
-        if (animated) {
-
-            if (fadeIn) {
-
-                $logo.css({ 
-                    display : 'block',
-                    opacity : 0
-                });
-                $logo.fadeTo(DRAWER_DURATION, 1);
-    
-            } else {
-    
-                $logo.fadeTo(DRAWER_DURATION, 0, function(){
-                    $logo.css({ display : 'none' });                
-                });
-    
-            }
-        } else {
-
-            if (fadeIn) {
-
-                $logo.css({ 
-                    display : 'block', 
-                    opacity : 1
-                });
-    
-            } else {
-    
-                $logo.css({ 
-                    display : 'none',
-                    opacity : 0 
-                });   
-    
-            }
-        }
-    }
-
-    function onClickToolHeaderLogo() {
-
-        if (isWideScreen()) {
-            return;
-        }
-
-        elementsEffect.blink(toolHeaderLogo);
-        openCloseDrawer();
-    }
-
-
-    function initDrawerHeader() {
-
-        drawerHeader = document.getElementById('drawer_header');
-        drawerHeader.addEventListener('click', onClickDrawerHeader);
-
-    }
-
-    function onClickDrawerHeader() {
-
-        if (isWideScreen()) {
-            return;
-        }
-
-        elementsEffect.blink(drawerHeader);
-        openCloseDrawer();
-    }
-
-    function openCloseDrawer() {
-
-        _isDrawerOpen = !_isDrawerOpen;
-        animateDrawer();
-        switchMapOverlay(_isDrawerOpen);
-    }
-
-    function animateDrawer() {
-
-        // But one animated is mapFrame
-        var $mapFrame = $(mapFrame);
-
-        if (_isDrawerOpen) {
-
-            $mapFrame.animate({
-                left : 0
-            }, DRAWER_DURATION);
-
-        } else {
-
-            $mapFrame.animate({
-                left : -DRAWER_WIDTH
-            }, DRAWER_DURATION);
-
-        }
-
-        fadeToolHeaderLogo(!_isDrawerOpen, true);
-
+        });
     }
 
 

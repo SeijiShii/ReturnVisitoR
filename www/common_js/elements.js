@@ -26,7 +26,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements = (function(){
                         pushOffspring(array[i]);
                     }
                 } 
-            } 
+            } ;
 
             pushOffspring(element);
 
@@ -38,15 +38,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements = (function(){
          * @param parent Parent element to search child element into.
          * @param id Element id to search for in the parent.
          */
-        // getElementById : function(parent, id) {
-        //     var offspring = this.getAllOffspring(parent);
+        getElementById : function(parent, id) {
+            var offspring = this.getAllOffspring(parent);
 
-        //     for ( var i = 0 ; i < offspring.length ; i++ ) {
-        //         if ( offspring[i].id === id ) {
-        //             return offspring[i];
-        //         }
-        //     }
-        // },
+            for ( var i = 0 ; i < offspring.length ; i++ ) {
+                if ( offspring[i].id === id ) {
+                    return offspring[i];
+                }
+            }
+        },
 
         getElementByClassName : function(parent, className) {
             var offspring = this.getAllOffspring(parent);

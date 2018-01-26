@@ -9,7 +9,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile = (function(){
         var node = document.createElement('div');
         node.innerHTML = html;
         var elm = node.getElementsByTagName('div')[0];
-        elm.classList.add(className);
+
+        if (className) {
+            elm.classList.add(className);
+        }
 
         if (typeof callback === 'function') {
             callback(elm);
