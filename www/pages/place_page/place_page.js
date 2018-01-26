@@ -6,13 +6,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         common = returnvisitor.common,
         loadFile = common.loadFile,
         elements = common.elements,
+        viewComponents = returnvisitor.viewComponents,
         pageFrame,
         mapDiv,
         addressText,
         placeNameText,
         primaryFrame,
         secondaryFrame,
-        _mapOptions;
+        _mapOptions,
+        placeActionPane;
 
     function _initialize(callback, mapOptions) {
 
@@ -25,6 +27,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
             initFrames();
             initMap();
+
+            loadPlaceActionPaneIfNeeded();
 
             if ( typeof callback === 'function' ) {
                 callback(pageFrame);
@@ -106,6 +110,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     function isBrowser() {
         return cordova.platformId === 'browser';
     } 
+
+    function loadPlaceActionPaneIfNeeded() {
+
+        if (placeActionPane) {
+
+            initPlaceActionPane();
+        } else {
+            loadFile.loadScript('./view_components/place_action_pane/place_action_pane.js', function(){
+                initPlaceActionPane();
+            });
+        }
+    }
+
+    function initPlaceActionPane() {
+
+        placeActionPane = viewComponents.placeActionPane;
+        placeActionPane.initialize(primaryFrame, secondaryFrame);
+    }
 
     return {
         initialize          : _initialize,
