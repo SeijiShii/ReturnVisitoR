@@ -104,6 +104,15 @@ img.logo {
     bottom : 0
 }
 
+.text_input {
+
+    border: solid 1px gray;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px #333 inset;
+
+}
+
 
 
 /* #app_title {

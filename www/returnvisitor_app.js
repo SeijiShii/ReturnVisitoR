@@ -34,7 +34,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         WIDTH_BREAK_POINT = 500,
         LAUNCH_DURATION = 300,
         mapPage,
-        recordVisitPane;
+        placePage,
+        _isBrowserMapReady = false;
 
     function initFrames() {
         appFrame        = document.getElementById('app_frame');
@@ -52,11 +53,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     function onDeviceReady() {
         // console.log('onDeviceReady called!');
 
+        prepareBrowserMap();
         initFrames();
 
         resizeFrames();
 
-        loadMapPage();
+        loadMapPageIfNeeded();
         
     }
     
@@ -90,50 +92,148 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         return window.innerWidth > WIDTH_BREAK_POINT;
     }
 
-    function loadMapPage() {
-        loadFile.loadCss('./pages/map_page/map_page.css');
-        loadFile.loadScript('./pages/map_page/map_page.js', function(){
+    function prepareBrowserMap() {
 
-            mapPage = returnvisitor.mapPage;
+        if (isBrowser()) {
+
+            loadFile.loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDmr4KjAGEvMjcmDdR7G6LdBIutoAAA2Yo&callback=RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app.onBrowserMapReady');
+        }
+    }
+
+    function _onBrowserMapReady() {
+        _isBrowserMapReady = true;
+    }
+
+    function isBrowser() {
+        return cordova.platformId === 'browser';
+    } 
+
+    function loadMapPageIfNeeded() {
+
+        if (mapPage) {
+
+            initMapPage();
+        } else {
+
+            loadFile.loadCss('./pages/map_page/map_page.css');
+            loadFile.loadScript('./pages/map_page/map_page.js', function(){
+    
+                initMapPage();
+            });
+        }
+
+
+    }
+
+    function initMapPage() {
+
+        mapPage = returnvisitor.mapPage;
+        
+        if (isBrowser()) {
+
+            var wait = function() {
+                if (_isBrowserMapReady) {
+                    clearInterval(timerId);
+                    doInitializeMapPage();
+                }
+            };
+
+            var timerId = setInterval(wait, 20);
+
+        } else {
+
+            doInitializeMapPage();
+        }
+        
+        function doInitializeMapPage() {
+
             mapPage.initialize(function(frame){
 
                 setInitialContent(frame);
             });
-        });
+    
+            mapPage.onMapLongClick = function(latLng) {
+    
+                loadPlacePageFilesIfNeeded(latLng);
+            };
+        }
     }
 
     function setInitialContent(content) {
 
         $(content).css({
             top : 0,
-            left : 0
+            left : 0,
+            height : '50%'
         });
         slideFrame.appendChild(content);
     }
 
-    function launchNextContent(content, oldContent) {
+    function launchNextContent(content, oldContent, callback) {
 
         var $new = $(content);
         $new.css({
             top : '50%',
-            left : 0
+            left : 0,
+            height : '50%'
+
         });
         slideFrame.appendChild(content);
 
-        var $slide = $(slideFrame)
+        var $slide = $(slideFrame);
         $slide.animate({
             top : '100%'
         }, LAUNCH_DURATION, function(){
-            slideFrame.removeChild(oldContent);
+
+            if (oldContent) {
+                slideFrame.removeChild(oldContent);
+            }
+
             $slide.css({
                 top : 0
             });
             $new.css({
                 top : 0
             });
+
+            if ( typeof callback === 'function' ) {
+                callback();
+            }
         });
     }
 
+    function loadPlacePageFilesIfNeeded(latlng) {
+
+        if (placePage) {
+            
+            initPlacePage(latlng);
+
+        } else {
+
+            loadFile.loadScript('./pages/place_page/place_page.js', function(){
+                initPlacePage(latlng);
+            });
+        }
+    }
+
+    function initPlacePage(latLng) {
+
+        placePage = returnvisitor.placePage;
+    
+        var mapOptions = {
+            latLng : {
+                lat : latLng.lat,
+                lng : latLng.lng
+            },
+            zoom : mapPage.mapZoomLevel
+        };
+        placePage.initialize(function(frame){
+
+            launchNextContent(frame, mapPage.pageFrame, function() {
+                placePage.fireMapReloadIfNeeded();
+            });
+        }, mapOptions);
+    }
 
     // function loadRecordVisitPageFiles(options, postFadeInCallback) {
     //     loadFile.loadCss('./record_visit_page/record_visit_page.css');
@@ -189,6 +289,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     document.addEventListener('deviceready', onDeviceReady, false);
     window.addEventListener('resize', onResizeScreen);
 
+    return {
+        onBrowserMapReady : _onBrowserMapReady
+    };
    
 }());
 

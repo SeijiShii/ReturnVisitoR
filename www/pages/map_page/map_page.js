@@ -329,17 +329,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     return {
 
         initialize : _initialize,
-        pageFrame : mapPageFrame,
-
+        
         resizePage : function(isWide) {
 
             _isWideScreen = isWide;
             _resizeFrames();
         },
 
+        get pageFrame() {
+            return mapPageFrame;
+        },
+
         set onMapLongClick(f) {
             _onMapLongClick = f;
         },
+
+        get mapZoomLevel() {
+            return mapPane.mapZoomLevel;
+        }
         
     };
 

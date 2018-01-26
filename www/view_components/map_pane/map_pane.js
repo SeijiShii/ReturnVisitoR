@@ -41,7 +41,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         // console.log(cameraPosition);
 
         if (isBrowser()) {
-            loadFile.loadScript('https://maps.googleapis.com/maps/api/js?key=AIzaSyDmr4KjAGEvMjcmDdR7G6LdBIutoAAA2Yo&callback=RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane.onBrowserMapReady');
+            initBrowserMap();
         } else {
             initNativeMap(cameraPosition);
         }
@@ -123,7 +123,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
     }
 
-    var _onBrowserMapReady = function() {
+    function initBrowserMap() {
 
         browserMap = new google.maps.Map(mapDiv, {
             center: {
@@ -153,8 +153,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         browserMap.addListener('zoom_changed', onBrowserMapCameraPositionChange);
 
         enableLongClickListenerOnBrowserMap(true);
-
-    };
+    }
 
     function onBrowserMapCameraPositionChange() {
         var latLng = {
@@ -448,7 +447,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
     return {
 
         initialize : _initialize,
-        onBrowserMapReady : _onBrowserMapReady,
      
         set onMapLongClick(f) {
             _tellOnMapLongClicked = f;
@@ -456,6 +454,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
         set onClickMarker(f) {
             _onClickMarker = f;
+        },
+
+        get mapZoomLevel() {
+            if (isBrowser()) {
+                return browserMap.getZoom();
+            } else {
+                return nativeMap.getCameraPosition().zoom;
+            }
         },
 
         enableGestures : _enableGestures,
