@@ -23,13 +23,14 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100%;        
     height: 80%;        /* Default height: must be adjusted according to window height */
     background-color: whitesmoke;
     overflow: hidden;
 }
 
-#app_frame #slide_frame {
+#app_frame 
+#slide_frame {
     
     position: absolute;
     top: 0;
@@ -39,20 +40,41 @@ body {
 
 }
 
-#app_frame #slide_frame #map_frame {
+#app_frame 
+#slide_frame 
+#map_frame {
 
     position: absolute;
 
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -200px;
+    width: 100%; /* Default width: must be calcurated to window width + drawer width */
     height: 50%;
     
 }
 
-#app_frame #slide_frame #map_frame #tool_header {
+#app_frame 
+#slide_frame 
+#map_frame
+.map_pane_base_base {
 
     position:  absolute;
+
+    top: 0;
+    left: 200px;
+    width: 100%; /* Default width: must be calcurated to window width */
+    height: 100%;
+
+}
+
+#app_frame 
+#slide_frame 
+#map_frame 
+.map_pane_base_base 
+#tool_header {
+
+    position:  absolute;
+
     top: 0;
     left: 0;
     width: 100%;
@@ -60,7 +82,12 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#app_frame #slide_frame #map_frame #tool_header #tool_header_logo {
+#app_frame 
+#slide_frame 
+#map_frame 
+.map_pane_base_base 
+#tool_header 
+#tool_header_logo {
 
     position: relative;
     float: left;
@@ -69,7 +96,13 @@ body {
 
 }
 
-#app_frame #slide_frame #map_frame #tool_header #tool_header_logo img {
+#app_frame 
+#slide_frame 
+#map_frame 
+.map_pane_base_base 
+#tool_header 
+#tool_header_logo 
+img {
     
     position: absolute;
     top: 0;
@@ -79,7 +112,11 @@ body {
     margin: auto;
 }
 
-#app_frame #slide_frame #map_frame #map_pane_base {
+#app_frame 
+#slide_frame 
+#map_frame
+.map_pane_base_base
+#map_pane_base {
 
     position: absolute;
 
@@ -89,8 +126,11 @@ body {
     height: 100%;
 }
 
-
-#app_frame #slide_frame #map_frame #map_overlay {
+#app_frame 
+#slide_frame 
+#map_frame 
+.map_pane_base_base
+#map_overlay {
 
     position: absolute;
     top: 0;
@@ -101,25 +141,32 @@ body {
     color: red;
 }
 
-#app_frame #control_frame {
+#app_frame 
+#control_frame {
 
     position: absolute;
     background-color: whitesmoke;
 }
 
-#app_frame #slide_frame #map_frame #drawer_frame {
+#app_frame 
+#slide_frame 
+#map_frame 
+#drawer_frame {
 
     position: absolute;
     top: 0;
-    left: -200px;
-    width: 200%;
+    left: 0;
+    width: 200px;
     height: 100%;
     background-color: whitesmoke;
-    box-shadow: 5px 0 10px;
 
 }
 
-#app_frame #slide_frame #map_frame #drawer_frame #drawer_header {
+#app_frame 
+#slide_frame 
+#map_frame 
+#drawer_frame 
+#drawer_header {
 
     position: relative;
     width: 100%;

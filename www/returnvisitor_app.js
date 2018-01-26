@@ -75,11 +75,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         drawerSwipe.onXSwipe = function(stroke) {
 
-            $(drawerFrame).css({
-                left : parseInt(drawerFrame.style.left) + stroke
+            $(mapFrame).css({
+                left : parseInt(mapFrame.style.left) + stroke
             });
 
-            if (parseInt(drawerFrame.style.left) > 0) {
+            if (parseInt(mapFrame.style.left) > 0) {
                 drawerSwipe.cancel();
             }
         };
@@ -91,66 +91,45 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     }
 
+    // resize frames
+
     function resizeAppFrame() {
 
         appFrame.style.height = (window.innerHeight - AD_FRAME_HEIGHT) + 'px';
+    }
+
+    function resizeMapFrame() {
+
+        var $mapFrame = $(mapFrame);
+
+        if (isWideScreen()) {
+
+            $mapFrame.css({
+                width : window.innerWidth + DRAWER_WIDTH,
+                left : 0
+            });
+
+        } else {
+
+            $mapFrame.css({
+                width : window.innerWidth + DRAWER_WIDTH,
+                left : -DRAWER_WIDTH
+            });
+        }
+
+
     }
 
     function resizeMapPaneBase() {
 
         var $mapPaneBase = $(mapPaneBase);
 
-        if (isWideScreen()) {
-
-            $mapPaneBase.css({
-                top : 0,
-                left : DRAWER_WIDTH,
-                height : '100%',
-                width : window.innerWidth - DRAWER_WIDTH,
-                float : 'right'
-            });
-
-        } else {
-
-            $mapPaneBase.css({
-                top : 0,
-                left : 0,
-                height : '100%',
-                width : '100%'
-            });
-        }
+        $mapPaneBase.css({
+            width : window.innerWidth,
+        });
 
         if (_isMapOverlaySet) {
             switchMapOverlay(false);
-        }
-    }
-
-    function resizeDrawerFrame() {
-
-        var $drawerFrame = $(drawerFrame);
-        drawerSwipe.swipeEnabled = !isWideScreen();
-
-        if (isWideScreen()) {
-
-            $drawerFrame.css({
-                top : 0,
-                left : 0,
-                height : '100%',
-                width : DRAWER_WIDTH,
-                float : 'left',
-                boxShadow : 'none'
-            });
-
-        } else {
-
-            $drawerFrame.css({
-                top : 0,
-                left : -DRAWER_WIDTH,
-                height : '100%',
-                width : DRAWER_WIDTH,
-                float : 'left',
-                boxShadow : '5px 0 10px'
-            });
         }
     }
     
@@ -189,8 +168,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     function resizeFrames() {
 
         resizeAppFrame();
+        resizeMapFrame();
         resizeMapPaneBase();
-        resizeDrawerFrame();
+
+        drawerSwipe.swipeEnabled = !isWideScreen();
+        fadeToolHeaderLogo(!isWideScreen(), false);
 
     }
 
@@ -259,6 +241,47 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         toolHeaderLogo.addEventListener('click', onClickToolHeaderLogo);
     }
 
+    function fadeToolHeaderLogo(fadeIn, animated) {
+
+        var $logo = $(toolHeaderLogo);
+
+        if (animated) {
+
+            if (fadeIn) {
+
+                $logo.css({ 
+                    display : 'block',
+                    opacity : 0
+                });
+                $logo.fadeTo(DRAWER_DURATION, 1);
+    
+            } else {
+    
+                $logo.fadeTo(DRAWER_DURATION, 0, function(){
+                    $logo.css({ display : 'none' });                
+                });
+    
+            }
+        } else {
+
+            if (fadeIn) {
+
+                $logo.css({ 
+                    display : 'block', 
+                    opacity : 1
+                });
+    
+            } else {
+    
+                $logo.css({ 
+                    display : 'none',
+                    opacity : 0 
+                });   
+    
+            }
+        }
+    }
+
     function onClickToolHeaderLogo() {
 
         if (isWideScreen()) {
@@ -296,21 +319,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     function animateDrawer() {
 
-        var $drawerFrame = $(drawerFrame);
+        // But one animated is mapFrame
+        var $mapFrame = $(mapFrame);
 
         if (_isDrawerOpen) {
 
-            $drawerFrame.animate({
+            $mapFrame.animate({
                 left : 0
             }, DRAWER_DURATION);
 
         } else {
 
-            $drawerFrame.animate({
+            $mapFrame.animate({
                 left : -DRAWER_WIDTH
             }, DRAWER_DURATION);
 
         }
+
+        fadeToolHeaderLogo(!_isDrawerOpen, true);
 
     }
 

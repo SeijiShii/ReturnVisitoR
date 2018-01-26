@@ -164,7 +164,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         if (!_this.swipeEnabled) {
             return;
         }
-        
+
         isSwiping = false;
         var duration = new Date().getTime() - startTime,
             speed;

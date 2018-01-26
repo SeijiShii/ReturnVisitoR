@@ -86,7 +86,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         nativeMap.on(nativeEvent.CAMERA_MOVE_END, function() {
             saveCameraPosition(nativeMap.getCameraPosition().target, nativeMap.getCameraPosition().zoom);
         });
-
         nativeMap.on(nativeEvent.MAP_LONG_CLICK, onLongClickNativeMap);
 
     }
