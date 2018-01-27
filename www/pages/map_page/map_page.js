@@ -144,8 +144,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         loadFile.loadScript('./view_components/map_pane/map_pane.js', function(){
 
-            mapPane = viewComponents.mapPane;
-            mapPane.initialize(mapPaneBase);
+            mapPane = new viewComponents.MapPane(mapPaneBase);
             
             mapPane.onMapLongClick = function(latLng) {
 

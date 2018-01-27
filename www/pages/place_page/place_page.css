@@ -64,7 +64,7 @@ h1 {
 }
 
 .primary_pane 
-#map_div {
+#map_pane_base {
 
     position: relative;
     width: 90%;

@@ -7,8 +7,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         loadFile = common.loadFile,
         elements = common.elements,
         viewComponents = returnvisitor.viewComponents,
+        MapPane = viewComponents.MapPane,
         pageFrame,
-        mapDiv,
+        mapPaneBase,
+        mapPane,
+        // mapDiv,
         addressText,
         placeNameText,
         primaryFrame,
@@ -47,16 +50,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     }
 
     function initMap() {
+
+        mapPaneBase = _getElementById('map_pane_base');
+        mapPane = new MapPane(mapPaneBase, false);
          
-        mapDiv = _getElementById('map_div');
+        // mapDiv = _getElementById('map_div');
 
-        if (isBrowser()) {
+        // if (isBrowser()) {
 
-            initBrowserMap();
-        } else {
+        //     initBrowserMap();
+        // } else {
 
-            initNativeMap();
-        }
+        //     initNativeMap();
+        // }
     }
 
     function initBrowserMap() {
@@ -158,7 +164,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         fireMapReloadIfNeeded : function(){
             if (isBrowser()) {
-                initBrowserMap();
+                initMap();
             }
         },
 

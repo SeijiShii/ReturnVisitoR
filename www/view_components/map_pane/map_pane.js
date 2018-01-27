@@ -1,9 +1,11 @@
 'use strict';
 
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(parent, gestureEnabled) {
 
-    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+    var _this = this,
+        _gestureEnabled = gestureEnabled,
+        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = returnvisitor.data.Person,
         common = returnvisitor.common,
         markerPaths = common.markerPaths,
@@ -19,11 +21,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom',
         LONG_PRESS_DURATION = 1500,
-        _onMapLongClick,
+        // _onMapLongClick,
         _centerLatLng;
         
  
-    function initGoogleMap(parent) {
+    function initGoogleMap() {
 
         parent.innerHTML = '';
 
@@ -57,6 +59,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         } else {
             initNativeMap(cameraPosition);
         }
+
+        if (_gestureEnabled === undefined) {
+            _gestureEnabled = true;
+        } 
+
+        _enableGestures(_gestureEnabled);
+
     }
 
     function initNativeMap(cameraPosition) {
@@ -162,7 +171,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         browserMap.addListener('dragend', onBrowserMapCameraPositionChange) ;
         browserMap.addListener('zoom_changed', onBrowserMapCameraPositionChange);
 
-        enableLongClickListenerOnBrowserMap(true);
     }
 
     function onBrowserMapCameraPositionChange() {
@@ -192,15 +200,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         }
 
         function onMousedown(e) {
+
+            if (isPressing) {
+                return;
+            }
+
+            console.log('onMouseDown');
+
             isPressing = true;
 
             var checkPressing = function() {
                 if (isPressing) {
+                    clearTimeout(timerId);
+                    isPressing = false;
                     onLongClickBrowserMap(e.latLng);
                 }
             };
 
-            setTimeout(checkPressing, LONG_PRESS_DURATION);
+            var timerId = setTimeout(checkPressing, LONG_PRESS_DURATION);
         }
 
         function onMouseup() {
@@ -241,8 +258,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
         _centerLatLng = latLng;
 
-        if (typeof _onMapLongClick === 'function' ) {
-            _onMapLongClick(latLng);
+        if (typeof _this.onMapLongClick === 'function' ) {
+            _this.onMapLongClick(latLng);
         }
     }
 
@@ -420,37 +437,47 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
     }
 
 
-    function _initialize(parent) {
+    function initialize() {
 
-        initGoogleMap(parent);
+        initGoogleMap();
     }
 
-    function _animateToCenterLatLng() {
-        
-        console.log('mapDiv.clientHeight:', mapDiv.clientHeight);
-
+    this.__mapZoomLevel = function() {
         if (isBrowser()) {
-
-            console.log(browserMap.getBounds());
-            
-            browserMap.panTo(_centerLatLng);
-
+            return browserMap.getZoom();
         } else {
-
-            nativeMapProjectionTest();
-
-            // nativeMap.animateCamera({
-            //     target: {
-            //         lat: _centerLatLng.lat,
-            //         lng: _centerLatLng.lng
-            //     },
-            //     duration: 500
-            // }, function(){
-                
-                
-            // });
+            return nativeMap.getCameraPosition().zoom;
         }
-    } 
+    };
+
+    initialize();
+
+    // function _animateToCenterLatLng() {
+        
+    //     console.log('mapDiv.clientHeight:', mapDiv.clientHeight);
+
+    //     if (isBrowser()) {
+
+    //         console.log(browserMap.getBounds());
+            
+    //         browserMap.panTo(_centerLatLng);
+
+    //     } else {
+
+    //         nativeMapProjectionTest();
+
+    //         // nativeMap.animateCamera({
+    //         //     target: {
+    //         //         lat: _centerLatLng.lat,
+    //         //         lng: _centerLatLng.lng
+    //         //     },
+    //         //     duration: 500
+    //         // }, function(){
+                
+                
+    //         // });
+    //     }
+    // } 
 
     // this.mapZoomLevel = function() {
     //     if (isBrowser()) {
@@ -462,19 +489,30 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
     // _initialize();
 
-    return {
-        initialize : _initialize,
-        get mapZoomLevel() {
-            if (isBrowser()) {
-                return browserMap.getZoom();
-            } else {
-                return nativeMap.getCameraPosition().zoom;
-            }
-        },
+    // return {
+    //     initialize : _initialize,
+    //     get mapZoomLevel() {
+    //         if (isBrowser()) {
+    //             return browserMap.getZoom();
+    //         } else {
+    //             return nativeMap.getCameraPosition().zoom;
+    //         }
+    //     },
 
-        set onMapLongClick(f) {
-            _onMapLongClick = f;
-        }
-    };
+    //     set onMapLongClick(f) {
+    //         _onMapLongClick = f;
+    //     }
+    // };
 
-})();
+};
+
+Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane, {
+    
+    zoomLevel : {
+        get : function() {
+
+            return this.__mapZoomLevel();
+        } 
+    }
+
+});
