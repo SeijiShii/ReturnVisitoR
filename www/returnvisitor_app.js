@@ -52,7 +52,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     }
     
     function onDeviceReady() {
-        // console.log('onDeviceReady called!');
+        
+        document.addEventListener('backbutton', onClickBackButton, false);
 
         prepareBrowserMap();
         initFrames();
@@ -306,7 +307,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             var currentPage = pageStack.shift();
 
             if ( pageStack.length <= 0 ) {
-                //
+                navigator.Backbutton.goBack();
             } else {
 
 
@@ -400,8 +401,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     //     });
     // }
 
+    function onClickBackButton() {
+        launcher.launchDownPage();
+    }
 
     document.addEventListener('deviceready', onDeviceReady, false);
+    
     window.addEventListener('resize', onResizeScreen);
 
     return {
