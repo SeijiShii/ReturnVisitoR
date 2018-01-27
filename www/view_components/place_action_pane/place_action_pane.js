@@ -12,26 +12,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         hcButton,
         nhButton,
         cancelButton,
-        _onNewPlaceClick;
+        _onNewPlaceClick,
+        _onCancelClick;
     
-    function _initialize(primaryFrame, secondaryFrame, callback) {
+    function _initialize(callback) {
 
         loadFile.loadCss('./view_components/place_action_pane/place_action_pane.css');
         loadFile.loadHtmlAsElement('./view_components/place_action_pane/place_action_pane.html', function(elm) {
 
             paneFrame = elm;
 
-            initButtons();
-
-            primaryFrame.appendChild(paneFrame);
-            $(primaryFrame).css({
-                height : paneFrame.style.height
-            });
-
-            $(secondaryFrame).css({
-                height : 0
-            });
-
+            initNewPlaceButton();
+            initCancelButton();
       
             if ( typeof callback === 'function' ) {
                 callback(paneFrame);
@@ -39,12 +31,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         });
     } 
 
-    function initButtons() {
-
+    function initNewPlaceButton() {
+    
         newPlaceButton = _getElementById('new_place_button');
         newPlaceButton.addEventListener('click', onNewPlaceButtonClick);
-
-
     }
 
     function onNewPlaceButtonClick() {
@@ -54,6 +44,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         if ( typeof _onNewPlaceClick === 'function' ) {
             _onNewPlaceClick();
         }
+    }
+
+    
+    function initCancelButton() {
+
+        cancelButton = _getElementById('cancel_button');
+        cancelButton.addEventListener('click', onCancelButtonClick);
+    }
+
+    function onCancelButtonClick() {
+
+        elementsEffect.blink(cancelButton);
+
+        if ( typeof _onNewPlaceClick === 'function' ) {
+            _onCancelClick();
+        }
+        
     }
 
     function _getElementById(id) {
@@ -66,6 +73,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         initialize : _initialize,
         set onNewPlaceClick(f) {
             _onNewPlaceClick = f;
+        },
+
+        set onCancelClick(f) {
+            _onCancelClick = f;
+        },
+
+        get paneFrame() {
+            return paneFrame;
         }
     };
 

@@ -33,6 +33,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         AD_FRAME_HEIGHT = 50,
         WIDTH_BREAK_POINT = 500,
         LAUNCH_DURATION = 300,
+        launcher,
         mapPage,
         placePage,
         _isBrowserMapReady = false;
@@ -147,9 +148,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         
         function doInitializeMapPage() {
 
-            mapPage.initialize(function(frame){
+            mapPage.initialize(function(){
 
-                setInitialContent(frame);
+                launcher.launchUpPage(mapPage);
             });
     
             mapPage.onMapLongClick = function(latLng) {
@@ -159,48 +160,48 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         }
     }
 
-    function setInitialContent(content) {
+    // function setInitialContent(content) {
 
-        $(content).css({
-            top : 0,
-            left : 0,
-            height : '50%'
-        });
-        slideFrame.appendChild(content);
-    }
+    //     $(content).css({
+    //         top : 0,
+    //         left : 0,
+    //         height : '50%'
+    //     });
+    //     slideFrame.appendChild(content);
+    // }
 
-    function launchNextContent(content, oldContent, callback) {
+    // function launchNextContent(content, oldContent, callback) {
 
-        var $new = $(content);
-        $new.css({
-            top : '50%',
-            left : 0,
-            height : '50%'
+    //     var $new = $(content);
+    //     $new.css({
+    //         top : '50%',
+    //         left : 0,
+    //         height : '50%'
 
-        });
-        slideFrame.appendChild(content);
+    //     });
+    //     slideFrame.appendChild(content);
 
-        var $slide = $(slideFrame);
-        $slide.animate({
-            top : '100%'
-        }, LAUNCH_DURATION, function(){
+    //     var $slide = $(slideFrame);
+    //     $slide.animate({
+    //         top : '-100%'
+    //     }, LAUNCH_DURATION, function(){
 
-            if (oldContent) {
-                slideFrame.removeChild(oldContent);
-            }
+    //         if (oldContent) {
+    //             slideFrame.removeChild(oldContent);
+    //         }
 
-            $slide.css({
-                top : 0
-            });
-            $new.css({
-                top : 0
-            });
+    //         $slide.css({
+    //             top : 0
+    //         });
+    //         $new.css({
+    //             top : 0
+    //         });
 
-            if ( typeof callback === 'function' ) {
-                callback();
-            }
-        });
-    }
+    //         if ( typeof callback === 'function' ) {
+    //             callback();
+    //         }
+    //     });
+    // }
 
     function loadPlacePageFilesIfNeeded(latlng) {
 
@@ -227,14 +228,128 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             },
             zoom : mapPage.mapZoomLevel
         };
-        placePage.initialize(function(frame){
+        placePage.initialize(function(){
 
-            launchNextContent(frame, mapPage.pageFrame, function() {
+            launcher.launchUpPage(placePage, function() {
                 placePage.fireMapReloadIfNeeded();
             });
         }, mapOptions);
+
+        placePage.onCancelClick = function() {
+
+            launcher.launchDownPage();
+        };
     }
 
+    launcher = (function(){
+
+        var pageStack = [];
+
+        function _launchUpPage(page, callback) {
+
+            pageStack.unshift(page);
+
+            if (pageStack.length <= 1) {
+
+                setInitialPage(page);
+
+            } else {
+
+                launchNextPage(page, callback);
+            }
+        }
+
+        function setInitialPage(page) {
+
+            $(page.pageFrame).css({
+                top : 0,
+                left : 0,
+                height : '50%'
+            });
+            slideFrame.appendChild(page.pageFrame);
+        }
+
+        function launchNextPage(page, callback) {
+
+            var frame = page.pageFrame;
+            var $frame = $(frame);
+            $frame.css({
+                top : '50%',
+                left : 0,
+                height : '50%'
+    
+            });
+            slideFrame.appendChild(frame);
+    
+            var $slide = $(slideFrame);
+            $slide.animate({
+                top : '-100%'
+            }, LAUNCH_DURATION, function(){
+    
+                slideFrame.removeChild(slideFrame.firstChild);
+    
+                $slide.css({
+                    top : 0
+                });
+                $frame.css({
+                    top : 0
+                });
+    
+                if ( typeof callback === 'function' ) {
+                    callback();
+                }
+            });
+        }
+    
+        function _launchDownPage() {
+
+            var currentPage = pageStack.shift();
+
+            if ( pageStack.length <= 0 ) {
+                //
+            } else {
+
+
+                var $slide = $(slideFrame);
+
+                $slide.css({
+                    top : '-100%'
+                });
+
+                $(currentPage.pageFrame).css({
+                    top : '-50%'
+                });
+
+                var nextPage = pageStack[0];
+                if (nextPage === mapPage) {
+                    mapPage.onRelaunch();
+                }
+                var nextFrame = nextPage.pageFrame;
+
+                var $next = $(nextFrame);
+                $next.css({
+                    top : 0
+                });
+
+                slideFrame.appendChild(nextFrame);
+
+                $slide.animate({
+                    top : 0
+                }, LAUNCH_DURATION, function(){
+                    
+                    slideFrame.removeChild(slideFrame.firstChild);
+
+                });
+
+            }
+        }
+
+        return {
+            launchUpPage : _launchUpPage,
+            launchDownPage : _launchDownPage
+        };
+    })();
+ 
     // function loadRecordVisitPageFiles(options, postFadeInCallback) {
     //     loadFile.loadCss('./record_visit_page/record_visit_page.css');
     //     loadFile.appendHtmlToAppFrame('./record_visit_page/record_visit_page.html', function() {

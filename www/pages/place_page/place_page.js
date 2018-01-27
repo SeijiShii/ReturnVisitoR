@@ -14,9 +14,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         primaryFrame,
         secondaryFrame,
         _mapOptions,
-        placeActionPane;
+        placeActionPane,
+        _onCancelClick;
 
-    function _initialize(callback, mapOptions) {
+    function _initialize(onReadyCallback, mapOptions) {
 
         _mapOptions = mapOptions;
 
@@ -30,8 +31,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
             loadPlaceActionPaneIfNeeded();
 
-            if ( typeof callback === 'function' ) {
-                callback(pageFrame);
+            if ( typeof onReadyCallback === 'function' ) {
+                onReadyCallback();
             }
 
         });        
@@ -126,7 +127,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     function initPlaceActionPane() {
 
         placeActionPane = viewComponents.placeActionPane;
-        placeActionPane.initialize(primaryFrame, secondaryFrame);
+        placeActionPane.initialize(function(frame){
+            primaryFrame.appendChild(frame);
+            $(primaryFrame).css({
+                height : frame.style.height
+            });
+        });
+
+        placeActionPane.onNewPlaceClick = function() {
+
+        };
+
+        placeActionPane.onCancelClick = function() {
+
+            if ( typeof _onCancelClick === 'function' ) {
+                _onCancelClick();
+            }
+        };
+
+        $(secondaryFrame).css({
+            height : 0
+        });
     }
 
     return {
@@ -134,10 +155,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         get pageFrame() {
             return pageFrame;
         },
+
         fireMapReloadIfNeeded : function(){
             if (isBrowser()) {
                 initBrowserMap();
             }
+        },
+
+        set onCancelClick(f) {
+
+            _onCancelClick = f;
         }
     };
 

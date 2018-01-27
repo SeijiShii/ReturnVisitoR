@@ -1,4 +1,5 @@
 .place_page {
+    position: relative;
     background-color: whitesmoke;
     overflow: auto;
     color: #333;

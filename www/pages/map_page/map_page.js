@@ -27,7 +27,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         _isWideScreen = false,
         _onMapLongClick;
 
-    function _initialize(callback) {
+    function _initialize(onReadyCallback) {
 
         loadFile.loadHtmlAsElement('./pages/map_page/map_page.html', function(elm){
 
@@ -42,10 +42,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     
             _resizeFrames();
     
-            loadMapPaneFiles();
+            initMapPane();
             
-            if ( typeof callback === 'function' ) {
-                callback(mapPageFrame);                
+            if ( typeof onReadyCallback === 'function' ) {
+                onReadyCallback();                
             }
 
         });
@@ -140,7 +140,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     }
 
-    function loadMapPaneFiles() {
+    function initMapPane() {
 
         loadFile.loadScript('./view_components/map_pane/map_pane.js', function(){
 
@@ -329,6 +329,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     return {
 
         initialize : _initialize,
+
+        onRelaunch : function(){
+            initMapPane();
+        },
         
         resizePage : function(isWide) {
 
@@ -346,7 +350,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         get mapZoomLevel() {
             return mapPane.mapZoomLevel;
-        }
+        },
         
     };
 

@@ -47,7 +47,9 @@ img.logo {
 }
 
 
-#app_frame #slide_frame #control_frame {
+#app_frame 
+#slide_frame 
+#control_frame {
 
     position: absolute;
     top: 50%;

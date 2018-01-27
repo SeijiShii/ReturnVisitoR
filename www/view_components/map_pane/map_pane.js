@@ -6,7 +6,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = returnvisitor.data.Person,
         common = returnvisitor.common,
-        loadFile = common.loadFile,
         markerPaths = common.markerPaths,
         nativeMapExtension = common.nativeMapExtension,
         pinMarkerPaths = markerPaths.pinMarkerPaths,
@@ -20,13 +19,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom',
         LONG_PRESS_DURATION = 1500,
-        _tellOnMapLongClicked,
-        _onClickMarker,
+        _onMapLongClick,
         _centerLatLng;
         
  
     function initGoogleMap(parent) {
-    
+
+        parent.innerHTML = '';
+
+        var wrapper = document.createElement('div');
+        $(wrapper).css({
+            top : 0,
+            left : 0,
+            width : '100%',
+            height : '100%'
+        });
+        wrapper.id = 'map_div_wrapper';
+
         mapDiv = document.createElement('div');
         $(mapDiv).css({
             top : 0,
@@ -34,14 +43,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
             width : '100%',
             height : '100%'
         });
-        parent.appendChild(mapDiv);
+        mapDiv.id = 'map_div';
+
+        wrapper.appendChild(mapDiv);
+        parent.appendChild(wrapper);
 
         var cameraPosition = loadCameraPosition();
 
         // console.log(cameraPosition);
 
         if (isBrowser()) {
-            initBrowserMap();
+            initBrowserMap(cameraPosition);
         } else {
             initNativeMap(cameraPosition);
         }
@@ -123,7 +135,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
     }
 
-    function initBrowserMap() {
+    function initBrowserMap(cameraPosition) {
 
         browserMap = new google.maps.Map(mapDiv, {
             center: {
@@ -136,8 +148,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
             mapTypeControl: false,
             fullscreenControl: false,
         });
-
-        var cameraPosition = loadCameraPosition();
 
         if (cameraPosition) {
             browserMap.setOptions({
@@ -231,8 +241,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
         _centerLatLng = latLng;
 
-        if (typeof _tellOnMapLongClicked === 'function' ) {
-            _tellOnMapLongClicked(latLng);
+        if (typeof _onMapLongClick === 'function' ) {
+            _onMapLongClick(latLng);
         }
     }
 
@@ -412,7 +422,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
 
     function _initialize(parent) {
 
-        loadCameraPosition();
         initGoogleMap(parent);
     }
 
@@ -443,19 +452,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
         }
     } 
 
- 
+    // this.mapZoomLevel = function() {
+    //     if (isBrowser()) {
+    //         return browserMap.getZoom();
+    //     } else {
+    //         return nativeMap.getCameraPosition().zoom;
+    //     }
+    // };
+
+    // _initialize();
+
     return {
-
         initialize : _initialize,
-     
-        set onMapLongClick(f) {
-            _tellOnMapLongClicked = f;
-        },
-
-        set onClickMarker(f) {
-            _onClickMarker = f;
-        },
-
         get mapZoomLevel() {
             if (isBrowser()) {
                 return browserMap.getZoom();
@@ -464,9 +472,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.mapPane = (function(
             }
         },
 
-        enableGestures : _enableGestures,
-        animateToCenterLatLng : _animateToCenterLatLng,
-        
+        set onMapLongClick(f) {
+            _onMapLongClick = f;
+        }
     };
 
-}());
+})();
