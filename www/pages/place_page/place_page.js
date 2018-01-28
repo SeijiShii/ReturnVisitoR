@@ -7,7 +7,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         loadFile = common.loadFile,
         elements = common.elements,
         viewComponents = returnvisitor.viewComponents,
-        MapPane = viewComponents.MapPane,
+        mapUtils = returnvisitor.mapUtils,
+        // MapPane = viewComponents.MapPane,
         pageFrame,
         mapPaneBase,
         mapPane,
@@ -53,8 +54,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     function initMap() {
 
         mapPaneBase = _getElementById('map_pane_base');
-        mapPane = new MapPane(mapPaneBase, false, _pageOptions.latLng);
-        
+
+        if (cordova.platformId === 'browser') {
+
+            mapPane = new mapUtils.BrowserMapPane(mapPaneBase, false, _pageOptions.latLng);
+
+        } else {
+
+            mapPane = new mapUtils.NativeMapPane(mapPaneBase, false, _pageOptions.latLng);
+
+        }
     }
 
     function _getElementById(id) {

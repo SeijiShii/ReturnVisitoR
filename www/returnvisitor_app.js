@@ -410,7 +410,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     window.addEventListener('resize', onResizeScreen);
 
     return {
-        onBrowserMapReady : _onBrowserMapReady
+        onBrowserMapReady : _onBrowserMapReady,
+        get isBrowserMapReady() {
+            return _isBrowserMapReady;
+        }
+
     };
    
 }());

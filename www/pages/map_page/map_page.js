@@ -142,22 +142,41 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
     function initMapPane() {
 
-        loadFile.loadScript('./view_components/map_pane/map_pane.js', function(){
+        if (isBrowser()) {
 
-            mapPane = new viewComponents.MapPane(mapPaneBase);
-            
-            mapPane.onMapLongClick = function(latLng) {
+            loadFile.loadScript('./map_utils/browser_map_pane.js', function(){
 
-                if ( typeof _onMapLongClick === 'function' ) {
-                    _onMapLongClick(latLng);
+                function initBrowserMapPane() {
+
+                    if (returnvisitor.app.isBrowserMapReady) {
+                        clearInterval(timerId);
+                        mapPane = new returnvisitor.mapUtils.BrowserMapPane(mapPaneBase);
+                        postInitMap();
+                    }
                 }
-            };
+                var timerId = setInterval(initBrowserMapPane, 20);
+                
+            });
 
-            mapPane.onClickMarker = function(place) {
+        } else {
 
-            };
+            loadFile.loadScript('./map_utils/native_map_pane.js', function(){
 
-        });
+                mapPane = new returnvisitor.mapUtils.NativeMapPane(mapPaneBase);
+                postInitMap();
+    
+            });
+        }
+    }
+
+    
+
+    function postInitMap() {
+
+        mapPane.onMapLongClick = _onMapLongClick;
+        mapPane.onClickMarker = function(place) {
+
+        };
     }
 
     function initMaOverlay() {
@@ -301,7 +320,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             });
 
         }
+    }
 
+    function isBrowser() {
+        return cordova.platformId === 'browser';
     }
 
     // function onNewPlaceVisit(latLng) {
