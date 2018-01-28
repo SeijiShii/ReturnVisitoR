@@ -429,68 +429,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
 
     // TODO: dialog to show place data.
 
-    // function _enableGestures(enabled) {
-
-    //     if (cordova.platformId === 'android' ) {
-
-    //         if (enabled) {
-    //             nativeMap.setOptions({
-    //                 'gestures': {
-    //                     'scroll': true,
-    //                     'tilt': true,
-    //                     'rotate': true,
-    //                     'zoom': true
-    //                 },
-    //                 'controls': {
-    //                     'compass': true,
-    //                     'myLocationButton': true,
-    //                     'indoorPicker': true,
-    //                     'zoom': true // Only for Android
-    //                 },
-    //             });
-    //         } else {
-    //             nativeMap.setOptions({
-    //                 'gestures': {
-    //                     'scroll': false,
-    //                     'tilt': false,
-    //                     'rotate': false,
-    //                     'zoom': false
-    //                 },
-    //                 'controls': {
-    //                     'compass': false,
-    //                     'myLocationButton': false,
-    //                     'indoorPicker': false,
-    //                     'zoom': false // Only for Android
-    //                 },
-    //             });
-    //         }
-    
-    //     } else {
-
-    //         if (enabled) {
-
-    //             browserMap.setOptions({
-    //                 zoomControl: true,
-    //                 clickableIcons : true,
-    //                 disableDoubleClickZoom : true,
-    //                 draggable : true,
-    //             });
-    //             enableLongClickListenerOnBrowserMap(true);
-                
-    //         } else {
-
-    //             browserMap.setOptions({
-    //                 zoomControl: false,
-    //                 clickableIcons : false,
-    //                 disableDoubleClickZoom : false,
-    //                 draggable : false,
-    //             });
-    //             enableLongClickListenerOnBrowserMap(false);
-    //         }
-    //     }
-    // }
-
-
     function initialize() {
 
         initGoogleMap();
@@ -541,22 +479,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
     //     }
     // };
 
-    // _initialize();
-
-    // return {
-    //     initialize : _initialize,
-    //     get mapZoomLevel() {
-    //         if (isBrowser()) {
-    //             return browserMap.getZoom();
-    //         } else {
-    //             return nativeMap.getCameraPosition().zoom;
-    //         }
-    //     },
-
-    //     set onMapLongClick(f) {
-    //         _onMapLongClick = f;
-    //     }
-    // };
 
 };
 
