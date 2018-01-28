@@ -222,7 +222,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         placePage = returnvisitor.placePage;
     
-        var mapOptions = {
+        var pageOptions = {
             latLng : {
                 lat : latLng.lat,
                 lng : latLng.lng
@@ -234,7 +234,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             launcher.launchUpPage(placePage, function() {
                 placePage.fireMapReloadIfNeeded();
             });
-        }, mapOptions);
+        }, pageOptions);
 
         placePage.onCancelClick = function() {
 

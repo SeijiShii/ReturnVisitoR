@@ -1,9 +1,10 @@
 'use strict';
 
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(parent, gestureEnabled) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(parent, gestureEnabled, latLng) {
 
     var _this = this,
+        _latLng = latLng,
         _gestureEnabled = gestureEnabled,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         Person = returnvisitor.data.Person,
@@ -26,6 +27,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
         
  
     function initGoogleMap() {
+
+        if (_gestureEnabled === undefined) {
+            _gestureEnabled = true;
+        } 
 
         parent.innerHTML = '';
 
@@ -52,6 +57,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
 
         var cameraPosition = loadCameraPosition();
 
+        if (_latLng) {
+            cameraPosition.lat = latLng.lat;
+            cameraPosition.lng = latLng.lng;
+        }
+
         // console.log(cameraPosition);
 
         if (isBrowser()) {
@@ -60,24 +70,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
             initNativeMap(cameraPosition);
         }
 
-        if (_gestureEnabled === undefined) {
-            _gestureEnabled = true;
-        } 
-
-        _enableGestures(_gestureEnabled);
-
     }
 
     function initNativeMap(cameraPosition) {
 
         var options = {
             'mapType': plugin.google.maps.MapTypeId.HYBRID,
-            'controls': {
-                'compass': true,
-                'zoom': true,
-                'myLocationButton': true,
-                'mapToolbar' : false
-            },
             'preferences': {
                 'padding': {
                     top: 50
@@ -89,8 +87,41 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
                     lng: 0
                 },
                 'zoom': 4
-            }
+            },
         };
+
+        if (_gestureEnabled) {
+
+            options.gestures = {
+                'scroll': true,
+                'tilt': true,
+                'rotate': true,
+                'zoom': true
+            };
+
+            options.controls = {
+                'compass': true,
+                'myLocationButton': true,
+                'indoorPicker': true,
+                'zoom': true // Only for Android
+            };
+
+        } else {
+
+            options.gestures = {
+                'scroll': false,
+                'tilt': false,
+                'rotate': false,
+                'zoom': false
+            };
+
+            options.controls = {
+                'compass': false,
+                'myLocationButton': false,
+                'indoorPicker': false,
+                'zoom': false // Only for Android
+            };
+        }
 
         if (cameraPosition) {
             options['camera'] = {
@@ -107,7 +138,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
         nativeMap.on(nativeEvent.CAMERA_MOVE_END, function() {
             saveCameraPosition(nativeMap.getCameraPosition().target, nativeMap.getCameraPosition().zoom);
         });
-        nativeMap.on(nativeEvent.MAP_LONG_CLICK, onLongClickNativeMap);
+
+        if (_gestureEnabled) {
+            nativeMap.on(nativeEvent.MAP_LONG_CLICK, onLongClickNativeMap);
+        }
 
     }
 
@@ -146,7 +180,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
 
     function initBrowserMap(cameraPosition) {
 
-        browserMap = new google.maps.Map(mapDiv, {
+        var options = {
             center: {
                 lat : 0,
                 lng : 0
@@ -156,21 +190,41 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
             streetViewControl : false,
             mapTypeControl: false,
             fullscreenControl: false,
-        });
+        };
 
         if (cameraPosition) {
-            browserMap.setOptions({
-                center: {
-                    lat : parseFloat(cameraPosition.lat),
-                    lng : parseFloat(cameraPosition.lng)
-                },
-                zoom : parseInt(cameraPosition.zoom)
-            });
+            options.center = {
+                lat : parseFloat(cameraPosition.lat),
+                lng : parseFloat(cameraPosition.lng)
+            };
+            options.zoom =  parseInt(cameraPosition.zoom)
         }
+
+        if (_gestureEnabled) {
+
+            options.zoomControl = true;
+            options.clickableIcons = true;
+            options.disableDoubleClickZoom = true;
+            options.draggable = true;
+
+        } else {
+
+            options.zoomControl = false;
+            options.clickableIcons = false;
+            options.disableDoubleClickZoom = false;
+            options.draggable = false;
+
+        }
+
+
+        browserMap = new google.maps.Map(mapDiv, options);
+
+
 
         browserMap.addListener('dragend', onBrowserMapCameraPositionChange) ;
         browserMap.addListener('zoom_changed', onBrowserMapCameraPositionChange);
 
+        enableLongClickListenerOnBrowserMap(_gestureEnabled);
     }
 
     function onBrowserMapCameraPositionChange() {
@@ -375,66 +429,66 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MapPane = function(p
 
     // TODO: dialog to show place data.
 
-    function _enableGestures(enabled) {
+    // function _enableGestures(enabled) {
 
-        if (cordova.platformId === 'android' ) {
+    //     if (cordova.platformId === 'android' ) {
 
-            if (enabled) {
-                nativeMap.setOptions({
-                    'gestures': {
-                        'scroll': true,
-                        'tilt': true,
-                        'rotate': true,
-                        'zoom': true
-                    },
-                    'controls': {
-                        'compass': true,
-                        'myLocationButton': true,
-                        'indoorPicker': true,
-                        'zoom': true // Only for Android
-                    },
-                });
-            } else {
-                nativeMap.setOptions({
-                    'gestures': {
-                        'scroll': false,
-                        'tilt': false,
-                        'rotate': false,
-                        'zoom': false
-                    },
-                    'controls': {
-                        'compass': false,
-                        'myLocationButton': false,
-                        'indoorPicker': false,
-                        'zoom': false // Only for Android
-                    },
-                });
-            }
+    //         if (enabled) {
+    //             nativeMap.setOptions({
+    //                 'gestures': {
+    //                     'scroll': true,
+    //                     'tilt': true,
+    //                     'rotate': true,
+    //                     'zoom': true
+    //                 },
+    //                 'controls': {
+    //                     'compass': true,
+    //                     'myLocationButton': true,
+    //                     'indoorPicker': true,
+    //                     'zoom': true // Only for Android
+    //                 },
+    //             });
+    //         } else {
+    //             nativeMap.setOptions({
+    //                 'gestures': {
+    //                     'scroll': false,
+    //                     'tilt': false,
+    //                     'rotate': false,
+    //                     'zoom': false
+    //                 },
+    //                 'controls': {
+    //                     'compass': false,
+    //                     'myLocationButton': false,
+    //                     'indoorPicker': false,
+    //                     'zoom': false // Only for Android
+    //                 },
+    //             });
+    //         }
     
-        } else {
+    //     } else {
 
-            if (enabled) {
+    //         if (enabled) {
 
-                browserMap.setOptions({
-                    zoomControl: true,
-                    clickableIcons : true,
-                    disableDoubleClickZoom : true,
-                    draggable : true,
-                });
-                enableLongClickListenerOnBrowserMap(true);
+    //             browserMap.setOptions({
+    //                 zoomControl: true,
+    //                 clickableIcons : true,
+    //                 disableDoubleClickZoom : true,
+    //                 draggable : true,
+    //             });
+    //             enableLongClickListenerOnBrowserMap(true);
                 
-            } else {
+    //         } else {
 
-                browserMap.setOptions({
-                    zoomControl: false,
-                    clickableIcons : false,
-                    disableDoubleClickZoom : false,
-                    draggable : false,
-                });
-                enableLongClickListenerOnBrowserMap(false);
-            }
-        }
-    }
+    //             browserMap.setOptions({
+    //                 zoomControl: false,
+    //                 clickableIcons : false,
+    //                 disableDoubleClickZoom : false,
+    //                 draggable : false,
+    //             });
+    //             enableLongClickListenerOnBrowserMap(false);
+    //         }
+    //     }
+    // }
 
 
     function initialize() {

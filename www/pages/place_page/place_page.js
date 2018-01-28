@@ -16,13 +16,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         placeNameText,
         primaryFrame,
         secondaryFrame,
-        _mapOptions,
+        // _mapOptions,
+        _pageOptions,
         placeActionPane,
         _onCancelClick;
 
-    function _initialize(onReadyCallback, mapOptions) {
+    function _initialize(onReadyCallback, pageOptions) {
 
-        _mapOptions = mapOptions;
+        _pageOptions = pageOptions;
 
         loadFile.loadCss('./pages/place_page/place_page.css');
         loadFile.loadHtmlAsElement('./pages/place_page/place_page.html', function(elm){
@@ -52,7 +53,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     function initMap() {
 
         mapPaneBase = _getElementById('map_pane_base');
-        mapPane = new MapPane(mapPaneBase, false);
+        mapPane = new MapPane(mapPaneBase, false, _pageOptions.latLng);
          
         // mapDiv = _getElementById('map_div');
 
@@ -65,49 +66,49 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         // }
     }
 
-    function initBrowserMap() {
+    // function initBrowserMap() {
 
-        var browserMap = new google.maps.Map(mapDiv, {
-            center: {
-                lat : _mapOptions.latLng.lat,
-                lng : _mapOptions.latLng.lng
-            },
-            zoom : _mapOptions.zoom,
-            mapTypeId : google.maps.MapTypeId.HYBRID,
-            streetViewControl : false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-            draggable : false
-        });
-    }
+    //     var browserMap = new google.maps.Map(mapDiv, {
+    //         center: {
+    //             lat : _mapOptions.latLng.lat,
+    //             lng : _mapOptions.latLng.lng
+    //         },
+    //         zoom : _mapOptions.zoom,
+    //         mapTypeId : google.maps.MapTypeId.HYBRID,
+    //         streetViewControl : false,
+    //         mapTypeControl: false,
+    //         fullscreenControl: false,
+    //         draggable : false
+    //     });
+    // }
 
-    function initNativeMap() {
+    // function initNativeMap() {
 
-        var options = {
-            'mapType': plugin.google.maps.MapTypeId.HYBRID,
-            'controls': {
-                'compass': false,
-                'zoom': false,
-                'myLocationButton': false,
-                'mapToolbar' : false
-            },
-            'camera': {
-                'target': {
-                    lat: _mapOptions.latLng.lat,
-                    lng: _mapOptions.latLng.lng
-                },
-                'zoom': _mapOptions.zoom
-            },
-            'gestures': {
-                'scroll': false,
-                'tilt': false,
-                'rotate': false,
-                'zoom': false
-            },
-        };
+    //     var options = {
+    //         'mapType': plugin.google.maps.MapTypeId.HYBRID,
+    //         'controls': {
+    //             'compass': false,
+    //             'zoom': false,
+    //             'myLocationButton': false,
+    //             'mapToolbar' : false
+    //         },
+    //         'camera': {
+    //             'target': {
+    //                 lat: _mapOptions.latLng.lat,
+    //                 lng: _mapOptions.latLng.lng
+    //             },
+    //             'zoom': _mapOptions.zoom
+    //         },
+    //         'gestures': {
+    //             'scroll': false,
+    //             'tilt': false,
+    //             'rotate': false,
+    //             'zoom': false
+    //         },
+    //     };
     
-        var nativeMap = plugin.google.maps.Map.getMap(mapDiv, options);
-    }
+    //     var nativeMap = plugin.google.maps.Map.getMap(mapDiv, options);
+    // }
 
     function _getElementById(id) {
 
