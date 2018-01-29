@@ -34,12 +34,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
     function initNewPlaceButton() {
     
         newPlaceButton = _getElementById('new_place_button');
+        elementsEffect.blinker(newPlaceButton);
         newPlaceButton.addEventListener('click', onNewPlaceButtonClick);
     }
 
     function onNewPlaceButtonClick() {
-
-        elementsEffect.blink(newPlaceButton);
 
         if ( typeof _onNewPlaceClick === 'function' ) {
             _onNewPlaceClick();
@@ -50,12 +49,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
     function initCancelButton() {
 
         cancelButton = _getElementById('cancel_button');
+        elementsEffect.blinker(cancelButton);
         cancelButton.addEventListener('click', onCancelButtonClick);
     }
 
     function onCancelButtonClick() {
-
-        elementsEffect.blink(cancelButton);
 
         if ( typeof _onNewPlaceClick === 'function' ) {
             _onCancelClick();

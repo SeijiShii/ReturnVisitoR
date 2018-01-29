@@ -1,0 +1,128 @@
+.record_visit_pane {
+    color: #333;
+    background-color: whitesmoke;
+}
+
+
+.record_visit_pane
+.row {
+    position: relative;
+    width: 100%;
+    height: 45px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+
+}
+
+.record_visit_pane
+h2.subtitle {
+    font-size: 18px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.record_visit_primary_frame {
+
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding-bottom: 5px;
+}
+
+.record_visit_primary_frame
+.date_time_row {
+
+    border-bottom: solid 1px gray;
+
+}
+
+.record_visit_primary_frame
+.date_time_column {
+
+    position: relative;
+    width: 50%;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    font-size: 15px;
+    float: left;
+}
+
+.record_visit_primary_frame
+#person_container {
+ 
+    position: relative;
+    border-top: gray solid 1px;
+    width: 100%;
+    height: auto;
+ 
+}
+
+.record_visit_primary_frame
+.add_person_button_row {
+    margin-top: 5px;
+}
+
+.record_visit_primary_frame
+.green_button {
+    position: relative;
+    background-color: #34873b;
+    color: white;
+    font-size: 18px;
+    border-radius: 5px;
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    text-align: center
+}
+
+.record_visit_primary_frame
+.green_button
+.circle_plus {
+    position: absolute;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    margin: auto 0;
+    border-radius: 16px;
+    border: solid 1px white;
+    font-size: 30px;
+    text-align: center;
+    color: white;
+    line-height: 32px;
+    vertical-align: middle;
+
+}
+
+.record_visit_secondary_frame {
+    
+    position: relative;
+    width: 100%;
+    height: auto;
+}
+
+.record_visit_secondary_frame
+.button {
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    margin: 2px;
+    color: darkgreen;
+    float: right;
+    text-align: center;
+    box-shadow: 2px 2px 3px gray;
+}
+
+.record_visit_secondary_frame
+.delete_button {
+    color: red;
+}
+
+.record_visit_secondary_frame
+.cancel_button {
+    color: orange;
+}

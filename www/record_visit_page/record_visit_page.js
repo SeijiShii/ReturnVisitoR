@@ -14,9 +14,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         elements = common.elements,
         elementsEffect = common.elementsEffect,
         dbHelper = common.dbHelper,
-        logoButton,
-        addressText,
-        nameText,
+        // logoButton,
+        // addressText,
+        // nameText,
         roomText,
         dateText,
         timeText,
@@ -45,135 +45,135 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
     }
     
-    function initLogoButton() {
-        logoButton = document.getElementById('logo_button');
-        logoButton.addEventListener('click', onClickLogoButton);
-    }
+    // function initLogoButton() {
+    //     logoButton = document.getElementById('logo_button');
+    //     logoButton.addEventListener('click', onClickLogoButton);
+    // }
 
-    function onClickLogoButton() {
-        fadeOut();
-    }
+    // function onClickLogoButton() {
+    //     fadeOut();
+    // }
 
 
-    function initAddressText() {
-        addressText = document.getElementById('address_text');
-    }
+    // function initAddressText() {
+    //     addressText = document.getElementById('address_text');
+    // }
 
-    function requestReverseGeocoding() {
+    // function requestReverseGeocoding() {
 
-        if (_visit.place.address) {
-            return;
-        }
+    //     if (_visit.place.address) {
+    //         return;
+    //     }
 
-        // Latitude, longitude -> address
-        plugin.google.maps.Geocoder.geocode({
-            'position': _visit.place.latLng
-        }, function(results) {
+    //     // Latitude, longitude -> address
+    //     plugin.google.maps.Geocoder.geocode({
+    //         'position': _visit.place.latLng
+    //     }, function(results) {
 
-            if (results.length === 0) {
-                // Not found
-                return;
-            }
+    //         if (results.length === 0) {
+    //             // Not found
+    //             return;
+    //         }
 
-            // console.dir(results);
+    //         // console.dir(results);
 
-            var address = results[0].extra.lines[0];
-            if (!address) {
-                [
-                    results[0].subThoroughfare || '',
-                    results[0].thoroughfare || '',
-                    results[0].locality || '',
-                    results[0].adminArea || '',
-                    results[0].postalCode || '',
-                    results[0].country || ''].join(', ');
-            }
+    //         var address = results[0].extra.lines[0];
+    //         if (!address) {
+    //             [
+    //                 results[0].subThoroughfare || '',
+    //                 results[0].thoroughfare || '',
+    //                 results[0].locality || '',
+    //                 results[0].adminArea || '',
+    //                 results[0].postalCode || '',
+    //                 results[0].country || ''].join(', ');
+    //         }
 
-            addressText.value = address;
-            _visit.place.address = address;
+    //         addressText.value = address;
+    //         _visit.place.address = address;
 
-        });
-    }
+    //     });
+    // }
 
-    function initPersonVisitText() {
-        personVisitSubtitle = document.getElementById('person_seen_subtitle');
-    }
+    // function initPersonVisitText() {
+    //     personVisitSubtitle = document.getElementById('person_seen_subtitle');
+    // }
 
-    function refreshPersonVisitText(animated) {
+    // function refreshPersonVisitText(animated) {
 
-        if (animated) {
-            if (_visit.personVisits.length <= 0) {
+    //     if (animated) {
+    //         if (_visit.personVisits.length <= 0) {
 
-                $(personVisitSubtitle).animate({
-                    height : 0
-                }, 200, function(){
-                    $(personVisitSubtitle).css({
-                        // display : 'none',
-                        height : 0,
-                        margin : 0,
-                        visibility : 'hidden'
-                    });
-                });
+    //             $(personVisitSubtitle).animate({
+    //                 height : 0
+    //             }, 200, function(){
+    //                 $(personVisitSubtitle).css({
+    //                     // display : 'none',
+    //                     height : 0,
+    //                     margin : 0,
+    //                     visibility : 'hidden'
+    //                 });
+    //             });
 
-            } else {
-                $(personVisitSubtitle).css({
-                    display : 'block',
-                    height : 0,
-                    margin : '3px'
-                });
+    //         } else {
+    //             $(personVisitSubtitle).css({
+    //                 display : 'block',
+    //                 height : 0,
+    //                 margin : '3px'
+    //             });
 
-                $(personVisitSubtitle).animate({
-                    height : '15px'
-                }, 200);
-            }
+    //             $(personVisitSubtitle).animate({
+    //                 height : '15px'
+    //             }, 200);
+    //         }
 
-        } else {
-            if (_visit.personVisits.length <= 0) {
-                $(personVisitSubtitle).css({
-                    // display : 'none',
-                    height : 0,
-                    margin : 0,
-                    visibility : 'hidden'
-                });
-            } else {
-                $(personVisitSubtitle).css({
-                    display : 'block',
-                    height : '15px',
-                    margin : '3px'
-                });
-            }
-        }
-    }
+    //     } else {
+    //         if (_visit.personVisits.length <= 0) {
+    //             $(personVisitSubtitle).css({
+    //                 // display : 'none',
+    //                 height : 0,
+    //                 margin : 0,
+    //                 visibility : 'hidden'
+    //             });
+    //         } else {
+    //             $(personVisitSubtitle).css({
+    //                 display : 'block',
+    //                 height : '15px',
+    //                 margin : '3px'
+    //             });
+    //         }
+    //     }
+    // }
 
-    function initAddPersonButton() {
-        addPersonButton = document.getElementById('add_person_button');
-        addPersonButton.addEventListener('click', onClickAddPersonButton, true);
-    }
+    // function initAddPersonButton() {
+    //     addPersonButton = document.getElementById('add_person_button');
+    //     addPersonButton.addEventListener('click', onClickAddPersonButton, true);
+    // }
 
-    function initPersonContainer() {
-        personContainer = document.getElementById('person_container');
-        _isPersonContainerReady = true;
+    // function initPersonContainer() {
+    //     personContainer = document.getElementById('person_container');
+    //     _isPersonContainerReady = true;
 
-    }
+    // }
 
-    function refreshPersonContainer() {
-        if (_visit.personVisits.length <= 0) {
-            $(personContainer).css({
-                display : 'none',
-                // height : 0,
-                // margin : 0
-            });
-        } else {
-            $(personContainer).css({
-                display : 'block',
-                height : 'auto'
-            });
-        }
-    }
+    // function refreshPersonContainer() {
+    //     if (_visit.personVisits.length <= 0) {
+    //         $(personContainer).css({
+    //             display : 'none',
+    //             // height : 0,
+    //             // margin : 0
+    //         });
+    //     } else {
+    //         $(personContainer).css({
+    //             display : 'block',
+    //             height : 'auto'
+    //         });
+    //     }
+    // }
 
-    function onClickAddPersonButton() {
+    // function onClickAddPersonButton() {
 
-        initAddPersonDialog();
-    }
+    //     initAddPersonDialog();
+    // }
 
     function initRoomText() {
         roomText = document.getElementById('room_text');
@@ -187,33 +187,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
         }
     }
 
-    function initDateText() {
-        dateText = elements.getElementByClassName(appFrame, 'date_text');
-        dateText.addEventListener('click', onClickDateText);
-    }
+    // function initDateText() {
+    //     dateText = elements.getElementByClassName(appFrame, 'date_text');
+    //     dateText.addEventListener('click', onClickDateText);
+    // }
 
-    function refreshDateText() {
-        dateText.innerText = _visit.dateTime.dateString();
-    }
+    // function refreshDateText() {
+    //     dateText.innerText = _visit.dateTime.dateString();
+    // }
 
-    function onClickDateText() {
-        elementsEffect.blink(dateText);
-        initDatePickerDialog();
-    }
+    // function onClickDateText() {
+    //     elementsEffect.blink(dateText);
+    //     initDatePickerDialog();
+    // }
 
-    function initTimeText() {
-        timeText = elements.getElementByClassName(appFrame, 'time_text');
-        timeText.addEventListener('click', onClickTimeText);
-    }
+    // function initTimeText() {
+    //     timeText = elements.getElementByClassName(appFrame, 'time_text');
+    //     timeText.addEventListener('click', onClickTimeText);
+    // }
 
-    function refreshTimeText() {
-        timeText.innerText = _visit.dateTime.timeString();
-    }
+    // function refreshTimeText() {
+    //     timeText.innerText = _visit.dateTime.timeString();
+    // }
 
-    function onClickTimeText() {
-        elementsEffect.blink(timeText);
-        initTimePickerDialog();
-    }
+    // function onClickTimeText() {
+    //     elementsEffect.blink(timeText);
+    //     initTimePickerDialog();
+    // }
 
     function loadDialogFiles() {
         loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
@@ -380,15 +380,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     }
 
 
-    initAddressText();
-    initPersonVisitText();
+    // initAddressText();
+    // initPersonVisitText();
     initAddPersonButton();
     initRoomText();
     initDateText();
     initTimeText();
     initPersonContainer();
 
-    initLogoButton();
+    // initLogoButton();
     initOkButton();
     initCancelButton();
 
@@ -402,7 +402,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
 
             initVisitData();
 
-            requestReverseGeocoding();
+            // requestReverseGeocoding();
             refreshRoomText();
             refreshDateText();
             refreshTimeText();

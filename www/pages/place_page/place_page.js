@@ -8,30 +8,35 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         elements = common.elements,
         viewComponents = returnvisitor.viewComponents,
         mapUtils = returnvisitor.mapUtils,
-        // MapPane = viewComponents.MapPane,
+        data = returnvisitor.data,
+        Place = data.Place,
+        Visit = data.Visit,
         pageFrame,
         mapPaneBase,
         mapPane,
-        // mapDiv,
         addressText,
         placeNameText,
         primaryFrame,
         secondaryFrame,
-        // _mapOptions,
         _pageOptions,
         placeActionPane,
-        _onCancelClick;
+        recordVisitPane,
+        _onCancelClick,
+        _place,
+        FADE_DURATION = 300;
 
     function _initialize(onReadyCallback, pageOptions) {
 
         _pageOptions = pageOptions;
-
+        initPlaceData();
+        
         loadFile.loadCss('./pages/place_page/place_page.css');
         loadFile.loadHtmlAsElement('./pages/place_page/place_page.html', function(elm){
 
             pageFrame = elm;
 
             initFrames();
+            requestReverseGeocoding();
             initMap();
 
             loadPlaceActionPaneIfNeeded();
@@ -57,7 +62,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         if (cordova.platformId === 'browser') {
 
-            mapPane = new mapUtils.BrowserMapPane(mapPaneBase, false, _pageOptions.latLng);
+            var wait = function() {
+
+                if (returnvisitor.app.isBrowserMapReady) {
+                    clearInterval(timerId);
+                    mapPane = new mapUtils.BrowserMapPane(mapPaneBase, false, _pageOptions.latLng);
+                }
+            };
+            var timerId = setInterval(wait, 20);
 
         } else {
 
@@ -98,7 +110,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
 
         placeActionPane.onNewPlaceClick = function() {
-
+            fadeOutPanesAndShowNext(loadRecordVisitPaneIfNeeded);
         };
 
         placeActionPane.onCancelClick = function() {
@@ -111,6 +123,116 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         $(secondaryFrame).css({
             height : 0
         });
+    }
+
+    function initPlaceData() {
+        _place = _pageOptions.place;
+        
+        if (!_place) {
+            _place = new Place(_pageOptions.latLng);
+        }
+    }
+
+    function refreshAddressText() {
+
+        addressText.value = _place.address;
+    }
+
+    function requestReverseGeocoding() {
+
+        if (_place.address) {
+            return;
+        }
+
+        // Latitude, longitude -> address
+        plugin.google.maps.Geocoder.geocode({
+            'position': _place.latLng
+        }, function(results) {
+
+            if (results.length === 0) {
+                // Not found
+                return;
+            }
+
+            // console.dir(results);
+
+            var address = results[0].extra.lines[0];
+            if (!address) {
+                [
+                    results[0].subThoroughfare || '',
+                    results[0].thoroughfare || '',
+                    results[0].locality || '',
+                    results[0].adminArea || '',
+                    results[0].postalCode || '',
+                    results[0].country || ''].join(', ');
+            }
+
+            _place.address = address;
+            refreshAddressText();
+
+        });
+    }
+
+    function fadeOutPanesAndShowNext(showNextPaneFunc) {
+
+        var primaryReady = false,
+            secondaryReady = false;
+
+        $(primaryFrame).fadeTo(0, FADE_DURATION, function(){
+            if (primaryFrame.children.length > 0) {
+                primaryFrame.removeChild(primaryFrame.firstChild);
+            } 
+
+            primaryReady = true;
+
+        });
+
+        $(secondaryFrame).fadeTo(0, FADE_DURATION, function(){
+            if (secondaryFrame.children.length > 0) {
+                secondaryFrame.removeChild(secondaryFrame.firstChild);
+            }
+
+            secondaryReady = true;
+        });
+
+        var wait = function() {
+
+            if (primaryReady && secondaryReady) {
+                clearInterval(timerId);
+                showNextPaneFunc();
+            }
+        };
+
+        var timerId = setInterval(wait, 20);
+        
+    }
+
+    function loadRecordVisitPaneIfNeeded() {
+
+        if (recordVisitPane) {
+            initRecordVisitPane();
+        } else {
+            loadFile.loadScript('./view_components/record_visit_pane/record_visit_pane.js', function(){
+                initRecordVisitPane();
+            });
+        }
+    }
+
+    function initRecordVisitPane() {
+        recordVisitPane = viewComponents.recordVisitPane;
+        var visit = new Visit(_place);
+        recordVisitPane.initialize(function(){
+            onReadyRecordVisitPane();
+        }, visit);
+    }
+
+    function onReadyRecordVisitPane() {
+
+        primaryFrame.appendChild(recordVisitPane.primaryFrame);
+        secondaryFrame.appendChild(recordVisitPane.secondaryFrame);
+
+        $(primaryFrame).fadeTo(1, FADE_DURATION);
+        $(secondaryFrame).fadeTo(1, FADE_DURATION);
     }
 
     return {

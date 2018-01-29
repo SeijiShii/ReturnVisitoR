@@ -16,8 +16,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
     }
 
     this.category = category; 
-
-    
 };
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category = {

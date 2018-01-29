@@ -29,6 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
         parent.innerHTML = '';
 
+        // Native map needs to hava wrapper div, coz map parent element will be contaminated with isContentEditable property as to be false, lately cannot reload map on same parent elemant.
         var wrapper = document.createElement('div');
         $(wrapper).css({
             top : 0,
