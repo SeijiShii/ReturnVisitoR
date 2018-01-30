@@ -14,7 +14,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
-        dialogContent,
         _contentHeight,
         FADE_DURATION = 300;
     
@@ -78,36 +77,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
  
     this.refreshDialogHeight = function() {
 
-        dialogContent = elements.getElementByClassName(dialogBaseFrame, 'dialog_content');
-        // var children = dialogContent.children;
-        // var firstChild = children[0];
-        // var firstRect = firstChild.getBoundingClientRect();
-        // var top     = firstRect.top,
-        //     bottom  = firstRect.bottom;
-
-        // for ( var i = 1 ; i < children.length ; i++ ) {
-        //     var child = children[i];
-        //     var rect = child.getBoundingClientRect();
-        //     // console.log('children[', i, '].getBoundingClientRect():', rect);
-
-        //     top     = rect.top < top ? rect.top : top;
-        //     bottom  = rect.bottom > bottom ? rect.bottom : bottom;
-        // }
-
-        // // console.log('top:', top, 'bottom:', bottom);
-
-        // var contentHeight = bottom - top;
-
-        // if (dialogBaseFrame.parentNode) {
-        //     var parentHeight = dialogBaseFrame.parentNode.clientHeight;
-
-        //     if (contentHeight < parentHeight * 0.9) {
-        //         dialogContent.style.height = (contentHeight + 20) + 'px';
-        //     } else {
-        //         dialogContent.style.height = (parentHeight * 0.9) + 'px';
-        //     }
-
-        // var goalHeight = dialogContent.clientHeight;
         $(dialogFrame).css({
             height : _contentHeight + 10
         });
