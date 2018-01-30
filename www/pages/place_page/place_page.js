@@ -177,7 +177,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         var primaryReady = false,
             secondaryReady = false;
 
-        $(primaryFrame).fadeTo(0, FADE_DURATION, function(){
+        $(primaryFrame).fadeTo(FADE_DURATION ,0 , function(){
             if (primaryFrame.children.length > 0) {
                 primaryFrame.removeChild(primaryFrame.firstChild);
             } 
@@ -186,7 +186,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         });
 
-        $(secondaryFrame).fadeTo(0, FADE_DURATION, function(){
+        $(secondaryFrame).fadeTo(FADE_DURATION, 0, function(){
             if (secondaryFrame.children.length > 0) {
                 secondaryFrame.removeChild(secondaryFrame.firstChild);
             }
@@ -224,9 +224,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             onReadyRecordVisitPane();
         }, visit);
 
-        recordVisitPane.onClickAddPerson = function(visit) {
+        recordVisitPane.onClickAddPerson = function(visit, persons) {
 
-            initAddPersonDialog(visit);
+            initAddPersonDialog(visit, persons);
         };
 
         recordVisitPane.onClickDateText = function(visit) {
@@ -247,8 +247,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         primaryFrame.appendChild(recordVisitPane.primaryFrame);
         secondaryFrame.appendChild(recordVisitPane.secondaryFrame);
 
-        $(primaryFrame).fadeTo(1, FADE_DURATION);
-        $(secondaryFrame).fadeTo(1, FADE_DURATION);
+        $(primaryFrame).fadeTo(FADE_DURATION, 1);
+        $(secondaryFrame).fadeTo(FADE_DURATION, 1);
     }
 
     function loadDialogFiles() {
@@ -266,20 +266,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
     }
 
-    function initAddPersonDialog(visit) {
+    function initAddPersonDialog(visit, persons) {
 
         var blockedPersonIds = [];
         for (var i = 0 ; i < visit.personVisits.length ; i++ ) {
             blockedPersonIds.push(visit.personVisits[i].person.id);
         }
 
-        addPersonDialog = new returnvisitor.AddPersonDialog([], blockedPersonIds);
+        addPersonDialog = new returnvisitor.AddPersonDialog(persons, blockedPersonIds);
         addPersonDialog.onNewPersonClick = function() {
             initPersonDialog();
         };
 
         addPersonDialog.onClickPersonCell = function(person) {
-            // addPersonToVisit(person);
+            recordVisitPane.addPersonVisitCell(person);
         };
     }
 
@@ -287,7 +287,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         personDialog = new returnvisitor.PersonDialog();
         personDialog.onClickOk = function(person) {
 
-            // addPersonToVisit(person);
+            recordVisitPane.addPersonVisitCell(person);
         };
     }
 

@@ -1,28 +1,32 @@
 'use strict';
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeenPersonIds, blockedPersonIds) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(personsInPlace, blockedPersonIds) {
 
     var _this = this,
         newPersonButton,
         everSeenText,
-        everSeenContainer,
-        _everSeenPersons = [],
+        personContainer,
+        _personsInPlace = personsInPlace,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        loadFile = returnvisitor.common.loadFile,
+        common = returnvisitor.common,
+        loadFile = common.loadFile,
+        elementsEffect = common.elementsEffect,
         PersonCell = returnvisitor.viewComponents.PersonCell;
 
-    loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
-    returnvisitor.DialogBase.call(this,
-        ['./dialogs/add_person_dialog/add_person_dialog.html'], 'add_person_dialog');
+    function initialize() {
+        loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
+        returnvisitor.DialogBase.call(_this, './dialogs/add_person_dialog/add_person_dialog.html', _dialogBaseReadyCallback);    
+    }
     
-
-    function loadEverSeenPersons() {
-        
-        
+    function _dialogBaseReadyCallback(){
+        initPersonContainer();
+        initNewPersonButton();
+        initCancelButton();
     }
 
     function initNewPersonButton() {
         
         newPersonButton = _this.getElementByClassName('new_person_button');
+        elementsEffect.blinker(newPersonButton);
         newPersonButton.addEventListener('click', onClickNewPersonButton);
     }
 
@@ -33,49 +37,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeen
         }
     }
 
-    function initEverSeenText() {
-        everSeenText = _this.getElementByClassName('ever_seen_text');
-        refreshEverSeenText();
+    function initPersonContainer() {
+        personContainer = _this.getElementByClassName('person_container');
+        refreshPersonContainer();
     }
 
-    function refreshEverSeenText() {
-        if (_everSeenPersons.length <= 0) {
-            $(everSeenText).css({
-                display : 'none'
-            });
-        } else {
-            $(everSeenText).css({
-                display : 'block'
-            });
-        }
-    }
+    function refreshPersonContainer() {
 
-    function initEverSeenContainer() {
-        everSeenContainer = _this.getElementByClassName('ever_seen_container');
-        refreshEverSeenContainer();
-    }
+        if (_personsInPlace.length <= 0) {
 
-    function refreshEverSeenContainer() {
-
-        if (_everSeenPersons.length <= 0) {
-
-            $(everSeenContainer).css({
-                display : 'none'
+            $(personContainer).css({
+                display : 'none',
             });
 
         } else {
             
-            $(everSeenContainer).css({
-                display : 'block'
+            $(personContainer).css({
+                display : 'block',
+                height : _personsInPlace.length * 40
             });
 
-            for ( var i = 0 ; i < _everSeenPersons.length ; i++ ) {
+            for ( var i = 0 ; i < _personsInPlace.length ; i++ ) {
 
-                var personCell = new PersonCell(everSeenContainer, _everSeenPersons[i], blockedPersonIds.includes(_everSeenPersons[i].id));
+                var personCell = new PersonCell(personContainer, _personsInPlace[i], blockedPersonIds.includes(_personsInPlace[i].id));
 
-                personCell.onReadyCell = function() {
-                    _this.refreshDialogHeight();
-                };
+                // personCell.onReadyCell = function() {
+                //     _this.refreshDialogHeight();
+                // };
 
                 personCell.onClickCell = function(person) {
                     _this.fadeOut(function(){
@@ -96,14 +84,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeen
     function onCancelClick() {
         _this.fadeOut();
     }
-
-    this.onDialogBaseReady = function(){
-        loadEverSeenPersons();
-        initNewPersonButton();
-        initEverSeenText();
-        initEverSeenContainer();
-        initCancelButton();
-    };
+    initialize();
 };
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {

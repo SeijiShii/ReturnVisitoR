@@ -8,9 +8,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog = function(time) {
         viewComponents = returnvisitor.viewComponents,
         timePickerPane = viewComponents.timePickerPane;
 
+    function initialize() {
+        loadFile.loadCss('./dialogs/time_picker_dialog/time_picker_dialog.css');
+        returnvisitor.DialogBase.call(_this, './dialogs/time_picker_dialog/time_picker_dialog.html', _onDialogBaseReadyCallback);
+    }
 
-    loadFile.loadCss('./dialogs/time_picker_dialog/time_picker_dialog.css');
-    returnvisitor.DialogBase.call(this, './dialogs/time_picker_dialog/time_picker_dialog.html');
+    function _onDialogBaseReadyCallback(){
+
+        initTimePickerPane();
+        initOkButton();
+        initCancelButton();
+    }
+    
     
     function initTimePickerPane() {
 
@@ -44,17 +53,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog = function(time) {
         _this.fadeOut();
     }
 
-    this.onDialogBaseReady = function(){
-
-        initTimePickerPane();
-        initOkButton();
-        initCancelButton();
-    };
-
     this.onDialogResize = function() {
 
 
     };
+
+    initialize();
 };
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase.prototype, {

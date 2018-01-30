@@ -4,13 +4,14 @@
  * @param {Array<string>} path 実行しているhtmlの場所からダイアログのコンテンツhtmlなどのあるディレクトリへの相対パス。
  * @param {Object} givenSize 省略可能。
  */
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPath) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPath, dialogBaseReadyCallback) {
     
     // console.log('DialogBase called!');
 
     var _this = this,
         loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile,
         elements = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements,
+        appFrame,
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
@@ -45,34 +46,32 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
 
         loadFile.loadHtmlAsElement(contentHtmlPath, function(elm){
 
-            var appFrame = document.getElementById('app_frame');
+            appFrame = document.getElementById('app_frame');
             appFrame.appendChild(dialogBaseFrame);
-
-            // console.log('elm.clientHeight:', elm.clientHeight);
-            elm.style.position = 'relative';
-            appFrame.appendChild(elm);
-            // console.log('elm.clientHeight:', elm.clientHeight);
-            _contentHeight = elm.clientHeight;
-            elm.parentNode.removeChild(elm);
-
             dialogFrame.appendChild(elm);
 
-            if (typeof _this.onDialogBaseReady === 'function') {
-                _this.onDialogBaseReady();
+            if (typeof dialogBaseReadyCallback === 'function') {
+                dialogBaseReadyCallback();
             }
 
-            // dialogBaseFrame.style.opacity = 1;
-            // dialogBaseFrame.style.visibility = 'hidden';
-
+            measureDialogHeight(elm);
             _this.refreshDialogHeight();
 
-            // dialogBaseFrame.style.opacity = 0;
-            // dialogBaseFrame.style.visibility = 'visible';
-            
             $(dialogBaseFrame).fadeTo(FADE_DURATION, 1);
 
         });
+    }
 
+    function measureDialogHeight(elm) {
+
+        elm.parentNode.removeChild(elm);
+        // console.log('elm.clientHeight:', elm.clientHeight);
+        elm.style.position = 'relative';
+        appFrame.appendChild(elm);
+        // console.log('elm.clientHeight:', elm.clientHeight);
+        _contentHeight = elm.clientHeight;
+        elm.parentNode.removeChild(elm);
+        dialogFrame.appendChild(elm);
     }
  
     this.refreshDialogHeight = function() {

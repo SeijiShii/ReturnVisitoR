@@ -24,11 +24,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _onClickDateText,
         _onClickTimeText,
         _onClickAddPerson,
-        _visit;
+        _visit,
+        _persons = []; // Persons ever seen in this place will be loaded to this.
 
     function _initialize(onReadyCallback, visit) {
 
         _visit = visit;
+        
+        // TODO: Load persons ever seen in this place are loaded to _persons.
 
         loadFile.loadCss('./view_components/record_visit_pane/record_visit_pane.css');
         
@@ -88,7 +91,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
                     height : 0
                 }, 200, function(){
                     $(personSeenSubtitle).css({
-                        // display : 'none',
+                        display : 'none',
                         height : 0,
                         margin : 0,
                         visibility : 'hidden'
@@ -99,7 +102,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
                 $(personSeenSubtitle).css({
                     display : 'block',
                     height : 0,
-                    margin : '3px'
+                    margin : '3px',
+                    visibility : 'visible'
                 });
 
                 $(personSeenSubtitle).animate({
@@ -110,7 +114,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         } else {
             if (_visit.personVisits.length <= 0) {
                 $(personSeenSubtitle).css({
-                    // display : 'none',
+                    display : 'none',
                     height : 0,
                     margin : 0,
                     visibility : 'hidden'
@@ -119,7 +123,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
                 $(personSeenSubtitle).css({
                     display : 'block',
                     height : '15px',
-                    margin : '3px'
+                    margin : '3px',
+                    visibility : 'visible'
                 });
             }
         }
@@ -156,7 +161,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     function onClickAddPersonButton() {
 
         if ( typeof _onClickAddPerson === 'function' ) {
-            _onClickAddPerson(_visit);
+            _onClickAddPerson(_visit, _persons);
         }
 
     }
@@ -209,14 +214,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         }
     }
 
-    function addPersonToVisit(person) {
+    function _addPersonVisitCell(person) {
+
+        _persons.addData(person);
 
         var personVisit = new PersonVisit(person);
         _visit.personVisits.push(personVisit);
-        addPersonVisitCell(personVisit);
-    }
-
-    function addPersonVisitCell(personVisit) {
 
         refreshPersonSeenSubtitle(true);
         refreshPersonContainer();
@@ -256,7 +259,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         set onClickAddPerson(f) {
             _onClickAddPerson = f;
-        }
+        },
+
+        addPersonVisitCell : _addPersonVisitCell,
 
     };
 

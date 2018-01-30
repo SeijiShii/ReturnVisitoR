@@ -108,7 +108,7 @@ textarea {
 
     position: relative;
     width: 90%;
-    height: 200px;
+    height: auto;
     left: 0;
     right: 0;
     margin: 0 auto;
@@ -131,7 +131,7 @@ textarea {
 
     position: relative;
     width: 90%;
-    height: 200px;
+    height: auto;
     left: 0;
     right: 0;
     margin: 0 auto;

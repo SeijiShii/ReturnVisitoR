@@ -23,9 +23,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function(person) {
         viewComponents = returnvisitor.viewComponents,
         ToggleButton = viewComponents.ToggleButton;
 
-    loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
-    returnvisitor.DialogBase.call(this,
-        ['./dialogs/person_dialog/person_dialog.html'], 'person_dialog');
+    function initialize() {
+        loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
+        returnvisitor.DialogBase.call(_this, './dialogs/person_dialog/person_dialog.html', _dialogBaseReadyCallback);
+    }
+
+    function _dialogBaseReadyCallback() {
+
+        initNameText();
+        initMaleButton();
+        initFemaleButton();
+        initAgeSelector();
+        initInterestRater();
+        initInterestText();
+        initNoteText();
+
+        initOkButton();
+        initDeleteButtonRow();
+        initDeleteButton();
+        initCancelButton();
+    }
 
     
     if (!_person) {
@@ -147,22 +164,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function(person) {
 
     }
 
-    this.onDialogBaseReady = function(){
-        initNameText();
-        initMaleButton();
-        initFemaleButton();
-        initAgeSelector();
-        initInterestRater();
-        initInterestText();
-        initNoteText();
-
-        initOkButton();
-        initDeleteButtonRow();
-        initDeleteButton();
-        initCancelButton();
-
-    };
-    
+    initialize();
 
 };
 
