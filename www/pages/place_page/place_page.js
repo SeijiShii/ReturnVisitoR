@@ -27,7 +27,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         addPersonDialog,
         personDialog,
         timePickerDialog,
-        datePickerDialog;
+        datePickerDialog,
+        plcDialog;
 
     function _initialize(onReadyCallback, pageOptions) {
 
@@ -240,6 +241,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             initTimePickerDialog(visit);
 
         };
+
+        recordVisitPane.onClickPlcButton = function() {
+
+            initPlcDialog();
+        };
     }
 
     function onReadyRecordVisitPane() {
@@ -257,6 +263,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             loadPersonDialogScript();
             loadDatePickerScript();
             loadTimePickerScript();
+            loadPlcDialogScript();
         });
     }
 
@@ -333,6 +340,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             visit.dateTime = time;
             recordVisitPane.refreshTimeText();
         };
+    }
+
+    function loadPlcDialogScript() {
+        loadFile.loadScript('./dialogs/placement_dialog/placement_dialog.js', function(){
+            
+            // TEST
+            initPlcDialog();
+
+        });
+    }
+
+    function initPlcDialog() {
+
+        plcDialog = new returnvisitor.PlacementDialog();
     }
 
     return {

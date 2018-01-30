@@ -54,7 +54,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         var swipe = new Swipe(innerFrame);
         
         var originLeft = elements.positionInParent(innerFrame).left;
-        var $frame = $(innerFrame)
+        var $frame = $(innerFrame);
 
         swipe.swipeStroke = paneFrame.clientWidth * 0.2;
         console.log('swipeStroke:', swipe.swipeStroke);
@@ -66,7 +66,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
             $frame.css({
                 left : oldLeft + xStroke
             });
-        }
+        };
 
         swipe.onXSwipeEnd = function(xStroke, speed) {
 
@@ -88,7 +88,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                         left : '-100%'
                     });
 
-                    shiftContentsInInnerFrame(false)
+                    shiftContentsInInnerFrame(false);
                 });
 
 
@@ -111,13 +111,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
                 });
             }
-        }
+        };
 
         swipe.onSwipeCancel = function() {
             $frame.animate({
                 left : '-100%'
             } , 'slow');
-        }
+        };
     }
 
     this.animateToShowRightContent = function() {

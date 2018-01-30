@@ -75,3 +75,9 @@ h3.dialog_subtitle {
 
 }
 
+.dialog_content
+.row {
+    width: 100%;
+    height: 45px;
+}
+

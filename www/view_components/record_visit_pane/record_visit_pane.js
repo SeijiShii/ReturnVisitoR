@@ -17,13 +17,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         personSeenSubtitle,
         personContainer,
         addPersonButton,
+        plcContainer,
         _secondaryFrame,
         _isPrimaryReady = false,
         _isSecondaryReady = false,
-        _isPersonContainerReady = false,
         _onClickDateText,
         _onClickTimeText,
         _onClickAddPerson,
+        _onClickPlcButton,
         _visit,
         _persons = []; // Persons ever seen in this place will be loaded to this.
 
@@ -66,6 +67,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         loadFile.loadHtmlAsElement('./view_components/record_visit_pane/record_visit_pane_secondary.html', function(elm){
             _secondaryFrame = elm;
+
+            initSecondaryElements();
 
             _isSecondaryReady = true;
         });
@@ -139,7 +142,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     function initPersonContainer() {
         personContainer = elements.getElementById(_primaryFrame, 'person_container');
         refreshPersonContainer();
-        _isPersonContainerReady = true;
 
     }
 
@@ -236,6 +238,53 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         };
     }
 
+    function initSecondaryElements() {
+
+        initPlcContainer();
+        initPlcButton();
+        
+    }
+
+    function initPlcContainer() {
+
+        plcContainer = elements.getElementByClassName(_secondaryFrame, 'plc_container');
+
+        refreshPlcContainer();
+    }
+
+    function refreshPlcContainer() {
+
+        if (_visit.placements.length <= 0) {
+            $(plcContainer).css({
+                display : 'none',
+                // height : 0,
+                // margin : 0
+            });
+        } else {
+            $(plcContainer).css({
+                display : 'block',
+                height : 'auto'
+            });
+        }
+    }
+
+    function initPlcButton() {
+        var plcButton = elements.getElementById(_secondaryFrame, 'plc_button');
+        elementsEffect.blinker(plcButton);
+        plcButton.addEventListener('click', onClickPlcButton);
+    }
+
+    function onClickPlcButton() {
+
+        if ( typeof _onClickPlcButton === 'function' ) {
+            _onClickPlcButton();
+        }
+    }
+
+    function _addPlcCell(plc) {
+        
+    }
+
     return {
         initialize : _initialize,
 
@@ -262,6 +311,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         },
 
         addPersonVisitCell : _addPersonVisitCell,
+
+        set onClickPlcButton(f) {
+            _onClickPlcButton = f;
+        },
+        addPlcCell : _addPlcCell,
 
     };
 

@@ -27,7 +27,6 @@ h2.subtitle {
     position: relative;
     width: 100%;
     height: auto;
-    padding-bottom: 5px;
 }
 
 .record_visit_primary_frame
@@ -70,45 +69,25 @@ h2.subtitle {
     width: 100%;
 }
 
-/* .record_visit_primary_frame
-.green_button {
-    position: relative;
-    background-color: #34873b;
-    color: white;
-    font-size: 18px;
-    border-radius: 5px;
-    width: 100%;
-    height: 45px;
-    line-height: 45px;
-    text-align: center
-}
- */
-/* .record_visit_primary_frame
-.green_button
-.circle_plus {
-    position: absolute;
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    top: 0;
-    bottom: 0;
-    left: 10px;
-    margin: auto 0;
-    border-radius: 16px;
-    border: solid 1px white;
-    font-size: 30px;
-    text-align: center;
-    color: white;
-    line-height: 32px;
-    vertical-align: middle;
-
-} */
-
 .record_visit_secondary_frame {
     
     position: relative;
     width: 100%;
     height: auto;
+}
+
+.record_visit_secondary_frame
+.plc_container {
+
+    position: relative;
+    border-top: gray solid 1px;
+    width: 100%;
+    height: auto;
+}
+
+.record_visit_secondary_frame
+.lime_button {
+    background-color: limegreen;
 }
 
 .record_visit_secondary_frame

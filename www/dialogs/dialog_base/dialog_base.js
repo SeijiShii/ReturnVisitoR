@@ -15,7 +15,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         dialogBaseFrame,
         dialogOverlay,
         dialogFrame,
-        _contentHeight,
         FADE_DURATION = 300;
     
     function loadDialogBaseFiles() {
@@ -54,7 +53,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
                 dialogBaseReadyCallback();
             }
 
-            measureDialogHeight(elm);
             _this.refreshDialogHeight();
 
             $(dialogBaseFrame).fadeTo(FADE_DURATION, 1);
@@ -62,22 +60,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
         });
     }
 
-    function measureDialogHeight(elm) {
+    // function measureDialogHeight(elm) {
 
-        elm.parentNode.removeChild(elm);
-        // console.log('elm.clientHeight:', elm.clientHeight);
-        elm.style.position = 'relative';
-        appFrame.appendChild(elm);
-        // console.log('elm.clientHeight:', elm.clientHeight);
-        _contentHeight = elm.clientHeight;
-        elm.parentNode.removeChild(elm);
-        dialogFrame.appendChild(elm);
-    }
+    //     elm.parentNode.removeChild(elm);
+    //     // console.log('elm.clientHeight:', elm.clientHeight);
+    //     elm.style.position = 'relative';
+    //     appFrame.appendChild(elm);
+    //     // console.log('elm.clientHeight:', elm.clientHeight);
+    //     _contentHeight = elm.clientHeight;
+    //     elm.parentNode.removeChild(elm);
+    //     dialogFrame.appendChild(elm);
+    // }
  
     this.refreshDialogHeight = function() {
 
+        var content = _this.getElementByClassName('dialog_content');
+
+        content.parentNode.removeChild(content);
+        // console.log('elm.clientHeight:', elm.clientHeight);
+        content.style.position = 'relative';
+        appFrame.appendChild(content);
+        // console.log('elm.clientHeight:', elm.clientHeight);
+        var contentHeight = content.clientHeight;
+        content.parentNode.removeChild(content);
+        dialogFrame.appendChild(content);
+
         $(dialogFrame).css({
-            height : _contentHeight + 10
+            height : contentHeight + 10
         });
 
         if ( typeof _this.onDialogResize === 'function' ) {

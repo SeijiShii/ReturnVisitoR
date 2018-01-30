@@ -16,7 +16,7 @@
 
 .publication_pane
 .rail
-.flag {
+.tab_flag {
     position: absolute;
     width: 50%;
     height: 37px;
@@ -63,6 +63,7 @@
     top: 40px;
     left: 0;
     border-top: 1px solid gray;
+    overflow: hidden;
 }
 
 .publication_pane
@@ -70,7 +71,7 @@
 .horizontal_frame {
     position: absolute;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 200%;
     height: 100%;
 }
