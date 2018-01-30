@@ -152,3 +152,20 @@ img.logo {
 
 }
 
+.button {
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color: darkgreen;
+    font-size: 15px;
+}
+
+.cancel_button {
+    color: orange;
+}
+
+.delete_button {
+    color: red;
+}
+

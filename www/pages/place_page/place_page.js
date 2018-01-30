@@ -314,7 +314,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         datePickerDialog = new returnvisitor.DatePickerDialog(visit.dateTime);
         datePickerDialog.onClickDateCell = function(date) {
             visit.dateTime = date;
-            refreshDateText();
+            recordVisitPane.refreshDateText();
         };
     }
 
@@ -328,10 +328,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     }
 
     function initTimePickerDialog(visit) {
-        timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
+        timePickerDialog = new returnvisitor.TimePickerDialog(visit.dateTime);
         timePickerDialog.onSetTime = function(time) {
             visit.dateTime = time;
-            refreshTimeText();
+            recordVisitPane.refreshTimeText();
         };
     }
 

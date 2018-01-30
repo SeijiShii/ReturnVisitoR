@@ -48,10 +48,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.DialogBase = function(contentHtmlPa
             var appFrame = document.getElementById('app_frame');
             appFrame.appendChild(dialogBaseFrame);
 
-            console.log('elm.clientHeight:', elm.clientHeight);
+            // console.log('elm.clientHeight:', elm.clientHeight);
             elm.style.position = 'relative';
             appFrame.appendChild(elm);
-            console.log('elm.clientHeight:', elm.clientHeight);
+            // console.log('elm.clientHeight:', elm.clientHeight);
             _contentHeight = elm.clientHeight;
             elm.parentNode.removeChild(elm);
 

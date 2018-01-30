@@ -9,11 +9,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.TimePickerDialog = function(time) {
         timePickerPane = viewComponents.timePickerPane;
 
 
-    returnvisitor.DialogBase.call(this,
-        ['./dialogs/time_picker_dialog/time_picker_dialog.html'], 'time_picker_dialog');
-    
     loadFile.loadCss('./dialogs/time_picker_dialog/time_picker_dialog.css');
-
+    returnvisitor.DialogBase.call(this, './dialogs/time_picker_dialog/time_picker_dialog.html');
+    
     function initTimePickerPane() {
 
         var timePickerDiv = _this.getElementByClassName('time_picker_div');

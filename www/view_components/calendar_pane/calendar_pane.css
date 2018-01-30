@@ -2,12 +2,13 @@
 
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 330px;
     font-size: 14px;
     color: #333;
 }
 
-.calendar_pane .header_row {
+.calendar_pane 
+.header_row {
     position: relative;
     width: 100%;
     height: 45px;
@@ -16,7 +17,9 @@
 
 }
 
-.calendar_pane .header_row .shift_button {
+.calendar_pane 
+.header_row 
+.shift_button {
     width: 40px;
     height: 35px;
     margin: 5px;
@@ -28,13 +31,17 @@
 
 }
 
-.calendar_pane .header_row .left_button {
+.calendar_pane 
+.header_row 
+.left_button {
 
     top: 0;
     left: 0;
 }
 
-.calendar_pane .header_row .left_button::before {
+.calendar_pane 
+.header_row 
+.left_button::before {
     content: '';
     border: 12px solid transparent;
     border-right: 12px solid darkgray;
@@ -42,13 +49,17 @@
     top: 5px;
 }
 
-.calendar_pane .header_row .right_button {
+.calendar_pane 
+.header_row 
+.right_button {
 
     top: 0;
     right: 0;
 }
 
-.calendar_pane .header_row .right_button::before {
+.calendar_pane 
+.header_row 
+.right_button::before {
     content: '';
     border: 12px solid transparent;
     border-left: 12px solid darkgray;
@@ -57,7 +68,9 @@
     left : 14px;
 }
 
-.calendar_pane .header_row .month_text {
+.calendar_pane 
+.header_row 
+.month_text {
     font-size: 15px;
     height: 35px;
     line-height: 35px;
@@ -75,20 +88,24 @@
 
 }
 
-.calendar_pane .calendar_frame {
+.calendar_pane 
+.calendar_frame {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 280px;
     background-color: white;
 }
 
-.calendar_pane .calendar_base {
+.calendar_pane 
+.calendar_base {
     width: 100%;
     height: 100%;
     overflow-y: auto;
 }
 
-.calendar_pane .calendar_base .calendar_table {
+.calendar_pane 
+.calendar_base 
+.calendar_table {
     /* position: relative; */
     width: 100%;
     height: 100%;
@@ -96,12 +113,18 @@
     
 }
 
-.calendar_pane .calendar_base .calendar_table .days_header {
+.calendar_pane 
+.calendar_base 
+.calendar_table 
+.days_header {
     width: 100%;
     height: 30px;
 }
 
-.calendar_pane .calendar_base .calendar_table .days_header td {
+.calendar_pane 
+.calendar_base 
+.calendar_table 
+.days_header td {
     width: 40px;
     height: 30px;
     background-color: lightgray;
@@ -112,12 +135,19 @@
     
 }
 
-.calendar_pane .calendar_base .calendar_table .calendar_row {
+.calendar_pane 
+.calendar_base 
+.calendar_table 
+.calendar_row {
     width: 100%;
     height: 40px;
 }
 
-.calendar_pane .calendar_base .calendar_table .calendar_row .calendar_cell {
+.calendar_pane 
+.calendar_base 
+.calendar_table 
+.calendar_row 
+.calendar_cell {
     width: 40px;
     height: 40px;
     background-color: whitesmoke;
@@ -129,10 +159,18 @@
 
 }
 
-.calendar_pane .calendar_base .calendar_table .calendar_row .empty {
+.calendar_pane 
+.calendar_base 
+.calendar_table 
+.calendar_row 
+.empty {
     visibility: hidden;
 }
 
-.calendar_pane .calendar_base .calendar_table .calendar_row  .today {
+.calendar_pane 
+.calendar_base 
+.calendar_table 
+.calendar_row  
+.today {
     background-color: springgreen;
 }

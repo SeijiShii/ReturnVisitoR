@@ -131,6 +131,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.hourPickerPane = (fu
         this.button.id = HOUR_PREFIX + n;
 
         $(this.button).css(this.sizeOptions());
+        elementsEffect.blinker(this.button);
         this.button.addEventListener('click', onClickHourButton, true);
    
     }
@@ -140,7 +141,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.hourPickerPane = (fu
         e.stopPropagation();
 
         var button = touchEventFilter.getTarget(e, 'hour_button');
-        elementsEffect.blink(button);
         elementsEffect.shrink(button);
         var hour = touchEventFilter.getTargetId(e, 'hour_button').substring(HOUR_PREFIX.length);
 

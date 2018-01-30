@@ -39,9 +39,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elementsEffect = {
         elm.addEventListener('mouseleave', onMouseUp, false);
         elm.addEventListener('mouseenter', onMouseEnter, false);
 
-        elm.addEventListener('touchstart', onMouseDown, false);
-        elm.addEventListener('touchend', onMouseUp, false);
-        elm.addEventListener('touchcancel', onMouseUp, false);
+        elm.addEventListener('touchstart', onMouseDown, {captuer : false, passive : true});
+        elm.addEventListener('touchend', onMouseUp, {captuer : false, passive : true});
+        elm.addEventListener('touchcancel', onMouseUp, {captuer : false, passive : true});
 
         function changeOpacity(o) {
             elm.style.opacity = o;            

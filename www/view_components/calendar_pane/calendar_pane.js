@@ -13,8 +13,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
         touchEventFilter = common.touchEventFilter,
         paneFrame,
         monthText,
-        leftButton,
-        rightButton,
         calendarFrame,
         calendarFramePane,
         _date = date,
@@ -51,24 +49,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
     }
 
     function initLeftButton() {
-        leftButton = elements.getElementByClassName(paneFrame, 'left_button');
+        var leftButton = elements.getElementByClassName(paneFrame, 'left_button');
+        elementsEffect.blinker(leftButton);
         leftButton.addEventListener('click', onLeftClick);
         
     }
 
     function onLeftClick() {
-        elementsEffect.blink(leftButton);
         calendarFramePane.animateToShowLeftContent();
     }
 
     function initRightButton() {
-        rightButton = elements.getElementByClassName(paneFrame, 'right_button');
+        var rightButton = elements.getElementByClassName(paneFrame, 'right_button');
+        elementsEffect.blinker(rightButton);
         rightButton.addEventListener('click', onRightClick);
 
     }
 
     function onRightClick() {
-        elementsEffect.blink(rightButton);
+        
         calendarFramePane.animateToShowRightContent();
     }
 
@@ -213,6 +212,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
                 }
 
                 dateCell.id = DATE_CELL_PREFIX + __date__.getTime();
+                elementsEffect.blinker(dateCell);
                 dateCell.addEventListener('click', onClickDateCell);
 
                 calRow.appendChild(dateCell);
@@ -243,7 +243,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
     function onClickDateCell(e) {
 
         var cell = touchEventFilter.getTarget(e, 'calendar_cell');
-        elementsEffect.blink(cell);
         var id = cell.id;
         var milliSec = id.substring(DATE_CELL_PREFIX.length);
         var cellDate = new Date();
