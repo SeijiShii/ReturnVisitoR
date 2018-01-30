@@ -7,6 +7,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         elements        = common.elements,
         loadFile        = common.loadFile,
         elementsEffect  = common.elementsEffect,
+        data            = returnvisitor.data,
+        PersonVisit     = data.PersonVisit,
+        viewComponents  = returnvisitor.viewComponents,
+        PersonVisitCell = viewComponents.PersonVisitCell,
         _primaryFrame,
         dateText,
         timeText,
@@ -17,6 +21,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _isPrimaryReady = false,
         _isSecondaryReady = false,
         _isPersonContainerReady = false,
+        _onClickDateText,
+        _onClickTimeText,
+        _onClickAddPerson,
         _visit;
 
     function _initialize(onReadyCallback, visit) {
@@ -148,7 +155,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function onClickAddPersonButton() {
 
-        // initAddPersonDialog();
+        if ( typeof _onClickAddPerson === 'function' ) {
+            _onClickAddPerson(_visit);
+        }
+
     }
 
     // function initRoomText() {
@@ -175,7 +185,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     }
 
     function onClickDateText() {
-        // initDatePickerDialog();
+
+        if ( typeof _onClickDateText === 'function' ) {
+            _onClickDateText();
+        }
     }
 
     function initTimeText() {
@@ -190,7 +203,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     }
 
     function onClickTimeText() {
-        // initTimePickerDialog();
+
+        if ( typeof _onClickTimeText === 'function' ) {
+            _onClickTimeText();
+        }
+    }
+
+    function addPersonToVisit(person) {
+
+        var personVisit = new PersonVisit(person);
+        _visit.personVisits.push(personVisit);
+        addPersonVisitCell(personVisit);
+    }
+
+    function addPersonVisitCell(personVisit) {
+
+        refreshPersonSeenSubtitle(true);
+        refreshPersonContainer();
+
+        var personVisitCell = new PersonVisitCell(personVisit);
+
+        personVisitCell.appendAndExtract(personContainer);
+        personVisitCell.onRemoveCell = function(personVisit) {
+            
+            _visit.personVisits.removeData(personVisit);
+
+            refreshPersonContainer();
+            refreshPersonSeenSubtitle(true);
+        };
     }
 
     return {
@@ -202,7 +242,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         get secondaryFrame() {
             return _secondaryFrame;
+        },
+
+        set onClickDateText(f) {
+            _onClickDateText = f;
+        }, 
+
+        set onClickTimeText(f) {
+            _onClickTimeText = f;
+        },
+
+        set onClickAddPerson(f) {
+            _onClickAddPerson = f;
         }
+
     };
 
 })();

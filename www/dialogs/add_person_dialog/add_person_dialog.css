@@ -1,16 +1,50 @@
+.add_person_dialog
 .new_person_button {
-    width: 90%;
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: 5px auto;
 }
 
-.add_person_dialog .ever_seen_container {
+.add_person_dialog 
+.ever_seen_container {
     position: relative;
     left: 0;
     right: 0;
     margin: 0 auto;
-    width: 90%;
+    width: 100%;
     border-top: 1px solid gray;
 }
 
-.add_person_dialog .cancel_button {
+.add_person_dialog 
+.search_person_text {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 30px;
+    left: 0;
+    right: 0;
+    margin: 5px auto;
+}
+
+.add_person_dialog
+.row {
+    position: relative;
+    width: 100%;
+    height: 50px;
+}
+
+.add_person_dialog 
+.cancel_button {
+    
+    height: 44px;
+    width: 150px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    line-height: 44px;
+    color: orange;
+    font-size: 15px;
+    text-align: center;
     float: right;
 }
+

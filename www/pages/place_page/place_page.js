@@ -23,7 +23,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         recordVisitPane,
         _onCancelClick,
         _place,
-        FADE_DURATION = 300;
+        FADE_DURATION = 300,
+        addPersonDialog,
+        personDialog,
+        timePickerDialog,
+        datePickerDialog;
 
     function _initialize(onReadyCallback, pageOptions) {
 
@@ -40,6 +44,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             initMap();
 
             loadPlaceActionPaneIfNeeded();
+            loadDialogFiles();
 
             if ( typeof onReadyCallback === 'function' ) {
                 onReadyCallback();
@@ -104,9 +109,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         placeActionPane = viewComponents.placeActionPane;
         placeActionPane.initialize(function(frame){
             primaryFrame.appendChild(frame);
-            $(primaryFrame).css({
-                height : frame.style.height
-            });
         });
 
         placeActionPane.onNewPlaceClick = function() {
@@ -120,9 +122,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             }
         };
 
-        $(secondaryFrame).css({
-            height : 0
-        });
     }
 
     function initPlaceData() {
@@ -224,6 +223,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         recordVisitPane.initialize(function(){
             onReadyRecordVisitPane();
         }, visit);
+
+        recordVisitPane.onClickAddPerson = function(visit) {
+
+            initAddPersonDialog(visit);
+        };
+
+        recordVisitPane.onClickDateText = function() {
+
+        };
+
+        recordVisitPane.onClickTimeText = function() {
+
+        };
     }
 
     function onReadyRecordVisitPane() {
@@ -233,6 +245,90 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         $(primaryFrame).fadeTo(1, FADE_DURATION);
         $(secondaryFrame).fadeTo(1, FADE_DURATION);
+    }
+
+    function loadDialogFiles() {
+        loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
+            loadAddPersonDialogScript();
+            loadPersonDialogScript();
+            loadDatePickerScript();
+            loadTimePickerScript();
+        });
+    }
+
+    function loadAddPersonDialogScript() {
+        loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
+            //
+        });
+    }
+
+    function initAddPersonDialog(visit) {
+
+        var blockedPersonIds = [];
+        for (var i = 0 ; i < visit.personVisits.length ; i++ ) {
+            blockedPersonIds.push(visit.personVisits[i].person.id);
+        }
+
+        addPersonDialog = new returnvisitor.AddPersonDialog([], blockedPersonIds);
+        addPersonDialog.onNewPersonClick = function() {
+            initPersonDialog();
+        };
+
+        addPersonDialog.onClickPersonCell = function(person) {
+            // addPersonToVisit(person);
+        };
+    }
+
+    function initPersonDialog() {
+        personDialog = new returnvisitor.PersonDialog();
+        personDialog.onClickOk = function(person) {
+
+            // addPersonToVisit(person);
+        };
+    }
+
+
+
+    function loadPersonDialogScript() {
+        loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
+            
+            // TEST
+            // initPersonDialog();
+        });
+    }
+
+    function loadDatePickerScript() {
+        loadFile.loadScript('./dialogs/date_picker_dialog/date_picker_dialog.js', function(){
+            
+            // TEST
+            // initDatePickerDialog();
+
+        });
+    }
+
+    function initDatePickerDialog() {
+        datePickerDialog = new returnvisitor.DatePickerDialog(_visit.dateTime);
+        datePickerDialog.onClickDateCell = function(date) {
+            _visit.dateTime = date;
+            refreshDateText();
+        };
+    }
+
+    function loadTimePickerScript() {
+        loadFile.loadScript('./dialogs/time_picker_dialog/time_picker_dialog.js', function(){
+            
+            // TEST
+            // initTimePickerDialog();
+
+        });
+    }
+
+    function initTimePickerDialog() {
+        timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
+        timePickerDialog.onSetTime = function(time) {
+            _visit.dateTime = time;
+            refreshTimeText();
+        };
     }
 
     return {

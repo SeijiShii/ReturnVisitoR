@@ -67,6 +67,12 @@ h2.subtitle {
 .record_visit_primary_frame
 .green_button {
     position: relative;
+    width: 100%;
+}
+
+/* .record_visit_primary_frame
+.green_button {
+    position: relative;
     background-color: #34873b;
     color: white;
     font-size: 18px;
@@ -76,8 +82,8 @@ h2.subtitle {
     line-height: 45px;
     text-align: center
 }
-
-.record_visit_primary_frame
+ */
+/* .record_visit_primary_frame
 .green_button
 .circle_plus {
     position: absolute;
@@ -96,7 +102,7 @@ h2.subtitle {
     line-height: 32px;
     vertical-align: middle;
 
-}
+} */
 
 .record_visit_secondary_frame {
     

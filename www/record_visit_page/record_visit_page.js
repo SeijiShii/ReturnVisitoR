@@ -215,169 +215,169 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.recordVisitPage = (function() {
     //     initTimePickerDialog();
     // }
 
-    function loadDialogFiles() {
-        loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
-            loadAddPersonDialogScript();
-            loadPersonDialogScript();
-            loadDatePickerScript();
-            loadTimePickerScript();
-        });
-    }
+    // function loadDialogFiles() {
+    //     loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
+    //         loadAddPersonDialogScript();
+    //         loadPersonDialogScript();
+    //         loadDatePickerScript();
+    //         loadTimePickerScript();
+    //     });
+    // }
 
-    function loadAddPersonDialogScript() {
-        loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
-            //
-        });
-    }
+    // function loadAddPersonDialogScript() {
+    //     loadFile.loadScript('./dialogs/add_person_dialog/add_person_dialog.js', function(){
+    //         //
+    //     });
+    // }
 
-    function initAddPersonDialog() {
+    // function initAddPersonDialog() {
 
-        var blockedPersonIds = [];
-        for (var i = 0 ; i < _visit.personVisits.length ; i++ ) {
-            blockedPersonIds.push(_visit.personVisits[i].person.id);
-        }
+    //     var blockedPersonIds = [];
+    //     for (var i = 0 ; i < _visit.personVisits.length ; i++ ) {
+    //         blockedPersonIds.push(_visit.personVisits[i].person.id);
+    //     }
 
-        addPersonDialog = new returnvisitor.AddPersonDialog([], blockedPersonIds);
-        addPersonDialog.onNewPersonClick = function() {
-            initPersonDialog();
-        };
+    //     addPersonDialog = new returnvisitor.AddPersonDialog([], blockedPersonIds);
+    //     addPersonDialog.onNewPersonClick = function() {
+    //         initPersonDialog();
+    //     };
 
-        addPersonDialog.onClickPersonCell = function(person) {
-            addPersonToVisit(person);
-        };
-    }
+    //     addPersonDialog.onClickPersonCell = function(person) {
+    //         addPersonToVisit(person);
+    //     };
+    // }
 
-    function initPersonDialog() {
-        personDialog = new returnvisitor.PersonDialog();
-        personDialog.onClickOk = function(person) {
+    // function initPersonDialog() {
+    //     personDialog = new returnvisitor.PersonDialog();
+    //     personDialog.onClickOk = function(person) {
 
-            addPersonToVisit(person);
-        };
-    }
+    //         addPersonToVisit(person);
+    //     };
+    // }
 
-    function addPersonToVisit(person) {
+    // function addPersonToVisit(person) {
 
-        var personVisit = new PersonVisit(person);
-        _visit.personVisits.push(personVisit);
-        addPersonVisitCell(personVisit);
-    }
+    //     var personVisit = new PersonVisit(person);
+    //     _visit.personVisits.push(personVisit);
+    //     addPersonVisitCell(personVisit);
+    // }
 
-    function addPersonVisitCell(personVisit) {
+    // function addPersonVisitCell(personVisit) {
 
-        refreshPersonVisitText(true);
-        refreshPersonContainer();
+    //     refreshPersonVisitText(true);
+    //     refreshPersonContainer();
 
-        var personVisitCell = new PersonVisitCell(personVisit);
+    //     var personVisitCell = new PersonVisitCell(personVisit);
 
-        personVisitCell.appendAndExtract(personContainer);
-        personVisitCell.onRemoveCell = function(personVisit) {
+    //     personVisitCell.appendAndExtract(personContainer);
+    //     personVisitCell.onRemoveCell = function(personVisit) {
             
-            _visit.personVisits.removeData(personVisit);
+    //         _visit.personVisits.removeData(personVisit);
 
-            refreshPersonContainer();
-            refreshPersonVisitText(true);
-        };
-    }
+    //         refreshPersonContainer();
+    //         refreshPersonVisitText(true);
+    //     };
+    // }
 
-    function loadPersonDialogScript() {
-        loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
+    // function loadPersonDialogScript() {
+    //     loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
             
-            // TEST
-            // initPersonDialog();
-        });
-    }
+    //         // TEST
+    //         // initPersonDialog();
+    //     });
+    // }
 
-    function loadDatePickerScript() {
-        loadFile.loadScript('./dialogs/date_picker_dialog/date_picker_dialog.js', function(){
+    // function loadDatePickerScript() {
+    //     loadFile.loadScript('./dialogs/date_picker_dialog/date_picker_dialog.js', function(){
             
-            // TEST
-            // initDatePickerDialog();
+    //         // TEST
+    //         // initDatePickerDialog();
 
-        });
-    }
+    //     });
+    // }
 
-    function initDatePickerDialog() {
-        datePickerDialog = new returnvisitor.DatePickerDialog(_visit.dateTime);
-        datePickerDialog.onClickDateCell = function(date) {
-            _visit.dateTime = date;
-            refreshDateText();
-        };
-    }
+    // function initDatePickerDialog() {
+    //     datePickerDialog = new returnvisitor.DatePickerDialog(_visit.dateTime);
+    //     datePickerDialog.onClickDateCell = function(date) {
+    //         _visit.dateTime = date;
+    //         refreshDateText();
+    //     };
+    // }
 
-    function loadTimePickerScript() {
-        loadFile.loadScript('./dialogs/time_picker_dialog/time_picker_dialog.js', function(){
+    // function loadTimePickerScript() {
+    //     loadFile.loadScript('./dialogs/time_picker_dialog/time_picker_dialog.js', function(){
             
-            // TEST
-            // initTimePickerDialog();
+    //         // TEST
+    //         // initTimePickerDialog();
 
-        });
-    }
+    //     });
+    // }
 
-    function initTimePickerDialog() {
-        timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
-        timePickerDialog.onSetTime = function(time) {
-            _visit.dateTime = time;
-            refreshTimeText();
-        };
-    }
+    // function initTimePickerDialog() {
+    //     timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
+    //     timePickerDialog.onSetTime = function(time) {
+    //         _visit.dateTime = time;
+    //         refreshTimeText();
+    //     };
+    // }
 
-    function initOkButton() {
+    // function initOkButton() {
 
-        var okButton = document.getElementById('ok_button');
-        okButton.addEventListener('click', onClickOkButton, true);
-    }
+    //     var okButton = document.getElementById('ok_button');
+    //     okButton.addEventListener('click', onClickOkButton, true);
+    // }
 
-    function onClickOkButton() {
+    // function onClickOkButton() {
 
-        dbHelper.updateVisit(_visit);
-        fadeOut(_onOkClicked, _visit.place);
-    }
+    //     dbHelper.updateVisit(_visit);
+    //     fadeOut(_onOkClicked, _visit.place);
+    // }
 
-    function initCancelButton() {
+    // function initCancelButton() {
 
-        var cancelButton = document.getElementById('cancel_button');
-        cancelButton.addEventListener('click', onClickCancelButton);
-    }
+    //     var cancelButton = document.getElementById('cancel_button');
+    //     cancelButton.addEventListener('click', onClickCancelButton);
+    // }
 
-    function onClickCancelButton() {
+    // function onClickCancelButton() {
 
-        fadeOut();
-    }
+    //     fadeOut();
+    // }
 
-    function fadeIn(postFadeIn) {
+    // function fadeIn(postFadeIn) {
 
-        var $pageFrame = $('#record_visit_page_frame');
+    //     var $pageFrame = $('#record_visit_page_frame');
 
-        $pageFrame.css({
-            width : '100%',
-            height : '100%'
-        });
-        $pageFrame.fadeTo('slow', 1, function(){
+    //     $pageFrame.css({
+    //         width : '100%',
+    //         height : '100%'
+    //     });
+    //     $pageFrame.fadeTo('slow', 1, function(){
             
-            if ( typeof postFadeIn === 'function' ) {
-                postFadeIn();
-            }
-        });
-    }
+    //         if ( typeof postFadeIn === 'function' ) {
+    //             postFadeIn();
+    //         }
+    //     });
+    // }
 
-    function fadeOut(callback, arg) {
+    // function fadeOut(callback, arg) {
 
-        if ( typeof _beforeFadeOutPage === 'function' ) {
-            _beforeFadeOutPage();
-        }
+    //     if ( typeof _beforeFadeOutPage === 'function' ) {
+    //         _beforeFadeOutPage();
+    //     }
 
-        var $pageFrame = $('#record_visit_page_frame');
+    //     var $pageFrame = $('#record_visit_page_frame');
 
-        $pageFrame.fadeTo('slow', 0, function(){
-            $pageFrame.css({
-                width : 0,
-            });
+    //     $pageFrame.fadeTo('slow', 0, function(){
+    //         $pageFrame.css({
+    //             width : 0,
+    //         });
 
-            if ( typeof callback === 'function' ) {
-                callback(arg);
-            }
-        });
-    }
+    //         if ( typeof callback === 'function' ) {
+    //             callback(arg);
+    //         }
+    //     });
+    // }
 
 
     // initAddressText();

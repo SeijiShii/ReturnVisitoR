@@ -23,10 +23,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function(person) {
         viewComponents = returnvisitor.viewComponents,
         ToggleButton = viewComponents.ToggleButton;
 
+    loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     returnvisitor.DialogBase.call(this,
         ['./dialogs/person_dialog/person_dialog.html'], 'person_dialog');
 
-    loadFile.loadCss('./dialogs/person_dialog/person_dialog.css');
     
     if (!_person) {
         _person = new Person();

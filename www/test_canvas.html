@@ -1,11 +1,35 @@
 <html>
     <head>
         <meta charset='UTF-8'>
-        <!-- <link rel='stylesheet' type='text/css' href='./css/base.css'>
-        <link rel='stylesheet' type='text/css' href='./dialogs/dialog_base/dialog_base.css'> -->
+        <link rel='stylesheet' type='text/css' href='./css/base.css'>
+        <link rel='stylesheet' type='text/css' href='./dialogs/dialog_base/dialog_base.css'>
         <link rel='stylesheet' type='text/css' href='./test_canvas.css'>
     </head>
     <body>
-        
+        <div class="person_dialog dialog_content">
+            <h2 class="dialog_title">Person</h2>
+            <input type="text" class="text_input person_name_text" placeholder="Name">
+            <div class="row sex_row">
+                <div class="sex_select_title">Sex:</div>
+                <div class="sex_select_option male_button_base"></div>
+                <div class="sex_select_option female_button_base"></div>
+            </div>
+            <div class="row age_row">
+                <div class="age_select_title">Age:</div>
+                <div class="age_selector_base"></div>
+            </div>
+            <p class="interest_text">Interest:</p>
+            <div class="row interest_rater_base" ></div>
+            <textarea class="text_input person_note_text" placeholder="Note"></textarea>
+            <div class="row">
+                <span class="button ok_button">OK</span>
+            </div>
+            <div class="row delete_button_row">
+                <spanp class="button delete_button">Delete</span>
+            </div>
+            <div class="row">
+                <span class="button cancel_button">Cancel</span>
+            </div>
+        </div>
     </body>
 </html>

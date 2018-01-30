@@ -10,10 +10,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(everSeen
         loadFile = returnvisitor.common.loadFile,
         PersonCell = returnvisitor.viewComponents.PersonCell;
 
+    loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
     returnvisitor.DialogBase.call(this,
         ['./dialogs/add_person_dialog/add_person_dialog.html'], 'add_person_dialog');
     
-    loadFile.loadCss('./dialogs/add_person_dialog/add_person_dialog.css');
 
     function loadEverSeenPersons() {
         

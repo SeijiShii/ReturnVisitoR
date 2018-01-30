@@ -1,0 +1,108 @@
+.person_dialog
+.person_name_text {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 30px;
+}
+
+.person_dialog
+.row {
+    position: relative;
+    width: 100%;
+    height: 45px;
+}
+
+.person_dialog
+.sex_row {
+
+    font-size: 15px;
+    line-height: 45px;
+    text-align: center;
+}
+
+.person_dialog
+.sex_row
+.sex_select_title {
+    position: relative;
+    height: 100%;
+    width: 30%;
+    float: left;
+}
+
+.person_dialog
+.sex_row
+.sex_select_option {
+    width: 35%;
+    height: 100%;
+    position: relative;
+    float: left;
+}
+
+.person_dialog
+.age_row {
+    font-size: 15px;
+    text-align: center;
+    line-height: 45px;
+}
+
+.person_dialog
+.age_row 
+.age_select_title {
+    height: 100%;
+    width: 30%;
+    float: left;
+}
+
+.person_dialog
+.age_row 
+.age_selector_base {
+    width: 150px;
+    height: 45px;
+    float: right;
+
+}
+
+.person_dialog
+.interest_text {
+    width: 90%;
+    height: 30px;
+    line-height: 30px;
+    font-size: 20px;
+    text-align: center;
+    left: 0;
+    right: 0;
+    margin: auto; 
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+.person_dialog
+.person_note_text {
+    display: block;
+    width: 100%;
+    height: 50px;
+}
+
+.person_dialog
+.button {
+    width: 150px;
+    height: 41px;
+    line-height: 41px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    float: right;
+    color: darkgreen;
+    text-align: center;
+    font-size: 15px;
+}
+
+.person_dialog
+.delete_button {
+    color: red;
+}
+
+.person_dialog
+.cancel_button {
+    color: orange;
+}
