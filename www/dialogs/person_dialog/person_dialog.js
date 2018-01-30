@@ -19,7 +19,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function(person) {
         Person = returnvisitor.data.Person,
         loadFile = returnvisitor.common.loadFile,
         raterColors = returnvisitor.common.raterColors,
-        buttonMarkerPaths =returnvisitor.common.markerPaths.buttonMarkerPaths,
+        // buttonMarkerPaths =returnvisitor.common.markerPaths.buttonMarkerPaths,
         viewComponents = returnvisitor.viewComponents,
         ToggleButton = viewComponents.ToggleButton;
 

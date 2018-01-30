@@ -176,36 +176,36 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     function initDateText() {
         dateText = elements.getElementByClassName(_primaryFrame, 'date_text');
         elementsEffect.blinker(dateText);
-        refreshDateText();
+        _refreshDateText();
         dateText.addEventListener('click', onClickDateText);
     }
 
-    function refreshDateText() {
+    function _refreshDateText() {
         dateText.innerText = _visit.dateTime.dateString();
     }
 
     function onClickDateText() {
 
         if ( typeof _onClickDateText === 'function' ) {
-            _onClickDateText();
+            _onClickDateText(_visit);
         }
     }
 
     function initTimeText() {
         timeText = elements.getElementByClassName(_primaryFrame, 'time_text');
         elementsEffect.blinker(timeText);
-        refreshTimeText();
+        _refreshTimeText();
         timeText.addEventListener('click', onClickTimeText);
     }
 
-    function refreshTimeText() {
+    function _refreshTimeText() {
         timeText.innerText = _visit.dateTime.timeString();
     }
 
     function onClickTimeText() {
 
         if ( typeof _onClickTimeText === 'function' ) {
-            _onClickTimeText();
+            _onClickTimeText(_visit);
         }
     }
 
@@ -247,10 +247,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         set onClickDateText(f) {
             _onClickDateText = f;
         }, 
+        refreshDateText : _refreshDateText,
 
         set onClickTimeText(f) {
             _onClickTimeText = f;
         },
+        refreshTimeText : _refreshTimeText,
 
         set onClickAddPerson(f) {
             _onClickAddPerson = f;

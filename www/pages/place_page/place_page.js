@@ -229,11 +229,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             initAddPersonDialog(visit);
         };
 
-        recordVisitPane.onClickDateText = function() {
+        recordVisitPane.onClickDateText = function(visit) {
+
+            initDatePickerDialog(visit);
 
         };
 
-        recordVisitPane.onClickTimeText = function() {
+        recordVisitPane.onClickTimeText = function(visit) {
+
+            initTimePickerDialog(visit);
 
         };
     }
@@ -306,10 +310,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
     }
 
-    function initDatePickerDialog() {
-        datePickerDialog = new returnvisitor.DatePickerDialog(_visit.dateTime);
+    function initDatePickerDialog(visit) {
+        datePickerDialog = new returnvisitor.DatePickerDialog(visit.dateTime);
         datePickerDialog.onClickDateCell = function(date) {
-            _visit.dateTime = date;
+            visit.dateTime = date;
             refreshDateText();
         };
     }
@@ -323,10 +327,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
     }
 
-    function initTimePickerDialog() {
+    function initTimePickerDialog(visit) {
         timePickerDialog = new returnvisitor.TimePickerDialog(_visit.dateTime);
         timePickerDialog.onSetTime = function(time) {
-            _visit.dateTime = time;
+            visit.dateTime = time;
             refreshTimeText();
         };
     }
