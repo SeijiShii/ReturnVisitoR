@@ -96,7 +96,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
         if ( typeof _this.onSetRater === 'function' ) {
             _this.onSetRater(_value);
         }
-        refreshRaterButtons(true);
+        refreshRaterButtons(false);
         
     }
 
@@ -111,16 +111,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
 
                 var button = raterButtons[index];
                 var colorButton = elements.getElementByClassName(button, 'color_button');
+                var $button = $(colorButton);
 
                 if (index <= _value) {
                     
-                    $(colorButton).animate({
+                    $button.animate({
                         width : 0,
                         height : 0,
                         borderRadius : 0
                     }, 20, function(){
                         colorButton.style.backgroundColor =  buttonColors[_value];  
-                        $(colorButton).animate({
+                        $button.animate({
                             width : BUTTON_SIZE,
                             height : BUTTON_SIZE,
                             borderRadius : '10px'
@@ -130,7 +131,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
                     });
 
                 } else {
-                    $(colorButton).animate({
+                    $button.animate({
                         width : 0,
                         height : 0,
                         borderRadius : 0
@@ -140,7 +141,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
                     });
                 }
                 
-            }
+            };
 
             animateButton(0);
 
@@ -149,18 +150,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
 
                 var button = raterButtons[i];
                 var colorButton = elements.getElementByClassName(button, 'color_button');
+                var $button = $(colorButton);
 
                 if (i <= _value) {
                     
                     colorButton.style.backgroundColor =  buttonColors[_value];  
-                    $(colorButton).css({
+                    $button.css({
                         width : BUTTON_SIZE,
                         height : BUTTON_SIZE,
                         borderRadius : '10px'
                     });  
 
                 } else {
-                    $(colorButton).css({
+                    $button.css({
                         width : 0,
                         height : 0,
                         borderRadius : 0
@@ -171,5 +173,5 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
     }
 
     initialize();
-}
+};
 
