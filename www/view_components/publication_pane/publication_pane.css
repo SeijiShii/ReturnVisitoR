@@ -85,7 +85,6 @@
     width: 50%;
     height: 100%;
     top: 0;
-    overflow-y: auto;
 }
 
 .publication_pane
@@ -94,8 +93,31 @@
 .history_frame {
     
     left: 0;
-    background-color: red;
+    /* background-color: red; */
     
+}
+
+.publication_pane
+.list_frame
+.horizontal_frame
+.history_frame
+#pub_search_text {
+
+    width: 95%;
+    height: 30px;
+    left: 0;
+    right: 0;
+    margin: 5px auto;
+    display: block;    
+}
+
+.publication_pane
+.list_frame
+.horizontal_frame
+.history_frame
+.history_list_frame {
+    width: 100%;
+    /* height: auto; */
 }
 
 .publication_pane
@@ -104,5 +126,41 @@
 .general_frame {
 
     left: 50%;
-    background-color: blue;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.publication_pane
+.list_frame
+.horizontal_frame
+.general_frame::-webkit-scrollbar {
+
+    display: none;
+    
+}
+
+.publication_pane
+.list_frame
+.horizontal_frame
+.general_frame
+.general_list_frame {
+    position: absolute;
+    width: 100%;
+    height: auto;
+}
+
+
+.publication_pane
+.list_frame
+.horizontal_frame
+.general_frame
+.general_list_cell {
+
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px gray solid;
+    line-height: 40px;
+    font-size: 15px;
+
+    padding-left: 5%;
 }

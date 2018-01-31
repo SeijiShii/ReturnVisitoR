@@ -74,7 +74,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements = (function(){
             return {
                 top : rect.top - parentRect.top,
                 left : rect.left - parentRect.left
-            }
+            };
         }
-    }
+    };
 }());

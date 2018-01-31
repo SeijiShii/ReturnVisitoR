@@ -9,13 +9,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         elements        = common.elements,
         elementsEffect  = common.elementsEffect,
         Swipe           = common.Swipe,
+        data            = returnvisitor.data,
+        Publication     = data.Publication,
         paneFrame,
         hFrame,
         historyTab,
         generalTab,
         flag,
         _isInHistory = true,
-        historyPubs = ['hoge'];
+        historyPubs = [];
 
     function isHistoryEnabled() {
         return historyPubs.length > 0;
@@ -36,6 +38,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
             initHistroyTab();
             initGeneralTab();
             initFlag();
+            initGeneralFrame();
 
             if ( typeof readyCallback === 'function' ) {
                 readyCallback();
@@ -44,7 +47,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
     }
 
     function initHorizontalFrame() {
-        hFrame = elements.getElementByClassName(paneFrame, 'horizontal_frame');
+        hFrame = _getElementByClassName('horizontal_frame');
 
         setHFrameInitialLeft();
 
@@ -141,7 +144,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
     
     function initHistroyTab() {
 
-        historyTab = elements.getElementByClassName(paneFrame, 'history');
+        historyTab = _getElementByClassName('history');
         refreshHitoryTab();
     }
 
@@ -171,7 +174,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
 
     function initGeneralTab() {
 
-        generalTab = elements.getElementByClassName(paneFrame, 'general');
+        generalTab = _getElementByClassName('general');
         elementsEffect.blinker(generalTab);
         generalTab.addEventListener('click', onClickGeneralTab);
     }
@@ -190,7 +193,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
 
     function initFlag() {
 
-        flag = elements.getElementByClassName(paneFrame, 'tab_flag');
+        flag = _getElementByClassName('tab_flag');
         refreshFlag();
     }
 
@@ -241,6 +244,89 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
             
         }
 
+    }
+
+    function initGeneralFrame() {
+        var generalListFrame = _getElementByClassName('general_list_frame'),
+            $glFrame = $(generalListFrame);
+
+        var keys = Object.keys(Publication.category);
+        for (var i = 0 ;  i < keys.length ; i++) {
+            var cell = generateGeneralListCell(keys[i]);
+            generalListFrame.appendChild(cell);
+        }
+
+        var gFrameSwipe = new Swipe(generalListFrame);
+        gFrameSwipe.xSwipeEnabled = false;
+        gFrameSwipe.ySwipeEnabled = true;
+        var topLimit;
+
+        gFrameSwipe.onYSwipe = function(stroke){
+
+            topLimit = -(generalListFrame.clientHeight - generalListFrame.parentNode.clientHeight);
+            var oldTop = elements.positionInParent(generalListFrame).top;
+            var newTop = stroke + oldTop;
+            if (newTop > 0) {
+                newTop = 0;
+            }
+
+            
+            if (newTop < topLimit) {
+                newTop = topLimit;
+            }
+
+            $glFrame.css({
+                top : newTop
+            });
+        };
+
+        gFrameSwipe.onYSwipeEnd = function(stroke, speed) {
+
+            topLimit = -(generalListFrame.clientHeight - generalListFrame.parentNode.clientHeight);
+            var currentTop = elements.positionInParent(generalListFrame).top, 
+                distance,
+                time;
+
+            if (stroke > 0) {
+
+                time = currentTop / speed;
+
+                $glFrame.animate({
+                    top : 0
+                }, time);
+
+
+            } else if (stroke < 0) {
+
+                distance = Math.abs(currentTop - topLimit);
+                time = distance / speed;
+
+                $glFrame.animate({
+                    top : topLimit
+                }, time);
+            }
+        };
+
+    }
+
+    function generateGeneralListCell(name) {
+
+        var cell = document.createElement('div');
+        cell.classList.add('general_list_cell');
+        cell.innerText  = Publication.category[name];
+        cell.name = name;
+        elementsEffect.blinker(cell);
+        cell.addEventListener('click', onClickGeneralCell);
+
+        return cell;
+    }
+
+    function onClickGeneralCell(e) {
+
+    }
+
+    function _getElementByClassName(className) {
+        return elements.getElementByClassName(paneFrame, className);
     }
 
     return {
