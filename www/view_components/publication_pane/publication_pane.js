@@ -104,7 +104,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
 
     function refreshHitoryTab() {
 
-        elementsEffect.blinker(historyTab, isHistoryEnabled());
+        historyTab.blink = new elementsEffect.Blink(historyTab, isHistoryEnabled());
         if (isHistoryEnabled()) {
             historyTab.addEventListener('click', onClickHistoryTab);
             historyTab.style.opacity = 1;
@@ -129,7 +129,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
     function initGeneralTab() {
 
         generalTab = _getElementByClassName('general');
-        elementsEffect.blinker(generalTab);
+        generalTab.blink = new elementsEffect.Blink(generalTab);
         generalTab.addEventListener('click', onClickGeneralTab);
     }
 
@@ -223,7 +223,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         cell.classList.add('general_list_cell');
         cell.innerText  = Publication.category[name];
         cell.name = name;
-        elementsEffect.blinker(cell);
+        cell.blink = new elementsEffect.Blink(cell);
         cell.addEventListener('click', onClickGeneralCell);
 
         return cell;

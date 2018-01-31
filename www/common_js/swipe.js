@@ -183,9 +183,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
 
     }
 
-    function handleEnd(e) {
+    function handleEnd() {
 
-        console.log(e);
+        // console.log(e);
         
         if (!_this.swipeEnabled || !isSwiping) {
             return;

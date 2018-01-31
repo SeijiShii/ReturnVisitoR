@@ -26,7 +26,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.AddPersonDialog = function(personsI
     function initNewPersonButton() {
         
         newPersonButton = _this.getElementByClassName('new_person_button');
-        elementsEffect.blinker(newPersonButton);
+        newPersonButton.blink = new elementsEffect.Blink(newPersonButton);
         newPersonButton.addEventListener('click', onClickNewPersonButton);
     }
 

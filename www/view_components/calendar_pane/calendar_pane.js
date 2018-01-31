@@ -50,7 +50,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     function initLeftButton() {
         var leftButton = elements.getElementByClassName(paneFrame, 'left_button');
-        elementsEffect.blinker(leftButton);
+        leftButton.blink = new elementsEffect.Blink(leftButton);
         leftButton.addEventListener('click', onLeftClick);
         
     }
@@ -61,7 +61,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     function initRightButton() {
         var rightButton = elements.getElementByClassName(paneFrame, 'right_button');
-        elementsEffect.blinker(rightButton);
+        rightButton.blink = new elementsEffect.Blink(rightButton);
         rightButton.addEventListener('click', onRightClick);
 
     }
@@ -212,7 +212,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
                 }
 
                 dateCell.id = DATE_CELL_PREFIX + __date__.getTime();
-                elementsEffect.blinker(dateCell);
+                dateCell.blink = new elementsEffect.Blink(dateCell);
                 dateCell.addEventListener('click', onClickDateCell);
 
                 calRow.appendChild(dateCell);

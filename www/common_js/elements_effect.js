@@ -1,12 +1,6 @@
 'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elementsEffect = {
-    // blink : function(elm) {
-    //     var $elm = $(elm);
-    //     $elm.fadeTo(100, 0.3, function(){
-    //         $elm.fadeTo(100, 1);
-    //     });
-    // },
 
     shrink : function(elm) {
         var width = elm.clientWidth,
@@ -32,32 +26,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elementsEffect = {
         
     },
     
-    blinker : function(elm, enabled) {
+    Blink : function(elm, enabled) {
 
         if (enabled === undefined) {
             enabled = true;
         }
-
-        if (enabled) {
-            elm.addEventListener('mousedown', onMouseDown, false);
-            elm.addEventListener('mouseup', onMouseUp, false);
-            elm.addEventListener('mouseleave', onMouseUp, false);
-            elm.addEventListener('mouseenter', onMouseEnter, false);
-    
-            elm.addEventListener('touchstart', onMouseDown, {captuer : false, passive : true});
-            elm.addEventListener('touchend', onMouseUp, {captuer : false, passive : true});
-            elm.addEventListener('touchcancel', onMouseUp, {captuer : false, passive : true});
-        } else {
-            elm.removeEventListener('mousedown', onMouseDown);
-            elm.removeEventListener('mouseup', onMouseUp);
-            elm.removeEventListener('mouseleave', onMouseUp);
-            elm.removeEventListener('mouseenter', onMouseEnter);
-    
-            elm.removeEventListener('touchstart', onMouseDown);
-            elm.removeEventListener('touchend', onMouseUp);
-            elm.removeEventListener('touchcancel', onMouseUp);
-        }
-
 
         function changeOpacity(o) {
             elm.style.opacity = o;            
@@ -74,5 +47,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elementsEffect = {
         function onMouseEnter() {
             changeOpacity(0.6);
         }
+
+        this.enable = function(enabled) {
+            if (enabled) {
+                elm.addEventListener('mousedown', onMouseDown, false);
+                elm.addEventListener('mouseup', onMouseUp, false);
+                elm.addEventListener('mouseleave', onMouseUp, false);
+                elm.addEventListener('mouseenter', onMouseEnter, false);
+        
+                elm.addEventListener('touchstart', onMouseDown, {captuer : false, passive : true});
+                elm.addEventListener('touchend', onMouseUp, {captuer : false, passive : true});
+                elm.addEventListener('touchcancel', onMouseUp, {captuer : false, passive : true});
+            } else {
+                elm.removeEventListener('mousedown', onMouseDown);
+                elm.removeEventListener('mouseup', onMouseUp);
+                elm.removeEventListener('mouseleave', onMouseUp);
+                elm.removeEventListener('mouseenter', onMouseEnter);
+        
+                elm.removeEventListener('touchstart', onMouseDown);
+                elm.removeEventListener('touchend', onMouseUp);
+                elm.removeEventListener('touchcancel', onMouseUp);
+            }
+        };
+
+        this.enable(enabled);
     }
 };

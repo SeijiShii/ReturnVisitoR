@@ -131,7 +131,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.hourPickerPane = (fu
         this.button.id = HOUR_PREFIX + n;
 
         $(this.button).css(this.sizeOptions());
-        elementsEffect.blinker(this.button);
+        this.button.blink = new elementsEffect.Blink(this.button);
         this.button.addEventListener('click', onClickHourButton, true);
    
     }

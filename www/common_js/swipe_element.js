@@ -35,7 +35,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
             throw new Error('Target parent must have style property "position" which is rightly set!');
         }
 
-        var pos = elements.positionInParent(_target);
+        var pos = elements.positionInParent(elm);
         var oldTop      = pos.top,
             oldLeft     = pos.left,
             oldBottom   = pos.bottom,

@@ -67,7 +67,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.timePickerPane = (fu
   
     function initHourText() {
         hourText = elements.getElementByClassName(paneFrame, 'hour_text');
-        elementsEffect.blinker(hourText);
+        hourText.blink = new elementsEffect.Blink(hourText);
         refreshHourText();
         hourText.addEventListener('click', onClickHourText);
     }
@@ -97,7 +97,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.timePickerPane = (fu
 
     function initMinuteText() {
         minuteText = elements.getElementByClassName(paneFrame, 'minute_text');
-        elementsEffect.blinker(minuteText);
+        minuteText.blink = new elementsEffect.Blink(minuteText);
         refreshMinuteText();
         minuteText.addEventListener('click', onClickMinuteText);
     }

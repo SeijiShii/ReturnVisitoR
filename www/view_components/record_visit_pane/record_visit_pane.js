@@ -135,7 +135,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initAddPersonButton() {
         addPersonButton = elements.getElementById(_primaryFrame, 'add_person_button');
-        elementsEffect.blinker(addPersonButton);
+        addPersonButton.blink = new elementsEffect.Blink(addPersonButton);
         addPersonButton.addEventListener('click', onClickAddPersonButton, true);
     }
 
@@ -182,7 +182,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initDateText() {
         dateText = elements.getElementByClassName(_primaryFrame, 'date_text');
-        elementsEffect.blinker(dateText);
+        dateText.blink = new elementsEffect.Blink(dateText);
         _refreshDateText();
         dateText.addEventListener('click', onClickDateText);
     }
@@ -200,7 +200,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initTimeText() {
         timeText = elements.getElementByClassName(_primaryFrame, 'time_text');
-        elementsEffect.blinker(timeText);
+        timeText.blink = new elementsEffect.Blink(timeText);
         _refreshTimeText();
         timeText.addEventListener('click', onClickTimeText);
     }
@@ -270,7 +270,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initPlcButton() {
         var plcButton = elements.getElementById(_secondaryFrame, 'plc_button');
-        elementsEffect.blinker(plcButton);
+        plcButton.blink = new elementsEffect.Blink(plcButton);
         plcButton.addEventListener('click', onClickPlcButton);
     }
 

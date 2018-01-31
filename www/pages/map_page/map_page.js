@@ -8,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         loadFile        = common.loadFile,
         elements        = common.elements,
         elementsEffect  = common.elementsEffect,
-        Swipe           = common.Swipe,
+        SwipeElement    = common.SwipeElement,
         mapPageFrame,
         horizontalFrame,
         toolHeader,
@@ -27,7 +27,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         _isWideScreen = false,
         _onMapLongClick;
 
-    function _initialize(onReadyCallback) {
+    function _initialize(onReadyCallback, isWide) {
+
+        _isWideScreen = isWide;
 
         loadFile.loadHtmlAsElement('./pages/map_page/map_page.html', function(elm){
 
@@ -67,41 +69,35 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         drawerFrame     = _getElementById('drawer_frame');
 
-        drawerSwipe = new Swipe(drawerFrame, {
+        drawerSwipe = new SwipeElement(drawerFrame, {
             xSwipeEnabled : true,
-            ySwipeEnabled : false
+            ySwipeEnabled : false,
+            effectedElement : horizontalFrame,
+            leftLimit : -200,
+            rightLimit : -200,
+            swipeThru : true
         });
-        drawerSwipe.onXSwipeEnd = function(stroke) {
 
-            if (stroke < 0) {
-                openCloseDrawer();
-            } 
+        drawerSwipe.onEndSwipe = function(pos) {
+            refreshElementOnPosition(pos);
         };
 
-        drawerSwipe.onXSwipe = function(stroke) {
+        function refreshElementOnPosition(pos) {
 
-            $(horizontalFrame).css({
-                left : parseInt(horizontalFrame.style.left) + stroke
-            });
+            _isDrawerOpen = pos.left == -200;
 
-            if (parseInt(horizontalFrame.style.left) > 0) {
-                drawerSwipe.cancel();
-            }
-        };
-
-        drawerSwipe.onSwipeCancel = function(){
-
-            animateDrawer();
-        };
-
+            // console.log(_isDrawerOpen);
+            switchMapOverlay(_isDrawerOpen);
+            fadeToolHeaderLogo(!_isDrawerOpen, true);
+        }
     }
-
     // resize frames
 
     function resizeHorizontalFrame() {
 
         var $hFrame = $(horizontalFrame);
 
+        drawerSwipe.swipeEnabled = (!_isWideScreen);
         if (_isWideScreen) {
 
             $hFrame.css({
@@ -139,6 +135,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         resizeMapPaneBase();
 
         drawerSwipe.swipeEnabled = !_isWideScreen;
+        
+        drawerHeader.blink.enable(!_isWideScreen);
         fadeToolHeaderLogo(!_isWideScreen, false);
 
     }
@@ -280,6 +278,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     function initDrawerHeader() {
 
         drawerHeader = _getElementById('drawer_header');
+        drawerHeader.blink = new elementsEffect.Blink(drawerHeader, !_isWideScreen);
         drawerHeader.addEventListener('click', onClickDrawerHeader);
 
     }
@@ -289,8 +288,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         if (_isWideScreen) {
             return;
         }
-
-        elementsEffect.blink(drawerHeader);
         openCloseDrawer();
     }
 

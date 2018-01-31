@@ -152,7 +152,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             mapPage.initialize(function(){
 
                 launcher.launchUpPage(mapPage);
-            });
+            }, isWideScreen());
     
             mapPage.onMapLongClick = function(latLng) {
     
