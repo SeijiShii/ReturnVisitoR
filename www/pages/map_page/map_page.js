@@ -67,7 +67,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
         drawerFrame     = _getElementById('drawer_frame');
 
-        drawerSwipe = new Swipe(drawerFrame);
+        drawerSwipe = new Swipe(drawerFrame, {
+            xSwipeEnabled : true,
+            ySwipeEnabled : false
+        });
         drawerSwipe.onXSwipeEnd = function(stroke) {
 
             if (stroke < 0) {

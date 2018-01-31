@@ -8,7 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         loadFile        = common.loadFile,
         elements        = common.elements,
         elementsEffect  = common.elementsEffect,
-        Swipe           = common.Swipe,
+        SwipeElement    = common.SwipeElement,
         touchEventFilter = common.touchEventFilter,
         data            = returnvisitor.data,
         Publication     = data.Publication,
@@ -18,7 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         generalTab,
         flag,
         _isInHistory = true,
-        historyPubs = [],
+        historyPubs = ['hoge'],
         _onClickGeneralItem;
 
     function isHistoryEnabled() {
@@ -53,84 +53,82 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
 
         setHFrameInitialLeft();
 
-        var hSwipe = new Swipe(hFrame);
-        hSwipe.swipeEnabled = isHistoryEnabled();
+        var hSwipe = new SwipeElement(hFrame, {
+            swipeEnabled : isHistoryEnabled(),
+            xSwipeEnabled : true,
+            ySwipeEnabled : false,
+            swipeThru : true
 
-        var $frame = $(hFrame);
+        });
         
-        hSwipe.onXSwipe = function(stroke) {
+        hSwipe.onEndSwipe = function(pos) {
 
-            var oldLeft = elements.positionInParent(hFrame).left;
-            var newLeft = oldLeft + stroke;
+            if (pos.left == 0) {
 
-            if (newLeft > 0) {
-                newLeft = 0;
-            } 
-
-            if (newLeft < -hFrame.clientWidth / 2) {
-                newLeft = -hFrame.clientWidth / 2;
-            }
-
-            $frame.css({
-                left : newLeft
-            });
-
-        };
-
-        hSwipe.onXSwipeEnd = function(stroke, speed) {
-
-            var currentLeft = elements.positionInParent(hFrame).left, 
-                goalLeft,
-                distance,
-                time;
-
-            if (stroke < 0) {
-                // Stroke to left.
-                _isInHistory = false;
-
-                goalLeft = hFrame.clientWidth / 2;
-                distance = Math.abs(goalLeft - currentLeft);
-
-                time = distance / speed;
-
-                if (stroke < 0) {
-                    $frame.animate({
-                        left : '-100%'
-                    }, time);
-                }
-
-            } else {
-                // Stroke to right.
+                // console.log('Swipe to right: left:', pos.left);
                 _isInHistory = true;
 
-                distance = Math.abs(currentLeft);
-                time = distance / speed;
-
-                if (stroke > 0) {
-                    $frame.animate({
-                        left : 0
-                    }, time);
-                }
-            }
-            animateFlag();
-
-        };
-
-        hSwipe.onSwipeCancel = function() {
-
-            if (_isInHistory) {
-
-                $frame.animate({
-                    left : 0
-                }, 300);
-
             } else {
 
-                $frame.animate({
-                    left : '-100%'
-                }, 300);
+                // console.log('Swipe to left: left:', pos.left);
+                _isInHistory = false;
             }
+            animateFlag();
         };
+        // hSwipe.onXSwipeEnd = function(stroke, speed) {
+
+        //     var currentLeft = elements.positionInParent(hFrame).left, 
+        //         goalLeft,
+        //         distance,
+        //         time;
+
+        //     if (stroke < 0) {
+        //         // Stroke to left.
+        //         _isInHistory = false;
+
+        //         goalLeft = hFrame.clientWidth / 2;
+        //         distance = Math.abs(goalLeft - currentLeft);
+
+        //         time = distance / speed;
+
+        //         if (stroke < 0) {
+        //             $frame.animate({
+        //                 left : '-100%'
+        //             }, time);
+        //         }
+
+        //     } else {
+        //         // Stroke to right.
+        //         _isInHistory = true;
+
+        //         distance = Math.abs(currentLeft);
+        //         time = distance / speed;
+
+        //         if (stroke > 0) {
+        //             $frame.animate({
+        //                 left : 0
+        //             }, time);
+        //         }
+        //     }
+        //     animateFlag();
+
+        // };
+
+        // hSwipe.onSwipeCancel = function() {
+
+        //     if (_isInHistory) {
+
+        //         $frame.animate({
+        //             left : 0
+        //         }, 300);
+
+        //     } else {
+
+        //         $frame.animate({
+        //             left : '-100%'
+        //         }, 300);
+        //     }
+        // };
     }
 
     function setHFrameInitialLeft() {
@@ -249,8 +247,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
     }
 
     function initGeneralFrame() {
-        var generalListFrame = _getElementByClassName('general_list_frame'),
-            $glFrame = $(generalListFrame);
+        var generalListFrame = _getElementByClassName('general_list_frame');
 
         var keys = Object.keys(Publication.category);
         for (var i = 0 ;  i < keys.length ; i++) {
@@ -258,56 +255,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
             generalListFrame.appendChild(cell);
         }
 
-        var gFrameSwipe = new Swipe(generalListFrame);
-        gFrameSwipe.xSwipeEnabled = false;
-        gFrameSwipe.ySwipeEnabled = true;
-        var topLimit;
-
-        gFrameSwipe.onYSwipe = function(stroke){
-
-            topLimit = -(generalListFrame.clientHeight - generalListFrame.parentNode.clientHeight);
-            var oldTop = elements.positionInParent(generalListFrame).top;
-            var newTop = stroke + oldTop;
-            if (newTop > 0) {
-                newTop = 0;
-            }
-
-            
-            if (newTop < topLimit) {
-                newTop = topLimit;
-            }
-
-            $glFrame.css({
-                top : newTop
-            });
-        };
-
-        gFrameSwipe.onYSwipeEnd = function(stroke, speed) {
-
-            topLimit = -(generalListFrame.clientHeight - generalListFrame.parentNode.clientHeight);
-            var currentTop = elements.positionInParent(generalListFrame).top, 
-                distance,
-                time;
-
-            if (stroke > 0) {
-
-                time = currentTop / speed;
-
-                $glFrame.animate({
-                    top : 0
-                }, time);
-
-
-            } else if (stroke < 0) {
-
-                distance = Math.abs(currentTop - topLimit);
-                time = distance / speed;
-
-                $glFrame.animate({
-                    top : topLimit
-                }, time);
-            }
-        };
+        new SwipeElement(generalListFrame, {
+            xSwipeEnabled   : false,
+            ySwipeEnabled   : true,
+            swipeThru       : false
+        });
 
     }
 

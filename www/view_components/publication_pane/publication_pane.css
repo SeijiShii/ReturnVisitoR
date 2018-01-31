@@ -125,6 +125,7 @@
 .horizontal_frame
 .general_frame {
 
+    position: absolute;
     left: 50%;
     overflow: hidden;
     overflow-y: scroll;

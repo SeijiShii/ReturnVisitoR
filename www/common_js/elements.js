@@ -72,8 +72,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elements = (function(){
             var parentRect = element.parentNode.getBoundingClientRect();
 
             return {
-                top : rect.top - parentRect.top,
-                left : rect.left - parentRect.left
+                top     : rect.top - parentRect.top,
+                left    : rect.left - parentRect.left,
+                bottom  : parentRect.bottom - rect.bottom,
+                right   : parentRect.right - rect.right
             };
         }
     };

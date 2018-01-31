@@ -1,6 +1,6 @@
 'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, options) {
 
     var _this = this,
         DEFAULT_STROKE = 50,
@@ -12,27 +12,36 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
         newY,
         startTime,
         isSwiping = false,
-        isToBlockClick = false;
+        isToBlockClick = false,
+        _startCallbackCalled = false;
 
+    if (options) {
+        this.swipeEnabled = options.swipeEnabled !==  undefined ? options.swipeEnabled : true ;
+        this.xSwipeEnabled = options.xSwipeEnabled !== undefined ? options.xSwipeEnabled : true;
+        this.ySwipeEnabled = options.ySwipeEnabled !== undefined ? options.ySwipeEnabled : true;
+        this.swipeStroke = options.swipeStroke !== undefined ? options.swipeStroke : DEFAULT_STROKE;    
+    } else {
+        this.swipeEnabled =  true ;
+        this.xSwipeEnabled = true;
+        this.ySwipeEnabled = false;
+        this.swipeStroke = DEFAULT_STROKE;
+    
+    }
 
-    this.swipeEnabled = true;
-    this.xSwipeEnabled = true;
-    this.ySwipeEnabled = false;
-    this.swipeStroke = DEFAULT_STROKE;
 
     if (cordova.platformId == 'android') {
 
         target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
         target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
         target.addEventListener('touchend', handleEnd, false);
-        target.addEventListener('touchcancel', onCancel, false);
+        target.addEventListener('touchcancel', handleEnd, false);
 
     } else {
 
         target.addEventListener('mousedown', onMouseDown, false);
         target.addEventListener('mousemove', onMouseMove, false);
         target.addEventListener('mouseup', handleEnd, false);
-        target.addEventListener('mouseleave', onCancel, false);
+        target.addEventListener('mouseleave', handleEnd, false);
     
     }
 
@@ -126,35 +135,38 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
 
     function handleMove() {
 
-        var xStroke = newX - oldX,
-            yStroke = newY - oldY;
+        if (!_startCallbackCalled) {
+            _startCallbackCalled = false;
+            if (typeof _this.onSwipeStart === 'function' ) {
+                _this.onSwipeStart();
+            }
+        }
 
+        var stroke = {
+            x : _this.xSwipeEnabled ? newX - oldX : 0,
+            y : _this.ySwipeEnabled ? newY - oldY : 0, 
+        };
+
+        var dist;
         if (_this.xSwipeEnabled && _this.ySwipeEnabled) {
 
-            // var stroke2D = Math.sqrt(Math.pow(xStroke, 2) + Math.pow(yStroke));
-
-            // console.log('2D Swipe: x: ' + xStroke + ' y: ' + yStroke);
-
-            if ( typeof _this.on2DSwipe === 'function' ) {
-                _this.on2DSwipe(xStroke, yStroke);
-            }
+            dist = Math.sqrt(Math.pow(stroke.x, 2) + Math.pow(stroke.y));
 
         } else if (_this.xSwipeEnabled) {
 
-            // console.log('X Swipe: ' + xStroke);
-            
-            if ( typeof _this.onXSwipe === 'function' ) {
-                _this.onXSwipe(xStroke);
-            }
+            dist = stroke.x;
 
         } else if (_this.ySwipeEnabled) {
 
-            // console.log('Y Swipe: ' + yStroke);
-
-            if ( typeof _this.onYSwipe === 'function' ) {
-                _this.onYSwipe(yStroke);
-            }
+            dist = stroke.y;
         }
+
+        stroke.distance = dist;
+
+        if ( typeof _this.onSwipe === 'function' ) {
+            _this.onSwipe(stroke);
+        }
+
     }
 
     function handleEnd() {
@@ -170,65 +182,41 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target) {
             speed;
 
         var xStroke = newX - startX,
-            yStroke = newY - startY;
-
-        // console.log('xStroke: ' + xStroke + ', yStroke: ' + yStroke);
+            yStroke = newY - startY,
+            dist;
 
         if (_this.xSwipeEnabled && _this.ySwipeEnabled) {
 
-            var stroke2D = Math.sqrt(Math.pow(xStroke, 2) + Math.pow(yStroke, 2));
-
-            // console.log('stroke2D:', stroke2D);
-
-            if (Math.abs(stroke2D) > _this.swipeStroke) {
-
-                // console.log('2D Swipe end: x: ' + xStroke + ' y: ' + yStroke);
-
-                speed = Math.abs(stroke2D / duration);
-
-                if ( typeof _this.on2DSwipeEnd === 'function' ) {
-                    _this.on2DSwipeEnd(xStroke, yStroke, speed);
-                }
-            } else {
-                if ( typeof _this.on2DSwipeCancel === 'function' ) {
-                    _this.onSwipeCancel();
-                }
-            }
+            dist = Math.sqrt(Math.pow(xStroke, 2) + Math.pow(yStroke, 2));   
 
         } else if (_this.xSwipeEnabled) {
-            
-            if (Math.abs(xStroke) > _this.swipeStroke) {
 
-                // console.log('X Swipe end: ' + xStroke);
-
-                speed = Math.abs(xStroke / duration);
-                // console.log('speed:', speed)
-
-                if ( typeof _this.onXSwipeEnd === 'function' ) {
-                    _this.onXSwipeEnd(xStroke, speed);
-                }
-            } else {
-                if ( typeof _this.onSwipeCancel === 'function' ) {
-                    _this.onSwipeCancel();
-                }
-            }
+            dist = Math.abs(xStroke);
 
         } else if (_this.ySwipeEnabled) {
 
-            if (Math.abs(yStroke) > _this.swipeStroke) {
+            dist = Math.abs(yStroke);
 
-                // console.log('Y Swipe end: ' + yStroke);
+        }
 
-                speed = Math.abs(yStroke / duration);
-                // console.log('speed:', speed)
+        if (dist > _this.swipeStroke) {
 
-                if ( typeof _this.onYSwipeEnd === 'function' ) {
-                    _this.onYSwipeEnd(yStroke, speed);
-                }
-            } else {
-                if ( typeof _this.onSwipeCancel === 'function' ) {
-                    _this.onSwipeCancel();
-                }
+            speed = Math.abs(dist / duration);
+
+            var stroke = {
+                x           : xStroke,
+                y           : yStroke,
+                distance    : dist,
+                speed       : speed
+            };
+
+            if ( typeof _this.onSwipeEnd === 'function' ) {
+                _this.onSwipeEnd(stroke);
+            }
+
+        } else {
+            if ( typeof _this.onSwipeCancel === 'function' ) {
+                _this.onSwipeCancel();
             }
         }
     }
