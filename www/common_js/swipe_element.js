@@ -105,13 +105,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
         
     };
 
-    swipe.onSwipeCancel = function() {
+    swipe.onSwipeCancel = function(callback) {
 
         if (_swipeThru) {
             $elm.animate({
                 left : originalPos.left,
                 top : originalPos.top
-            }, 300);
+            }, 300, function(){
+
+                if ( typeof callback === 'function' ) {
+                    callback(elements.positionInParent(elm));
+                }
+            });
         }
     };
 

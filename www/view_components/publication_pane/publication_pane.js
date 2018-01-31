@@ -63,72 +63,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         
         hSwipe.onEndSwipe = function(pos) {
 
-            if (pos.left == 0) {
+            animateFlagOnPosition(pos);
+        };
 
+        hSwipe.onSwipeCancel = function(pos) {
+
+            animateFlagOnPosition(pos);
+        };
+
+        function animateFlagOnPosition(pos) {
+
+            if (pos.left == 0) {
                 // console.log('Swipe to right: left:', pos.left);
                 _isInHistory = true;
 
             } else {
-
                 // console.log('Swipe to left: left:', pos.left);
                 _isInHistory = false;
             }
             animateFlag();
-        };
-        // hSwipe.onXSwipeEnd = function(stroke, speed) {
-
-        //     var currentLeft = elements.positionInParent(hFrame).left, 
-        //         goalLeft,
-        //         distance,
-        //         time;
-
-        //     if (stroke < 0) {
-        //         // Stroke to left.
-        //         _isInHistory = false;
-
-        //         goalLeft = hFrame.clientWidth / 2;
-        //         distance = Math.abs(goalLeft - currentLeft);
-
-        //         time = distance / speed;
-
-        //         if (stroke < 0) {
-        //             $frame.animate({
-        //                 left : '-100%'
-        //             }, time);
-        //         }
-
-        //     } else {
-        //         // Stroke to right.
-        //         _isInHistory = true;
-
-        //         distance = Math.abs(currentLeft);
-        //         time = distance / speed;
-
-        //         if (stroke > 0) {
-        //             $frame.animate({
-        //                 left : 0
-        //             }, time);
-        //         }
-        //     }
-        //     animateFlag();
-
-        // };
-
-        // hSwipe.onSwipeCancel = function() {
-
-        //     if (_isInHistory) {
-
-        //         $frame.animate({
-        //             left : 0
-        //         }, 300);
-
-        //     } else {
-
-        //         $frame.animate({
-        //             left : '-100%'
-        //         }, 300);
-        //     }
-        // };
+        }
     }
 
     function setHFrameInitialLeft() {

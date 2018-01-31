@@ -3,6 +3,7 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, options) {
 
     var _this = this,
+        swipeArray = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe.array,
         DEFAULT_STROKE = 50,
         startX,
         startY, 
@@ -13,7 +14,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
         startTime,
         isSwiping = false,
         isToBlockClick = false,
-        _startCallbackCalled = false;
+        _startCallbackCalled = false,
+        _blockOthersFlag = false;
 
     if (options) {
         this.swipeEnabled = options.swipeEnabled !==  undefined ? options.swipeEnabled : true ;
@@ -147,6 +149,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
             y : _this.ySwipeEnabled ? newY - oldY : 0, 
         };
 
+        if (isPriorSwipe(stroke)) {
+            
+            if (!_blockOthersFlag) {
+                _blockOthersFlag = true;
+                swipeArray.blockOthers(_this);
+            } 
+        }
+
+        if (!_this.swipeEnabled) {
+            return;
+        }
+
         var dist;
         if (_this.xSwipeEnabled && _this.ySwipeEnabled) {
 
@@ -169,11 +183,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
 
     }
 
-    function handleEnd() {
+    function handleEnd(e) {
 
-        // console.log('Touch up');
+        console.log(e);
         
-        if (!_this.swipeEnabled) {
+        if (!_this.swipeEnabled || !isSwiping) {
             return;
         }
 
@@ -219,6 +233,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
                 _this.onSwipeCancel();
             }
         }
+
+        swipeArray.recoverStatus();
+        _blockOthersFlag = false;
     }
 
     this.cancel = function() {
@@ -244,8 +261,51 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
             // console.log('Click killed!');
             isToBlockClick = false;
         }
-        
     }
 
+    function isPriorSwipe(stroke) {
 
+        if (_this.xSwipeEnabled && _this.ySwipeEnabled) {
+            return true;
+        } else if (_this.xSwipeEnabled) {
+            return Math.abs(stroke.x) > Math.abs(stroke.y);
+        } else if (_this.ySwipeEnabled) {
+            return Math.abs(stroke.y) > Math.abs(stroke.x);
+        }
+    }
+
+    swipeArray.register(_this);
 };
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe.array = (function(){
+
+    var array = [],
+        stateArray = [];
+
+    return {
+        register :     function(swipe){        
+            array.push(swipe);        
+        },
+
+        blockOthers : function(swipe) {
+
+            if (!swipe.swipeEnabled) {
+                return;
+            }
+
+            for (var i = 0 ; i < array.length ; i++ ) {
+                stateArray[i] = array[i].swipeEnabled;
+                if (swipe !== array[i]) {                    
+                    array[i].swipeEnabled = false;
+                }
+            }
+        },
+
+        recoverStatus : function() {
+
+            for (var i = 0 ; i < array.length ; i++ ) {
+                array[i].swipeEnabled = stateArray[i];
+            }
+        }
+    }; 
+})();
