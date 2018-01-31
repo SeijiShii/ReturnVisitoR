@@ -44,6 +44,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object
             }
             return s;
         }
+    },
+    hasNumber : {
+        get : function() {
+
+            var category = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category;
+            return this.category === category.WATCHTOWER || this.category === category.ST_WATCHTOWER || this.category === category.AWAKE;
+        }
     }
 });
 

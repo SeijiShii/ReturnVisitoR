@@ -1,6 +1,9 @@
 .publication_data_pane {
+    position: absolute;
     background-color: whitesmoke;
-    height: 100%;
+    height: 300px;
+    top: 0;
+    left: 0;
 }
 
 .publication_data_pane
@@ -50,7 +53,7 @@
 
 .publication_data_pane
 .ok_row {
-    position: fixed;
+    position: absolute;
     bottom: 0;
 }
 

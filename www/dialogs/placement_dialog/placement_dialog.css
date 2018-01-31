@@ -3,6 +3,11 @@
 }
 
 .placement_dialog
+.publication_pane_base {
+    position: relative;
+}
+
+.placement_dialog
 .publication_pane {
 
     width: 100%;

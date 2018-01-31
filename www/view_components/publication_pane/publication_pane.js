@@ -9,6 +9,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         elements        = common.elements,
         elementsEffect  = common.elementsEffect,
         Swipe           = common.Swipe,
+        touchEventFilter = common.touchEventFilter,
         data            = returnvisitor.data,
         Publication     = data.Publication,
         paneFrame,
@@ -17,7 +18,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         generalTab,
         flag,
         _isInHistory = true,
-        historyPubs = [];
+        historyPubs = [],
+        _onClickGeneralItem;
 
     function isHistoryEnabled() {
         return historyPubs.length > 0;
@@ -323,6 +325,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
 
     function onClickGeneralCell(e) {
 
+        var cell = touchEventFilter.getTarget(e, 'general_list_cell');
+        // console.log(cell.name);
+
+        if ( typeof _onClickGeneralItem === 'function' ) {
+            _onClickGeneralItem(cell.name);
+        }
+        
     }
 
     function _getElementByClassName(className) {
@@ -333,6 +342,31 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
         initialize : _initialize,
         get paneFrame() {
             return paneFrame;
+        },
+        set onClickGeneralItem(f) {
+            _onClickGeneralItem = f;
+        },
+
+        fadeIn : function() {
+
+            var $frame = $(paneFrame);
+            $frame.css({
+                width : '100%',
+                opacity : 0
+            });
+            $frame.fadeTo(300, 1);
+            
+        },
+
+        fadeOut : function() {
+
+            var $frame = $(paneFrame);
+            
+            $frame.fadeTo(300, 0, function(){
+                $frame.css({
+                    width : 0
+                });
+            });
         }
     };
 

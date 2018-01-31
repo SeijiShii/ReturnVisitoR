@@ -7,7 +7,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
         loadFile        = common.loadFile,
         elements        = common.elements,
         viewComponents  = returnvisitor.viewComponents,
-        pubPane         = viewComponents.publicationPane;
+        pubPane         = viewComponents.publicationPane,
+        pubDataPane     = viewComponents.publicationDataPane,
+        pubPaneBase;
 
     function initialize() {
         loadFile.loadCss('./dialogs/placement_dialog/placement_dialog.css');
@@ -17,16 +19,29 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
     function _onDialogBaseReadyCallback() {
         
         initPubPane();
+        initPubDataPane();
         initCancelButton();
     }
 
     function initPubPane() {
 
-        var pubPaneBase = _this.getElementByClassName('publication_pane_base');
+        pubPaneBase = _this.getElementByClassName('publication_pane_base');
         pubPane.initialize(function() {
             pubPaneBase.appendChild(pubPane.paneFrame);
             _this.refreshDialogHeight();
         });
+
+        pubPane.onClickGeneralItem = function(category) {
+            switchPane(false);
+        };
+    }
+
+    function initPubDataPane() {
+
+        pubDataPane.initialize(function(){
+            pubPaneBase.appendChild(pubDataPane.paneFrame);
+        });
+
     }
     
     function initCancelButton() {
@@ -36,6 +51,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
 
     function onCancelClick() {
         _this.fadeOut();
+    }
+
+    function switchPane(toList) {
+
+        if (toList) {
+            
+            pubPane.fadeIn();
+            pubDataPane.fadeOut();
+
+        } else {
+
+            pubPane.fadeOut();
+            pubDataPane.fadeIn();
+
+        }
     }
 
     initialize();
