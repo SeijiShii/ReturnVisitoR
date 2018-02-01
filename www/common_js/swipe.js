@@ -304,7 +304,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe.array = (function(){
         recoverStatus : function() {
 
             for (var i = 0 ; i < array.length ; i++ ) {
-                array[i].swipeEnabled = stateArray[i];
+                if (stateArray[i] !== undefined) {
+                    array[i].swipeEnabled = stateArray[i];
+                }
             }
         }
     }; 

@@ -10,7 +10,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         SwipeElement = common.SwipeElement,
         paneFrame,
         innerFrame,
-        ONE_THIRD = 33.333333333;
+        ONE_THIRD = 100 / 3;
 
     function initialize() {
         loadFile.loadCss('./view_components/swipe_pane/swipe_pane.css');
@@ -53,7 +53,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
         var swipe = new SwipeElement(innerFrame,{
             swipeThru : true,
-            frameCountX : 3
+            frameCountX : 3,
+            xSwipeEnabled : true,
+            ySwipeEnabled : false
         });
 
         swipe.onEndSwipe = function(pos) {

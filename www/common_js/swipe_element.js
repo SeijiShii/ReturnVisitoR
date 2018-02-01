@@ -75,6 +75,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
             return;
         }
 
+        swipe.swipeEnabled = false;
+
         var currPos = elements.positionInParent(elm),
             goalLeft = currPos.left,  
             goalTop = currPos.top;
@@ -116,6 +118,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
             if ( typeof _this.onEndSwipe === 'function' ) {
                 _this.onEndSwipe(elements.positionInParent(elm));
             }
+            swipe.swipeEnabled = true;
         });
         
     };
