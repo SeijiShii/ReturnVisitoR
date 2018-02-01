@@ -13,6 +13,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
         bottomLimit = options.bottomLimit,
         leftLimit   = options.leftLimit,
         rightLimit  = options.rightLimit,
+        _swipeStepX  = options.swipeStepX,
+        _swipeStepY  = options.swipeStepY,         
+        _frameCountX = options.frameCountX,
+        _frameCountY = options.frameCountY,
         _swipeThru  = options.swipeThru !== undefined ? options.swipeThru : false,
         swipe;
     
@@ -76,15 +80,26 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
             goalTop = currPos.top;
 
         if (stroke.x > 0) {
-            goalLeft = parent.clientWidth - rightLimit - elm.clientWidth; 
+
+            goalLeft = parent.clientWidth - rightLimit - elm.clientWidth;
         } else if (stroke.x < 0) {
+            
             goalLeft = leftLimit;
+        }
+
+        if (_swipeStepX) {
+            goalLeft = goalLeft - parseInt((goalLeft - currPos.left) / _swipeStepX) * _swipeStepX;
         }
 
         if (stroke.y > 0) {
             goalTop = parent.clientHeight - bottomLimit - _target.clientHeight;
+
         } else if (stroke.y < 0) {
             goalTop = topLimit;
+        }
+
+        if (_swipeStepY) {
+            goalTop = goalTop - parseInt((goalTop - currPos.top) / _swipeStepY) * _swipeStepY;
         }
 
         var dist = Math.sqrt(Math.pow(goalLeft - currPos.left, 2) + Math.pow(goalTop - currPos.top, 2));
@@ -153,6 +168,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
                     if (elm.clientWidth > parent.clientWidth) {
                         rightLimit = parent.clientWidth - elm.clientWidth;
                     }
+                }
+
+                if (_frameCountX && !_swipeStepX) {
+                    _swipeStepX = elm.clientWidth / _frameCountX;
+                }
+
+                if (_frameCountY && !_swipeStepY) {
+                    _swipeStepY = elm.clientHeight / _frameCountY;
                 }
             }
         };

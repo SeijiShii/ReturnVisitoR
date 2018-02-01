@@ -1,15 +1,15 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function(parent) {
 
     var _this = this,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        loadFile    = returnvisitor.common.loadFile,
-        elements    = returnvisitor.common.elements,
-        Swipe       = returnvisitor.common.Swipe,
+        common      = returnvisitor.common,
+        loadFile    = common.loadFile,
+        elements    = common.elements,
+        SwipeElement = common.SwipeElement,
         paneFrame,
         innerFrame,
-        centerPaneCache,
         ONE_THIRD = 33.333333333;
 
     function initialize() {
@@ -33,16 +33,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
             var counter = new Date().getTime() - timerStartTime;
 
             if (counter > 500) {
-                throw new Error('ERROR_TIME_OUT: SwipePane inner frame takes more than 500ms to get ready!')
+                clearInterval(waitTimerId);
+                throw new Error('ERROR_TIME_OUT: SwipePane inner frame takes more than 500ms to get ready!');
             }
 
             if ( typeof _this.onInnerFrameReady === 'function' ) {
                 clearInterval(waitTimerId);
                 _this.onInnerFrameReady();
             } 
-
-            console.log('SwipePane: waiting inner frame ready for ' + counter + 'ms');
-        }
+            // console.log('SwipePane: waiting inner frame ready for ' + counter + 'ms');
+        };
 
         var waitTimerId = setInterval(waitTimer, 20);
     }
@@ -51,72 +51,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
         innerFrame = elements.getElementByClassName(paneFrame, 'inner_frame');
 
-        var swipe = new Swipe(innerFrame);
-        
-        var originLeft = elements.positionInParent(innerFrame).left;
-        var $frame = $(innerFrame);
+        var swipe = new SwipeElement(innerFrame,{
+            swipeThru : true,
+            frameCountX : 3
+        });
 
-        swipe.swipeStroke = paneFrame.clientWidth * 0.2;
-        console.log('swipeStroke:', swipe.swipeStroke);
+        swipe.onEndSwipe = function(pos) {
 
-        swipe.onXSwipe = function(xStroke) {
-
-            var oldLeft = elements.positionInParent(innerFrame).left;
+            var $frame = $(innerFrame);
 
             $frame.css({
-                left : oldLeft + xStroke
-            });
-        };
-
-        swipe.onXSwipeEnd = function(xStroke, speed) {
-
-            var currentLeft = elements.positionInParent(innerFrame).left, 
-                goalLeft,
-                distance,
-                time;
-            
-            if (xStroke > 0) {
-                // Swipe to right.
-
-                distance = Math.abs(currentLeft);
-                time = distance / speed;
-
-                $frame.animate({
-                    left : 0
-                }, time, function(){
-                    $frame.css({
-                        left : '-100%'
-                    });
-
-                    shiftContentsInInnerFrame(false);
-                });
-
-
-            } else {
-                // Swipe to left.
-
-                goalLeft = innerFrame.clientWidth * -0.667;
-                distance = Math.abs(goalLeft - currentLeft);
-
-                time = distance / speed;
-
-                $frame.animate({
-                    left : '-200%'
-                } , time, function(){
-                    $frame.css({
-                        left : '-100%'
-                    });
-
-                    shiftContentsInInnerFrame(true);
-
-                });
-            }
-        };
-
-        swipe.onSwipeCancel = function() {
-            $frame.animate({
                 left : '-100%'
-            } , 'slow');
+            });
+
+            shiftContentsInInnerFrame(parseInt(pos.left) != 0);
         };
     }
 
@@ -132,12 +80,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
                 left : '-100%'
             });
 
-            // console.log(cache);
-
             shiftContentsInInnerFrame(true);
 
         });
-    }
+    };
 
     this.animateToShowLeftContent = function() {
 
@@ -154,21 +100,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
             shiftContentsInInnerFrame(false);
 
         });
-    }
+    };
 
     this.setContents = function(contents) {
 
         for ( var i = 0 ; i < 3 ; i++ ) {
 
             contents[i].style.left = ONE_THIRD * i + '%';
-            contents[i].classList.add('content')
+            contents[i].classList.add('content');
             innerFrame.appendChild(contents[i]);
         } 
-    }
+    };
 
     this.getContent = function(index) {
         return innerFrame.children[index]; 
-    }
+    };
 
     function shiftContentsInInnerFrame(toLeft) {
 
@@ -228,4 +174,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
     }
 
     initialize();
-} 
+}; 

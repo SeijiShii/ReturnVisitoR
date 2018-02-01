@@ -2,7 +2,7 @@
 
     position: relative;
     width: 100%;
-    height: 330px;
+    height: 370px;
     font-size: 14px;
     color: #333;
 }
@@ -92,7 +92,7 @@
 .calendar_frame {
     position: relative;
     width: 100%;
-    height: 280px;
+    height: 320px;
     background-color: white;
 }
 
@@ -140,7 +140,7 @@
 .calendar_table 
 .calendar_row {
     width: 100%;
-    height: 40px;
+    height: 35px;
 }
 
 .calendar_pane 

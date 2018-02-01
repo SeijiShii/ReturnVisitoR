@@ -346,7 +346,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         loadFile.loadScript('./dialogs/placement_dialog/placement_dialog.js', function(){
             
             // TEST
-            initPlcDialog();
+            // initPlcDialog();
 
         });
     }

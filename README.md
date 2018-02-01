@@ -7,6 +7,6 @@ Entry point is www/returnvisitor_app.html. It will load some other pages on its 
 
 ## Dependancies
 jquery.
-Files include html2canvas, but now it's note used. (Was to be used yet.)
+Files include html2canvas, but now it's not used. (Was to be used yet.)
 
 

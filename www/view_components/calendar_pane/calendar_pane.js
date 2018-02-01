@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = function(parent, date) {
 
@@ -85,7 +85,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         calendarFramePane.onInnerFrameReady = function() {
             setCalendarContents();
-        }
+        };
 
         calendarFramePane.onShiftContentInInnerFrame = function(centerContent, toLeft) {
 
@@ -105,7 +105,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
             }
 
             return new CalendarContent(clonedMonth);
-        }
+        };
     }
 
     function resizeCalendarFrame() {
@@ -129,14 +129,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
     this.resizePane =function() {
 
-        if (paneFrame) {
-            paneFrame.style.height = (paneFrame.paner)
-        }
+        // if (paneFrame) {
+        //     paneFrame.style.height = (paneFrame.paner);
+        // }
 
         if (calendarFrame) {
             resizeCalendarFrame();
         }
-    }
+    };
 
     var CalendarContent = function(date) {
 
@@ -238,7 +238,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
         return calendar;
      
-    }
+    };
 
     function onClickDateCell(e) {
 
@@ -257,4 +257,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
     }
 
     initialize();
-}
+};
