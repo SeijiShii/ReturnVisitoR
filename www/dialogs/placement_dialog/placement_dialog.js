@@ -6,9 +6,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
         elements        = common.elements,
+        elementsEffect  = common.elementsEffect,
         viewComponents  = returnvisitor.viewComponents,
         pubPane         = viewComponents.publicationPane,
         pubDataPane     = viewComponents.publicationDataPane,
+        _showPubPane    = true,
         pubPaneBase;
 
     function initialize() {
@@ -32,30 +34,35 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
         });
 
         pubPane.onClickGeneralItem = function(category) {
-            switchPane(false);
+            pubDataPane.initialize(category);
+            switchPane();
         };
     }
 
     function initPubDataPane() {
 
-        pubDataPane.initialize(function(){
-            pubPaneBase.appendChild(pubDataPane.paneFrame);
-        });
-
+        pubPaneBase.appendChild(pubDataPane.paneFrame);
     }
     
     function initCancelButton() {
         var cancelButton = _this.getElementByClassName('cancel_button');
+        new elementsEffect.Blink(cancelButton);
         cancelButton.addEventListener('click', onCancelClick);
     }
 
     function onCancelClick() {
-        _this.fadeOut();
+        if (_showPubPane) {
+            _this.fadeOut();
+        } else {
+            switchPane();
+        }
     }
 
-    function switchPane(toList) {
+    function switchPane() {
 
-        if (toList) {
+        _showPubPane = !_showPubPane;
+
+        if (_showPubPane) {
             
             pubPane.fadeIn();
             pubDataPane.fadeOut();

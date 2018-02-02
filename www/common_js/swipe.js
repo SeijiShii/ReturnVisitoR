@@ -33,8 +33,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.Swipe = function(target, opt
 
     if (cordova.platformId == 'android') {
 
-        target.addEventListener('touchstart', onTouchStart, {capture : false, passive : true});
-        target.addEventListener('touchmove', onTouchMove, {capture : false, passive : true});
+        target.addEventListener('touchstart', onTouchStart, {capture : true, passive : true});
+        target.addEventListener('touchmove', onTouchMove, {capture : true, passive : true});
         target.addEventListener('touchend', handleEnd, false);
         target.addEventListener('touchcancel', handleEnd, false);
 

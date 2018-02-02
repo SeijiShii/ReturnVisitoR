@@ -26,6 +26,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category = {
 
 Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
 
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
+//     constructor: {
+//         configurable: true,
+//         enumerable: true,
+//         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication,
+//         writable: true
+//     },
+// });
+
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.hasNumber = function(){
+//     return this.hasNumericNumber || this.hasMonthNumber;
+// };
+
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.hasNumericNumber = function(){
+//     return this.category === 'WATCHTOWER' || this.category === 'AWAKE';
+// };
+
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.hasMonthNumber = function(){
+//     return this.category === 'ST_WATCHTOWER';
+// };
+
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {
         configurable: true,
@@ -47,25 +68,22 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object
     },
     hasNumber : {
         get : function() {
-
             return this.hasNumericNumber || this.hasMonthNumber;
-        },
+        }
     },
 
     hasNumericNumber : {
-        
         get : function() {
-            var category = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category;
-            return this.category === category.WATCHTOWER || this.category === category.AWAKE;
-        },
+            return this.category === 'WATCHTOWER' || this.category === 'AWAKE';
+        
+        }
     },
 
-    hasMonthNumber : {
+    hasMonthNumber: {
         get : function() {
-            var category = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category;
-            return this.category === category.ST_WATCHTOWER;
-        },
-    }
+            return this.category === 'ST_WATCHTOWER';
+        }
+    } 
 });
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.setDBData = function(dbData) {

@@ -78,7 +78,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         document.body.appendChild(menuList);
 
-        menuList.style.height = (_optionArray.length * (OPTION_HEIGHT_NUM + 1)) + 'px';
+        menuList.style.height = (_optionArray.length * (OPTION_HEIGHT_NUM + 2)) + 'px';
         var menuBottom = parseInt(menuList.style.top) + parseInt(menuList.style.height);
         
         if (parseInt(menuList.style.height) >=  window.innerHeight) {
