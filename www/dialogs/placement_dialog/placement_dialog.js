@@ -1,7 +1,8 @@
 'use strict';
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function(visit) {
 
     var _this = this,
+        _visit = visit,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
@@ -10,6 +11,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
         viewComponents  = returnvisitor.viewComponents,
         pubPane         = viewComponents.publicationPane,
         pubDataPane     = viewComponents.publicationDataPane,
+        data            = returnvisitor.data,
+        Placement       = data.Placement,
         _showPubPane    = true,
         pubPaneBase;
 
@@ -42,6 +45,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
     function initPubDataPane() {
 
         pubPaneBase.appendChild(pubDataPane.paneFrame);
+        pubDataPane.onClickOk = function(pub) {
+            
+            // console.log(pub);
+
+            var placement = new Placement(_visit, pub);
+
+            _this.fadeOut(_this.onCreatePlacement, placement);
+        };
     }
     
     function initCancelButton() {

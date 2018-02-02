@@ -53,6 +53,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationPane = (f
 
         setHFrameInitialLeft();
 
+        if (cordova.platformId === 'android') {
+            return;
+        }
+
         var hSwipe = new SwipeElement(hFrame, {
             swipeEnabled : isHistoryEnabled(),
             xSwipeEnabled : true,

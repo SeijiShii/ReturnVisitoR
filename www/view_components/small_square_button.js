@@ -1,16 +1,20 @@
-"use strict"
+'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SmallSquareButton = function(parent, htmlPath, cssPath) {
 
     var _this = this,
         buttonFrame,
-        loadFile = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.loadFile;
+        returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        common = returnvisitor.common,
+        loadFile = common.loadFile,
+        elementsEffect = common.elementsEffect;
 
     function initButtonFrame() {
-        loadFile.loadCss(cssPath)
+        loadFile.loadCss(cssPath);
         loadFile.loadHtmlAsElement(htmlPath, function(div){
             buttonFrame = div;
             buttonFrame.addEventListener('click', onClickButton);
+            new elementsEffect.Blink(buttonFrame);
             parent.appendChild(buttonFrame);
         });
         
@@ -20,10 +24,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SmallSquareButton = 
 
         e.stopPropagation();
 
-        $(buttonFrame).fadeTo(100, 0.3, function(){
-            $(buttonFrame).fadeTo(100, 1);
-        });
-
         if (typeof _this.onClickButton === 'function') {
             _this.onClickButton();
         }
@@ -31,5 +31,5 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SmallSquareButton = 
 
     initButtonFrame();
 
-}
+};
 

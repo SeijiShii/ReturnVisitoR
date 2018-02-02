@@ -14,3 +14,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject = function(idHeader
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype.equals = function(otherObj) {
     return this.is === otherObj.id;
 };
+
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype.clone = function() {
+
+    var DataObject = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject,
+        cloned = new DataObject();
+
+    for (var prop in this) {
+
+        if (typeof this[prop] !== 'function' ) {
+            if (this[prop] instanceof Date) {
+
+                cloned[prop] = new Date();
+                cloned[prop].setTime(this[prop].getTime());
+    
+            } else if (this[prop] instanceof DataObject) {
+                cloned[prop] = this[prop].clone();
+            } else {
+                cloned[prop] = this[prop];
+            }
+        }
+    }
+    return cloned;
+    
+
+};

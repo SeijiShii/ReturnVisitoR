@@ -63,6 +63,21 @@ Date.prototype.yearMonthString = function() {
     }
 };
 
+Date.prototype.yearString = function() {
+    
+    if (RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.localeCheck.isJA) {
+
+        return [
+            this.getFullYear(),
+            '年 '
+        ].join('');
+
+    } else {
+        var array = this.toDateString().split(' ');
+        return array[1];
+    }
+};
+
 Date.prototype.monthString = function() {
     
     if (RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.localeCheck.isJA) {

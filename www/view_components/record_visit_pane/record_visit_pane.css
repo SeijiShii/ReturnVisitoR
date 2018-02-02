@@ -87,6 +87,7 @@ h2.subtitle {
 
 .record_visit_secondary_frame
 .lime_button {
+    margin-top: 3px;
     background-color: limegreen;
 }
 

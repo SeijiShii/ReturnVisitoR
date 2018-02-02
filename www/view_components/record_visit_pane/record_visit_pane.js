@@ -11,6 +11,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         PersonVisit     = data.PersonVisit,
         viewComponents  = returnvisitor.viewComponents,
         PersonVisitCell = viewComponents.PersonVisitCell,
+        PlacementCell   = viewComponents.PlacementCell,
         _primaryFrame,
         dateText,
         timeText,
@@ -25,6 +26,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _onClickTimeText,
         _onClickAddPerson,
         _onClickPlcButton,
+        _onClickCancel,
+        FADE_DURATION = 300,
         _visit,
         _persons = []; // Persons ever seen in this place will be loaded to this.
 
@@ -242,6 +245,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         initPlcContainer();
         initPlcButton();
+        initOkButton();
+        initDeleteButton();
+        initCancelButton();
         
     }
 
@@ -277,13 +283,74 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     function onClickPlcButton() {
 
         if ( typeof _onClickPlcButton === 'function' ) {
-            _onClickPlcButton();
+            _onClickPlcButton(_visit);
         }
     }
 
     function _addPlcCell(plc) {
         
+        _visit.placements.push(plc);
+        refreshPlcContainer();
+        var plcCell = new PlacementCell(plcContainer, plc);
+        plcCell.postCollapseCell = function(plc) {
+            _visit.placements.removeData(plc);
+            refreshPlcContainer();
+        };
     }
+
+    function initOkButton() {
+
+    }
+
+    function initDeleteButton() {
+
+    }
+
+    function initCancelButton() {
+
+        var cancelButton = elements.getElementByClassName(_secondaryFrame, 'cancel_button');
+        new elementsEffect.Blink(cancelButton);
+
+        cancelButton.addEventListener('click', onClickCancel);
+    }
+
+    function onClickCancel() {
+
+        if (typeof _onClickCancel === 'function' ) {
+            _onClickCancel();
+        }
+    }
+
+    // function fadeOutPanes(callback, param) {
+
+    //     var isPrimaryFaded = false, 
+    //         isSecondaryFaded = false;
+
+    //     $(_primaryFrame).fadeTo(FADE_DURATION, 0, function(){
+
+    //         _primaryFrame.parentNode.removeChild(_primaryFrame);
+    //         isPrimaryFaded = true;
+
+    //     });
+
+    //     $(_secondaryFrame).fadeTo(FADE_DURATION, 0, function(){
+
+    //         _secondaryFrame.parentNode.removeChild(_secondaryFrame);
+    //         isSecondaryFaded = true;
+
+    //     });
+
+    //     var wait = function() {
+
+    //         if (isPrimaryFaded && isSecondaryFaded) {
+    //             clearInterval(timerId);
+    //             callback(param);
+    //         }
+    //     };
+
+    //     var timerId = setInterval(wait, 20);
+
+    // }
 
     return {
         initialize : _initialize,
@@ -316,6 +383,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
             _onClickPlcButton = f;
         },
         addPlcCell : _addPlcCell,
+
+        set onClickCancel(f) {
+            _onClickCancel = f;
+        }
 
     };
 

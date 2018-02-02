@@ -7,6 +7,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication = function(categor
     
     this.category   = category;
     this.note = '';
+
+    if (this.hasNumber) {
+        var number = new Date();
+        this.year = number.getFullYear();
+        
+        if (this.hasNumericNumber) {
+            this.numericNumber = parseInt(number.getMonth() / 4) + 1;
+
+        } else if (this.hasMonthNumber) {
+            this.monthNumber = number.getMonth();
+        }
+
+    }
+
 };
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category = {
@@ -26,27 +40,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category = {
 
 Object.defineProperties(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category, RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.dataPropertyDescripter);
 
-// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
-//     constructor: {
-//         configurable: true,
-//         enumerable: true,
-//         value: RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication,
-//         writable: true
-//     },
-// });
-
-// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.hasNumber = function(){
-//     return this.hasNumericNumber || this.hasMonthNumber;
-// };
-
-// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.hasNumericNumber = function(){
-//     return this.category === 'WATCHTOWER' || this.category === 'AWAKE';
-// };
-
-// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.hasMonthNumber = function(){
-//     return this.category === 'ST_WATCHTOWER';
-// };
-
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype,{
     constructor: {
         configurable: true,
@@ -58,9 +51,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object
     data : {
         get : function() {
 
-            var s = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category[this.age];
+            var s = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category[this.category];
 
-            if (this.note !== undefined && this.note.length > 0) {
+            if (this.hasNumber) {
+
+                var date = new Date();
+                date.setFullYear(this.year);
+
+                s = s + ' ' + date.yearString() + ' ';
+                if (this.hasNumericNumber) {
+                    s = s + 'No.' + this.numericNumber; 
+                } else if (this.hasMonthNumber) {
+                    date.setMonth(this.monthNumber);
+                    s = s + date.monthString();
+                }
+            }
+
+            if (this.note && this.note.length > 0) {
                 s = s + ' ' + this.note;
             }
             return s;
@@ -83,7 +90,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object
         get : function() {
             return this.category === 'ST_WATCHTOWER';
         }
-    } 
+    }
 });
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.setDBData = function(dbData) {
@@ -94,3 +101,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.setDBDat
     this.category = dbData.category;
     this.note = dbData.note;
 };
+

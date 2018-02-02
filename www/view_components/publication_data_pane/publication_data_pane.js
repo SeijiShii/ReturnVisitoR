@@ -8,6 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
         elements        = common.elements,
+        elementsEffect  = common.elementsEffect,
         data            = returnvisitor.data,
         Publication     = data.Publication,
         paneFrame,
@@ -15,9 +16,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         numberRow,
         yearText,
         selectorBase,
-        numberSelector,
+        menuSelector,
         pubNoteText,
-        _publication;
+        _publication,
+        _onClickOk;
 
     loadFile.loadCss('./view_components/publication_data_pane/publication_data_pane.css');
     loadFile.loadHtmlAsElement('./view_components/publication_data_pane/publication_data_pane.html', function(elm){
@@ -25,6 +27,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         paneFrame = elm;
 
         initElements();
+        initOkButton();
 
         $(paneFrame).css({
             opacity : 0,
@@ -32,9 +35,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         });
     });
 
-    function _initialize(category) {
+    function _initialize(param) {
 
-        _publication = new Publication(category);
+        if (typeof param === 'string') {
+            _publication = new Publication(param); 
+
+        } else if (param instanceof Publication) {
+            
+            _publication = param.clone();
+        }
         refreshElements();
 
     }
@@ -70,7 +79,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
     }
 
     function refreshYearText() {
-        yearText.value = new Date().getFullYear();
+        yearText.value = _publication.year;
     }
 
     function refreshNumberSelector() {
@@ -82,23 +91,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         }
 
         var selectorOptions,
-            selectedIndex,
-            month = new Date();
+            selectedIndex;
 
         if (_publication.hasNumericNumber) {
             selectorOptions = [1, 2, 3];
-            selectedIndex = parseInt(month.getMonth() / 4); 
+            selectedIndex = _publication.numericNumber - 1; 
         } else if (_publication.hasMonthNumber) {
 
+            var month = new Date();
             selectorOptions = [];
             for (var i = 0 ; i < 12 ; i++) {
                 month.setMonth(i);
                 selectorOptions.push(month.monthString());
             }
-            selectedIndex = month.getMonth();
+            selectedIndex = _publication.monthNumber;
         }
 
-        numberSelector = new MenuSelector(selectorBase, selectorOptions, selectedIndex);
+        menuSelector = new MenuSelector(selectorBase, selectorOptions, selectedIndex);
+        menuSelector.onSelectOption = function(index) {
+
+            if (_publication.hasNumericNumber) {
+
+                _publication.numericNumber = index + 1;
+
+            } else if (_publication.hasMonthNumber) {
+
+                _publication.monthNumber = index;
+            }
+        };
     }
 
     function refreshPubNoteText() {
@@ -109,12 +129,31 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         return elements.getElementByClassName(paneFrame, className);
     }
 
+    function initOkButton() {
+        var okButton = _getElementByClassName('ok_button');
+        new elementsEffect.Blink(okButton);
+        okButton.addEventListener('click', onClickOk);
+    }
+
+    function onClickOk() {
+
+        _publication.year = yearText.value;
+        _publication.note = pubNoteText.value;
+
+        if ( typeof _onClickOk === 'function' ) {
+            _onClickOk(_publication);
+        }
+    }
     
 
     return {
         initialize : _initialize,
         get paneFrame() {
             return paneFrame;
+        },
+
+        set onClickOk(f) {
+            _onClickOk = f;
         },
         
         fadeIn : function() {
