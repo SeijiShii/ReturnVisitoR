@@ -73,7 +73,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.CalendarPane = funct
 
 
     function refreshMonthText() {
-        monthText.innerText = _date.monthString();
+        monthText.innerText = _date.yearMonthString();
     }
 
     function initCalendarFrame() {

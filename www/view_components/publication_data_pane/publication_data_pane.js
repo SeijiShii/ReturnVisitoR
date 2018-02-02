@@ -8,16 +8,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
         elements        = common.elements,
+        data            = returnvisitor.data,
+        Placement       = data.Placement,
+        Publication     = data.Publication,
         paneFrame,
         pubNameText,
         numberRow,
         yearText,
         numberSelector,
         pubNoteText,
-        placement;
+        _placement;
 
 
-    function _initialize(onReadyCallback) {
+    function _initialize(onReadyCallback, publication) {
+
+        _placement = new Placement(publication);
 
         loadFile.loadCss('./view_components/publication_data_pane/publication_data_pane.css');
         loadFile.loadHtmlAsElement('./view_components/publication_data_pane/publication_data_pane.html', function(elm){
@@ -36,26 +41,48 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
         });
     }
 
-    function initFrames() {
-
-    }
-
     function initPubNameText() {
         pubNameText = _getElementByClassName('pub_name');
+        pubNameText.value = Publication.category[_placement.publication.category];
     }
 
     function initNumberRow() {
         numberRow = _getElementByClassName('number_row');
+
+        if (_placement.publication.hasNumver) {
+
+            numberRow.style.display = 'block';
+
+        } else {
+
+            numberRow.style.display = 'none';
+        }
     }
 
     function initYearText() {
         yearText = _getElementByClassName('year_text');
+        yearText.value = new Date().getFullYear();
     }
 
     function initNumberSelector() {
 
         var selectorBase = _getElementByClassName('selector_base');
-        numberSelector = new MenuSelector()
+        var selectorOptions,
+            selectedKey;
+
+        if (_placement.publication.hasNumericNumber) {
+            selectorOptions = [1, 2, 3];
+        } else if (_placement.publication,hasMonthNumder) {
+
+            selectorOptions = [];
+            var month = new Date();
+            for (var i = 0 ; i < 12 ; i++) {
+                month.setMonth(i);
+                selectorOptions.push(month.monthString());
+            }
+        }
+
+        numberSelector = new MenuSelector(selectorBase, )
     }
 
     function _getElementByClassName(className) {

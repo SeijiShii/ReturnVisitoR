@@ -46,7 +46,7 @@ Date.prototype.timeString = function() {
     ].join(':');
 };
 
-Date.prototype.monthString = function() {
+Date.prototype.yearMonthString = function() {
     
     if (RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.localeCheck.isJA) {
 
@@ -60,6 +60,20 @@ Date.prototype.monthString = function() {
     } else {
         var array = this.toDateString().split(' ');
         return array[1] + ' ' + array[3];
+    }
+};
+
+Date.prototype.monthString = function() {
+    
+    if (RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.localeCheck.isJA) {
+
+        return [
+            this.getMonth() + 1,
+            '月'
+        ].join('');
+
+    } else {
+        return this.toDateString().split(' ')[3];
     }
 };
 

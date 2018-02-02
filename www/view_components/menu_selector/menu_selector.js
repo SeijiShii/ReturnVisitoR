@@ -1,6 +1,6 @@
 'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = function(parent, keyValueObject, selectedKey) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = function(parent, optionArray, selectedIndex) {
 
     var returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
@@ -12,23 +12,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         selectorFrame,
         overlay,
         menuList,
-        _keyValueObject = keyValueObject,
-        _selectedKey = selectedKey,
-        keys,
-        values,
+        _optionArray = optionArray,
+        _selectedIndex = selectedIndex !== undefined ? selectedIndex : 0,
         OPTION_HEIGHT_NUM = 30,
         OPTION_ID_PREFIX = 'option_',
         _selectedOption;
 
-    function refreshKeyValueArrays() {
-
-        keys = Object.keys(_keyValueObject);
-        values = _keyValueObject.values;
-    }
-
     function initialize() {
-
-        refreshKeyValueArrays();
 
         loadFile.loadCss('./view_components/menu_selector/menu_selector.css');
 
@@ -38,12 +28,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         refreshMenuOptions();
     }
 
-    this.refresh = function(keyValueObject, selectedKey) {
+    this.refresh = function(optionArray, selectedIndex) {
 
-        _keyValueObject = keyValueObject;
-        _selectedKey = selectedKey;
-        
-        refreshKeyValueArrays();
+        _optionArray = optionArray;
+        _selectedIndex = selectedIndex !== undefined ? selectedIndex : 0,
 
         refreshSelectorFrame();
         refreshMenuList();
@@ -67,12 +55,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
     function getSelectedText() {
 
-        var index = 0;
-
-        if (_selectedKey) {
-            index = _keyValueObject.indexOfKey(_selectedKey);
+        if (_selectedIndex === undefined) {
+            _selectedIndex = 0;
         } 
-        return values[index] + ' ▼';
+        return _optionArray[_selectedIndex] + ' ▼';
     }
 
     function onClickSelectorFrame() {
@@ -81,7 +67,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         var rect =  selectorFrame.getBoundingClientRect();
 
-        var topPosition = rect.top - _keyValueObject.indexOfKey(_selectedKey) * OPTION_HEIGHT_NUM;
+        var topPosition = rect.top - _selectedIndex * OPTION_HEIGHT_NUM;
 
         $(menuList).css({
             top : topPosition,
@@ -92,7 +78,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         document.body.appendChild(menuList);
 
-        menuList.style.height = (keys.length * (OPTION_HEIGHT_NUM + 1)) + 'px';
+        menuList.style.height = (_optionArray.length * (OPTION_HEIGHT_NUM + 1)) + 'px';
         var menuBottom = parseInt(menuList.style.top) + parseInt(menuList.style.height);
         
         if (parseInt(menuList.style.height) >=  window.innerHeight) {
@@ -144,7 +130,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
     function refreshMenuList() {
         $(menuList).css({
-            height : values.length * (OPTION_HEIGHT_NUM + 1) 
+            height : _optionArray.length * (OPTION_HEIGHT_NUM + 1) 
         });
     }
 
@@ -152,16 +138,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         menuList.innerHTML = '';
 
-        for ( var i = 0 ; i < values.length ; i++ ) {
+        for ( var i = 0 ; i < _optionArray.length ; i++ ) {
             var option = document.createElement('li');
             option.classList.add('option');
             new elementsEffect.Blink(option);
             
-            if ( i == values.length - 1 ) {
+            if ( i == _optionArray.length - 1 ) {
                 option.style.borderBottom = 'none';
             }
-            option.innerText = values[i];
-            option.id = OPTION_ID_PREFIX + keys[i];
+            option.innerText = _optionArray[i];
+            option.id = OPTION_ID_PREFIX + i;
 
             option.addEventListener('click', onOptionClick);
 
@@ -175,12 +161,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         dismiss();
 
         _selectedOption = touchEventFilter.getTarget(e, 'option');
-        _selectedKey = _selectedOption.id.substring(OPTION_ID_PREFIX.length);
+        _selectedIndex = _selectedOption.id.substring(OPTION_ID_PREFIX.length);
 
         selectorFrame.innerText = getSelectedText();
 
         if ( typeof _this.onSelectOption === 'function' ) {
-            _this.onSelectOption(_selectedKey);
+            _this.onSelectOption(_selectedIndex);
         }
 
     }

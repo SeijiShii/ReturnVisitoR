@@ -80,10 +80,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PersonDialog = function(person) {
     function initAgeSelector() {
         var ageSelectorBase = _this.getElementByClassName('age_selector_base');
 
-        ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age, _person.age);
-        ageSelector.onSelectOption = function(selecteKey) {
+        ageSelector = new viewComponents.MenuSelector(ageSelectorBase, Person.age.values, Person.age.indexOfKey(_person.age));
+        ageSelector.onSelectOption = function(index) {
 
-            _person.age = selecteKey;
+            _person.age = Object.keys(Person.age)[index];
             // console.log('_person.age:', _person.age);
 
         };
