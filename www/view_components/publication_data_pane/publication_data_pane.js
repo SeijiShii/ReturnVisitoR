@@ -4,9 +4,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         viewComponents = returnvisitor.viewComponents,
+        MenuSelector    = viewComponents.MenuSelector,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
-        paneFrame;
+        elements        = common.elements,
+        paneFrame,
+        pubNameText,
+        numberRow,
+        yearText,
+        numberSelector,
+        pubNoteText,
+        placement;
 
 
     function _initialize(onReadyCallback) {
@@ -26,6 +34,32 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
             }
 
         });
+    }
+
+    function initFrames() {
+
+    }
+
+    function initPubNameText() {
+        pubNameText = _getElementByClassName('pub_name');
+    }
+
+    function initNumberRow() {
+        numberRow = _getElementByClassName('number_row');
+    }
+
+    function initYearText() {
+        yearText = _getElementByClassName('year_text');
+    }
+
+    function initNumberSelector() {
+
+        var selectorBase = _getElementByClassName('selector_base');
+        numberSelector = new MenuSelector()
+    }
+
+    function _getElementByClassName(className) {
+        return elements.getElementByClassName(paneFrame, className);
     }
 
     return {

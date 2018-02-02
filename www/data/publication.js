@@ -48,9 +48,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object
     hasNumber : {
         get : function() {
 
+            return this.hasNumericNumber || this.hasMonthNumber;
+        },
+    },
+
+    hasNumericNumber : {
+        
+        get : function() {
             var category = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category;
-            return this.category === category.WATCHTOWER || this.category === category.ST_WATCHTOWER || this.category === category.AWAKE;
-        }
+            return this.category === category.WATCHTOWER || this.category === category.AWAKE;
+        },
+    },
+
+    hasMonthNumber : {
+        get : function() {
+            var category = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.category;
+            return this.category === category.ST_WATCHTOWER;
+        },
     }
 });
 

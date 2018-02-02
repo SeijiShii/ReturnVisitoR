@@ -13,31 +13,55 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         overlay,
         menuList,
         _keyValueObject = keyValueObject,
-        keys = Object.keys(keyValueObject),
-        values = keyValueObject.values,
+        _selectedKey = selectedKey,
+        keys,
+        values,
         OPTION_HEIGHT_NUM = 30,
         OPTION_ID_PREFIX = 'option_',
-        _selectedKey = selectedKey,
         _selectedOption;
 
+    function refreshKeyValueArrays() {
+
+        keys = Object.keys(_keyValueObject);
+        values = _keyValueObject.values;
+    }
+
     function initialize() {
+
+        refreshKeyValueArrays();
 
         loadFile.loadCss('./view_components/menu_selector/menu_selector.css');
 
         initSelectorFrame();
         initOverlay();
         initMenuList();
-        initMenuOptions();
+        refreshMenuOptions();
     }
+
+    this.refresh = function(keyValueObject, selectedKey) {
+
+        _keyValueObject = keyValueObject;
+        _selectedKey = selectedKey;
+        
+        refreshKeyValueArrays();
+
+        refreshSelectorFrame();
+        refreshMenuList();
+        refreshMenuOptions();
+    };
 
     function initSelectorFrame() {
         selectorFrame = document.createElement('div');
         selectorFrame.classList.add('menu_selector_frame');
-
-        selectorFrame.innerText = getSelectedText();
         selectorFrame.blink = new elementsEffect.Blink(selectorFrame);
         selectorFrame.addEventListener('click', onClickSelectorFrame);
         _parent.appendChild(selectorFrame);
+
+        refreshSelectorFrame();
+    }
+
+    function refreshSelectorFrame() {
+        selectorFrame.innerText = getSelectedText();
     }
 
 
@@ -46,7 +70,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         var index = 0;
 
         if (_selectedKey) {
-            index = keyValueObject.indexOfKey(_selectedKey);
+            index = _keyValueObject.indexOfKey(_selectedKey);
         } 
         return values[index] + ' ▼';
     }
@@ -57,7 +81,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
 
         var rect =  selectorFrame.getBoundingClientRect();
 
-        var topPosition = rect.top - keyValueObject.indexOfKey(_selectedKey) * OPTION_HEIGHT_NUM;
+        var topPosition = rect.top - _keyValueObject.indexOfKey(_selectedKey) * OPTION_HEIGHT_NUM;
 
         $(menuList).css({
             top : topPosition,
@@ -96,7 +120,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         overlay = document.createElement('div');
         overlay.classList.add('menu_selector_overlay');
 
-        overlay.addEventListener('click', function(e) {
+        overlay.addEventListener('click', function() {
             dismiss();  
         });
 
@@ -115,13 +139,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.MenuSelector = funct
         menuList = document.createElement('ul');
         menuList.classList.add('menu_selector_list');
 
+        refreshMenuList();
+    }
+
+    function refreshMenuList() {
         $(menuList).css({
             height : values.length * (OPTION_HEIGHT_NUM + 1) 
         });
-
     }
 
-    function initMenuOptions() {
+    function refreshMenuOptions() {
+
+        menuList.innerHTML = '';
 
         for ( var i = 0 ; i < values.length ; i++ ) {
             var option = document.createElement('li');
