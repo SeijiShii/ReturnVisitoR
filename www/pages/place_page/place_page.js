@@ -237,13 +237,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         recordVisitPane = viewComponents.recordVisitPane;
 
-        var visit = new Visit(_place);
         recordVisitPane.initialize(function(){
             fadeInFramesWithContents([
                 recordVisitPane.primaryFrame,
                 recordVisitPane.secondaryFrame
             ]);
-        }, visit);
+        }, _place);
 
         recordVisitPane.onClickAddPerson = function(visit, persons) {
 

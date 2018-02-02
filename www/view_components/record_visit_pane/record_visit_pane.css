@@ -86,8 +86,13 @@ h2.subtitle {
 }
 
 .record_visit_secondary_frame
-.lime_button {
+.add_plc_button_row {
     margin-top: 3px;
+    margin-bottom: 5px;
+}
+
+.record_visit_secondary_frame
+.lime_button {
     background-color: limegreen;
 }
 

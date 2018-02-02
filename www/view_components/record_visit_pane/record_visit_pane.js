@@ -7,7 +7,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         elements        = common.elements,
         loadFile        = common.loadFile,
         elementsEffect  = common.elementsEffect,
+        dbHelper        = common.dbHelper,
         data            = returnvisitor.data,
+        Visit           = data.Visit,
+        Place           = data.Place,
         PersonVisit     = data.PersonVisit,
         viewComponents  = returnvisitor.viewComponents,
         PersonVisitCell = viewComponents.PersonVisitCell,
@@ -22,18 +25,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _secondaryFrame,
         _isPrimaryReady = false,
         _isSecondaryReady = false,
+        _isNewVisit,
         _onClickDateText,
         _onClickTimeText,
         _onClickAddPerson,
         _onClickPlcButton,
         _onClickCancel,
-        FADE_DURATION = 300,
+        _onClickOk,
         _visit,
         _persons = []; // Persons ever seen in this place will be loaded to this.
 
-    function _initialize(onReadyCallback, visit) {
+    function _initialize(onReadyCallback, param) {
 
-        _visit = visit;
+        if (param instanceof Visit) {
+            _visit = param.clone();
+            _isNewVisit = false;
+        } else if (param instanceof Place) {
+            _visit = new Visit(param);
+            _isNewVisit = true;
+        } else {
+            throw new Error('Data param must be instance of Place or Visit.');
+        }
         
         // TODO: Load persons ever seen in this place are loaded to _persons.
 
@@ -300,10 +312,33 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initOkButton() {
 
+        var okButton = elements.getElementByClassName(_secondaryFrame, 'ok_button');
+        new elementsEffect.Blink(okButton);
+        okButton.addEventListener('click', onClickOk);
+    }
+
+    function onClickOk() {
+
+        if (typeof _onClickOk === 'function' ) {
+            _onClickOk(_visit);
+        }
     }
 
     function initDeleteButton() {
 
+        var deleteRow = elements.getElementByClassName(_secondaryFrame, 'delete_row');
+        if (_isNewVisit) {
+            deleteRow.style.display = 'none';
+        } else {
+
+            var deleteButton = elements.getElementByClassName(_secondaryFrame, 'delete_button');
+            new elementsEffect.Blink(deleteButton);
+            deleteButton.addEventListener('click', onClickDelete);
+        }
+    }
+
+    function onClickDelete() {
+        alert('Hoge!');
     }
 
     function initCancelButton() {
@@ -386,6 +421,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         set onClickCancel(f) {
             _onClickCancel = f;
+        },
+
+        set onClickOk(f) {
+            _onClickOk = f;
         }
 
     };

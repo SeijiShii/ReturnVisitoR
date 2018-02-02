@@ -21,10 +21,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         VALUES4 = 'VALUES ( ?, ?, ?, ? )',
         VALUES5 = 'VALUES ( ?, ?, ?, ?, ? )',
         VALUES6 = 'VALUES ( ?, ?, ?, ?, ?, ? )',
+        VALUES7 = 'VALUES ( ?, ?, ?, ?, ?, ?, ? )',
         PLACE_INSERT_QUERY = INSERT_QUERY + PLACE_TABLE_NAME + VALUES6,
         VISIT_INSERT_QUERY = INSERT_QUERY + VISIT_TABLE_NAME + VALUES4,
         PERSON_INSERT_QUETY = INSERT_QUERY + PERSON_TABLE_NAME + VALUES5, 
         PERSON_VISIT_INSERT_QUETY = INSERT_QUERY + PERSON_VISIT_TABLE_NAME + VALUES6,
+        PUBLICATION_INSERT_QUERY = INSERT_QUERY + PUBLICATION_TABLE_NAME + VALUES7,
+        PLACEMENT_INSERT_QUERY = INSERT_QUERY + PLACEMENT_TABLE_NAME + VALUES4,
         WHERE_ID = 'WHERE data_id=? ',   
         database;
     
@@ -44,6 +47,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
             txn.executeSql(DROP_TABLE_QUERY + PERSON_VISIT_TABLE_NAME);
             txn.executeSql(CREATE_TABLE_QUERY + PERSON_VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'person_id, visit_id, is_rv, is_study )');
+
+            txn.executeSql(DROP_TABLE_QUERY + PUBLICATION_TABLE_NAME);
+            txn.executeSql(CREATE_TABLE_QUERY + PUBLICATION_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, year, numeric_number, month_number, note )');
+
+            txn.executeSql(DROP_TABLE_QUERY + PLACEMENT_TABLE_NAME);
+            txn.executeSql(CREATE_TABLE_QUERY + PLACEMENT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'visit_id, publication_id )');
 
         });
     }
