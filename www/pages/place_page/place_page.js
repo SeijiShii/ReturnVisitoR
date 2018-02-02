@@ -125,15 +125,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
     }
 
-    function fadeInPlaceActionPane() {
-
-        var frame = placeActionPane.paneFrame;
-        primaryFrame.style.opacity = 0;
-        primaryFrame.appendChild(frame);
-
-        $(primaryFrame).fadeTo(FADE_DURATION, 1);
-
-    }
 
     function initPlaceData() {
         _place = _pageOptions.place;
@@ -213,26 +204,45 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             }
         };
 
-        var timerId = setInterval(wait, 20);
-        
+        var timerId = setInterval(wait, 20);   
+    }
+
+    function fadeInFramesWithContents(contents) {
+        primaryFrame.style.opacity = 0;
+        secondaryFrame.style.opacity = 0;
+
+        if (contents[0]) {
+            primaryFrame.appendChild(contents[0]);
+            $(primaryFrame).fadeTo(FADE_DURATION, 1);
+        }
+
+        if (contents[1]) {
+            secondaryFrame.appendChild(contents[1]);
+            $(secondaryFrame).fadeTo(FADE_DURATION, 1);
+        }
     }
 
     function loadRecordVisitPaneIfNeeded() {
 
         if (recordVisitPane) {
-            initRecordVisitPane();
+            doInitializeRecordVisitPane();
         } else {
             loadFile.loadScript('./view_components/record_visit_pane/record_visit_pane.js', function(){
-                initRecordVisitPane();
+                doInitializeRecordVisitPane();        
             });
         }
     }
 
-    function initRecordVisitPane() {
+    function doInitializeRecordVisitPane() {
+
         recordVisitPane = viewComponents.recordVisitPane;
+
         var visit = new Visit(_place);
         recordVisitPane.initialize(function(){
-            onReadyRecordVisitPane();
+            fadeInFramesWithContents([
+                recordVisitPane.primaryFrame,
+                recordVisitPane.secondaryFrame
+            ]);
         }, visit);
 
         recordVisitPane.onClickAddPerson = function(visit, persons) {
@@ -259,17 +269,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         recordVisitPane.onClickCancel = function() {
 
-            fadeOutPanesAndShowNext(fadeInPlaceActionPane);
+            fadeOutPanesAndShowNext(function(){
+                fadeInFramesWithContents([placeActionPane.paneFrame]);
+            });
         };
-    }
-
-    function onReadyRecordVisitPane() {
-
-        primaryFrame.appendChild(recordVisitPane.primaryFrame);
-        secondaryFrame.appendChild(recordVisitPane.secondaryFrame);
-
-        $(primaryFrame).fadeTo(FADE_DURATION, 1);
-        $(secondaryFrame).fadeTo(FADE_DURATION, 1);
     }
 
     function loadDialogFiles() {
