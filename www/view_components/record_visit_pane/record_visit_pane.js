@@ -319,6 +319,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function onClickOk() {
 
+        dbHelper.saveVisit(_visit);
+
         if (typeof _onClickOk === 'function' ) {
             _onClickOk(_visit);
         }

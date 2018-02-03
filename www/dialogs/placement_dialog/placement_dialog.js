@@ -1,8 +1,7 @@
 'use strict';
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function(visit) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
 
     var _this = this,
-        _visit = visit,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
@@ -49,7 +48,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function(visit) {
             
             // console.log(pub);
 
-            var placement = new Placement(_visit, pub);
+            var placement = new Placement(pub);
 
             _this.fadeOut(_this.onCreatePlacement, placement);
         };

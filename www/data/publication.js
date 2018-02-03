@@ -93,12 +93,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype = Object
     }
 });
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.prototype.setDBData = function(dbData) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.fromDBData = function(dbData) {
 
-    this.id = dbData.data_id;
-    this.timeStamp.setTime(dbData.time_stamp);
+    var instance = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication();
+    
+    instance.id = dbData.data_id;
+    instance.timeStamp.setTime(dbData.time_stamp);
 
-    this.category = dbData.category;
-    this.note = dbData.note;
+    instance.category = dbData.category;
+    instance.year = dbData.year;
+    instance.numericNumber = dbData.numeric_number;
+    instance.monthNumber = dbData.month_number;
+    instance.note = dbData.note;
 };
 

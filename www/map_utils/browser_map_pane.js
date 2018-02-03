@@ -258,6 +258,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
         });
     }
 
+    this.addMarkerOnMap = function(place) {
+
+        place.queryInterest(function(interest){
+
+            addMarkerOnMap(place, interest);
+        });  
+    };
+
     // TODO: dialog to show place data.
 
     function initialize() {
@@ -271,34 +279,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
     };
 
     initialize();
-
-    // function _animateToCenterLatLng() {
-        
-    //     console.log('mapDiv.clientHeight:', mapDiv.clientHeight);
-
-    //     if (isBrowser()) {
-
-    //         console.log(browserMap.getBounds());
-            
-    //         browserMap.panTo(_centerLatLng);
-
-    //     } else {
-
-    //         nativeMapProjectionTest();
-
-    //         // nativeMap.animateCamera({
-    //         //     target: {
-    //         //         lat: _centerLatLng.lat,
-    //         //         lng: _centerLatLng.lng
-    //         //     },
-    //         //     duration: 500
-    //         // }, function(){
-                
-                
-    //         // });
-    //     }
-    // } 
-
 
 };
 

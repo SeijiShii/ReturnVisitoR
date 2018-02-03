@@ -240,6 +240,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
             launcher.launchDownPage();
         };
+
+        placePage.onFinishRecordVisit = function(place) {
+
+            launcher.launchDownPage(function(){
+                mapPage.addNewPlaceMarker(place);
+            });
+        };
     }
 
     launcher = (function(){
@@ -302,7 +309,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             });
         }
     
-        function _launchDownPage() {
+        function _launchDownPage(postLaunchFunc) {
 
             var currentPage = pageStack.shift();
 
@@ -322,6 +329,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                 });
 
                 var nextPage = pageStack[0];
+
                 if (nextPage === mapPage) {
                     mapPage.onRelaunch();
                 }
@@ -340,6 +348,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
                     
                     slideFrame.removeChild(slideFrame.firstChild);
 
+                    if (typeof postLaunchFunc === 'function') {
+                        postLaunchFunc();
+                    }    
+
                 });
 
             }
@@ -347,7 +359,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
         return {
             launchUpPage : _launchUpPage,
-            launchDownPage : _launchDownPage
+            launchDownPage : _launchDownPage,
+            pageStack : pageStack
         };
     })();
  
@@ -402,6 +415,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     // }
 
     function onClickBackButton() {
+       
         launcher.launchDownPage();
     }
 

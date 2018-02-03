@@ -22,6 +22,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         DRAWER_DURATION = 300,
 
         mapPane,
+        _places = [],
         _isDrawerOpen   = false,
         _isMapOverlaySet = false,
         _isWideScreen = false,
@@ -322,6 +323,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     }
 
+    function _addNewPlaceMarker(place) {
+        mapPane.addMarkerOnMap(place);
+    }
+
     function isBrowser() {
         return cordova.platformId === 'browser';
     }
@@ -360,6 +365,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             _isWideScreen = isWide;
             _resizeFrames();
         },
+
+        addNewPlaceMarker : _addNewPlaceMarker,
 
         get pageFrame() {
             return mapPageFrame;

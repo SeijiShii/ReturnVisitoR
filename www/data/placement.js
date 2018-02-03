@@ -1,20 +1,44 @@
 'use strict';
 
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement = function(visit, publication){
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement = function(publication){
 
     RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.call(this, 'placement');
-    
-    this.visit   = visit;
     this.publication = publication;
 };
 
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.fromDBData = function(dbData, callback) {
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.prototype.setDBData = function(dbData) {
+    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        dbHelper = returnvisitor.common.dbHelper,
+        Publcation = returnvisitor.data.Publcation,
+        Placement = returnvisitor.data.Placement,
+        _isPubReady = false,
+        instance = new Placement();
 
-    this.id = dbData.data_id;
-    this.timeStamp.setTime(dbData.time_stamp);
+    instance.id = dbData.data_id;
+    instance.timeStamp.setTime(dbData.time_stamp);
 
-    // this.category = dbData.category;
-    // this.note = dbData.note;
+    instance.visitId = dbData.visit_id;
+
+    dbHelper.loadPublicationById(dbData.publication_id, function(pubData){
+
+        instance.publication = Publcation.fromDBData(pubData);
+
+        _isPubReady = true;
+    });
+
+    var wait = function(){
+
+        if (_isPubReady) {
+            clearInterval(timerId);
+
+            if ( typeof callback === 'function' ) {
+                callback(instance);
+            }
+        }
+    };
+
+    var timerId = setInterval(wait, 20);
+
 };

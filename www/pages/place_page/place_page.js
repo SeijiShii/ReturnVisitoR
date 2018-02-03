@@ -22,6 +22,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         placeActionPane,
         recordVisitPane,
         _onCancelClick,
+        _onFinishRecordVisit,
         _place,
         FADE_DURATION = 300,
         addPersonDialog,
@@ -272,6 +273,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
                 fadeInFramesWithContents([placeActionPane.paneFrame]);
             });
         };
+
+        recordVisitPane.onClickOk = function(visit) {
+
+            if (typeof _onFinishRecordVisit === 'function' ) {
+                _onFinishRecordVisit(visit.place);
+            }
+        };
     }
 
     function loadDialogFiles() {
@@ -368,9 +376,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
     }
 
-    function initPlcDialog(visit) {
+    function initPlcDialog() {
 
-        plcDialog = new returnvisitor.PlacementDialog(visit);
+        plcDialog = new returnvisitor.PlacementDialog();
         plcDialog.onCreatePlacement = function(plc) {
 
             // console.log(plc);
@@ -395,6 +403,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         set onCancelClick(f) {
 
             _onCancelClick = f;
+        },
+
+        set onFinishRecordVisit(f) {
+            _onFinishRecordVisit = f;
         }
     };
 
