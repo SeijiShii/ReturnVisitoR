@@ -16,12 +16,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         map,
         nativeEvent = plugin.google.maps.event,
         tmpMarker,
+        _isMapReady = false,
         LATITUDE = 'latitude',
         LONGTUDE = 'longitude',
         CAMERA_ZOOM = 'camera_zoom';
         
  
     function initGoogleMap() {
+
+        _isMapReady = false;
 
         if (_gestureEnabled === undefined) {
             _gestureEnabled = true;
@@ -135,6 +138,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
             map.on(nativeEvent.MAP_LONG_CLICK, onLongClickNativeMap);
         }
 
+        map.on(nativeEvent.MAP_READY, function(){
+            _isMapReady = true;    
+        });
+       
+
+        
+
     }
 
     function onLongClickNativeMap(latLng) {
@@ -162,6 +172,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
             }
 
         }, function(marker){
+            console.log(arguments);
             tmpMarker = marker;
         });
 
@@ -234,6 +245,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
         }, function(marker){
       
+            console.log(arguments);
             console.log(marker);
             marker.on(nativeEvent.MARKER_CLICK, onClickNativeMarker);
             
@@ -260,34 +272,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         return map.getCameraPosition().zoom;
     };
 
+    this.addMarkerOnMap = function(place, interest) {
+
+        var wait = function(){
+
+            if (_isMapReady) {
+                clearInterval(timerId);
+                addMarkerOnMap(place, interest);
+            }
+        };
+
+        var timerId = setInterval(wait, 20);
+
+    };
+
     initialize();
-
-    // function _animateToCenterLatLng() {
-        
-    //     console.log('mapDiv.clientHeight:', mapDiv.clientHeight);
-
-    //     if (isBrowser()) {
-
-    //         console.log(browserMap.getBounds());
-            
-    //         browserMap.panTo(_centerLatLng);
-
-    //     } else {
-
-    //         mapProjectionTest();
-
-    //         // map.animateCamera({
-    //         //     target: {
-    //         //         lat: _centerLatLng.lat,
-    //         //         lng: _centerLatLng.lng
-    //         //     },
-    //         //     duration: 500
-    //         // }, function(){
-                
-                
-    //         // });
-    //     }
-    // } 
 
 };
 
