@@ -258,12 +258,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
         });
     }
 
-    this.addMarkerOnMap = function(place) {
+    this.addMarkerOnMap = function(place, interest) {
 
-        place.queryInterest(function(interest){
-
-            addMarkerOnMap(place, interest);
-        });  
+        addMarkerOnMap(place, interest);
     };
 
     // TODO: dialog to show place data.

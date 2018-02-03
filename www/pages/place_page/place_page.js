@@ -277,7 +277,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         recordVisitPane.onClickOk = function(visit) {
 
             if (typeof _onFinishRecordVisit === 'function' ) {
-                _onFinishRecordVisit(visit.place);
+                _onFinishRecordVisit(visit.place, visit.interest);
             }
         };
     }

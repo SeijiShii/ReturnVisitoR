@@ -241,10 +241,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             launcher.launchDownPage();
         };
 
-        placePage.onFinishRecordVisit = function(place) {
+        placePage.onFinishRecordVisit = function(place, interest) {
 
             launcher.launchDownPage(function(){
-                mapPage.addNewPlaceMarker(place);
+                mapPage.addNewPlaceMarker(place, interest);
             });
         };
     }

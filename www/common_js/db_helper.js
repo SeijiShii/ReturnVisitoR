@@ -60,205 +60,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         });
     }
 
-    // Insert methods
-
-   
-    // function _insertPlace(place) {
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(PLACE_INSERT_QUERY,[place.id, place.timeStamp.getTime(), place.category, place.latLng.lat, place.latLng.lng, place.address]);
-    //     });
-    // }
-
-    // function _insertVisit(visit) {
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(VISIT_INSERT_QUERY, [visit.id, visit.timeStamp.getTime(), visit.place.id, visit.dateTime.getTime()]);
-    //     });
-    // }
-
-    // function _insertPerson(person) {
-
-    //     database.transaction(function(txn){
-
-    //         console.log('Inserting Person.');
-
-    //         txn.executeSql(PERSON_INSERT_QUETY, [person.id, person.timeStamp.getTime(), person.sex, person.age, person.interest ]);
-    //     });
-    // }
-
-    // function _insertPersonVisit(personVisit, visitId) {
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(PERSON_VISIT_INSERT_QUETY, [personVisit.id, personVisit.timeStamp.getTime(), personVisit.person.id, visitId, personVisit.isRV, personVisit.isStudy ]);
-    //     });
-    // }
-
-    // function _insertPublication(publication) {
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(PUBLICATION_INSERT_QUERY, [publication.id, publication.timeStamp.getTime(), publication.category, publication.year, publication.numericNumber, publication.monthNumber, publication.note ]);
-    //     });
-    // }
-
-    // function _insertPlacement(placement, visitId) {
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(PLACEMENT_INSERT_QUERY, [placement.id, placement.timeStamp.getTime(), visitId, placement.publication.id ]);
-    //     });
-    // }
-
-    // InsertMultipleData
-
-    // function _insertPersons(persons) {
-
-    //     for ( var i = 0 ; i < persons.length ; i++ ) {
-    //         _insertPerson(persons[i]);
-    //     }
-    // }
-
-    // Update methods
-    //      But not uses UPDATE but uses DELETE and INSERT
-
-    // function _updatePlace(place) {
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(DELETE_QUERY + PLACE_TABLE_NAME + WHERE_ID, [place.id], function(txn, result){
-    //             // console.log(result);
-    //             _insertPlace(place);
-    //         }, function(e){
-    //             // console.log(e);
-    //         });
-    //     });
-    // }
-
-    // function _updateVisit(visit) {
-
-    //     _updatePlace(visit.place);
-
-    //     for ( var i = 0 ; i < visit.personVisits.length ; i++ ) {
-    //         _updatePersonVisit(visit.personVisits[i], visit.id);
-    //     }
-
-    //     for ( var j = 0 ; j < visit.placements.length ; j++ ) {
-    //         _updatePlacement(visit.placements[j], visit.id);
-    //     }
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(DELETE_QUERY + VISIT_TABLE_NAME + WHERE_ID, [visit.id], function(txn, result){
-    //             // console.log(result);
-    //             _insertVisit(visit);
-
-    //         }, function(e){
-    //             // console.log(e);
-    //         });
-    //     });
-    // }
-
-    // function _updatePerson(person) {
-
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(DELETE_QUERY + PERSON_TABLE_NAME + WHERE_ID, [person.id], function(txn, result){
-
-    //             console.log('Person deleted:', result.rowsAffected);
-                
-    //             _insertPerson(person);
-    //         }, function(e){
-    //             // console.log(e);
-    //         });
-    //     });
-    // }
-
-    // function _updatePersonVisit(personVisit, visitId) {
-
-    //     _updatePerson(personVisit.person);
-        
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(DELETE_QUERY + PERSON_TABLE_NAME + WHERE_ID, [personVisit.id], function(txn, result){
-    //             // console.log(result);
-    //             _insertPersonVisit(personVisit, visitId);
-    //         }, function(e){
-    //             // console.log(e);
-    //         });
-    //     });
-    // }
-
-    // function _updatePublication(publication) {
-        
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(DELETE_QUERY + PERSON_TABLE_NAME + WHERE_ID, [publication.id], function(txn, result){
-    //             // console.log(result);
-    //             _insertPersonVisit(publication);
-    //         }, function(e){
-    //             // console.log(e);
-    //         });
-    //     });
-    // }
-
-    // function _updatePlacement(placement, visitId) {
-
-    //     _updatePublication(placement.publication);
-        
-    //     database.transaction(function(txn){
-
-    //         txn.executeSql(DELETE_QUERY + PERSON_TABLE_NAME + WHERE_ID, [placement.id], function(txn, result){
-    //             // console.log(result);
-    //             _insertPlacement(placement, visitId);
-    //         }, function(e){
-    //             // console.log(e);
-    //         });
-    //     });
-    // }
-
-    //      multiple update
-    
-    // function _updatePersons(persons) {
-
-    //     for (var i = 0 ; i < persons.length ; i++ ) {
-    //         _updatePerson(persons[i]);
-    //     }
-    // }
-
-    // Select methods
-    //      Select single data
-
-    // function _loadDataById(id, callback, tableName) {
-
-    //     database.transaction(function(txn){
-    //         txn.executeSql(SELECT_ALL_QUERY + tableName + WHERE_ID, [id], function(txn, result){
-    //             if (result.rows > 0) {
-    //                 callback(result.rows.item(0));
-    //             }
-    //         });
-    //     }, function(e) {
-    //         // console.log(e);
-    //     });
-
-    // }
-
-    // Load place
-    // function _loadPlaceById(id, callback) {
-
-    //     _loadDataById(id, callback, PLACE_TABLE_NAME);
-    // }
 
     function _loadPlaceByLatLng(latLng, callback) {
 
         database.transaction(function(txn){
 
-            txn.executeSql(SELECT_ALL_QUERY + PLACE_TABLE_NAME + 'WHERE latitude = ? AND longitude = ?', [latLng.lat, latLng.lng], function(txn, result){
+            var lat = getSignificant6digits(latLng.lat),
+                lng = getSignificant6digits(latLng.lng);
+
+            txn.executeSql(SELECT_ALL_QUERY + PLACE_TABLE_NAME + 'WHERE latitude LIKE ? || "%" AND longitude LIKE ? || "%"', [lat, lng], function(txn, result){
                 
                 var row;
-                if (result.rows > 0) {
+                if (result.rows.length > 0) {
                     row = result.rows.item(0);
                 }
 
@@ -269,6 +82,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
                 console.log(arguments);
             });
         });
+    }
+
+    function getSignificant6digits(num){
+
+        var D = 1000000;
+        return parseInt(num * D) / D;
     }
 
     // Load visit

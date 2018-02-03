@@ -17,6 +17,18 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit = function(place){
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype = Object.create(RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype, {
     constructor : {
         value : RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit
+    },
+
+    interest : {
+        get : function() {
+
+            var bestPersonVisit = this.getBestPersonVisit();
+
+            if (bestPersonVisit) {
+                return bestPersonVisit.person.interest;
+            } 
+            return 'INTEREST_NONE';
+        }
     }
 });
 
@@ -111,14 +123,3 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.getBestPersonV
     return bestPersonVisit;
 };
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.getInterest = function() {
-
-    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        data = returnvisitor.data,
-        Person = data.Person,
-        bestPersonVisit = this.getBestPersonVisit();
-    if (bestPersonVisit) {
-        return bestPersonVisit.person.interest;
-    } 
-    return 'INTEREST_NONE';
-};

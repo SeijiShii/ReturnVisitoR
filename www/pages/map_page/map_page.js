@@ -323,8 +323,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     }
 
-    function _addNewPlaceMarker(place) {
-        mapPane.addMarkerOnMap(place);
+    function _addNewPlaceMarker(place, interest) {
+        mapPane.addMarkerOnMap(place, interest);
     }
 
     function isBrowser() {

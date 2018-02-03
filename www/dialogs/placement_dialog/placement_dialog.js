@@ -5,7 +5,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
-        elements        = common.elements,
         elementsEffect  = common.elementsEffect,
         viewComponents  = returnvisitor.viewComponents,
         pubPane         = viewComponents.publicationPane,
@@ -51,6 +50,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.PlacementDialog = function() {
             var placement = new Placement(pub);
 
             _this.fadeOut(_this.onCreatePlacement, placement);
+            switchPane();
         };
     }
     
