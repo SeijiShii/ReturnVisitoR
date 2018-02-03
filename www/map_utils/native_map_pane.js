@@ -7,7 +7,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         _latLng = latLng,
         _gestureEnabled = gestureEnabled,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        Person = returnvisitor.data.Person,
+        data            = returnvisitor.data,
+        Person          = data.Person,
+        Place           = data.Place,
         common = returnvisitor.common,
         markerPaths = common.markerPaths,
         pinMarkerPaths = markerPaths.pinMarkerPaths,
@@ -98,7 +100,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
                 'compass': true,
                 'myLocationButton': true,
                 'indoorPicker': true,
-                'zoom': true // Only for Android
+                'zoom': true,
+                'mapToolbar' : false // Only for Android
             };
 
         } else {
@@ -114,7 +117,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
                 'compass': false,
                 'myLocationButton': false,
                 'indoorPicker': false,
-                'zoom': false // Only for Android
+                'zoom': false,
+                'mapToolbar' : false // Only for Android
             };
         }
 
@@ -172,7 +176,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
             }
 
         }, function(marker){
-            console.log(arguments);
             tmpMarker = marker;
         });
 
@@ -245,8 +248,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
         }, function(marker){
       
-            console.log(arguments);
-            console.log(marker);
+            // console.log(marker);
             marker.on(nativeEvent.MARKER_CLICK, onClickNativeMarker);
             
         }); 
@@ -256,9 +258,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
         dbHelper.loadPlaceByLatLng(latLng, function(dbData){
             
-            console.log(dbData);
+            var place = Place.fromDBData(dbData);
+
+            if ( typeof _this.onClickMarker === 'function' ) {
+                _this.onClickMarker(place);
+            }
         });
     }
+
+    
 
     // TODO: dialog to show place data.
 

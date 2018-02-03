@@ -11,6 +11,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit = function(place){
     this.dateTime   = new Date();
     this.personVisits = [];
     this.placements = [];
+    this.note = '';
     
 };
 

@@ -10,8 +10,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
     this.latLng = latLng;
     if (!this.latLng) {
         this.latLng = {
-            latitude: 0,
-            longitude: 0
+            lat: 0,
+            lng: 0
         };
     }
 
@@ -64,13 +64,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype.queryInterest 
     });
 };
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype.setDBData = function(dbData) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.fromDBData = function(dbData) {
 
-    this.id = dbData.data_id;
-    this.timeStamp.setTime(dbData.time_stamp);
+    var Place = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
+        instance = new Place();
+    
+    
+    instance.id = dbData.data_id;
+    instance.timeStamp.setTime(dbData.time_stamp);
 
-    this.latLng.lat = dbData.latitude;
-    this.latLng.lng = dbData.longitude;
-    this.category = dbData.category;
-    this.address = dbData.address;
+    instance.latLng.lat = dbData.latitude;
+    instance.latLng.lng = dbData.longitude;
+    instance.category = dbData.category;
+    instance.address = dbData.address;
+
+    return instance;
 };

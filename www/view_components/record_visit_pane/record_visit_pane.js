@@ -23,6 +23,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         addPersonButton,
         plcContainer,
         _secondaryFrame,
+        noteText,
         _isPrimaryReady = false,
         _isSecondaryReady = false,
         _isNewVisit,
@@ -33,7 +34,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _onClickCancel,
         _onClickOk,
         _visit,
-        _persons = []; // Persons ever seen in this place will be loaded to this.
+        _persons;
 
     function _initialize(onReadyCallback, param) {
 
@@ -48,7 +49,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         }
         
         // TODO: Load persons ever seen in this place are loaded to _persons.
-
+        _persons = [];
+        
         loadFile.loadCss('./view_components/record_visit_pane/record_visit_pane.css');
         
         initPrimaryFrame();
@@ -257,6 +259,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         initPlcContainer();
         initPlcButton();
+        initNoteText();
         initOkButton();
         initDeleteButton();
         initCancelButton();
@@ -310,6 +313,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         };
     }
 
+    function initNoteText() {
+
+        noteText = elements.getElementByClassName(_secondaryFrame, 'visit_note_text');
+        noteText.value = _visit.note;
+    }
+
     function initOkButton() {
 
         var okButton = elements.getElementByClassName(_secondaryFrame, 'ok_button');
@@ -318,6 +327,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     }
 
     function onClickOk() {
+
+        _visit.note = noteText.value;
 
         dbHelper.saveVisit(_visit);
 

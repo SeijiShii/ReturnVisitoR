@@ -24,6 +24,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         _onCancelClick,
         _onFinishRecordVisit,
         _place,
+        _isActionPaneReady,
+        _isRecordVisitPaneReady,
+        _isVisitHistoryPaneReady,
         FADE_DURATION = 300,
         addPersonDialog,
         personDialog,
@@ -45,8 +48,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             requestReverseGeocoding();
             initMap();
 
-            loadPlaceActionPaneIfNeeded();
+            loadPlaceActionPane();
+            loadRecordVisitPane();
             loadDialogFiles();
+
+            showPanesIfReady();
 
             if ( typeof onReadyCallback === 'function' ) {
                 onReadyCallback();
@@ -94,16 +100,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         return cordova.platformId === 'browser';
     } 
 
-    function loadPlaceActionPaneIfNeeded() {
+    function loadPlaceActionPane() {
 
-        if (placeActionPane) {
-
-            initPlaceActionPane();
-        } else {
-            loadFile.loadScript('./view_components/place_action_pane/place_action_pane.js', function(){
-                initPlaceActionPane();
-            });
-        }
+        loadFile.loadScript('./view_components/place_action_pane/place_action_pane.js', function(){
+            _isActionPaneReady = true;
+        });  
     }
 
     function initPlaceActionPane() {
@@ -114,7 +115,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
 
         placeActionPane.onNewPlaceClick = function() {
-            fadeOutPanesAndShowNext(loadRecordVisitPaneIfNeeded);
+            fadeOutPanesAndShowNext(initRecordVisitPane);
         };
 
         placeActionPane.onCancelClick = function() {
@@ -223,18 +224,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         }
     }
 
-    function loadRecordVisitPaneIfNeeded() {
+    function loadRecordVisitPane() {
 
-        if (recordVisitPane) {
-            doInitializeRecordVisitPane();
-        } else {
-            loadFile.loadScript('./view_components/record_visit_pane/record_visit_pane.js', function(){
-                doInitializeRecordVisitPane();        
-            });
-        }
+        loadFile.loadScript('./view_components/record_visit_pane/record_visit_pane.js', function(){
+            _isRecordVisitPaneReady = true;
+        });
     }
 
-    function doInitializeRecordVisitPane() {
+    function initRecordVisitPane() {
 
         recordVisitPane = viewComponents.recordVisitPane;
 
@@ -282,6 +279,23 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         };
     }
 
+    function showPanesIfReady() {
+        
+        switch(_pageOptions.action) {
+        case 'new_place_action':
+            waiter(initPlaceActionPane, function(){
+                return _isActionPaneReady;
+            });
+            break;
+
+        case 'recorded_place_action':
+
+            break;
+        }
+    }
+
+    // Dialogs
+
     function loadDialogFiles() {
         loadFile.loadScript('./dialogs/dialog_base/dialog_base.js', function(){
             loadAddPersonDialogScript();
@@ -322,8 +336,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             recordVisitPane.addPersonVisitCell(person);
         };
     }
-
-
 
     function loadPersonDialogScript() {
         loadFile.loadScript('./dialogs/person_dialog/person_dialog.js', function(){
@@ -387,6 +399,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         };
     }
 
+    // utils
+    function waiter(waitFunc, conditionFunc) {
+
+        var wait = function(){
+
+            if (conditionFunc()) {
+                clearInterval(timerId);
+                waitFunc();
+            }
+        };
+
+        var timerId = setInterval(wait, 20);
+    }
 
     return {
         initialize          : _initialize,

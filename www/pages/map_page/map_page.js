@@ -26,7 +26,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         _isDrawerOpen   = false,
         _isMapOverlaySet = false,
         _isWideScreen = false,
-        _onMapLongClick;
+        _onMapLongClick,
+        _onClickMarkerOnMap;
 
     function _initialize(onReadyCallback, isWide) {
 
@@ -178,6 +179,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         mapPane.onMapLongClick = _onMapLongClick;
         mapPane.onClickMarker = function(place) {
 
+            if ( typeof _onClickMarkerOnMap === 'function' ) {
+                _onClickMarkerOnMap(place);
+            } 
         };
     }
 
@@ -379,6 +383,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         get mapZoomLevel() {
             return mapPane.mapZoomLevel;
         },
+
+        set onClickMarkerOnMap(f) {
+            _onClickMarkerOnMap = f;
+        }
         
     };
 

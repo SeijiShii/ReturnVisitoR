@@ -155,8 +155,21 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
             }, isWideScreen());
     
             mapPage.onMapLongClick = function(latLng) {
+
+                var pageOptions = {};
+                pageOptions.action = 'new_place_action';
+                pageOptions.latLng = latLng;
     
-                loadPlacePageFilesIfNeeded(latLng);
+                loadPlacePageFilesIfNeeded(pageOptions);
+            };
+
+            mapPage.onClickMarkerOnMap = function(place) {
+
+                var pageOptions = {};
+                pageOptions.place = place;
+                pageOptions.action = 'recorded_place_action';
+                loadPlacePageFilesIfNeeded(pageOptions);
+
             };
         }
     }
@@ -204,31 +217,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
     //     });
     // }
 
-    function loadPlacePageFilesIfNeeded(latlng) {
+    function loadPlacePageFilesIfNeeded(pageOptions) {
 
         if (placePage) {
             
-            initPlacePage(latlng);
+            initPlacePage(pageOptions);
 
         } else {
 
             loadFile.loadScript('./pages/place_page/place_page.js', function(){
-                initPlacePage(latlng);
+                initPlacePage(pageOptions);
             });
         }
     }
 
-    function initPlacePage(latLng) {
+    function initPlacePage(pageOptions) {
 
         placePage = returnvisitor.placePage;
+        pageOptions.zoom = mapPage.mapZoomLevel; 
     
-        var pageOptions = {
-            latLng : {
-                lat : latLng.lat,
-                lng : latLng.lng
-            },
-            zoom : mapPage.mapZoomLevel
-        };
         placePage.initialize(function(){
 
             launcher.launchUpPage(placePage, function() {

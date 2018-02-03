@@ -7,7 +7,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
         _latLng = latLng,
         _gestureEnabled = gestureEnabled,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        Person = returnvisitor.data.Person,
+        data            = returnvisitor.data,
+        Person          = data.Person,
+        Place           = data.Place,
         common = returnvisitor.common,
         markerPaths = common.markerPaths,
         pinMarkerPaths = markerPaths.pinMarkerPaths,
@@ -220,10 +222,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
     }
 
 
-    function removeTmpMarker() {
+    // function removeTmpMarker() {
 
-        tmpMarker.setMap(null);
-    }
+    //     tmpMarker.setMap(null);
+    // }
 
     function addMarkerOnMap(place, interest) {
 
@@ -254,7 +256,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
 
         dbHelper.loadPlaceByLatLng(latLng, function(dbData){
             
-            console.log(dbData);
+            var place = Place.fromDBData(dbData);
+
+            if ( typeof _this.onClickMarker === 'function' ) {
+                _this.onClickMarker(place);
+            }
         });
     }
 
