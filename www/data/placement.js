@@ -10,9 +10,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement = function(publicati
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.fromDBData = function(dbData, callback) {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        dbHelper = returnvisitor.common.dbHelper,
-        Publcation = returnvisitor.data.Publcation,
-        Placement = returnvisitor.data.Placement,
+        common = returnvisitor.common,
+        dbHelper    = common.dbHelper,
+        waiter      = common.waiter,
+        Publcation  = returnvisitor.data.Publcation,
+        Placement   = returnvisitor.data.Placement,
         _isPubReady = false,
         instance = new Placement();
 
@@ -26,6 +28,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.fromDBData = functio
         instance.publication = Publcation.fromDBData(pubData);
 
         _isPubReady = true;
+    });
+
+    waiter.wait(function(){
+
+        if ( typeof callback === 'function' ) {
+            callback(instance);
+        }
+        
+    }, function(){
+        return _isPubReady;
     });
 
     var wait = function(){

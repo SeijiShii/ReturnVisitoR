@@ -7,6 +7,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
         common          = returnvisitor.common,
         Swipe           = common.Swipe,
         elements        = common.elements,
+        waiter          = common.waiter,
         _target         = target,
         elm             = options.effectedElement !== undefined ? options.effectedElement : target,
         topLimit    = options.topLimit,
@@ -140,50 +141,47 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.SwipeElement = function(targ
 
     function setLimit() {
 
-        var wait = function() {
+        waiter.wait(function(){
 
-            if (elm.clientWidth > 0 && elm.clientHeight > 0) {
-                clearInterval(timerId);
-
-                if (!topLimit) {
-                    topLimit = 0;
-                    if (elm.clientHeight > parent.clientHeight) {
-                        topLimit = parent.clientHeight - elm.clientHeight;
-                    }
-                }
-
-                if (!bottomLimit) {
-                    bottomLimit = 0;
-                    if (elm.clientHeight > parent.clientHeight) {
-                        bottomLimit = parent.clientHeight - elm.clientHeight;
-                    }
-                }
-
-                if (!leftLimit) {
-                    leftLimit = 0;
-                    if (elm.clientWidth > parent.clientWidth) {
-                        leftLimit = parent.clientWidth - elm.clientWidth;
-                    }
-                }
-
-                if (!rightLimit) {
-                    rightLimit = 0;
-                    if (elm.clientWidth > parent.clientWidth) {
-                        rightLimit = parent.clientWidth - elm.clientWidth;
-                    }
-                }
-
-                if (_frameCountX && !_swipeStepX) {
-                    _swipeStepX = elm.clientWidth / _frameCountX;
-                }
-
-                if (_frameCountY && !_swipeStepY) {
-                    _swipeStepY = elm.clientHeight / _frameCountY;
+            if (!topLimit) {
+                topLimit = 0;
+                if (elm.clientHeight > parent.clientHeight) {
+                    topLimit = parent.clientHeight - elm.clientHeight;
                 }
             }
-        };
+
+            if (!bottomLimit) {
+                bottomLimit = 0;
+                if (elm.clientHeight > parent.clientHeight) {
+                    bottomLimit = parent.clientHeight - elm.clientHeight;
+                }
+            }
+
+            if (!leftLimit) {
+                leftLimit = 0;
+                if (elm.clientWidth > parent.clientWidth) {
+                    leftLimit = parent.clientWidth - elm.clientWidth;
+                }
+            }
+
+            if (!rightLimit) {
+                rightLimit = 0;
+                if (elm.clientWidth > parent.clientWidth) {
+                    rightLimit = parent.clientWidth - elm.clientWidth;
+                }
+            }
+
+            if (_frameCountX && !_swipeStepX) {
+                _swipeStepX = elm.clientWidth / _frameCountX;
+            }
+
+            if (_frameCountY && !_swipeStepY) {
+                _swipeStepY = elm.clientHeight / _frameCountY;
+            }
         
-        var timerId = setInterval(wait, 20);
+        }, function(){
+            return elm.clientWidth > 0 && elm.clientHeight > 0;
+        });
     }
 
     setLimit();

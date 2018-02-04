@@ -8,6 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
         loadFile    = common.loadFile,
         elements    = common.elements,
         SwipeElement = common.SwipeElement,
+        waiter      = common.waiter,
         paneFrame,
         innerFrame,
         ONE_THIRD = 100 / 3;
@@ -26,25 +27,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.SwipePane = function
 
     function waitForInnerFrameReadyCallbackReady() {
 
-        var timerStartTime = new Date().getTime();
-                
-        var waitTimer = function() {
-
-            var counter = new Date().getTime() - timerStartTime;
-
-            if (counter > 500) {
-                clearInterval(waitTimerId);
-                throw new Error('ERROR_TIME_OUT: SwipePane inner frame takes more than 500ms to get ready!');
-            }
-
-            if ( typeof _this.onInnerFrameReady === 'function' ) {
-                clearInterval(waitTimerId);
-                _this.onInnerFrameReady();
-            } 
-            // console.log('SwipePane: waiting inner frame ready for ' + counter + 'ms');
-        };
-
-        var waitTimerId = setInterval(waitTimer, 20);
+        waiter.waiter(function(){
+            _this.onInnerFrameReady();
+        }, function(){
+            return typeof _this.onInnerFrameReady === 'function';
+        });
     }
 
     function initInnerFrame() {

@@ -4,8 +4,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common = returnvisitor.common,
-        loadFile = common.loadFile,
-        elements = common.elements,
+        loadFile    = common.loadFile,
+        elements    = common.elements,
+        waiter      = common.waiter,
         viewComponents = returnvisitor.viewComponents,
         mapUtils = returnvisitor.mapUtils,
         data = returnvisitor.data,
@@ -75,14 +76,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         if (cordova.platformId === 'browser') {
 
-            var wait = function() {
-
-                if (returnvisitor.app.isBrowserMapReady) {
-                    clearInterval(timerId);
-                    mapPane = new mapUtils.BrowserMapPane(mapPaneBase, false, _pageOptions.latLng);
-                }
-            };
-            var timerId = setInterval(wait, 20);
+            waiter.wait(function(){
+                mapPane = new mapUtils.BrowserMapPane(mapPaneBase, false, _pageOptions.latLng);
+                mapPane.addMarkerOnMap(_place, 'INTEREST_NONE');
+            }, function(){
+                return returnvisitor.app.isBrowserMapReady;
+            });
 
         } else {
 
@@ -198,15 +197,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             secondaryReady = true;
         });
 
-        var wait = function() {
-
-            if (primaryReady && secondaryReady) {
-                clearInterval(timerId);
-                showNextPaneFunc();
-            }
-        };
-
-        var timerId = setInterval(wait, 20);   
+        waiter.wait(function(){
+            showNextPaneFunc();
+        }, function(){
+            return primaryReady && secondaryReady;
+        });
     }
 
     function fadeInFramesWithContents(contents) {
@@ -283,7 +278,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         
         switch(_pageOptions.action) {
         case 'new_place_action':
-            waiter(initPlaceActionPane, function(){
+            waiter.wait(initPlaceActionPane, function(){
                 return _isActionPaneReady;
             });
             break;
@@ -397,20 +392,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
             recordVisitPane.addPlcCell(plc);
         };
-    }
-
-    // utils
-    function waiter(waitFunc, conditionFunc) {
-
-        var wait = function(){
-
-            if (conditionFunc()) {
-                clearInterval(timerId);
-                waitFunc();
-            }
-        };
-
-        var timerId = setInterval(wait, 20);
     }
 
     return {

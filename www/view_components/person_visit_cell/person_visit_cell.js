@@ -13,9 +13,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
         // switchBox,
         _isFrameReady = false,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        loadFile        = returnvisitor.common.loadFile,
-        elements        = returnvisitor.common.elements,
-        raterColors     = returnvisitor.common.raterColors,
+        common          = returnvisitor.common,
+        loadFile        = common.loadFile,
+        elements        = common.elements,
+        raterColors     = common.raterColors,
+        waiter          = common.waiter,
         Person          = returnvisitor.data.Person,
         viewComponents  = returnvisitor.viewComponents,
         SwitchView      = viewComponents.SwitchView,
@@ -117,16 +119,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
 
     function waitAppendUntilReady(appendFunc, parent) {
         
-        var timer = function() {
-
-            if (_isFrameReady) {
-                clearInterval(timerId);
-                appendFunc(parent);
-            } else {
-                console.log('Wait for person visit cell ready.');
-            }
-        };
-        var timerId = setInterval(timer, 50);
+        waiter.wait(function(){
+            appendFunc(parent);
+        }, function(){
+            return _isFrameReady;
+        });
     }
    
     this.appendTo = function(parent) {

@@ -13,7 +13,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         common = returnvisitor.common,
         markerPaths = common.markerPaths,
         pinMarkerPaths = markerPaths.pinMarkerPaths,
-        dbHelper = common.dbHelper,
+        dbHelper    = common.dbHelper,
+        waiter      = common.waiter,
         mapDiv,
         map,
         nativeEvent = plugin.google.maps.event,
@@ -282,17 +283,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
     this.addMarkerOnMap = function(place, interest) {
 
-        var wait = function(){
-
-            if (_isMapReady) {
-                clearInterval(timerId);
-                addMarkerOnMap(place, interest);
-            }
-        };
-
-        var timerId = setInterval(wait, 20);
-
+        waiter.wait(function(){
+            addMarkerOnMap(place, interest);
+        }, function(){
+            return _isMapReady;
+        });
     };
+
+    // TODO: function to show all markers in visible area.
 
     initialize();
 

@@ -9,6 +9,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         elements        = common.elements,
         elementsEffect  = common.elementsEffect,
         SwipeElement    = common.SwipeElement,
+        waiter          = common.waiter,
         mapPageFrame,
         horizontalFrame,
         toolHeader,
@@ -149,16 +150,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
 
             loadFile.loadScript('./map_utils/browser_map_pane.js', function(){
 
-                function initBrowserMapPane() {
+                waiter.wait(function(){
+                    mapPane = new returnvisitor.mapUtils.BrowserMapPane(mapPaneBase);
+                    postInitMap();
 
-                    if (returnvisitor.app.isBrowserMapReady) {
-                        clearInterval(timerId);
-                        mapPane = new returnvisitor.mapUtils.BrowserMapPane(mapPaneBase);
-                        postInitMap();
-                    }
-                }
-                var timerId = setInterval(initBrowserMapPane, 20);
-                
+                }, function(){
+                    return returnvisitor.app.isBrowserMapReady;
+                });                
             });
 
         } else {

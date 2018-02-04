@@ -8,6 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         loadFile        = common.loadFile,
         elementsEffect  = common.elementsEffect,
         dbHelper        = common.dbHelper,
+        waiter          = common.waiter,
         data            = returnvisitor.data,
         Visit           = data.Visit,
         Place           = data.Place,
@@ -56,18 +57,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         initPrimaryFrame();
         initSecondaryFrame();
 
-        var wait = function() {
-
-            if (_isPrimaryReady && _isSecondaryReady) {
-                clearInterval(timerId);
-                if ( typeof onReadyCallback === 'function' ) {
-                    onReadyCallback();
-                }
+        waiter.wait(function(){
+            if ( typeof onReadyCallback === 'function' ) {
+                onReadyCallback();
             }
-        };
-
-        var timerId = setInterval(wait, 20);
-
+        }, function(){
+            return _isPrimaryReady && _isSecondaryReady;
+        });
     }
 
     function initPrimaryFrame() {

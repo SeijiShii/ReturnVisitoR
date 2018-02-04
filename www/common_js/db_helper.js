@@ -5,6 +5,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         data = returnvisitor.data,
         Placement = data.Placement,
+        common      = returnvisitor.common,
+        waiter      = common.waiter,
         DB_NAME = 'returnvisitor_db',
         DB_VERSION = '1.0.0',
         DESCRIPTION = 'ReturnVisitorDB',
@@ -418,14 +420,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
                     });
                 }
 
-                var wait = function() {
-                    if (placements.length >= result1.rows.length) {
-                        clearInterval(timerId);
-                        callback(placements);
-                    }
-                };
+                waiter.wait(function(){
 
-                var timerId = setInterval(wait, 20);
+                    callback(placements);                     
+                }, function(){
+
+                    return placements.length >= result1.rows.length; 
+                });
                 
             } else {
 

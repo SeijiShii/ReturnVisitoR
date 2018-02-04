@@ -38,8 +38,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.setDBData = fu
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         dbHelper = returnvisitor.common.dbHelper,
         data = returnvisitor.data,
-        Place = data.Place,
+        Place       = data.Place,
         PersonVisit = data.PersonVisit,
+        waiter = returnvisitor.common.waiter,
         isPlaceReady = false,
         arePersonVisitsReady = false,
         arePlacementsReady = true,
@@ -70,31 +71,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.setDBData = fu
             _this.personVisits.push(personVisit);
         }
 
-        var countTimer = function() {
+        waiter.wait(function(){
+            arePersonVisitsReady = true;
+        }, function(){
+            return count >= personVisitRows.length;
+        });
 
-            if (count >= personVisitRows.length) {
-                clearInterval(timerId);
-                arePersonVisitsReady = true;
-            }
-        };
-
-        var timerId = setInterval(countTimer, 20);
     });
 
     // TODO: Set placements from daData.
 
-    var outerCountTimer = function(){
+    waiter.wait(function(){
 
-        if (isPlaceReady && arePersonVisitsReady && arePlacementsReady) {
-            clearInterval(outerTimerId);
-            
-            if ( typeof callback === 'function' ) {
-                callback();
-            }
+        if ( typeof callback === 'function' ) {
+            callback();
         }
-    };
 
-    var outerTimerId = setInterval(outerCountTimer, 20);
+    }, function(){
+        return isPlaceReady && arePersonVisitsReady && arePlacementsReady;
+    });
 
 };
 

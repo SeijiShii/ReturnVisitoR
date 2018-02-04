@@ -11,6 +11,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
         Person          = data.Person,
         Place           = data.Place,
         common = returnvisitor.common,
+        waiter = common.waiter,
         markerPaths = common.markerPaths,
         pinMarkerPaths = markerPaths.pinMarkerPaths,
         dbHelper = common.dbHelper,
@@ -280,6 +281,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
 
         return map.getZoom();
     };
+
+    // TODO: function to show all markers in visible area.
 
     initialize();
 

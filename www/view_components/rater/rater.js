@@ -10,10 +10,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
 
     var _this = this,
         returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        loadFile        = returnvisitor.common.loadFile,
-        tokenGenerator  = returnvisitor.common.tokenGenerator,
-        elements        = returnvisitor.common.elements,
-        touchEventFilter = returnvisitor.common.touchEventFilter,
+        common          = returnvisitor.common,
+        loadFile        = common.loadFile,
+        tokenGenerator  = common.tokenGenerator,
+        elements        = common.elements,
+        touchEventFilter = common.touchEventFilter,
+        waiter          = common.waiter,
         _value = initialValue,
         raterDiv,
         raterButtons = [],
@@ -69,14 +71,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.Rater = function(par
             });
         }
 
-        var timer = function() {
-            if (raterButtons.length == buttonColors.length) {
-                clearInterval(timerId);
-                onButtonsReady();
-            }
-        }
+        waiter.wait(function(){
+            onButtonsReady();
 
-        var timerId = setInterval(timer, 50);
+        }, function(){
+            return raterButtons.length == buttonColors.length;
+        });
     }
 
     function onButtonsReady() {

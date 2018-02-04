@@ -22,11 +22,9 @@
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        viewComponents = returnvisitor.viewComponents,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
-        elementsEffect  = common.elementsEffect,
-        Swipe           = common.Swipe,
+        waiter          = common.waiter,
         adFrame,
         appFrame,
         slideFrame,
@@ -133,14 +131,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
         
         if (isBrowser()) {
 
-            var wait = function() {
-                if (_isBrowserMapReady) {
-                    clearInterval(timerId);
-                    doInitializeMapPage();
-                }
-            };
-
-            var timerId = setInterval(wait, 20);
+            waiter.wait(function(){
+                doInitializeMapPage();
+            }, function(){
+                return _isBrowserMapReady;
+            });
 
         } else {
 

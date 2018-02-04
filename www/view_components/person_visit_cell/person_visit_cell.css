@@ -84,15 +84,15 @@
     float: left;
 }
 
-.cell_frame .second_row .rv_switch_base {
+/* .cell_frame .second_row .rv_switch_base {
     
-    /* background-color: darkolivegreen; */
+    background-color: darkolivegreen;
 
 }
 
 .cell_frame .second_row .study_switch_base {
-    /* background-color: deepskyblue; */
-}
+    background-color: deepskyblue;
+} */
 
 .cell_frame .second_row .edit_button_base {
     float: right;
