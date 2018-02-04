@@ -114,6 +114,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
 
         placeActionPane.onNewPlaceClick = function() {
+            
+            _place.category = 'place';
+
             fadeOutPanesAndShowNext(initRecordVisitPane);
         };
 

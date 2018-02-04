@@ -33,34 +33,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype = Object.creat
     }
 });
 
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.setDBData = function(dbData, callback) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.fromDBData = function(dbData, callback) {
 
-    var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
-        dbHelper = returnvisitor.common.dbHelper,
-        data = returnvisitor.data,
-        Place       = data.Place,
-        PersonVisit = data.PersonVisit,
-        waiter = returnvisitor.common.waiter,
+    var returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
+        dbHelper        = returnvisitor.common.dbHelper,
+        data            = returnvisitor.data,
+        Visit           = data.Visit,
+        Place           = data.Place,
+        PersonVisit     = data.PersonVisit,
+        waiter          = returnvisitor.common.waiter,
         isPlaceReady = false,
         arePersonVisitsReady = false,
         arePlacementsReady = true,
-        _this = this;
+        instance = new Visit();
     
-    this.id = dbData.data_id;
-    this.timeStamp.setTime(dbData.time_stamp);
+    instance.id = dbData.data_id;
+    instance.timeStamp.setTime(dbData.time_stamp);
 
-    this.dateTime.setTime(dbData.datetime);
+    instance.dateTime.setTime(dbData.datetime);
     
     dbHelper.loadPlaceById(dbData.place_id, function(placeData){
-        _this.place = new Place();
-        _this.place.setDBData(placeData);
+        instance.place = Place.fromDBData(placeData);
 
         isPlaceReady = true;
     });
 
-    dbHelper.loadPersonVisitsByVisitId(this, function(personVisitRows){
+    dbHelper.loadPersonVisitsByVisitId(instance.id, function(personVisitRows){
 
-        _this.personVisits = [];
+        instance.personVisits = [];
         var count = 0;
 
         for (var i = 0 ; i < personVisitRows.length ; i++ ) {
@@ -68,7 +68,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.setDBData = fu
             personVisit.setDBData(personVisitRows.item(i), function(){
                 count++;
             });
-            _this.personVisits.push(personVisit);
+            instance.personVisits.push(personVisit);
         }
 
         waiter.wait(function(){
@@ -84,7 +84,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.prototype.setDBData = fu
     waiter.wait(function(){
 
         if ( typeof callback === 'function' ) {
-            callback();
+            callback(instance);
         }
 
     }, function(){

@@ -15,7 +15,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place = function(latLng, categ
         };
     }
 
-    this.category = category; 
+    this.category = category; // place, housing_complex, room
 };
 
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.category = {
@@ -53,9 +53,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype.queryInterest 
 
     dbHelper.loadLastVisitToPlace(this, function(visitData){
 
-        var lastVisit = new Visit();
-        lastVisit.setDBData(visitData, function(){
-            var interest = lastVisit.getInterest();
+        Visit.fromDBData(visitData, function(visit){
+            var interest = visit.interest;
 
             if ( typeof callback === 'function' ) {
                 callback(interest);

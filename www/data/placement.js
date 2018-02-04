@@ -40,17 +40,4 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.fromDBData = functio
         return _isPubReady;
     });
 
-    var wait = function(){
-
-        if (_isPubReady) {
-            clearInterval(timerId);
-
-            if ( typeof callback === 'function' ) {
-                callback(instance);
-            }
-        }
-    };
-
-    var timerId = setInterval(wait, 20);
-
 };

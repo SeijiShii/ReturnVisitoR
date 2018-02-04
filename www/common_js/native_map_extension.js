@@ -4,7 +4,8 @@ RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common
 RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.nativeMapExtension = (function(){
 
     var _map, 
-        _div;
+        _div,
+        waiter = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.waiter;
 
     function _getRealBounds(callback) {
 
@@ -20,39 +21,35 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.nativeMapExtension = (functi
             nearRightLatLng = latLng;
         });
 
-        var timer = function() {
-            if (farLeftLatLng && nearRightLatLng) {
-                
-                clearInterval(timerId);
+        waiter.wait(function(){
 
-                var farLeft = {
-                        lat : farLeftLatLng.lat,
-                        lng : farLeftLatLng.lng
-                    },
-                    farRight = {
-                        lat : nearRightLatLng.lat,
-                        lng : farLeftLatLng.lng
-                    },
-                    nearLeft = {
-                        lat : farLeftLatLng.lat,
-                        lng : nearRightLatLng.lng
-                    },
-                    nearRight = {
-                        lat : nearRightLatLng.lat,
-                        lng : nearRightLatLng.lng
-                    };
+            var farLeft = {
+                    lat : farLeftLatLng.lat,
+                    lng : farLeftLatLng.lng
+                },
+                farRight = {
+                    lat : nearRightLatLng.lat,
+                    lng : farLeftLatLng.lng
+                },
+                nearLeft = {
+                    lat : farLeftLatLng.lat,
+                    lng : nearRightLatLng.lng
+                },
+                nearRight = {
+                    lat : nearRightLatLng.lat,
+                    lng : nearRightLatLng.lng
+                };
 
-                callback({
-                    farLeft : farLeft,
-                    farRight : farRight,
-                    nearLeft : nearLeft,
-                    nearRight : nearRight 
-                });
-            }
-        };
+            callback({
+                farLeft : farLeft,
+                farRight : farRight,
+                nearLeft : nearLeft,
+                nearRight : nearRight 
+            });
 
-        var timerId = setInterval(timer, 20);
-
+        }, function(){
+            return farLeftLatLng && nearRightLatLng; 
+        });
     }
 
     function _getRealCenter(callback) {

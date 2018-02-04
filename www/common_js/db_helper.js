@@ -41,27 +41,41 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         database = openDatabase(DB_NAME, DB_VERSION, DESCRIPTION, estimatedSize);
         database.transaction(function(txn){
 
-            txn.executeSql(DROP_TABLE_QUERY + PLACE_TABLE_NAME);
-            txn.executeSql(CREATE_TABLE_QUERY + PLACE_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, latitude, longitude, address )');
-
-            txn.executeSql(DROP_TABLE_QUERY + VISIT_TABLE_NAME);
-            txn.executeSql(CREATE_TABLE_QUERY + VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'place_id, datetime )');
-
-            txn.executeSql(DROP_TABLE_QUERY + PERSON_TABLE_NAME);
-            txn.executeSql(CREATE_TABLE_QUERY + PERSON_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'sex, age, interest )');
-
-            txn.executeSql(DROP_TABLE_QUERY + PERSON_VISIT_TABLE_NAME);
-            txn.executeSql(CREATE_TABLE_QUERY + PERSON_VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'person_id, visit_id, is_rv, is_study )');
-
-            txn.executeSql(DROP_TABLE_QUERY + PUBLICATION_TABLE_NAME);
-            txn.executeSql(CREATE_TABLE_QUERY + PUBLICATION_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, year, numeric_number, month_number, note )');
-
-            txn.executeSql(DROP_TABLE_QUERY + PLACEMENT_TABLE_NAME);
-            txn.executeSql(CREATE_TABLE_QUERY + PLACEMENT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'visit_id, publication_id )');
+            // executeDropTables(txn);
+            executeCreateTables(txn);
 
         });
     }
 
+    function executeCreateTables(transaction) {
+
+        transaction.executeSql(CREATE_TABLE_QUERY + PLACE_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, latitude, longitude, address )');
+
+        transaction.executeSql(CREATE_TABLE_QUERY + VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'place_id, datetime )');
+
+        transaction.executeSql(CREATE_TABLE_QUERY + PERSON_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'sex, age, interest )');
+
+        transaction.executeSql(CREATE_TABLE_QUERY + PERSON_VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'person_id, visit_id, is_rv, is_study )');
+
+        transaction.executeSql(CREATE_TABLE_QUERY + PUBLICATION_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, year, numeric_number, month_number, note )');
+
+        transaction.executeSql(CREATE_TABLE_QUERY + PLACEMENT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'visit_id, publication_id )');
+    }
+
+    function executeDropTable(transaction, tableName) {
+        transaction.executeSql(DROP_TABLE_QUERY + tableName);
+    }
+
+    function executeDropTables(transaction) {
+
+        executeDropTable(transaction, PLACE_TABLE_NAME);
+        executeDropTable(transaction, VISIT_TABLE_NAME);
+        executeDropTable(transaction, PERSON_TABLE_NAME);
+        executeDropTable(transaction, PERSON_VISIT_TABLE_NAME);
+        executeDropTable(transaction, PUBLICATION_TABLE_NAME);
+        executeDropTable(transaction, PLACEMENT_TABLE_NAME);
+        
+    }
 
     function _loadPlaceByLatLng(latLng, callback) {
 
@@ -156,12 +170,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
             txn.executeSql(SELECT_ALL_QUERY + VISIT_TABLE_NAME + 'WHERE place_id = ? AND datetime = (SELECT MAX(datetime) FROM visit_table WHERE place_id = ?) ', [place.id, place.id], function(txn, result){
 
                 var data;
-                if (result.rows > 0) {
+                if (result.rows.length > 0) {
                     data = result.rows.item(0);
+                } 
 
-                } else {
-                    data = null;
-                }
                 callback(data);
 
             }, function(){
@@ -189,9 +201,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
     function _executeSelectById(transaction, id, tableName, callback) {
 
         transaction.executeSql(SELECT_ALL_QUERY + tableName + WHERE_ID, [id], function(txn, result){
-            if (result.rows > 0) {
-                callback(result.rows.item(0));
+
+            var row;
+            if (result.rows.length > 0) {
+                row = result.rows.item(0);
             }
+            callback(row);
         });
     }
 
@@ -217,7 +232,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
     }
 
     function _executeSelectPlaceById(transaction, id, callback) {
-        _executeSelectById(transaction, id, PLACEMENT_TABLE_NAME, callback);
+        _executeSelectById(transaction, id, PLACE_TABLE_NAME, callback);
+    }
+
+    function _loadPlaceById(id, callback) {
+        
+        database.transaction(function(txn){
+            _executeSelectPlaceById(txn, id, callback);
+        });
     }
 
     // Visit methods
@@ -458,16 +480,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     return {
 
-        // updatePlace : _updatePlace,
         saveVisit : _saveVisit,
-        // updatePerson : _updatePerson, 
 
-        // updatePersons : _updatePersons,
-
-        // loadPlaceById : _loadPlaceById,
         loadVisitById : _loadVisitById,
         loadPersonById : _loadPersonById,
 
+        loadPlaceById : _loadPlaceById,
         loadPlaceByLatLng : _loadPlaceByLatLng,
 
         loadAllVisitsToPlace : _loadAllVisitsToPlace,
