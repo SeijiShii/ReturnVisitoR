@@ -18,7 +18,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _primaryFrame,
         dateText,
         timeText,
-        personSeenSubtitle,
+        // personSeenSubtitle,
         personContainer,
         addPersonButton,
         plcContainer,
@@ -96,59 +96,59 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         initDateText();
         initTimeText();
 
-        personSeenSubtitle = elements.getElementById(_primaryFrame, 'person_seen_subtitle');
-        refreshPersonSeenSubtitle();
+        // personSeenSubtitle = elements.getElementById(_primaryFrame, 'person_seen_subtitle');
+        // refreshPersonSeenSubtitle();
         initPersonContainer();
         initAddPersonButton();
     }
 
-    function refreshPersonSeenSubtitle(animated) {
+    // function refreshPersonSeenSubtitle(animated) {
 
-        if (animated) {
-            if (_visit.personVisits.length <= 0) {
+    //     if (animated) {
+    //         if (_visit.personVisits.length <= 0) {
 
-                $(personSeenSubtitle).animate({
-                    height : 0
-                }, 200, function(){
-                    $(personSeenSubtitle).css({
-                        display : 'none',
-                        height : 0,
-                        margin : 0,
-                        visibility : 'hidden'
-                    });
-                });
+    //             $(personSeenSubtitle).animate({
+    //                 height : 0
+    //             }, 200, function(){
+    //                 $(personSeenSubtitle).css({
+    //                     display : 'none',
+    //                     height : 0,
+    //                     margin : 0,
+    //                     visibility : 'hidden'
+    //                 });
+    //             });
 
-            } else {
-                $(personSeenSubtitle).css({
-                    display : 'block',
-                    height : 0,
-                    margin : '3px',
-                    visibility : 'visible'
-                });
+    //         } else {
+    //             $(personSeenSubtitle).css({
+    //                 display : 'block',
+    //                 height : 0,
+    //                 margin : '3px',
+    //                 visibility : 'visible'
+    //             });
 
-                $(personSeenSubtitle).animate({
-                    height : '15px'
-                }, 200);
-            }
+    //             $(personSeenSubtitle).animate({
+    //                 height : '15px'
+    //             }, 200);
+    //         }
 
-        } else {
-            if (_visit.personVisits.length <= 0) {
-                $(personSeenSubtitle).css({
-                    display : 'none',
-                    height : 0,
-                    margin : 0,
-                    visibility : 'hidden'
-                });
-            } else {
-                $(personSeenSubtitle).css({
-                    display : 'block',
-                    height : '15px',
-                    margin : '3px',
-                    visibility : 'visible'
-                });
-            }
-        }
-    }
+    //     } else {
+    //         if (_visit.personVisits.length <= 0) {
+    //             $(personSeenSubtitle).css({
+    //                 display : 'none',
+    //                 height : 0,
+    //                 margin : 0,
+    //                 visibility : 'hidden'
+    //             });
+    //         } else {
+    //             $(personSeenSubtitle).css({
+    //                 display : 'block',
+    //                 height : '15px',
+    //                 margin : '3px',
+    //                 visibility : 'visible'
+    //             });
+    //         }
+    //     }
+    // }
 
     function initAddPersonButton() {
         addPersonButton = elements.getElementById(_primaryFrame, 'add_person_button');
@@ -158,24 +158,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initPersonContainer() {
         personContainer = elements.getElementById(_primaryFrame, 'person_container');
-        refreshPersonContainer();
+        // refreshPersonContainer();
 
     }
 
-    function refreshPersonContainer() {
-        if (_visit.personVisits.length <= 0) {
-            $(personContainer).css({
-                display : 'none',
-                // height : 0,
-                // margin : 0
-            });
-        } else {
-            $(personContainer).css({
-                display : 'block',
-                height : 'auto'
-            });
-        }
-    }
+    // function refreshPersonContainer() {
+    //     if (_visit.personVisits.length <= 0) {
+    //         $(personContainer).css({
+    //             display : 'none',
+    //             // height : 0,
+    //             // margin : 0
+    //         });
+    //     } else {
+    //         $(personContainer).css({
+    //             display : 'block',
+    //             height : 'auto'
+    //         });
+    //     }
+    // }
 
     function onClickAddPersonButton() {
 
@@ -240,8 +240,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         var personVisit = new PersonVisit(person);
         _visit.personVisits.push(personVisit);
 
-        refreshPersonSeenSubtitle(true);
-        refreshPersonContainer();
+        // refreshPersonSeenSubtitle(true);
+        // refreshPersonContainer();
 
         var personVisitCell = new PersonVisitCell(personVisit);
 
@@ -250,8 +250,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
             
             _visit.personVisits.removeData(personVisit);
 
-            refreshPersonContainer();
-            refreshPersonSeenSubtitle(true);
+            // refreshPersonContainer();
+            // refreshPersonSeenSubtitle(true);
         };
     }
 
