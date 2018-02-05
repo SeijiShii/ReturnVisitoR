@@ -325,6 +325,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
     function onClickOk() {
 
         _visit.note = noteText.value;
+        _visit.place.category = 'place';
 
         dbHelper.saveVisit(_visit);
 

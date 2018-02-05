@@ -12,7 +12,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         Place           = data.Place,
         common = returnvisitor.common,
         markerPaths = common.markerPaths,
-        pinMarkerPaths = markerPaths.pinMarkerPaths,
+        pinMarkerPaths      = markerPaths.pinMarkerPaths,
+        squeareMarkerPaths  = markerPaths.squeareMarkerPaths,
         dbHelper    = common.dbHelper,
         waiter      = common.waiter,
         mapDiv,
@@ -144,45 +145,30 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         }
 
         map.on(nativeEvent.MAP_READY, function(){
-            _isMapReady = true;    
+            _isMapReady = true; 
+            _addAllPlaceMarkersInDB();   
         });
        
-
-        
-
     }
 
     function onLongClickNativeMap(latLng) {
-        
-        // console.log('Map long clicked: ' + latLng.toUrlValue());
-        // map.animateCamera({
-        //     target: {
-        //         lat: latLng.lat,
-        //         lng: latLng.lng
-        //     },
-        //     duration: 500
-        // });
 
-        map.addMarker({
-            position: {
-                lat: latLng.lat,
-                lng: latLng.lng
-            },
-            icon: {
-                url: markerPaths.pinMarkerPaths.grayPin,
-                size: {
-                    width: 25,
-                    height: 35
-                }
-            }
-
-        }, function(marker){
-            tmpMarker = marker;
-        });
-
-
+        addTmpMarker(latLng);
         postMapLongClick(latLng);
 
+    }
+
+    function addTmpMarker(latLng) {
+
+        addMarker({
+            latLng : latLng,
+            category : 'place',
+            interest : 'INTEREST_NONE',
+            clickable : false
+        }, function(marker){
+            tmpMarker = marker;
+            tmpMarker.setDisableAutoPan(true);
+        });
     }
 
 
@@ -225,19 +211,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
     }
 
 
-    function removeTmpMarker() {
+    // function removeTmpMarker() {
 
-        tmpMarker.remove();
-    }
+    //     tmpMarker.remove();
+    // }
 
-    function addMarkerOnMap(place, interest) {
+    function addMarker (options, callback) {
 
-        var markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(interest)];
+        if (options.category === 'room') {
+            return;
+        }
 
+        var markerPath;
+        if (options.category === 'place') {
+            markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(options.interest)];
+        } else if (options.category === 'housing_complex') {
+            markerPath = squeareMarkerPaths.values[Person.interest.indexOfKey(options.interest)];
+        }
+        
         map.addMarker({
             position: {
-                lat: place.latLng.lat,
-                lng: place.latLng.lng
+                lat: options.latLng.lat,
+                lng: options.latLng.lng
             },
             icon: {
                 url: markerPath,
@@ -248,9 +243,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
             }
 
         }, function(marker){
-      
-            // console.log(marker);
-            marker.on(nativeEvent.MARKER_CLICK, onClickNativeMarker);
+
+            if (options.clickable) {
+                marker.on(nativeEvent.MARKER_CLICK, onClickNativeMarker);
+            }
+
+            marker.setDisableAutoPan(!_gestureEnabled);
+
+            if ( typeof callback === 'function' ) {
+                callback(marker);
+            }
             
         }); 
     }
@@ -263,6 +265,30 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
             if ( typeof _this.onClickMarker === 'function' ) {
                 _this.onClickMarker(place);
+            }
+        });
+    }
+
+    function _addAllPlaceMarkersInDB() {
+        dbHelper.loadAllPlaces(function(row){
+
+            for (var i = 0 ; i < row.length ; i++ ) {
+
+                var dbData = row.item(i);
+                var place = Place.fromDBData(dbData);
+
+                // console.log(place);
+
+                place.queryInterest(function(place2, interest){
+
+                    addMarker({
+                        latLng : place2.latLng,
+                        category : place2.category,
+                        interest : interest,
+                        clickable : _gestureEnabled
+                    });
+                });
+
             }
         });
     }
@@ -281,10 +307,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
         return map.getCameraPosition().zoom;
     };
 
-    this.addMarkerOnMap = function(place, interest) {
+    this.addTmpMarker = function(latLng) {
 
         waiter.wait(function(){
-            addMarkerOnMap(place, interest);
+            addTmpMarker(latLng);
         }, function(){
             return _isMapReady;
         });

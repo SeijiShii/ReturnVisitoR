@@ -78,7 +78,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
             waiter.wait(function(){
                 mapPane = new mapUtils.BrowserMapPane(mapPaneBase, false, _pageOptions.latLng);
-                mapPane.addMarkerOnMap(_place, 'INTEREST_NONE');
+                addTmpMarker();
             }, function(){
                 return returnvisitor.app.isBrowserMapReady;
             });
@@ -86,9 +86,25 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         } else {
 
             mapPane = new mapUtils.NativeMapPane(mapPaneBase, false, _pageOptions.latLng);
+            mapPane.addTmpMarker(_pageOptions.latLng);
 
         }
     }
+
+    // function addTmpMarker(){
+
+    //     mapPane.addMarker({
+    //         latLng : _place.latLng,
+    //         category : _place.category,
+    //         interest : 'INTEREST_NONE',
+    //         clikcable : false
+    //     }, function(marker){
+    //         // TODO: How to use tmp marker.
+    //         if (cordova.platformId === 'android') {
+    //             marker.setDisableAutoPan(true);
+    //         }
+    //     }, false);
+    // }
 
     function _getElementById(id) {
 
@@ -115,8 +131,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
         placeActionPane.onNewPlaceClick = function() {
             
+            // Provisionary set category for marker in small map.
             _place.category = 'place';
-
             fadeOutPanesAndShowNext(initRecordVisitPane);
         };
 
@@ -134,7 +150,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         _place = _pageOptions.place;
         
         if (!_place) {
-            _place = new Place(_pageOptions.latLng);
+            // Provisionary set place category for new.
+            _place = new Place(_pageOptions.latLng, 'place');
         }
     }
 

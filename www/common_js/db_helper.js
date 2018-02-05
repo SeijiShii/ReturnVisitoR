@@ -4,7 +4,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         data = returnvisitor.data,
-        Placement = data.Placement,
+        Placement   = data.Placement,
+        Person      = data.Person,
         common      = returnvisitor.common,
         waiter      = common.waiter,
         DB_NAME = 'returnvisitor_db',
@@ -182,7 +183,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         });
     }
 
-    function _loadPersonVisitsByVisitId(visit, callback) {
+    function _loadPersonVisitsInVisit(visit, callback) {
 
         database.transaction(function(txn){
 
@@ -327,6 +328,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         _executeSelectById(transaction, id, PERSON_TABLE_NAME, callback);
     }
 
+    function _loadPersonById(id, callback) {
+
+        database.transaction(function(txn){
+            _executeSelectPersonById(txn, id, callback);
+        });
+    }
+
     // Person Visit mehtods
 
     function _executeInsertPersonVisit(transaction, personVisit, visitId, callback) {
@@ -367,10 +375,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
                 publication.monthNumber, 
                 publication.note ], 
             function(){
-                console.log(arguments);
+                // console.log(arguments);
             },
             function(){
-                console.log(arguments);
+                // console.log(arguments);
             });
     }
 
@@ -490,7 +498,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
         loadAllVisitsToPlace : _loadAllVisitsToPlace,
         loadLastVisitToPlace : _loadLastVisitToPlace,
-        loadPersonVisitsByVisitId : _loadPersonVisitsByVisitId,
+        loadPersonVisitsInVisit : _loadPersonVisitsInVisit,
         loadAllPlaces : _loadAllPlaces
 
     };

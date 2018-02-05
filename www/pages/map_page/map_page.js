@@ -326,7 +326,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
     }
 
     function _addNewPlaceMarker(place, interest) {
-        mapPane.addMarkerOnMap(place, interest);
+        mapPane.addMarker({
+            latLng : place.latLng,
+            category : place.category,
+            interest : interest,
+            clickable : true
+        });
     }
 
     function isBrowser() {

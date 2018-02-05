@@ -7,7 +7,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject = function(idHeader
 
     this.id = idHeader + '_' + tokenGenrator.generateToken();
     this.timeStamp = new Date(); 
-    // console.log(this.id);
 
 };
 
@@ -36,6 +35,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.prototype.clone = f
         }
     }
     return cloned;
-    
-
 };
+
+// RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject.fromDBData = function(dbData) {
+
+//     var instance = new RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.DataObject();
+
+//     instance.id = dbData.data_id;
+//     instance.timeStamp.setTime(dbData.time_stamp);
+
+//     return instance;
+// };

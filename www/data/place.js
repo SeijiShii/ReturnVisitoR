@@ -57,7 +57,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.prototype.queryInterest 
             var interest = visit.interest;
 
             if ( typeof callback === 'function' ) {
-                callback(interest);
+                callback(visit.place, interest);
             }
         });
     });
@@ -67,7 +67,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place.fromDBData = function(db
 
     var Place = RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Place,
         instance = new Place();
-    
     
     instance.id = dbData.data_id;
     instance.timeStamp.setTime(dbData.time_stamp);

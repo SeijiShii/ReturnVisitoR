@@ -58,7 +58,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.fromDBData = function(db
         isPlaceReady = true;
     });
 
-    dbHelper.loadPersonVisitsByVisitId(instance.id, function(personVisitRows){
+    dbHelper.loadPersonVisitsInVisit(instance, function(personVisitRows){
 
         instance.personVisits = [];
         var count = 0;
