@@ -135,7 +135,40 @@ textarea {
     left: 0;
     right: 0;
     margin: 0 auto;
+}
 
+.secondary_pane
+.row {
+    position: relative;
+    width: 90%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 50px;
+}
+
+.secondary_pane
+.button {
+    position: absolute;
+    width: 150px;
+    right: 0;
+    height: 48px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    color: darkgreen;
+    box-shadow: 2px 2px 3px gray;
+    line-height: 48px;
+}
+
+.secondary_pane
+.cancel_button {
+    color: orange;
+}
+
+.secondary_pane
+.delete_button {
+    color: red;
 }
 
 @media screen and (min-width: 500px) {

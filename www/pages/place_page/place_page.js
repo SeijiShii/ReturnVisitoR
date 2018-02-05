@@ -4,9 +4,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common = returnvisitor.common,
-        loadFile    = common.loadFile,
-        elements    = common.elements,
-        waiter      = common.waiter,
+        loadFile        = common.loadFile,
+        elements        = common.elements,
+        waiter          = common.waiter,
+        elementsEffect  = common.elementsEffect,
         viewComponents = returnvisitor.viewComponents,
         mapUtils = returnvisitor.mapUtils,
         data = returnvisitor.data,
@@ -19,6 +20,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         placeNameText,
         primaryFrame,
         secondaryFrame,
+        okButtonRow,
+        deleteButtonRow,
         _pageOptions,
         placeActionPane,
         recordVisitPane,
@@ -27,7 +30,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         _place,
         _isActionPaneReady,
         _isRecordVisitPaneReady,
-        _isVisitHistoryPaneReady,
+        _visiblePaneName,
         FADE_DURATION = 300,
         addPersonDialog,
         personDialog,
@@ -49,6 +52,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             requestReverseGeocoding();
             initMap();
 
+            initOKButton();
+            initDeleteButton();
+            initCancelButton();
+
             loadPlaceActionPane();
             loadRecordVisitPane();
             loadDialogFiles();
@@ -68,6 +75,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         placeNameText   = _getElementById('place_name_text');
         primaryFrame    = _getElementById('primary_frame');
         secondaryFrame  = _getElementById('secondary_frame');
+        okButtonRow     = _getElementById('ok_button_row');
+        deleteButtonRow = _getElementById('delete_button_row');
     }
 
     function initMap() {
@@ -96,6 +105,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         return elements.getElementById(pageFrame, id);
     }
 
+    function _getElementByClassName(className) {
+
+        return elements.getElementByClassName(pageFrame, className);
+    }
+
     function isBrowser() {
         return cordova.platformId === 'browser';
     } 
@@ -112,6 +126,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         placeActionPane = viewComponents.placeActionPane;
         placeActionPane.initialize(function(frame){
             primaryFrame.appendChild(frame);
+            _visiblePaneName = 'place_action_pane';
+            refreshButtonRows();
         });
 
         placeActionPane.onNewPlaceClick = function() {
@@ -120,14 +136,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             _place.category = 'place';
             fadeOutPanesAndShowNext(initRecordVisitPane);
         };
-
-        placeActionPane.onCancelClick = function() {
-
-            if ( typeof _onCancelClick === 'function' ) {
-                _onCancelClick();
-            }
-        };
-
     }
 
 
@@ -295,6 +303,74 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         case 'recorded_place_action':
 
             break;
+        }
+    }
+
+    function refreshButtonRows() {
+
+        switch(_visiblePaneName){
+        case 'place_action_pane':
+            refreshOKButtonRow(false);
+            refreshDeleteButtonRow(false);
+            break;
+        }
+    }
+
+    function initOKButton() {
+        var okButton = _getElementByClassName('ok_button');
+        new elementsEffect.Blink(okButton);
+        okButton.addEventListener('click', onClickOKButton);
+    }
+
+    function onClickOKButton() {
+
+    }
+
+    function initDeleteButton() {
+        var deleteButton = _getElementByClassName('delete_button');
+        new elementsEffect.Blink(deleteButton);
+        deleteButton.addEventListener('click', onClickDeleteButton);
+    }
+
+    function onClickDeleteButton() {
+
+    }
+
+    function initCancelButton() {
+        var cancelButton = _getElementByClassName('cancel_button');
+        new elementsEffect.Blink(cancelButton);
+        cancelButton.addEventListener('click', onClickCancelButton);
+    }
+
+    function onClickCancelButton() {
+
+        switch(_visiblePaneName) {
+        case 'place_action_pane':
+            if ( typeof _onCancelClick === 'function' ) {
+                _onCancelClick();
+            }
+            break;
+
+        }
+
+
+    }
+
+    function refreshOKButtonRow(show) {
+        
+        if (show) {
+            okButtonRow.style.display = 'block';
+        } else {
+            okButtonRow.style.display = 'none';
+        }
+    }
+
+    function refreshDeleteButtonRow(show) {
+
+        if (show) {
+            deleteButtonRow.style.display = 'block';
+        } else {
+            deleteButtonRow.style.display = 'none';
         }
     }
 

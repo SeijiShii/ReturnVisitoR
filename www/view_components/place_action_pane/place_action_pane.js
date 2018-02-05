@@ -11,9 +11,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         newPlaceButton,
         hcButton,
         nhButton,
-        cancelButton,
-        _onNewPlaceClick,
-        _onCancelClick;
+        _onNewPlaceClick;
     
     function _initialize(callback) {
 
@@ -23,7 +21,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
             paneFrame = elm;
 
             initNewPlaceButton();
-            initCancelButton();
       
             if ( typeof callback === 'function' ) {
                 callback(paneFrame);
@@ -45,22 +42,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         }
     }
 
-    
-    function initCancelButton() {
-
-        cancelButton = _getElementById('cancel_button');
-        cancelButton.blink = new elementsEffect.Blink(cancelButton);
-        cancelButton.addEventListener('click', onCancelButtonClick);
-    }
-
-    function onCancelButtonClick() {
-
-        if ( typeof _onNewPlaceClick === 'function' ) {
-            _onCancelClick();
-        }
-        
-    }
-
     function _getElementById(id) {
         return elements.getElementById(paneFrame, id);
     }
@@ -71,10 +52,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.placeActionPane = (f
         initialize : _initialize,
         set onNewPlaceClick(f) {
             _onNewPlaceClick = f;
-        },
-
-        set onCancelClick(f) {
-            _onCancelClick = f;
         },
 
         get paneFrame() {
