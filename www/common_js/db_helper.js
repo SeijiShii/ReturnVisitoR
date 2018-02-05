@@ -28,7 +28,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         VALUES5 = 'VALUES ( ?, ?, ?, ?, ? )',
         VALUES6 = 'VALUES ( ?, ?, ?, ?, ?, ? )',
         VALUES7 = 'VALUES ( ?, ?, ?, ?, ?, ?, ? )',
-        PLACE_INSERT_QUERY = INSERT_QUERY + PLACE_TABLE_NAME + VALUES6,
+        PLACE_INSERT_QUERY = INSERT_QUERY + PLACE_TABLE_NAME + VALUES7,
         VISIT_INSERT_QUERY = INSERT_QUERY + VISIT_TABLE_NAME + VALUES4,
         PERSON_INSERT_QUETY = INSERT_QUERY + PERSON_TABLE_NAME + VALUES5, 
         PERSON_VISIT_INSERT_QUETY = INSERT_QUERY + PERSON_VISIT_TABLE_NAME + VALUES6,
@@ -50,7 +50,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     function executeCreateTables(transaction) {
 
-        transaction.executeSql(CREATE_TABLE_QUERY + PLACE_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, latitude, longitude, address )');
+        transaction.executeSql(CREATE_TABLE_QUERY + PLACE_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, latitude, longitude, address, name )');
 
         transaction.executeSql(CREATE_TABLE_QUERY + VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'place_id, datetime )');
 
@@ -155,9 +155,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
             txn.executeSql(SELECT_ALL_QUERY + VISIT_TABLE_NAME + 'WHERE place_id=? ', [place.id], function(txn, result){
 
-                if (result.rows) {
-                    callback(result.rows);
-                }
+                callback(result.rows);
+
             }, function(e){
                 console.log(e);
             });
@@ -215,7 +214,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     function _executeInsertPlace(transaction, place, callback) {
 
-        transaction.executeSql(PLACE_INSERT_QUERY,[place.id, place.timeStamp.getTime(), place.category, place.latLng.lat, place.latLng.lng, place.address], callback);
+        transaction.executeSql(PLACE_INSERT_QUERY, 
+            [place.id, 
+                place.timeStamp.getTime(), 
+                place.category, 
+                place.latLng.lat, 
+                place.latLng.lng, 
+                place.address, 
+                place.name], 
+            callback);
     }
 
     function _executeDeletePlace(transaction, placeId, callback) {
@@ -294,7 +301,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
             if ( typeof callback === 'function' ) {
                 callback();
             }
-            
+
         }, function(){
 
             console.log(arguments);

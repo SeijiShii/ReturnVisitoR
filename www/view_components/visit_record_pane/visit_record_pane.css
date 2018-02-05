@@ -3,12 +3,23 @@
     position: relative;
     width: 100%;
     background-color: whitesmoke;
-    border-top: gray 1px solid;
     font-size: 15px;
+    box-shadow: 2px 2px 4px gray;
 
 }
 
-.visit_list_pane_primary
+.visit_record_pane_primary
+h2 {
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 10px;
+    height: 25px;
+    line-height: 25px;
+    border-bottom: 1px gray solid;
+}
+
+.visit_record_pane_primary
 .row {
     
     width: 100%;
@@ -16,7 +27,7 @@
     border-bottom: 1px gray solid;
 }
 
-.visit_list_pane_primary
+.visit_record_pane_primary
 .row
 span {
     display: block;

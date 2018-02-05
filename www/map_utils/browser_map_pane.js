@@ -198,7 +198,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
                 size : new google.maps.Size(34, 48),
                 scaledSize : new google.maps.Size(25, 35)                  
             }
-        })
+        });
 
     }
 

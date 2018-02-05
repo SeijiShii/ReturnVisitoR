@@ -63,6 +63,10 @@ Date.prototype.yearMonthString = function() {
     }
 };
 
+Date.prototype.dateTimeString = function() {
+    return this.dateString() + ' ' + this.timeString();
+};
+
 Date.prototype.yearString = function() {
     
     if (RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.localeCheck.isJA) {

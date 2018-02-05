@@ -26,11 +26,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         _pageOptions,
         placeActionPane,
         recordVisitPane,
+        visitRecordPane,
         _onCancelClick,
         _onFinishRecordVisit,
         _place,
         _isActionPaneReady,
         _isRecordVisitPaneReady,
+        _isVisitRecordPaneReady,
         _visiblePaneName,
         FADE_DURATION = 300,
         addPersonDialog,
@@ -59,6 +61,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
 
             loadPlaceActionPane();
             loadRecordVisitPane();
+            loadVisitRecordPane();
             loadDialogFiles();
 
             showPanesIfReady();
@@ -287,6 +290,22 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         // };
     }
 
+    function loadVisitRecordPane() {
+        loadFile.loadScript('./view_components/visit_record_pane/visit_record_pane.js', function(){
+            _isVisitRecordPaneReady = true;
+        });
+    }
+
+    function initVisitRecordPane() {
+        visitRecordPane = viewComponents.visitRecordPane;
+        visitRecordPane.initialize(function(){
+            fadeInFramesWithContents([
+                visitRecordPane.primaryFrame,
+                visitRecordPane.secondaryFrame
+            ]);
+        }, _place);
+    }
+
     function showPanesIfReady() {
         
         switch(_pageOptions.action) {
@@ -297,6 +316,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             break;
 
         case 'recorded_place_action':
+            waiter.wait(initVisitRecordPane, function(){
+                return _isVisitRecordPaneReady;
+            });
 
             break;
         }
