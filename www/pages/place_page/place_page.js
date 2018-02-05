@@ -8,6 +8,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         elements        = common.elements,
         waiter          = common.waiter,
         elementsEffect  = common.elementsEffect,
+        dbHelper        = common.dbHelper,
         viewComponents = returnvisitor.viewComponents,
         mapUtils = returnvisitor.mapUtils,
         data = returnvisitor.data,
@@ -248,6 +249,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
                 recordVisitPane.primaryFrame,
                 recordVisitPane.secondaryFrame
             ]);
+            _visiblePaneName = 'record_visit_pane_for_new';
+            refreshButtonRows();
         }, _place);
 
         recordVisitPane.onClickAddPerson = function(visit, persons) {
@@ -272,23 +275,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             initPlcDialog(visit);
         };
 
-        recordVisitPane.onClickCancel = function() {
-
-            fadeOutPanesAndShowNext(function(){
-                fadeInFramesWithContents([placeActionPane.paneFrame]);
-            });
-        };
-
         recordVisitPane.onRefreshInterest = function(interest) {
             mapPane.refreshTmpMarker(interest);
         };
 
-        recordVisitPane.onClickOk = function(visit) {
+        // recordVisitPane.onClickOk = function(visit) {
 
-            if (typeof _onFinishRecordVisit === 'function' ) {
-                _onFinishRecordVisit(visit.place, visit.interest);
-            }
-        };
+        //     if (typeof _onFinishRecordVisit === 'function' ) {
+        //         _onFinishRecordVisit(visit.place, visit.interest);
+        //     }
+        // };
     }
 
     function showPanesIfReady() {
@@ -313,6 +309,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             refreshOKButtonRow(false);
             refreshDeleteButtonRow(false);
             break;
+
+        case 'record_visit_pane_for_new':
+            refreshOKButtonRow(true);
+            refreshDeleteButtonRow(false);
         }
     }
 
@@ -323,6 +323,19 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
     }
 
     function onClickOKButton() {
+
+        switch(_visiblePaneName) {
+        case 'record_visit_pane_for_new':
+            var visit = recordVisitPane.getVisit();
+            dbHelper.saveVisit(visit, function() {
+                // By using callback pattern, make sure visit data is saved before going next step.
+                if (typeof _onFinishRecordVisit === 'function' ) {
+                    _onFinishRecordVisit();
+                }
+    
+            });
+            break;
+        }
 
     }
 
@@ -351,6 +364,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             }
             break;
 
+        case 'record_visit_pane_for_new':
+            fadeOutPanesAndShowNext(function(){
+                fadeInFramesWithContents([placeActionPane.paneFrame]);
+                _visiblePaneName = 'place_action_pane';
+                refreshButtonRows();
+            });
+            break;
         }
 
 

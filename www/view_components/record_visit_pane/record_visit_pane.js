@@ -32,8 +32,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _onClickTimeText,
         _onClickAddPerson,
         _onClickPlcButton,
-        _onClickCancel,
-        _onClickOk,
         _onRefreshInterest,
         _visit,
         _persons;
@@ -265,9 +263,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         initPlcContainer();
         initPlcButton();
         initNoteText();
-        initOkButton();
-        initDeleteButton();
-        initCancelButton();
         
     }
 
@@ -325,56 +320,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         noteText.value = _visit.note;
     }
 
-    function initOkButton() {
-
-        var okButton = elements.getElementByClassName(_secondaryFrame, 'ok_button');
-        new elementsEffect.Blink(okButton);
-        okButton.addEventListener('click', onClickOk);
-    }
-
-    function onClickOk() {
+    function _getVisit() {
 
         _visit.note = noteText.value;
         _visit.place.category = 'place';
 
-        dbHelper.saveVisit(_visit);
-
-        if (typeof _onClickOk === 'function' ) {
-            _onClickOk(_visit);
-        }
+        return _visit;
     }
 
-    function initDeleteButton() {
-
-        var deleteRow = elements.getElementByClassName(_secondaryFrame, 'delete_row');
-        if (_isNewVisit) {
-            deleteRow.style.display = 'none';
-        } else {
-
-            var deleteButton = elements.getElementByClassName(_secondaryFrame, 'delete_button');
-            new elementsEffect.Blink(deleteButton);
-            deleteButton.addEventListener('click', onClickDelete);
-        }
-    }
-
-    function onClickDelete() {
-        alert('Hoge!');
-    }
-
-    function initCancelButton() {
-
-        var cancelButton = elements.getElementByClassName(_secondaryFrame, 'cancel_button');
-        new elementsEffect.Blink(cancelButton);
-
-        cancelButton.addEventListener('click', onClickCancel);
-    }
-
-    function onClickCancel() {
-
-        if (typeof _onClickCancel === 'function' ) {
-            _onClickCancel();
-        }
-    }
 
     // function fadeOutPanes(callback, param) {
 
@@ -439,17 +392,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         },
         addPlcCell : _addPlcCell,
 
-        set onClickCancel(f) {
-            _onClickCancel = f;
-        },
-
-        set onClickOk(f) {
-            _onClickOk = f;
-        },
-
         set onRefreshInterest(f) {
             _onRefreshInterest = f;
-        }
+        },
+
+        getVisit : _getVisit
+
 
     };
 

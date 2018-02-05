@@ -16,6 +16,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.waiter = {
             }
 
             if (count > LIMIT) {
+                clearInterval(timerId);
+                console.trace();
                 throw new Error('Waiter is waiting over than ' + LIMIT + 'ms.');
             }
 

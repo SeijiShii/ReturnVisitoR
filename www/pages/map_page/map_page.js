@@ -325,14 +325,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
         }
     }
 
-    function _addNewPlaceMarker(place, interest) {
-        mapPane.addMarker({
-            latLng : place.latLng,
-            category : place.category,
-            interest : interest,
-            clickable : true
-        });
-    }
+    // function _addNewPlaceMarker(place, interest) {
+    //     mapPane.addMarker({
+    //         latLng : place.latLng,
+    //         category : place.category,
+    //         interest : interest,
+    //         clickable : true
+    //     });
+    // }
 
     function isBrowser() {
         return cordova.platformId === 'browser';
@@ -373,7 +373,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapPage = (function() {
             _resizeFrames();
         },
 
-        addNewPlaceMarker : _addNewPlaceMarker,
+        // addNewPlaceMarker : _addNewPlaceMarker,
 
         get pageFrame() {
             return mapPageFrame;

@@ -286,10 +286,15 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         });
     }
 
-    function _saveVisit(visit) {
+    function _saveVisit(visit, callback) {
 
         database.transaction(function(txn){
             _executeUpdateVisit(txn, visit);
+
+            if ( typeof callback === 'function' ) {
+                callback();
+            }
+            
         }, function(){
 
             console.log(arguments);
