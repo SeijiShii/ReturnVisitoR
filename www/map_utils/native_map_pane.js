@@ -153,18 +153,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
 
     function onLongClickNativeMap(latLng) {
 
-        addTmpMarker(latLng);
+        _addTmpMarker(latLng);
         postMapLongClick(latLng);
 
     }
 
-    function addTmpMarker(latLng) {
+    function _addTmpMarker(latLng) {
 
         addMarker({
             latLng : latLng,
             category : 'place',
             interest : 'INTEREST_NONE',
             clickable : false
+        }, function(marker){
+            tmpMarker = marker;
+            tmpMarker.setDisableAutoPan(true);
+        });
+    }
+
+    function _refreshTmpMarker(interest) {
+
+        // console.log(tmpMarker);
+
+        tmpMarker.remove();
+
+        addMarker({
+            latLng : tmpMarker.latLng,
+            category : tmpMarker.placeCategory,
+            interest : interest
         }, function(marker){
             tmpMarker = marker;
             tmpMarker.setDisableAutoPan(true);
@@ -216,18 +232,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
     //     tmpMarker.remove();
     // }
 
+    function getMarkerPath(category, interest) {
+        
+        var markerPath;
+        if (category === 'place') {
+            markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(interest)];
+        } else if (category === 'housing_complex') {
+            markerPath = squeareMarkerPaths.values[Person.interest.indexOfKey(interest)];
+        }
+        return markerPath;
+    }
+
     function addMarker (options, callback) {
 
         if (options.category === 'room') {
             return;
         }
 
-        var markerPath;
-        if (options.category === 'place') {
-            markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(options.interest)];
-        } else if (options.category === 'housing_complex') {
-            markerPath = squeareMarkerPaths.values[Person.interest.indexOfKey(options.interest)];
-        }
+        var markerPath = getMarkerPath(options.category, options.interest);
         
         map.addMarker({
             position: {
@@ -248,6 +270,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
                 marker.on(nativeEvent.MARKER_CLICK, onClickNativeMarker);
             }
 
+            marker.latLng = options.latLng;
+            marker.placeCategory = options.category;
             marker.setDisableAutoPan(!_gestureEnabled);
 
             if ( typeof callback === 'function' ) {
@@ -310,11 +334,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.NativeMapPane = function(p
     this.addTmpMarker = function(latLng) {
 
         waiter.wait(function(){
-            addTmpMarker(latLng);
+            _addTmpMarker(latLng);
         }, function(){
             return _isMapReady;
         });
     };
+
+    this.refreshTmpMarker = _refreshTmpMarker;
 
     // TODO: function to show all markers in visible area.
 

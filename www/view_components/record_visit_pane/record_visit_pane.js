@@ -34,6 +34,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         _onClickPlcButton,
         _onClickCancel,
         _onClickOk,
+        _onRefreshInterest,
         _visit,
         _persons;
 
@@ -246,9 +247,17 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
             
             _visit.personVisits.removeData(personVisit);
 
+            if ( typeof _onRefreshInterest === 'function' ) {
+                _onRefreshInterest(_visit.interest);
+            }
+
             // refreshPersonContainer();
             // refreshPersonSeenSubtitle(true);
         };
+
+        if ( typeof _onRefreshInterest === 'function' ) {
+            _onRefreshInterest(_visit.interest);
+        }
     }
 
     function initSecondaryElements() {
@@ -307,6 +316,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
             _visit.placements.removeData(plc);
             refreshPlcContainer();
         };
+
     }
 
     function initNoteText() {
@@ -435,6 +445,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
         set onClickOk(f) {
             _onClickOk = f;
+        },
+
+        set onRefreshInterest(f) {
+            _onRefreshInterest = f;
         }
 
     };

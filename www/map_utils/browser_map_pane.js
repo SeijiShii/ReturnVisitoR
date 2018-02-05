@@ -172,13 +172,34 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
 
         // map.panTo(_latLng);
 
-        tmpMarker = addMarker({
+        _addTmpMarker(latLng);
+        postMapLongClick(_latLng);
+        
+    }
+
+    function _addTmpMarker(latLng) {
+
+        addMarker({
             latLng : latLng,
             category : 'place',
             interest : 'INTEREST_NONE'
+        }, function(marker){
+            tmpMarker = marker;
+            // console.log(tmpMarker);
         });
-        postMapLongClick(_latLng);
-        
+    }
+
+    function _refreshTmpMarker(interest) {
+
+        var markerPath = getMarkerPath(tmpMarker.placeCategory, interest);
+        tmpMarker.setOptions({
+            icon : {
+                url : markerPath,
+                size : new google.maps.Size(34, 48),
+                scaledSize : new google.maps.Size(25, 35)                  
+            }
+        })
+
     }
 
     function postMapLongClick(latLng){
@@ -225,18 +246,24 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
     //     tmpMarker.setMap(null);
     // }
 
+    function getMarkerPath(category, interest){
+
+        var markerPath;
+        if (category === 'place') {
+            markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(interest)];
+        } else if (category === 'housing_complex') {
+            markerPath = squeareMarkerPaths.values[Person.interest.indexOfKey(interest)];
+        }
+        return markerPath;
+    }
+
     function addMarker (options, callback) {
 
         if (options.category === 'room') {
             return;
         }
 
-        var markerPath;
-        if (options.category === 'place') {
-            markerPath = pinMarkerPaths.values[Person.interest.indexOfKey(options.interest)];
-        } else if (options.category === 'housing_complex') {
-            markerPath = squeareMarkerPaths.values[Person.interest.indexOfKey(options.interest)];
-        }
+        var markerPath = getMarkerPath(options.category, options.interest);
         
         var marker = new google.maps.Marker({
             position : options.latLng,
@@ -247,6 +274,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
                 scaledSize : new google.maps.Size(25, 35)                  
             }
         });
+
+        marker.placeCategory = options.category;
 
         if (options.clickable) {
             marker.addListener('click', onClickBrowserMarker);
@@ -298,7 +327,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.mapUtils.BrowserMapPane = function(
         });
     }
 
-    this.addMarker = addMarker;
+    this.addTmpMarker = _addTmpMarker;
+    this.refreshTmpMarker = _refreshTmpMarker;
 
     // TODO: dialog to show place data.
 
