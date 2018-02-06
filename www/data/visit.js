@@ -44,13 +44,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.fromDBData = function(db
         waiter          = returnvisitor.common.waiter,
         isPlaceReady = false,
         arePersonVisitsReady = false,
-        arePlacementsReady = true,
+        arePlacementsReady = false,
         instance = new Visit();
     
     instance.id = dbData.data_id;
     instance.timeStamp.setTime(dbData.time_stamp);
 
     instance.dateTime.setTime(dbData.datetime);
+    instance.note = dbData.note;
     
     dbHelper.loadPlaceById(dbData.place_id, function(placeData){
         instance.place = Place.fromDBData(placeData);
@@ -80,6 +81,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.fromDBData = function(db
     });
 
     // TODO: Set placements from daData.
+    dbHelper.loadPlacementsInVisit(instance, function(placements){
+        instance.placements = placements;
+        arePlacementsReady = true;
+    });
 
     waiter.wait(function(){
 
@@ -88,6 +93,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Visit.fromDBData = function(db
         }
 
     }, function(){
+        // console.log(isPlaceReady, arePersonVisitsReady, arePlacementsReady);
         return isPlaceReady && arePersonVisitsReady && arePlacementsReady;
     });
 

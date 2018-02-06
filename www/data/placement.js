@@ -13,7 +13,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.fromDBData = functio
         common = returnvisitor.common,
         dbHelper    = common.dbHelper,
         waiter      = common.waiter,
-        Publcation  = returnvisitor.data.Publcation,
+        Publication  = returnvisitor.data.Publication,
         Placement   = returnvisitor.data.Placement,
         _isPubReady = false,
         instance = new Placement();
@@ -25,7 +25,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Placement.fromDBData = functio
 
     dbHelper.loadPublicationById(dbData.publication_id, function(pubData){
 
-        instance.publication = Publcation.fromDBData(pubData);
+        instance.publication = Publication.fromDBData(pubData);
 
         _isPubReady = true;
     });

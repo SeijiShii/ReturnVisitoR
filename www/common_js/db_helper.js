@@ -29,7 +29,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         VALUES6 = 'VALUES ( ?, ?, ?, ?, ?, ? )',
         VALUES7 = 'VALUES ( ?, ?, ?, ?, ?, ?, ? )',
         PLACE_INSERT_QUERY = INSERT_QUERY + PLACE_TABLE_NAME + VALUES7,
-        VISIT_INSERT_QUERY = INSERT_QUERY + VISIT_TABLE_NAME + VALUES4,
+        VISIT_INSERT_QUERY = INSERT_QUERY + VISIT_TABLE_NAME + VALUES5,
         PERSON_INSERT_QUETY = INSERT_QUERY + PERSON_TABLE_NAME + VALUES5, 
         PERSON_VISIT_INSERT_QUETY = INSERT_QUERY + PERSON_VISIT_TABLE_NAME + VALUES6,
         PUBLICATION_INSERT_QUERY = INSERT_QUERY + PUBLICATION_TABLE_NAME + VALUES7,
@@ -52,7 +52,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
         transaction.executeSql(CREATE_TABLE_QUERY + PLACE_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'category, latitude, longitude, address, name )');
 
-        transaction.executeSql(CREATE_TABLE_QUERY + VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'place_id, datetime )');
+        transaction.executeSql(CREATE_TABLE_QUERY + VISIT_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'place_id, datetime, note )');
 
         transaction.executeSql(CREATE_TABLE_QUERY + PERSON_TABLE_NAME + '( ' + BASIC_QUERY_COLUMNS + 'sex, age, interest )');
 
@@ -118,10 +118,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         _loadDataById(id, callback, PERSON_TABLE_NAME);
     }
 
-    function _loadPublicationById(id, callback) {
-
-        _loadDataById(id, callback, PUBLICATION_TABLE_NAME);
-    }
 
     function _loadPlacementById(id, callback) {
 
@@ -254,7 +250,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
     function _executeInsertVisit(transaction, visit, callback) {
 
-        transaction.executeSql(VISIT_INSERT_QUERY, [visit.id, visit.timeStamp.getTime(), visit.place.id, visit.dateTime.getTime()], callback);
+        transaction.executeSql(VISIT_INSERT_QUERY, [visit.id, visit.timeStamp.getTime(), visit.place.id, visit.dateTime.getTime(), visit.note], callback);
     }
 
     function _executeDeleteVisit(transaction, visitId, callback) {
@@ -412,6 +408,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         _executeSelectById(transaction, id, PUBLICATION_TABLE_NAME, callback);
     }
 
+    function _loadPublicationById(id, callback) {
+
+        database.transaction(function(txn){
+            _executeSelectPublicationById(txn, id, callback);
+        });
+    }
+
     // Placement methods
 
     function _executeInsertPlacement(transaction, placement, visitId, callback) {
@@ -454,11 +457,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
                 
                 for ( var i = 0 ; plcDataRows.length > i ; i++ ) {
 
-                    _executeSelectPublicationById(txn, plcDataRows.item(i).publication_id, function(txn, result){
-
-                        if (result.rows.length > 0) {
-                            placements.push(Placement.fromDBData(result.rows.item(i)));
-                        }
+                    Placement.fromDBData(plcDataRows.item(i), function(plc){
+                        placements.push(plc);
                     });
                 }
 
@@ -466,14 +466,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
                     callback(placements);                     
                 }, function(){
-
                     return placements.length >= result1.rows.length; 
                 });
                 
             } else {
 
-                callback(null);
+                callback([]);
             }
+        });
+    }
+
+    function _loadPlacementsInVisit(visit, callback) {
+
+        database.transaction(function(txn){
+            _executeSelectPlacementsByVisitId(txn, visit.id, callback);
         });
     }
 
@@ -504,6 +510,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
 
         loadVisitById : _loadVisitById,
         loadPersonById : _loadPersonById,
+        loadPublicationById : _loadPublicationById,
 
         loadPlaceById : _loadPlaceById,
         loadPlaceByLatLng : _loadPlaceByLatLng,
@@ -511,6 +518,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.dbHelper = (function(){
         loadAllVisitsToPlace : _loadAllVisitsToPlace,
         loadLastVisitToPlace : _loadLastVisitToPlace,
         loadPersonVisitsInVisit : _loadPersonVisitsInVisit,
+        loadPlacementsInVisit : _loadPlacementsInVisit,
         loadAllPlaces : _loadAllPlaces
 
     };

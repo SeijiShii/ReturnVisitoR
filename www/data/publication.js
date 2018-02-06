@@ -105,5 +105,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.data.Publication.fromDBData = funct
     instance.numericNumber = dbData.numeric_number;
     instance.monthNumber = dbData.month_number;
     instance.note = dbData.note;
+
+    return instance;
 };
 

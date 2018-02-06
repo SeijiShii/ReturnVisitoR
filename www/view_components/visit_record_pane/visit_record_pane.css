@@ -8,7 +8,7 @@
 
 }
 
-.visit_record_pane_primary
+/* .visit_record_pane_primary
 h2 {
     font-size: 18px;
     margin-top: 0;
@@ -17,7 +17,7 @@ h2 {
     height: 25px;
     line-height: 25px;
     border-bottom: 1px gray solid;
-}
+} */
 
 .visit_record_pane_primary
 .row {
@@ -36,12 +36,22 @@ span {
     left: 10px;
 }
 
+.visit_record_pane_primary
+.person_container {
+    position: relative;
+    border-bottom: 1px gray solid;
+}
+
 .person_cell {
     position: relative;
     width: 100%;
     height: 40px;
     border-bottom: 1px lightgray solid;
     background-color: whitesmoke;
+}
+
+.person_cell:last-child {
+    border: none;
 }
 
 .person_cell
@@ -72,7 +82,7 @@ span {
     right: 0;
     bottom: 0;
     border-radius: 10px;
-    background-color: blue;
+    /* background-color: blue; */
     margin: auto;
 }
 
@@ -125,10 +135,45 @@ span {
 
 .person_cell
 .person_data {
+    position: absolute;
+    left: 40px;
     font-size: 12px;
     height: 40px;
     line-height: 40px;
-    float: left;
+}
+
+.visit_record_pane_primary
+.placement_container {
+    width: 100%;
+    height: auto ;
+    border-bottom: 1px gray solid;
+}
+
+.visit_record_pane_primary
+.placement_container
+.placement_cell {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px lightgray solid;
+    font-size: 12px;
+    text-indent: 60px;
+    /* text-align: center; */
+}
+
+.visit_record_pane_primary
+.placement_container
+.placement_cell:last-child {
+    border: none;
+}
+
+.visit_record_pane_primary
+.visit_note {
+    width: 100%;
+    height: 60px;
+    border-bottom: 1px solid gray;
+    font-size: 12px;
+    text-indent: 60px;
 }
 
 

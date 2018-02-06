@@ -47,6 +47,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         dateTimeText = elements.getElementByClassName(_primaryFrame, 'date_time_text');
         personContainer = elements.getElementByClassName(_primaryFrame, 'person_container');
         placementContainer = elements.getElementByClassName(_primaryFrame, 'placement_container');
+        visitNote   = elements.getElementByClassName(_primaryFrame, 'visit_note');
 
     }
 
@@ -79,6 +80,27 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
             generatePesonCell(_visits[0].personVisits[i], function(cell){
                 personContainer.appendChild(cell);
             });
+        }
+    }
+
+    function refreshPlacementContainer() {
+        
+        placementContainer.innerHtml = '';
+        for (var i = 0 ; i < _visits[0].placements.length ; i++ ) {
+            generatePlacementCell(_visits[0].placements[i], function(cell) {
+                placementContainer.appendChild(cell);
+            });
+        }
+    }
+
+    function refreshVisitNote() {
+        
+        if (_visits[0].note && _visits[0].note.length > 0) {
+            visitNote.style.display = 'block';
+            visitNote.innerText = _visits[0].note;
+
+        } else {
+            visitNote.style.display = 'none';
         }
     }
 
@@ -124,6 +146,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
     
                 refreshDateTimeText();
                 refreshPersonContainer();
+                refreshPlacementContainer();
+                refreshVisitNote();
     
                 if (typeof callback === 'function' ) {
                     callback();
@@ -139,28 +163,36 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         loadFile.loadHtmlAsElement('./view_components/visit_record_pane/person_cell.html', function(cell){
 
             var mark = elements.getElementByClassName(cell, 'button_mark');
-            mark.style.backgroundColor = raterColors[Person.interest.indexOfKey(personVisit.person.interest)];
+            mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(personVisit.person.interest)];
 
             var personData = elements.getElementByClassName(cell, 'person_data');
             personData.style.width = (_primaryFrame.clientWidth - 130) + 'px';
             personData.innerText = personVisit.person.data;
 
-            // var rvDiv = elements.getElementByClassName(cell, 'rv_div');
-            // if (personData.isRV) {
-            //     rvDiv.style.display = 'block';
-            // } else {
-            //     rvDiv.style.display = 'none';
-            // }
+            var rvDiv = elements.getElementByClassName(cell, 'rv_div');
+            if (personData.isRV) {
+                rvDiv.style.display = 'block';
+            } else {
+                rvDiv.style.display = 'none';
+            }
 
-            // var stDiv = elements.getElementByClassName(cell, 'st_div');
-            // if (personData.isSt) {
-            //     stDiv.style.display = 'block';
-            // } else {
-            //     stDiv.style.display = 'none';
-            // }
+            var stDiv = elements.getElementByClassName(cell, 'st_div');
+            if (personData.isSt) {
+                stDiv.style.display = 'block';
+            } else {
+                stDiv.style.display = 'none';
+            }
 
             callback(cell);
         });
+    }
+
+    function generatePlacementCell(placement, callback) {
+
+        var cell = document.createElement('div');
+        cell.classList.add('placement_cell');
+        cell.innerText = placement.publication.data;
+        callback(cell);
     }
 
     return {

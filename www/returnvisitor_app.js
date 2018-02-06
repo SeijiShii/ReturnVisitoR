@@ -162,6 +162,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.app = (function() {
 
                 var pageOptions = {};
                 pageOptions.place = place;
+                pageOptions.latLng = place.latLng;
                 pageOptions.action = 'recorded_place_action';
                 loadPlacePageFilesIfNeeded(pageOptions);
 
