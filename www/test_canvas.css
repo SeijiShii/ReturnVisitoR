@@ -1,0 +1,93 @@
+.person_cell {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    border-bottom: 1px lightgray solid;
+    background-color: whitesmoke;
+}
+
+.person_cell
+.mark_div {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+    color: white;
+}
+
+.person_cell
+.button_div {
+    position: relative;
+    float: left;
+
+    /* background-color: red; */
+}
+
+.person_cell
+.button_div
+.button_mark {
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    background-color: blue;
+    margin: auto;
+}
+
+.person_cell
+.rv_div {
+    position: relative;
+    float: right;
+
+    /* background-color: blue; */
+}
+
+.person_cell
+.sign {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    margin: auto;
+    line-height: 30px;
+    text-align: center;
+}
+
+
+.person_cell
+.rv_div
+.rv_sign {
+
+    background-color: green;
+    
+}
+
+.person_cell
+.st_div {
+    position: relative;
+    float: right;
+
+    /* background-color: green; */
+}
+
+.person_cell
+.st_div
+.st_sign {
+    background-color: lime;
+}
+
+.person_cell
+.person_data {
+    font-size: 12px;
+    height: 40px;
+    line-height: 40px;
+}

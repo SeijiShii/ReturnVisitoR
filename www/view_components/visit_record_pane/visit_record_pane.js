@@ -8,8 +8,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         elements        = common.elements,
         dbHelper        = common.dbHelper,
         waiter          = common.waiter,
+        raterColors     = common.raterColors,
         data            = returnvisitor.data,
         Visit           = data.Visit,
+        Person          = data.Person,
         _primaryFrame,
         roomRow,
         roomText,
@@ -70,6 +72,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         dateTimeText.innerText = _visits[0].dateTime.dateTimeString();
     }
 
+    function refreshPersonContainer() {
+        
+        personContainer.innerHtml = '';
+        for (var i = 0 ; i < _visits[0].personVisits.length ; i++ ) {
+            generatePesonCell(_visits[0].personVisits[i], function(cell){
+                personContainer.appendChild(cell);
+            });
+        }
+    }
+
 
     function initSecondaryElements() {
 
@@ -111,6 +123,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
                 });
     
                 refreshDateTimeText();
+                refreshPersonContainer();
     
                 if (typeof callback === 'function' ) {
                     callback();
@@ -118,6 +131,35 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
             }, function(){
                 return rows.length == _visits.length;
             });
+        });
+    }
+
+    function generatePesonCell(personVisit, callback) {
+
+        loadFile.loadHtmlAsElement('./view_components/visit_record_pane/person_cell.html', function(cell){
+
+            var mark = elements.getElementByClassName(cell, 'button_mark');
+            mark.style.backgroundColor = raterColors[Person.interest.indexOfKey(personVisit.person.interest)];
+
+            var personData = elements.getElementByClassName(cell, 'person_data');
+            personData.style.width = (_primaryFrame.clientWidth - 130) + 'px';
+            personData.innerText = personVisit.person.data;
+
+            // var rvDiv = elements.getElementByClassName(cell, 'rv_div');
+            // if (personData.isRV) {
+            //     rvDiv.style.display = 'block';
+            // } else {
+            //     rvDiv.style.display = 'none';
+            // }
+
+            // var stDiv = elements.getElementByClassName(cell, 'st_div');
+            // if (personData.isSt) {
+            //     stDiv.style.display = 'block';
+            // } else {
+            //     stDiv.style.display = 'none';
+            // }
+
+            callback(cell);
         });
     }
 
