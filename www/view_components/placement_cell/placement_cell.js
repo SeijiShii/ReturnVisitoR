@@ -1,6 +1,6 @@
 'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PlacementCell = function(parent, placement) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PlacementCell = function(parent, placement, animated) {
 
     var returnvisitor = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
@@ -20,13 +20,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PlacementCell = func
         loadFile.loadHtmlAsElement('./view_components/placement_cell/placement_cell.html', function(elm){
 
             cellFrame = elm;
-            cellFrame.style.height = 0;
-
+            
             initPlcData();
             initRemoveButton();
 
             parent.appendChild(elm);
-            extract();
+
+            if (animated) {
+                cellFrame.style.height = 0;
+                extract();
+            }
         });
     }
 

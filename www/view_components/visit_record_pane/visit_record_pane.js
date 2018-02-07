@@ -13,6 +13,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         data            = returnvisitor.data,
         Visit           = data.Visit,
         Person          = data.Person,
+        viewComponents  = returnvisitor.viewComponents,
+        SmallSquareButton = viewComponents.SmallSquareButton,
         _primaryFrame,
         roomRow,
         roomText,
@@ -27,7 +29,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         _place,
         _visits,
         _selectedIndex = 0,
-        _onClickRecordVisit;
+        _onClickRecordVisit,
+        _onClickEditVisit;
     
     loadFile.loadCss('./view_components/visit_record_pane/visit_record_pane.css');
     loadFile.loadHtmlAsElement('./view_components/visit_record_pane/visit_record_pane_primary.html', function(elm){
@@ -35,6 +38,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
 
         initPrimaryElements();
         initRecordVisitButton();
+        initEditButton();
 
         _isPrimaryReady = true;
     });
@@ -57,6 +61,20 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         visitNote   = elements.getElementByClassName(_primaryFrame, 'visit_note');
 
     }
+
+    function initEditButton() {
+        var editButtonBase = elements.getElementByClassName(_primaryFrame, 'edit_button_base');
+
+        var editButton = new SmallSquareButton(editButtonBase, './view_components/edit_button/edit_button.html', './view_components/edit_button/edit_button.css');
+
+        editButton.onClickButton = function() {
+
+            if ( typeof _onClickEditVisit === 'function' ) {
+                _onClickEditVisit(_visits[_selectedIndex]);
+            }
+        };
+    }
+
 
     function refreshRoomRow() {
 
@@ -262,6 +280,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
 
         set onClickRecordVisit(f) {
             _onClickRecordVisit = f;
+        },
+
+        set onClickEditVisit(f) {
+            f = _onClickEditVisit = f;
         }
 
     };

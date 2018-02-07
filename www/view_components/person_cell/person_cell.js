@@ -61,7 +61,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonCell = functio
 
         editButton.onClickButton = function() {
             console.log('edit button click!');
-        }
+        };
     }
 
     function initBlockOverlay() {

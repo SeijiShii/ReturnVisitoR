@@ -97,54 +97,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         initAddPersonButton();
     }
 
-    // function refreshPersonSeenSubtitle(animated) {
-
-    //     if (animated) {
-    //         if (_visit.personVisits.length <= 0) {
-
-    //             $(personSeenSubtitle).animate({
-    //                 height : 0
-    //             }, 200, function(){
-    //                 $(personSeenSubtitle).css({
-    //                     display : 'none',
-    //                     height : 0,
-    //                     margin : 0,
-    //                     visibility : 'hidden'
-    //                 });
-    //             });
-
-    //         } else {
-    //             $(personSeenSubtitle).css({
-    //                 display : 'block',
-    //                 height : 0,
-    //                 margin : '3px',
-    //                 visibility : 'visible'
-    //             });
-
-    //             $(personSeenSubtitle).animate({
-    //                 height : '15px'
-    //             }, 200);
-    //         }
-
-    //     } else {
-    //         if (_visit.personVisits.length <= 0) {
-    //             $(personSeenSubtitle).css({
-    //                 display : 'none',
-    //                 height : 0,
-    //                 margin : 0,
-    //                 visibility : 'hidden'
-    //             });
-    //         } else {
-    //             $(personSeenSubtitle).css({
-    //                 display : 'block',
-    //                 height : '15px',
-    //                 margin : '3px',
-    //                 visibility : 'visible'
-    //             });
-    //         }
-    //     }
-    // }
-
     function initAddPersonButton() {
         addPersonButton = elements.getElementById(_primaryFrame, 'add_person_button');
         addPersonButton.blink = new elementsEffect.Blink(addPersonButton);
@@ -153,24 +105,13 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
 
     function initPersonContainer() {
         personContainer = elements.getElementById(_primaryFrame, 'person_container');
-        // refreshPersonContainer();
 
+        for ( var i = 0 ; i < _visit.personVisits.length ; i++ ) {
+
+            __addPersonVisitCell(_visit.personVisits[i], false);
+        }
     }
 
-    // function refreshPersonContainer() {
-    //     if (_visit.personVisits.length <= 0) {
-    //         $(personContainer).css({
-    //             display : 'none',
-    //             // height : 0,
-    //             // margin : 0
-    //         });
-    //     } else {
-    //         $(personContainer).css({
-    //             display : 'block',
-    //             height : 'auto'
-    //         });
-    //     }
-    // }
 
     function onClickAddPersonButton() {
 
@@ -235,12 +176,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         var personVisit = new PersonVisit(person);
         _visit.personVisits.push(personVisit);
 
-        // refreshPersonSeenSubtitle(true);
-        // refreshPersonContainer();
+        __addPersonVisitCell(personVisit, true);
 
-        var personVisitCell = new PersonVisitCell(personVisit);
+    }
 
-        personVisitCell.appendAndExtract(personContainer);
+    function __addPersonVisitCell(personVisit, animated) {
+
+        var personVisitCell = new PersonVisitCell(personVisit, personContainer, animated);
+
         personVisitCell.onRemoveCell = function(personVisit) {
             
             _visit.personVisits.removeData(personVisit);
@@ -271,6 +214,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         plcContainer = elements.getElementByClassName(_secondaryFrame, 'plc_container');
 
         refreshPlcContainer();
+
+        for ( var i = 0 ; i < _visit.placements.length ; i++ ) {
+            __addPlcCell(_visit.placements[i], false);
+        }
     }
 
     function refreshPlcContainer() {
@@ -306,12 +253,16 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.recordVisitPane = (f
         
         _visit.placements.push(plc);
         refreshPlcContainer();
-        var plcCell = new PlacementCell(plcContainer, plc);
+        __addPlcCell(plc, true);
+        
+    }
+
+    function __addPlcCell(plc, animated) {
+        var plcCell = new PlacementCell(plcContainer, plc, true);
         plcCell.postCollapseCell = function(plc) {
             _visit.placements.removeData(plc);
             refreshPlcContainer();
         };
-
     }
 
     function initNoteText() {

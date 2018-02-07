@@ -138,7 +138,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
             
             // Provisionary set category for marker in small map.
             _place.category = 'place';
-            fadeOutPanesAndShowNext(initRecordVisitPane);
+            fadeOutPanesAndShowNext(function(){
+                initRecordVisitPaneIfNeeded(doInitializeRecordVisitPaneforNew);
+            });
         };
     }
 
@@ -243,51 +245,39 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         });
     }
 
-    function initRecordVisitPane() {
+    function initRecordVisitPaneIfNeeded(nextFunc, data) {
 
-        recordVisitPane = viewComponents.recordVisitPane;
+        if (!recordVisitPane) {
+            recordVisitPane = viewComponents.recordVisitPane;
 
-        recordVisitPane.initialize(function(){
-            fadeInFramesWithContents([
-                recordVisitPane.primaryFrame,
-                recordVisitPane.secondaryFrame
-            ]);
-            _visiblePaneName = 'record_visit_pane_for_new';
-            refreshButtonRows();
-        }, _place);
+            recordVisitPane.onClickAddPerson = function(visit, persons) {
 
-        recordVisitPane.onClickAddPerson = function(visit, persons) {
+                initAddPersonDialog(visit, persons);
+            };
+    
+            recordVisitPane.onClickDateText = function(visit) {
+    
+                initDatePickerDialog(visit);
+    
+            };
+    
+            recordVisitPane.onClickTimeText = function(visit) {
+    
+                initTimePickerDialog(visit);
+    
+            };
+    
+            recordVisitPane.onClickPlcButton = function(visit) {
+    
+                initPlcDialog(visit);
+            };
+    
+            recordVisitPane.onRefreshInterest = function(interest) {
+                mapPane.refreshTmpMarker(interest);
+            };
+        }
 
-            initAddPersonDialog(visit, persons);
-        };
-
-        recordVisitPane.onClickDateText = function(visit) {
-
-            initDatePickerDialog(visit);
-
-        };
-
-        recordVisitPane.onClickTimeText = function(visit) {
-
-            initTimePickerDialog(visit);
-
-        };
-
-        recordVisitPane.onClickPlcButton = function(visit) {
-
-            initPlcDialog(visit);
-        };
-
-        recordVisitPane.onRefreshInterest = function(interest) {
-            mapPane.refreshTmpMarker(interest);
-        };
-
-        // recordVisitPane.onClickOk = function(visit) {
-
-        //     if (typeof _onFinishRecordVisit === 'function' ) {
-        //         _onFinishRecordVisit(visit.place, visit.interest);
-        //     }
-        // };
+        nextFunc(data);
     }
 
     function loadVisitRecordPane() {
@@ -308,8 +298,40 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.placePage = (function() {
         }, _place);
 
         visitRecordPane.onClickRecordVisit = function() {
-            fadeOutPanesAndShowNext(initRecordVisitPane);
+            fadeOutPanesAndShowNext(function(){
+                initRecordVisitPaneIfNeeded(doInitializeRecordVisitPaneforNew);
+            });
         };
+
+        visitRecordPane.onClickEditVisit = function(visit) {
+            fadeOutPanesAndShowNext(function(){
+                initRecordVisitPaneIfNeeded(doInitializeRecordVisitPaneforEdit, visit);
+            });
+        };
+    }
+
+    function doInitializeRecordVisitPaneforNew(){
+
+        recordVisitPane.initialize(function(){
+            fadeInFramesWithContents([
+                recordVisitPane.primaryFrame,
+                recordVisitPane.secondaryFrame
+            ]);
+            _visiblePaneName = 'record_visit_pane_for_new';
+            refreshButtonRows();
+        }, _place);
+    }
+
+    function doInitializeRecordVisitPaneforEdit(visit){
+
+        recordVisitPane.initialize(function(){
+            fadeInFramesWithContents([
+                recordVisitPane.primaryFrame,
+                recordVisitPane.secondaryFrame
+            ]);
+            _visiblePaneName = 'record_visit_pane_for_edit';
+            refreshButtonRows();
+        }, visit);
     }
 
     function showPanesIfReady() {

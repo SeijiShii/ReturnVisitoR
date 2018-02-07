@@ -1,6 +1,6 @@
 'use strict';
 RETURNVISITOR_APP.namespace('RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents');
-RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = function(personVisit) {
+RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = function(personVisit, parent, animated) {
 
     if (personVisit === undefined) {
         throw new Error('Argument person must not be undefined!');
@@ -11,7 +11,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
         cellFrame,
         // midColumn,
         // switchBox,
-        _isFrameReady = false,
+        // _isFrameReady = false,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
@@ -37,7 +37,12 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
             initEditButton();
             initRemoveButton();
 
-            _isFrameReady = true;
+            // _isFrameReady = true;
+            parent.appendChild(cellFrame);
+            
+            if (animated) {
+                extractFrom0();
+            }
 
         });
     }
@@ -85,9 +90,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
     }
 
     function onClickRemoveButton() {
-        $(cellFrame).animate({
-            height : 0
-        }, 300, function(){
+
+        collapse(function(){
             cellFrame.parentNode.removeChild(cellFrame);
             
             if ( typeof _this.onRemoveCell === 'function' ) {
@@ -98,41 +102,44 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
         });
     }
 
-    function _appendTo(parent) {
-        parent.appendChild(cellFrame);
+    // function _appendTo(parent) {
+    //     parent.appendChild(cellFrame);
 
-        if ( typeof _this.appendCallback === 'function' ) {
-            _this.appendCallback();
-        }
-    }
+    //     if ( typeof _this.appendCallback === 'function' ) {
+    //         _this.appendCallback();
+    //     }
+    // }
 
-    function _appendAndExtract(parent) {
-
+    function extractFrom0() {
         cellFrame.style.height = 0;
-
-        parent.appendChild(cellFrame);
-
         $(cellFrame).animate({
             height : EXTRACTED_HEIGHT
         }, 300);
     }
 
-    function waitAppendUntilReady(appendFunc, parent) {
-        
-        waiter.wait(function(){
-            appendFunc(parent);
-        }, function(){
-            return _isFrameReady;
-        });
-    }
-   
-    this.appendTo = function(parent) {
-        waitAppendUntilReady(_appendTo, parent);
-    };
+    function collapse(nextFunc) {
 
-    this.appendAndExtract = function(parent) {
-        waitAppendUntilReady(_appendAndExtract, parent);
-    };
+        $(cellFrame).animate({
+            height : 0
+        }, 300, nextFunc());
+    }
+
+    // function waitAppendUntilReady(appendFunc, parent) {
+        
+    //     waiter.wait(function(){
+    //         appendFunc(parent);
+    //     }, function(){
+    //         return _isFrameReady;
+    //     });
+    // }
+   
+    // this.appendTo = function(parent) {
+    //     waitAppendUntilReady(_appendTo, parent);
+    // };
+
+    // this.appendAndExtract = function(parent) {
+    //     waitAppendUntilReady(_appendAndExtract, parent);
+    // };
 
     initialize();
 };
