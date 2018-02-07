@@ -10,6 +10,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         waiter          = common.waiter,
         raterColors     = common.raterColors,
         elementsEffect  = common.elementsEffect,
+        touchEventFilter = common.touchEventFilter,
         data            = returnvisitor.data,
         Visit           = data.Visit,
         Person          = data.Person,
@@ -30,7 +31,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         _visits,
         _selectedIndex = 0,
         _onClickRecordVisit,
-        _onClickEditVisit;
+        _onClickEditVisit,
+        VISIT_RECORD_CELL_PREFIX = 'visit_record_cell_'
     
     loadFile.loadCss('./view_components/visit_record_pane/visit_record_pane.css');
     loadFile.loadHtmlAsElement('./view_components/visit_record_pane/visit_record_pane_primary.html', function(elm){
@@ -99,7 +101,9 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
 
     function refreshPersonContainer() {
         
-        personContainer.innerHtml = '';
+        while(personContainer.firstChild) {
+            personContainer.removeChild(personContainer.firstChild);
+        }
         for (var i = 0 ; i < _visits[_selectedIndex].personVisits.length ; i++ ) {
             generatePesonCell(_visits[_selectedIndex].personVisits[i], function(cell){
                 personContainer.appendChild(cell);
@@ -109,7 +113,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
 
     function refreshPlacementContainer() {
         
-        placementContainer.innerHtml = '';
+        while(placementContainer.firstChild) {
+            placementContainer.removeChild(placementContainer.firstChild);
+        }
+
         for (var i = 0 ; i < _visits[_selectedIndex].placements.length ; i++ ) {
             generatePlacementCell(_visits[_selectedIndex].placements[i], function(cell) {
                 placementContainer.appendChild(cell);
@@ -154,7 +161,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         
         for (var i = 0 ; i < _visits.length ; i++ ) {
 
-            generateVisitRecordCell(_visits[i], function(cell){
+            generateVisitRecordCell(_visits[i], i, function(cell){
                 visitRecordList.appendChild(cell);
             });
         }
@@ -166,7 +173,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         });
     }
 
-    function generateVisitRecordCell(visit, callback) {
+    function generateVisitRecordCell(visit, index, callback) {
 
         loadFile.loadHtmlAsElement('./view_components/visit_record_pane/visit_record_cell.html', function(cell) {
 
@@ -176,8 +183,30 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
             var dateTimeText = elements.getElementByClassName(cell, 'date_time_text');
             dateTimeText.innerText = visit.dateTime.dateTimeString();
 
+            cell.id = VISIT_RECORD_CELL_PREFIX + index;
+            cell.addEventListener('click', onClickRecordVisitCell);
             callback(cell);
         });
+    }
+
+    function onClickRecordVisitCell(e) {
+
+        var id = touchEventFilter.getTargetId(e, 'visit_record_cell');
+        var index = id.substring(VISIT_RECORD_CELL_PREFIX.length);
+
+        var cells = visitRecordList.children;
+
+        for (var i = 0 ; i < cells.length ; i++) {
+            if (i == index) {
+                cells[i].style.backgroundColor = 'lightgray';
+            } else {
+                cells[i].style.backgroundColor = 'whitesmoke';
+            }
+        }
+
+        _selectedIndex = index;
+        refreshVisitDetailPane();
+        
     }
     
     function _initialize(callback, place) {
@@ -190,6 +219,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         }, function(){
             return _isPrimaryReady && _isSecondaryReady;
         });
+    }
+
+    function refreshVisitDetailPane() {
+
+        refreshDateTimeText();
+        refreshPersonContainer();
+        refreshPlacementContainer();
+        refreshVisitNote();
     }
 
     function doInitialize(callback) {
@@ -212,14 +249,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
                 }
     
                 _visits.sort(function(v1, v2){
-                    return v1.dateTime.getTime() - v2.dateTime.getTime();
+                    return v2.dateTime.getTime() - v1.dateTime.getTime();
                 });
     
-                refreshDateTimeText();
-                refreshPersonContainer();
-                refreshPlacementContainer();
-                refreshVisitNote();
-
+        
+                refreshVisitDetailPane();
                 refreshVisitRecordList();
     
                 if (typeof callback === 'function' ) {

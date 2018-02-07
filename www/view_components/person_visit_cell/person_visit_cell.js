@@ -9,15 +9,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
     var _this = this,
         _personVisit = personVisit,
         cellFrame,
-        // midColumn,
-        // switchBox,
-        // _isFrameReady = false,
         returnvisitor   = RETURNVISITOR_APP.work.c_kogyo.returnvisitor,
         common          = returnvisitor.common,
         loadFile        = common.loadFile,
         elements        = common.elements,
         raterColors     = common.raterColors,
-        waiter          = common.waiter,
         Person          = returnvisitor.data.Person,
         viewComponents  = returnvisitor.viewComponents,
         SwitchView      = viewComponents.SwitchView,
@@ -39,7 +35,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
 
             // _isFrameReady = true;
             parent.appendChild(cellFrame);
-            
+
             if (animated) {
                 extractFrom0();
             }
@@ -102,14 +98,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
         });
     }
 
-    // function _appendTo(parent) {
-    //     parent.appendChild(cellFrame);
-
-    //     if ( typeof _this.appendCallback === 'function' ) {
-    //         _this.appendCallback();
-    //     }
-    // }
-
     function extractFrom0() {
         cellFrame.style.height = 0;
         $(cellFrame).animate({
@@ -123,23 +111,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.PersonVisitCell = fu
             height : 0
         }, 300, nextFunc());
     }
-
-    // function waitAppendUntilReady(appendFunc, parent) {
-        
-    //     waiter.wait(function(){
-    //         appendFunc(parent);
-    //     }, function(){
-    //         return _isFrameReady;
-    //     });
-    // }
-   
-    // this.appendTo = function(parent) {
-    //     waitAppendUntilReady(_appendTo, parent);
-    // };
-
-    // this.appendAndExtract = function(parent) {
-    //     waitAppendUntilReady(_appendAndExtract, parent);
-    // };
 
     initialize();
 };

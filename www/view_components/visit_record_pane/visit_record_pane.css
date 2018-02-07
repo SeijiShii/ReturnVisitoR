@@ -1,3 +1,13 @@
+
+
+.visit_record_pane_primary {
+
+    position: relative;
+    width: 100%;
+    font-size: 15px;
+}
+
+.visit_record_pane_primary 
 .edit_button_base {
     position: absolute;
     width: 40px;
@@ -8,15 +18,8 @@
     box-shadow: 2px 2px 3px gray;
     z-index: 100;
 
-    background-color: red;
+    /* background-color: red; */
 
-}
-
-.visit_record_pane_primary {
-
-    position: relative;
-    width: 100%;
-    font-size: 15px;
 }
 
 .visit_record_pane_primary 
