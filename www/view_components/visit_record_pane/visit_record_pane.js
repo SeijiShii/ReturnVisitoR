@@ -9,6 +9,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         dbHelper        = common.dbHelper,
         waiter          = common.waiter,
         raterColors     = common.raterColors,
+        elementsEffect  = common.elementsEffect,
         data            = returnvisitor.data,
         Visit           = data.Visit,
         Person          = data.Person,
@@ -20,22 +21,28 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         placementContainer,
         visitNote,
         _secondaryFrame,
+        visitRecordList,
         _isPrimaryReady,
         _isSecondaryReady,
         _place,
-        _visits;
+        _visits,
+        _selectedIndex = 0,
+        _onClickRecordVisit;
     
     loadFile.loadCss('./view_components/visit_record_pane/visit_record_pane.css');
     loadFile.loadHtmlAsElement('./view_components/visit_record_pane/visit_record_pane_primary.html', function(elm){
         _primaryFrame = elm;
 
         initPrimaryElements();
+        initRecordVisitButton();
 
         _isPrimaryReady = true;
     });
 
     loadFile.loadHtmlAsElement('./view_components/visit_record_pane/visit_record_pane_secondary.html', function(elm){
         _secondaryFrame = elm;
+
+        initSecondaryElements();
 
         _isSecondaryReady = true;
     });
@@ -50,7 +57,6 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         visitNote   = elements.getElementByClassName(_primaryFrame, 'visit_note');
 
     }
-
 
     function refreshRoomRow() {
 
@@ -70,14 +76,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
 
     function refreshDateTimeText() {
 
-        dateTimeText.innerText = _visits[0].dateTime.dateTimeString();
+        dateTimeText.innerText = _visits[_selectedIndex].dateTime.dateTimeString();
     }
 
     function refreshPersonContainer() {
         
         personContainer.innerHtml = '';
-        for (var i = 0 ; i < _visits[0].personVisits.length ; i++ ) {
-            generatePesonCell(_visits[0].personVisits[i], function(cell){
+        for (var i = 0 ; i < _visits[_selectedIndex].personVisits.length ; i++ ) {
+            generatePesonCell(_visits[_selectedIndex].personVisits[i], function(cell){
                 personContainer.appendChild(cell);
             });
         }
@@ -86,8 +92,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
     function refreshPlacementContainer() {
         
         placementContainer.innerHtml = '';
-        for (var i = 0 ; i < _visits[0].placements.length ; i++ ) {
-            generatePlacementCell(_visits[0].placements[i], function(cell) {
+        for (var i = 0 ; i < _visits[_selectedIndex].placements.length ; i++ ) {
+            generatePlacementCell(_visits[_selectedIndex].placements[i], function(cell) {
                 placementContainer.appendChild(cell);
             });
         }
@@ -95,18 +101,65 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
 
     function refreshVisitNote() {
         
-        if (_visits[0].note && _visits[0].note.length > 0) {
+        if (_visits[_selectedIndex].note && _visits[_selectedIndex].note.length > 0) {
             visitNote.style.display = 'block';
-            visitNote.innerText = _visits[0].note;
+            visitNote.innerText = _visits[_selectedIndex].note;
 
         } else {
             visitNote.style.display = 'none';
         }
     }
 
+    function initRecordVisitButton() {
+        var recordVisitButton = elements.getElementByClassName(_primaryFrame, 'record_visit_button');
+        new elementsEffect.Blink(recordVisitButton);
+        recordVisitButton.addEventListener('click', onClickRecordVisitButton);
+    }
+
+    function onClickRecordVisitButton() {
+
+        if ( typeof _onClickRecordVisit === 'function' ) {
+            _onClickRecordVisit();
+        }
+    }
+
 
     function initSecondaryElements() {
 
+        visitRecordList = elements.getElementByClassName(_secondaryFrame, 'visit_record_list');
+
+    }
+
+    function refreshVisitRecordList() {
+
+        visitRecordList.innerHtml = '';
+        
+        for (var i = 0 ; i < _visits.length ; i++ ) {
+
+            generateVisitRecordCell(_visits[i], function(cell){
+                visitRecordList.appendChild(cell);
+            });
+        }
+
+        waiter.wait(function(){
+            visitRecordList.children[_selectedIndex].style.backgroundColor = 'lightgray';
+        }, function(){
+            return _visits.length == visitRecordList.children.length; 
+        });
+    }
+
+    function generateVisitRecordCell(visit, callback) {
+
+        loadFile.loadHtmlAsElement('./view_components/visit_record_pane/visit_record_cell.html', function(cell) {
+
+            var mark = elements.getElementByClassName(cell, 'button_mark');
+            mark.style.backgroundColor = raterColors.interestColors[Person.interest.indexOfKey(visit.interest)];
+
+            var dateTimeText = elements.getElementByClassName(cell, 'date_time_text');
+            dateTimeText.innerText = visit.dateTime.dateTimeString();
+
+            callback(cell);
+        });
     }
     
     function _initialize(callback, place) {
@@ -148,6 +201,8 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
                 refreshPersonContainer();
                 refreshPlacementContainer();
                 refreshVisitNote();
+
+                refreshVisitRecordList();
     
                 if (typeof callback === 'function' ) {
                     callback();
@@ -203,6 +258,10 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.visitRecordPane = (f
         },
         get secondaryFrame() {
             return _secondaryFrame;
+        },
+
+        set onClickRecordVisit(f) {
+            _onClickRecordVisit = f;
         }
 
     };

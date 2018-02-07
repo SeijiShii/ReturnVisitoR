@@ -79,7 +79,11 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.viewComponents.publicationDataPane 
     }
 
     function refreshYearText() {
-        yearText.value = _publication.year;
+        if (_publication.hasNumber) {
+            yearText.value = _publication.year;
+        } else {
+            yearText.value = '';
+        }
     }
 
     function refreshNumberSelector() {

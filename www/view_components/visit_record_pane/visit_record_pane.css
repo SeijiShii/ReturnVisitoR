@@ -1,25 +1,35 @@
+.edit_button_base {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    right: 0;
+
+    box-shadow: 2px 2px 3px gray;
+    z-index: 100;
+
+    background-color: red;
+
+}
+
 .visit_record_pane_primary {
 
     position: relative;
     width: 100%;
-    background-color: whitesmoke;
     font-size: 15px;
-    box-shadow: 2px 2px 4px gray;
-
 }
 
-/* .visit_record_pane_primary
-h2 {
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 0;
-    padding-left: 10px;
-    height: 25px;
-    line-height: 25px;
-    border-bottom: 1px gray solid;
-} */
+.visit_record_pane_primary 
+.visit_detail_pane {
+
+    position: relative;
+    width: 100%;
+    background-color: whitesmoke;
+    box-shadow: 2px 2px 4px gray;
+}
 
 .visit_record_pane_primary
+.visit_detail_pane
 .row {
     position: relative;
     width: 100%;
@@ -28,6 +38,7 @@ h2 {
 }
 
 .visit_record_pane_primary
+.visit_detail_pane
 .row
 span {
     display: block;
@@ -37,6 +48,7 @@ span {
 }
 
 .visit_record_pane_primary
+.visit_detail_pane
 .person_container {
     position: relative;
     border-bottom: 1px gray solid;
@@ -143,6 +155,7 @@ span {
 }
 
 .visit_record_pane_primary
+.visit_detail_pane
 .placement_container {
     width: 100%;
     height: auto ;
@@ -150,6 +163,7 @@ span {
 }
 
 .visit_record_pane_primary
+.visit_detail_pane
 .placement_container
 .placement_cell {
     width: 100%;
@@ -162,12 +176,14 @@ span {
 }
 
 .visit_record_pane_primary
+.visit_detail_pane
 .placement_container
 .placement_cell:last-child {
     border: none;
 }
 
 .visit_record_pane_primary
+.visit_detail_pane
 .visit_note {
     width: 100%;
     height: 60px;
@@ -176,4 +192,97 @@ span {
     text-indent: 60px;
 }
 
+.visit_record_pane_primary
+.record_visit_button {
+    width: 100%;
+    height: 48px;
+    margin: 2px 0;
+    line-height: 48px;
+    text-align: center;
+    color: darkgreen;
+    box-shadow: 2px 2px 4px gray;
+}
+
+
+.visit_record_pane_secondary {
+    position: relative;
+    width: 100%;
+    font-size: 15px;
+}
+
+.visit_record_pane_secondary
+.visit_record_list_wrapper {
+
+    position: relative;
+    width: 100%;
+    height: 250px;
+    box-shadow: 2px 2px 4px gray inset;
+    border-radius: 3px;
+}
+
+.visit_record_pane_secondary 
+.visit_record_list {
+    position: absolute;
+    width: 98%;
+    height: 98%;
+    top: 1%;
+    left: 1%;
+    overflow-y: auto;
+}
+
+.visit_record_cell {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    border-bottom: 1px solid lightgray;
+    background-color: whitesmoke;
+}
+
+.visit_record_cell
+.button_div {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    left: 0;
+}
+
+.visit_record_cell
+.button_div
+.button_mark {
+    display: block;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px;
+    /* background-color: blue; */
+    margin: auto;
+}
+
+.visit_record_cell
+.date_time_text {
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    left: 40px;
+    font-size: 12px;
+}
+
+.visit_record_cell
+.edit_button_base {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: 0;
+    right: 0;
+
+    background-color: blue;
+}
 

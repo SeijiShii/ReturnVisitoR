@@ -31,6 +31,7 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elementsEffect = {
         if (enabled === undefined) {
             enabled = true;
         }
+        var shadowCondition;
 
         function changeOpacity(o) {
             elm.style.opacity = o;            
@@ -38,10 +39,14 @@ RETURNVISITOR_APP.work.c_kogyo.returnvisitor.common.elementsEffect = {
 
         function onMouseDown() {
             changeOpacity(0.3);
+            shadowCondition = elm.style.boxShadow;
+            elm.style.boxShadow = '2px 2px 3px gray inset';
         }
 
         function onMouseUp() {
             changeOpacity(1);
+            elm.style.boxShadow = shadowCondition;
+
         }
 
         function onMouseEnter() {
